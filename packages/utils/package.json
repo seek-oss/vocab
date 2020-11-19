@@ -6,6 +6,7 @@
   "author": "Matt Jones",
   "license": "MIT",
   "dependencies": {
-    "fast-glob": "^3.2.4"
+    "fast-glob": "^3.2.4",
+    "find-up": "^5.0.0"
   }
 }

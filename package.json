@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "preconstruct build",
+    "dev": "preconstruct dev",
     "format": "yarn format.manypkg &&  yarn format.prettier",
     "format.manypkg": "manypkg fix",
     "format.prettier": "prettier --write .",

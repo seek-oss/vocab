@@ -103,7 +103,7 @@ export default async function main() {
   const translations = await loadAllTranslations();
 
   for (const loadedTranslation of translations) {
-    const { languages, filePath } = loadedTranslation;
+    const { languages, filePath } = await loadedTranslation;
 
     trace('Generating types for', loadedTranslation.filePath);
     const translationTypes = new Map<
@@ -111,7 +111,7 @@ export default async function main() {
       { params: ICUParams; message: string }
     >();
 
-    const translationFileKeys = getTranslationKeys(loadedTranslation);
+    const translationFileKeys = await getTranslationKeys(loadedTranslation);
 
     for (const key of translationFileKeys) {
       let params: ICUParams = {};

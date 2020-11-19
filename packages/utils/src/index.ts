@@ -1,6 +1,7 @@
 import path from 'path';
 
 import glob from 'fast-glob';
+import findUp from 'find-up';
 
 type LoadedTranslation = {
   filePath: string;
@@ -15,29 +16,70 @@ type LoadedTranslation = {
   >;
 };
 
-const defaultLanguage = 'en';
-const altLanguages = ['th'];
-const translationDirname = '__translations__';
-
-export function getDefaultLanguage() {
-  return defaultLanguage;
+interface Config {
+  defaultLanguage: string;
+  altLanguages: Array<string>;
+  translationDirName: string;
 }
 
-export function getAltLanguages() {
-  return altLanguages;
+let configPromise: Promise<Config> | null = null;
+
+function validationError(...params: unknown[]) {
+  // eslint-disable-next-line no-console
+  console.error(...params);
+  process.exit(1);
+}
+
+async function getConfig(): Promise<Config> {
+  if (!configPromise) {
+    configPromise = findUp('vocab.config.js').then((configFilePath) => {
+      if (!configFilePath) {
+        validationError('Unable to find a project vocab.config.js');
+      }
+      const result: Config = require(configFilePath!);
+      if (!result.defaultLanguage) {
+        validationError(
+          `No defaultLanguage found in vocab.config.js at ${configFilePath}`,
+        );
+      }
+      if (!result.altLanguages) {
+        validationError(
+          `No altLanguages found in vocab.config.js at ${configFilePath}`,
+        );
+      }
+      if (!result.translationDirName) {
+        validationError(
+          `No translationDirName found in vocab.config.js at ${configFilePath}`,
+        );
+      }
+      return result;
+    });
+  }
+  return configPromise;
+}
+
+export async function getDefaultLanguage() {
+  return (await getConfig()).defaultLanguage;
+}
+
+export async function getAltLanguages() {
+  return (await getConfig()).altLanguages;
 }
 
 export function getChunkName(lang: string) {
   return `${lang}-translations`;
 }
 
-export function getAltLanguageFilePath(filePath: string, language: string) {
+export async function getAltLanguageFilePath(
+  filePath: string,
+  language: string,
+) {
   const directory = path.dirname(filePath);
   const [fileIdentifier] = path.basename(filePath).split('.translations.json');
 
   return path.join(
     directory,
-    translationDirname,
+    (await getConfig()).translationDirName,
     `${fileIdentifier}.translations.${language}.json`,
   );
 }
@@ -48,16 +90,21 @@ export async function getAllTranslationFiles() {
   return translationFiles;
 }
 
-export function loadTranslation(filePath: string): LoadedTranslation {
+export async function loadTranslation(
+  filePath: string,
+): Promise<LoadedTranslation> {
   const languages = new Map();
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  languages.set(defaultLanguage, require(filePath));
-
+  languages.set((await getConfig()).translationDirName, require(filePath));
+  const altLanguages = await getAltLanguages();
   for (const lang of altLanguages) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      languages.set(lang, require(getAltLanguageFilePath(filePath, lang)));
+      languages.set(
+        lang,
+        require(await getAltLanguageFilePath(filePath, lang)),
+      );
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(
@@ -78,11 +125,11 @@ export async function loadAllTranslations() {
     absolute: true,
   });
 
-  return translationFiles.map(loadTranslation);
+  return Promise.all(translationFiles.map(loadTranslation));
 }
 
-export function getTranslationKeys(translation: LoadedTranslation) {
-  const language = translation.languages.get(getDefaultLanguage());
+export async function getTranslationKeys(translation: LoadedTranslation) {
+  const language = translation.languages.get(await getDefaultLanguage());
 
   if (!language) {
     throw new Error('No default language loaded');

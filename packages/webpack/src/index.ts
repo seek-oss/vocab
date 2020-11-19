@@ -9,6 +9,7 @@ interface WebpackLoader {
   addDependency: (filePath: string) => void;
   target: string;
   resourcePath: string;
+  async: () => (result: string) => void;
 }
 
 interface LanguageFile {
@@ -39,11 +40,18 @@ function renderLanguageLoaderSync({
   }${filePath}'), '${lang}')`;
 }
 
-export default function vocabLoader(this: WebpackLoader) {
-  const altLanguageFiles = getAltLanguages().map((lang) => ({
-    filePath: getAltLanguageFilePath(this.resourcePath, lang),
-    lang,
-  }));
+export default async function vocabLoader(this: WebpackLoader) {
+  const callback = this.async();
+
+  const altLanguages = await getAltLanguages();
+
+  const altLanguageFiles = [];
+  for (const lang of altLanguages) {
+    altLanguageFiles.push({
+      filePath: await getAltLanguageFilePath(this.resourcePath, lang),
+      lang,
+    });
+  }
 
   for (const altLanguageFile of altLanguageFiles) {
     this.addDependency(altLanguageFile.filePath);
@@ -53,13 +61,13 @@ export default function vocabLoader(this: WebpackLoader) {
   const renderLanguageLoader =
     target === 'web' ? renderLanguageLoaderAsync : renderLanguageLoaderSync;
 
-  const result = `
+  callback(`
     import { createLanguage } from '@vocab/${target}';
 
     export default {
       __DO_NOT_USE__: {
         ${renderLanguageLoader({
-          lang: getDefaultLanguage(),
+          lang: await getDefaultLanguage(),
           filePath: this.resourcePath,
           useJsonLoader: true,
         })},
@@ -68,7 +76,5 @@ export default function vocabLoader(this: WebpackLoader) {
           .join(',')}
       }
     };
-  `;
-
-  return result;
+  `);
 }

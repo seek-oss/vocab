@@ -10,9 +10,6 @@ import {
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
 
-const alternativeLanguages = getAltLanguages();
-const defaultlanguage = getDefaultLanguage();
-
 interface TranslationFile {
   [k: string]: { message: string; description?: string };
 }
@@ -63,6 +60,8 @@ interface PullOptions {
 export default async function pull({
   branch = 'local-development',
 }: PullOptions) {
+  const alternativeLanguages = await getAltLanguages();
+  const defaultlanguage = await getDefaultLanguage();
   const allTranslations = await getAllTranslationsFromPhrase(branch);
   const uniqueNames = new Set();
   const files = await getAllTranslationFiles();
@@ -90,7 +89,7 @@ export default async function pull({
     );
 
     for (const alternativeLanguage of alternativeLanguages) {
-      const alternativeLanguageFilePath = getAltLanguageFilePath(
+      const alternativeLanguageFilePath = await getAltLanguageFilePath(
         relativePath,
         alternativeLanguage,
       );

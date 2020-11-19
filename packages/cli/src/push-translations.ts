@@ -1,13 +1,15 @@
 import { promises as fs } from 'fs';
 
-import { getAllTranslationFiles, getAltLanguageFilePath } from '@vocab/utils';
+import {
+  getAllTranslationFiles,
+  getAltLanguageFilePath,
+  getAltLanguages,
+  getDefaultLanguage,
+} from '@vocab/utils';
 import FormData from 'form-data';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
 import { logError, trace } from './logger';
-
-const alternativeLanguages = ['th'];
-const defaultlanguage = 'en';
 
 interface TranslationFile {
   [k: string]: { message: string; description?: string };
@@ -61,6 +63,8 @@ interface PushOptions {
   branch: string;
 }
 export default async function pull({ branch }: PushOptions) {
+  const alternativeLanguages = await getAltLanguages();
+  const defaultlanguage = await getDefaultLanguage();
   await callPhrase(`branches`, {
     method: 'POST',
     headers: {
@@ -103,7 +107,7 @@ export default async function pull({ branch }: PushOptions) {
     }
     for (const alternativeLanguage of alternativeLanguages) {
       const alternativeFileContents = await optionalReadFile(
-        getAltLanguageFilePath(relativePath, alternativeLanguage),
+        await getAltLanguageFilePath(relativePath, alternativeLanguage),
         true,
       );
       if (!alternativeFileContents) {
