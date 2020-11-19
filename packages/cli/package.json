@@ -9,8 +9,9 @@
   "author": "Matt Jones",
   "license": "MIT",
   "dependencies": {
+    "@types/env-ci": "^3.1.0",
     "@vocab/utils": "^0.0.1",
-    "dotenv": "^8.2.0",
+    "env-ci": "^5.0.2",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",
     "intl-messageformat-parser": "^6.0.16",

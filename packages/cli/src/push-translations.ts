@@ -46,9 +46,6 @@ async function uploadFile(
   formData.append('file_format', 'json');
   formData.append('locale_id', locale_id);
   formData.append('branch', branch);
-  if (process.env.PHRASE_AUTO_TRANSLATE) {
-    formData.append('autotranslate', 'true');
-  }
   formData.append('update_translations', 'true');
 
   trace('Starting to upload:', locale_id);

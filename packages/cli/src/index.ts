@@ -1,16 +1,16 @@
-import { config } from 'dotenv';
 import yargs from 'yargs';
-
-config();
-
 import generateTypes from './generate-types';
 import pull from './pull-translations';
 import push from './push-translations';
 
+import envCi from 'env-ci';
+
+const { branch } = envCi();
+
 const branchDefinition = {
   type: 'string',
   describe: 'The Phrase branch to target',
-  default: process.env.VCS_BRANCH || 'local-development',
+  default: branch || 'local-development',
 } as const;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions

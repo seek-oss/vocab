@@ -1,21 +1,13 @@
 /* eslint-disable no-console */
 import fetch from 'node-fetch';
 
-const projectId = process.env.PHRASE_PROJECT_ID;
-
-if (!projectId) {
-  throw new Error('Missing PHRASE_PROJECT_ID');
-}
-
-console.log('projectId:', projectId);
-
-const phraseApiToken = process.env.PHRASE_API_TOKEN;
-
-if (!phraseApiToken) {
-  throw new Error('Missing PHRASE_API_TOKEN');
-}
-
 function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
+  const phraseApiToken = process.env.PHRASE_API_TOKEN;
+
+  if (!phraseApiToken) {
+    throw new Error('Missing PHRASE_API_TOKEN');
+  }
+
   return fetch(path, {
     ...options,
     headers: {
@@ -74,6 +66,11 @@ export async function callPhrase(
   relativePath: string,
   options: Parameters<typeof fetch>[1] = {},
 ) {
+  const projectId = process.env.PHRASE_PROJECT_ID;
+
+  if (!projectId) {
+    throw new Error('Missing PHRASE_PROJECT_ID');
+  }
   return _callPhrase(
     `https://api.phrase.com/v2/projects/${projectId}/${relativePath}`,
     options,
