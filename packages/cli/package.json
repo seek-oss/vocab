@@ -19,6 +19,8 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "@types/prettier": "^2.1.5",
     "@types/yargs": "^15.0.9"
   }
 }

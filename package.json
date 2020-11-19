@@ -22,7 +22,7 @@
   "scripts": {
     "build": "preconstruct build",
     "format": "prettier --write .",
-    "lint": "manypkg check && prettier --check .",
+    "lint": "manypkg check && prettier --check . && tsc",
     "release": "",
     "test": ""
   },
