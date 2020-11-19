@@ -4,6 +4,7 @@ node_modules*/
 
 /**/dist/
 /.changeset/*
+/packages/**/README.md
 
 .DS_Store
 .npmrc
