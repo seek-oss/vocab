@@ -13,8 +13,8 @@
     ]
   },
   "dependencies": {
-    "@vocab/types": "^1.0.0",
-    "@vocab/utils": "^1.0.0",
+    "@vocab/types": "^0.0.1",
+    "@vocab/utils": "^0.0.1",
     "intl-messageformat": "^9.3.18"
   }
 }

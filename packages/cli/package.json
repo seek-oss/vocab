@@ -9,7 +9,7 @@
   "author": "Matt Jones",
   "license": "MIT",
   "dependencies": {
-    "@vocab/utils": "^1.0.0",
+    "@vocab/utils": "^0.0.1",
     "dotenv": "^8.2.0",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",
