@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "format": "prettier --write .",
+    "format": "manypkg fix && prettier --write .",
     "lint": "eslint --ext .tsx,.ts . && manypkg check && prettier --check . && tsc",
     "release": "yarn build && yarn copy-readme-to-packages && changeset publish",
     "test": "echo 'Need some tests'",

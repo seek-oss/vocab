@@ -8,5 +8,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true
-  }
+  },
+  "exclude": ["**/node_modules/**", "**/dist/**"]
 }
