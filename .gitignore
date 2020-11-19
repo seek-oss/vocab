@@ -1,0 +1,17 @@
+.idea/
+.serverless/
+.vscode/
+node_modules*/
+
+/coverage*/
+/dist*/
+/lib*/
+/tmp*/
+
+.DS_Store
+.npmrc
+*.tgz
+*.tsbuildinfo
+npm-debug.log
+package-lock.json
+yarn-error.log

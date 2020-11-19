@@ -1,0 +1,22 @@
+{
+  "name": "@vocab/cli",
+  "version": "1.0.0",
+  "main": "dist/vocab-cli.cjs.js",
+  "module": "dist/vocab-cli.esm.js",
+  "bin": {
+    "vocab": "./src/index.ts"
+  },
+  "author": "Matt Jones",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fast-glob": "^3.2.4",
+    "intl-messageformat-parser": "^6.0.16",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.1.2",
+    "yargs": "^16.1.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^15.0.9"
+  }
+}

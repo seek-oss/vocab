@@ -1,0 +1,8 @@
+{
+  "name": "@vocab/webpack",
+  "version": "1.0.0",
+  "main": "dist/vocab-webpack.cjs.js",
+  "module": "dist/vocab-webpack.esm.js",
+  "author": "Matt Jones",
+  "license": "MIT"
+}

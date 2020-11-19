@@ -1,0 +1,8 @@
+{
+  "name": "@vocab/types",
+  "version": "1.0.0",
+  "main": "dist/vocab-types.cjs.js",
+  "module": "dist/vocab-types.esm.js",
+  "author": "Matt Jones",
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@vocab/utils",
+  "version": "1.0.0",
+  "main": "dist/vocab-utils.cjs.js",
+  "module": "dist/vocab-utils.esm.js",
+  "author": "Matt Jones",
+  "license": "MIT",
+  "dependencies": {
+    "fast-glob": "^3.2.4"
+  }
+}

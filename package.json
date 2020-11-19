@@ -1,0 +1,46 @@
+{
+  "name": "vocab",
+  "description": "Vocab is an internationalisation framework for React",
+  "bugs": {
+    "url": "https://github.com/seek-oss/vocab/issues"
+  },
+  "homepage": "https://github.com/seek-oss/vocab#readme",
+  "license": "MIT",
+  "private": "true",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seek-oss/vocab.git"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "preconstruct build",
+    "format": "prettier --write .",
+    "lint": "prettier --check .",
+    "release": "",
+    "test": ""
+  },
+  "sideEffects": false,
+  "types": "./lib-types/index.d.ts",
+  "version": "0.0.1",
+  "dependencies": {
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.5",
+    "@babel/preset-typescript": "^7.12.1",
+    "@changesets/cli": "^2.11.2",
+    "@manypkg/cli": "^0.16.1",
+    "@preconstruct/cli": "^2.0.0",
+    "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.0.5"
+  },
+  "preconstruct": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}

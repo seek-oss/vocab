@@ -1,0 +1,13 @@
+{
+  "name": "@vocab/react",
+  "version": "1.0.0",
+  "main": "dist/vocab-react.cjs.js",
+  "module": "dist/vocab-react.esm.js",
+  "author": "Matt Jones",
+  "license": "MIT",
+  "skuCompilePackage": true,
+  "dependencies": {
+    "intl-messageformat": "^9.3.18",
+    "react": "^17.0.1"
+  }
+}

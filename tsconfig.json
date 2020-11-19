@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "target": "ES2019"
+  },
+  "exclude": ["lib*/**/*"]
+}
