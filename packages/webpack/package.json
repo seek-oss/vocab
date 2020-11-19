@@ -5,7 +5,16 @@
   "module": "dist/vocab-webpack.esm.js",
   "author": "Matt Jones",
   "license": "MIT",
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts",
+      "node.ts",
+      "web.ts"
+    ]
+  },
   "dependencies": {
-    "@vocab/utils": "^1.0.0"
+    "@vocab/types": "^1.0.0",
+    "@vocab/utils": "^1.0.0",
+    "intl-messageformat": "^9.3.18"
   }
 }

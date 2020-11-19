@@ -41,7 +41,7 @@ function renderLanguageLoaderSync({
 
 export default function vocabLoader(this: WebpackLoader) {
   console.log('Loading', this.target, this.resourcePath);
-  const altLanguageFiles = getAltLanguages().map((lang) => ({
+  const altLanguageFiles = getAltLanguages().map(lang => ({
     filePath: getAltLanguageFilePath(this.resourcePath, lang),
     lang,
   }));
@@ -54,10 +54,8 @@ export default function vocabLoader(this: WebpackLoader) {
   const renderLanguageLoader =
     target === 'web' ? renderLanguageLoaderAsync : renderLanguageLoaderSync;
 
-  const runtime = target === 'web' ? '@vocab/runtime' : '@vocab/runtime/node';
-
   const result = `
-    import { createLanguage } from '${runtime}';
+    import { createLanguage } from '@vocab/${target}';
 
     export default {
       __DO_NOT_USE__: {
@@ -67,7 +65,7 @@ export default function vocabLoader(this: WebpackLoader) {
           useJsonLoader: true,
         })},
         ${altLanguageFiles
-          .map((altLanguageFile) => renderLanguageLoader(altLanguageFile))
+          .map(altLanguageFile => renderLanguageLoader(altLanguageFile))
           .join(',')}
       }
     };
