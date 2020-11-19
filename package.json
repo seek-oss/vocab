@@ -23,14 +23,15 @@
     "build": "preconstruct build",
     "format": "prettier --write .",
     "lint": "manypkg check && prettier --check . && tsc",
-    "release": "",
-    "test": ""
+    "release": "yarn build && changeset publish",
+    "test": "echo 'Need some tests'"
   },
   "version": "0.0.1",
   "dependencies": {
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "@babel/preset-typescript": "^7.12.1",
+    "@changesets/changelog-github": "^0.2.7",
     "@changesets/cli": "^2.11.2",
     "@manypkg/cli": "^0.16.1",
     "@preconstruct/cli": "^2.0.0",

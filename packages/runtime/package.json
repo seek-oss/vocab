@@ -1,6 +1,6 @@
 {
   "name": "@vocab/runtime",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "dist/vocab-runtime.cjs.js",
   "module": "dist/vocab-runtime.esm.js",
   "author": "Matt Jones",
