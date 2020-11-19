@@ -1,8 +1,3 @@
-#!/usr/bin/env ts-node-script
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable no-console */
-
 import { promises as fs } from 'fs';
 
 import { getAllTranslationFiles, getAltLanguageFilePath } from '@vocab/utils';

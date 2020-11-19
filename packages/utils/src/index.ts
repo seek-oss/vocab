@@ -1,25 +1,37 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path');
+import path from 'path';
 
-const glob = require('fast-glob');
+import glob from 'fast-glob';
+
+type LoadedTranslation = {
+  filePath: string;
+  languages: Map<
+    string,
+    Record<
+      string,
+      {
+        message: string;
+      }
+    >
+  >;
+};
 
 const defaultLanguage = 'en';
 const altLanguages = ['th'];
 const translationDirname = '__translations__';
 
-function getDefaultLanguage() {
+export function getDefaultLanguage() {
   return defaultLanguage;
 }
 
-function getAltLanguages() {
+export function getAltLanguages() {
   return altLanguages;
 }
 
-function getChunkName(lang) {
+export function getChunkName(lang: string) {
   return `${lang}-translations`;
 }
 
-function getAltLanguageFilePath(filePath, language) {
+export function getAltLanguageFilePath(filePath: string, language: string) {
   const directory = path.dirname(filePath);
   const [fileIdentifier] = path.basename(filePath).split('.translations.json');
 
@@ -30,13 +42,13 @@ function getAltLanguageFilePath(filePath, language) {
   );
 }
 
-async function getAllTranslationFiles() {
+export async function getAllTranslationFiles() {
   const translationFiles = await glob('**/*.translations.json');
 
   return translationFiles;
 }
 
-function loadTranslation(filePath) {
+export function loadTranslation(filePath: string): LoadedTranslation {
   const languages = new Map();
 
   languages.set(defaultLanguage, require(filePath));
@@ -45,7 +57,6 @@ function loadTranslation(filePath) {
     try {
       languages.set(lang, require(getAltLanguageFilePath(filePath, lang)));
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.log(
         'Ignore missing alt-language file',
         getAltLanguageFilePath(filePath, lang),
@@ -59,7 +70,7 @@ function loadTranslation(filePath) {
   };
 }
 
-async function loadAllTranslations() {
+export async function loadAllTranslations() {
   const translationFiles = await glob('**/*.translations.json', {
     absolute: true,
   });
@@ -67,17 +78,12 @@ async function loadAllTranslations() {
   return translationFiles.map(loadTranslation);
 }
 
-function getTranslationKeys(translation) {
-  return Object.keys(translation.languages.get(getDefaultLanguage()));
-}
+export function getTranslationKeys(translation: LoadedTranslation) {
+  const language = translation.languages.get(getDefaultLanguage());
 
-module.exports = {
-  loadAllTranslations,
-  getAltLanguageFilePath,
-  getAllTranslationFiles,
-  loadTranslation,
-  getChunkName,
-  getDefaultLanguage,
-  getAltLanguages,
-  getTranslationKeys,
-};
+  if (!language) {
+    throw new Error('No default language loaded');
+  }
+
+  return Object.keys(language);
+}

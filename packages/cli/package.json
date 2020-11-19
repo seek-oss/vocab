@@ -4,13 +4,15 @@
   "main": "dist/vocab-cli.cjs.js",
   "module": "dist/vocab-cli.esm.js",
   "bin": {
-    "vocab": "./src/index.ts"
+    "vocab": "bin.js"
   },
   "author": "Matt Jones",
   "license": "MIT",
   "dependencies": {
+    "@vocab/utils": "^1.0.0",
     "dotenv": "^8.2.0",
     "fast-glob": "^3.2.4",
+    "form-data": "^3.0.0",
     "intl-messageformat-parser": "^6.0.16",
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",

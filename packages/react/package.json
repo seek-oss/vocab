@@ -5,9 +5,11 @@
   "module": "dist/vocab-react.esm.js",
   "author": "Matt Jones",
   "license": "MIT",
-  "skuCompilePackage": true,
   "dependencies": {
     "intl-messageformat": "^9.3.18",
     "react": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.56"
   }
 }

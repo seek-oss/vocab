@@ -1,8 +1,3 @@
-#!/usr/bin/env ts-node-script
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-/* eslint-disable no-console */
 import { promises as fs } from 'fs';
 import path from 'path';
 

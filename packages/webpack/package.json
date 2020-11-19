@@ -4,5 +4,8 @@
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "author": "Matt Jones",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@vocab/utils": "^1.0.0"
+  }
 }

@@ -11,11 +11,12 @@ export const createLanguage = (
 
   return {
     getValue: () => {
-      // @ts-expect-error
+      // @ts-expect-error Missing webpack types
       if (!__webpack_modules__[moduleId]) {
         return undefined;
       }
 
+      // @ts-expect-error Missing webpack types
       const m = __webpack_require__(moduleId) as RawJsonTranslations;
 
       return getParsedICUMessages(m, locale);

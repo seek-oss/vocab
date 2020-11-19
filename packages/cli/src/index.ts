@@ -1,28 +1,3 @@
-#!/usr/bin/env ts-node
-
-// vocab push
-// vocab pull
-// vocab generate-types
-// vocab validate
-
-/**
- * Common Args:
- *
- * --branch | ELF_BRANCH
- */
-
-/**
- * Example config:
- *
- * defaultLanguage: en
- * alternativeLanguages:
- *   - th
- *   - my
- * phrase:
- *   projectId: aaeffe2bae52ad6cde713241d82d3a28
- *   apiToken: process.env.PHRASE_API_TOKEN
- *   autoTranslate: false
- */
 import { config } from 'dotenv';
 import yargs from 'yargs';
 

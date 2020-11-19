@@ -4,5 +4,8 @@
   "main": "dist/vocab-types.cjs.js",
   "module": "dist/vocab-types.esm.js",
   "author": "Matt Jones",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "intl-messageformat": "^9.3.18"
+  }
 }

@@ -1,12 +1,9 @@
 .idea/
-.serverless/
 .vscode/
 node_modules*/
 
-/coverage*/
-/dist*/
-/lib*/
-/tmp*/
+/**/dist/
+/.changeset/*
 
 .DS_Store
 .npmrc
