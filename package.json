@@ -13,8 +13,14 @@
   },
   "scripts": {
     "build": "preconstruct build",
-    "format": "manypkg fix && prettier --write .",
-    "lint": "eslint --ext .tsx,.ts . && manypkg check && prettier --check . && tsc",
+    "format": "yarn format.manypkg &&  yarn format.prettier",
+    "format.manypkg": "manypkg fix",
+    "format.prettier": "prettier --write .",
+    "lint": "yarn lint.eslint && yarn lint.manypkg && yarn lint.prettier && yarn lint.tsc",
+    "lint.eslint": "eslint --ext .tsx,.ts .",
+    "lint.manypkg": "manypkg check",
+    "lint.prettier": "prettier --check .",
+    "lint.tsc": "tsc",
     "release": "yarn build && yarn copy-readme-to-packages && changeset publish",
     "test": "echo 'Need some tests'",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages"
