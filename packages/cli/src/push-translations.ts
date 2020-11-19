@@ -4,6 +4,7 @@ import { getAllTranslationFiles, getAltLanguageFilePath } from '@vocab/utils';
 import FormData from 'form-data';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
+import { logError, trace } from './logger';
 
 const alternativeLanguages = ['th'];
 const defaultlanguage = 'en';
@@ -16,14 +17,14 @@ type AlternativeLanguage = string;
 async function optionalReadFile(relativePath: string, optional?: boolean) {
   const fileContent = await fs.readFile(relativePath, 'utf8').catch((error) => {
     if (optional) {
-      console.log('No file for optional:', relativePath);
+      trace('No file for optional:', relativePath);
     } else {
-      console.error('Error reading file:', relativePath, '. Error: ', error);
+      logError('Error reading file:', relativePath, '. Error: ', error);
     }
   });
   if (!fileContent) {
     if (optional) {
-      console.log('Ignoring missing optional file');
+      trace('Ignoring missing optional file');
       return;
     }
     throw new Error(`Error reading ${relativePath}`);
@@ -50,13 +51,13 @@ async function uploadFile(
   }
   formData.append('update_translations', 'true');
 
-  console.log('Starting to upload:', locale_id);
+  trace('Starting to upload:', locale_id);
 
   await callPhrase(`uploads`, {
     method: 'POST',
     body: formData,
   });
-  console.log('Successfully Uploaded:', locale_id, '\n');
+  trace('Successfully Uploaded:', locale_id, '\n');
 }
 
 interface PushOptions {
@@ -70,7 +71,7 @@ export default async function pull({ branch }: PushOptions) {
     },
     body: JSON.stringify({ name: branch }),
   });
-  console.log('Created branch:', branch);
+  trace('Created branch:', branch);
 
   const defaultLanguageTranslationFile: TranslationFile = {};
   const alternativeLanguageTranslations: Record<
@@ -126,7 +127,7 @@ export default async function pull({ branch }: PushOptions) {
           throw new Error(`Duplicate key found`);
         }
         if (!extraValues[key]) {
-          console.error(
+          logError(
             `Missing message for key ${key} in language ${alternativeLanguage}. Recieved:`,
             extraValues[key],
           );

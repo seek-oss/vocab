@@ -19,13 +19,11 @@ export const TranslationsContext = React.createContext<
 export const TranslationsProvider: FunctionComponent<TranslationsValue> = ({
   children,
   language,
-}) => {
-  return (
-    <TranslationsContext.Provider value={{ language }}>
-      {children}
-    </TranslationsContext.Provider>
-  );
-};
+}) => (
+  <TranslationsContext.Provider value={{ language }}>
+    {children}
+  </TranslationsContext.Provider>
+);
 
 export const useLanguage = (): Language => {
   const context = useContext(TranslationsContext);

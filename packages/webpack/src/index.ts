@@ -40,7 +40,6 @@ function renderLanguageLoaderSync({
 }
 
 export default function vocabLoader(this: WebpackLoader) {
-  console.log('Loading', this.target, this.resourcePath);
   const altLanguageFiles = getAltLanguages().map((lang) => ({
     filePath: getAltLanguageFilePath(this.resourcePath, lang),
     lang,

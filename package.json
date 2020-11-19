@@ -14,7 +14,7 @@
   "scripts": {
     "build": "preconstruct build",
     "format": "prettier --write .",
-    "lint": "manypkg check && prettier --check . && tsc",
+    "lint": "eslint --ext .tsx,.ts . && manypkg check && prettier --check . && tsc",
     "release": "yarn build && yarn copy-readme-to-packages && changeset publish",
     "test": "echo 'Need some tests'",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages"
@@ -37,6 +37,8 @@
     "@manypkg/cli": "^0.16.1",
     "@preconstruct/cli": "^2.0.0",
     "fast-glob": "^3.2.4",
+    "eslint": "^7.13.0",
+    "eslint-config-seek": "^7.0.5",
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.0.5"

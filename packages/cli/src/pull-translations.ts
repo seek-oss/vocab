@@ -23,6 +23,7 @@ function readTranslationFromDisk<Optional extends boolean>(
   optional: Optional,
 ): Optional extends false ? TranslationFile : TranslationFile | null {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const result = require(path.resolve(relativePath));
     return result;
   } catch (error) {

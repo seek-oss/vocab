@@ -51,12 +51,15 @@ export async function getAllTranslationFiles() {
 export function loadTranslation(filePath: string): LoadedTranslation {
   const languages = new Map();
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   languages.set(defaultLanguage, require(filePath));
 
   for (const lang of altLanguages) {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       languages.set(lang, require(getAltLanguageFilePath(filePath, lang)));
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(
         'Ignore missing alt-language file',
         getAltLanguageFilePath(filePath, lang),
