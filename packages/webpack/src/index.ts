@@ -9,7 +9,7 @@ interface WebpackLoader {
   addDependency: (filePath: string) => void;
   target: string;
   resourcePath: string;
-  async: () => (result: string) => void;
+  async: () => (err: unknown, result: string) => void;
 }
 
 interface LanguageFile {
@@ -61,7 +61,9 @@ export default async function vocabLoader(this: WebpackLoader) {
   const renderLanguageLoader =
     target === 'web' ? renderLanguageLoaderAsync : renderLanguageLoaderSync;
 
-  callback(`
+  callback(
+    null,
+    `
     import { createLanguage } from '@vocab/webpack/${target}';
 
     export default {
@@ -76,5 +78,6 @@ export default async function vocabLoader(this: WebpackLoader) {
           .join(',')}
       }
     };
-  `);
+  `,
+  );
 }
