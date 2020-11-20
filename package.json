@@ -27,7 +27,8 @@
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "fixtures/*"
   ],
   "preconstruct": {
     "packages": [
