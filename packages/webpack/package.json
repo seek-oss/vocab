@@ -15,6 +15,7 @@
   "dependencies": {
     "@vocab/types": "^0.0.1",
     "@vocab/utils": "^0.0.1",
-    "intl-messageformat": "^9.3.18"
+    "intl-messageformat": "^9.3.18",
+    "json-loader": "^0.5.7"
   }
 }
