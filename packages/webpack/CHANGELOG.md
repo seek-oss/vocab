@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 0.0.4
+
+### Patch Changes
+
+- [`4e3d94f`](https://github.com/seek-oss/vocab/commit/4e3d94f2e63f669bb11c7f0e89b1da1d94def87e) Thanks [@jahredhope](https://github.com/jahredhope)! - Fix webpack returning error on success
+
 ## 0.0.3
 
 ### Patch Changes
