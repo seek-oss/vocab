@@ -62,7 +62,7 @@ export default async function vocabLoader(this: WebpackLoader) {
     target === 'web' ? renderLanguageLoaderAsync : renderLanguageLoaderSync;
 
   callback(`
-    import { createLanguage } from '@vocab/${target}';
+    import { createLanguage } from '@vocab/webpack/${target}';
 
     export default {
       __DO_NOT_USE__: {
