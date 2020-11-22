@@ -96,7 +96,7 @@ export async function loadTranslation(
   const languages = new Map();
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  languages.set((await getConfig()).translationDirName, require(filePath));
+  languages.set((await getConfig()).defaultLanguage, require(filePath));
   const altLanguages = await getAltLanguages();
   for (const lang of altLanguages) {
     try {
