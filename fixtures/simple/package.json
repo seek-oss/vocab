@@ -1,0 +1,23 @@
+{
+  "name": "fixture-simple",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "generate-types": "vocab generate-types",
+    "start": "webpack serve"
+  },
+  "dependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vocab/cli": "^0.0.3",
+    "@vocab/react": "^0.0.2",
+    "babel-loader": "^8.2.1",
+    "html-webpack-plugin": "^4.5.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

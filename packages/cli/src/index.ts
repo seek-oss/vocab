@@ -1,4 +1,6 @@
+import type { TranslationFile } from '@vocab/types';
 import yargs from 'yargs';
+
 import generateTypes from './generate-types';
 import pull from './pull-translations';
 import push from './push-translations';
@@ -38,3 +40,6 @@ yargs(process.argv.slice(2))
   })
   .help()
   .wrap(72).argv;
+
+// Export TranslationFile type for use in generated translation file type declarations
+export type { TranslationFile };

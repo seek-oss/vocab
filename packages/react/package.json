@@ -12,7 +12,7 @@
     "intl-messageformat": "^9.3.18"
   },
   "devDependencies": {
-    "@types/react": "^16.9.56",
+    "@types/react": "^17.0.0",
     "react": "^17.0.1"
   }
 }

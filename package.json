@@ -14,6 +14,7 @@
   "scripts": {
     "build": "preconstruct build",
     "dev": "preconstruct dev",
+    "watch": "preconstruct watch",
     "format": "yarn format.manypkg &&  yarn format.prettier",
     "format.manypkg": "manypkg fix",
     "format.prettier": "prettier --write .",

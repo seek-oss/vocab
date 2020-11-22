@@ -88,7 +88,7 @@ function serialiseTranslationTypes(
   }
 
   const declaration = `
-  import { TranslationFile } from '@vocab/types';
+  import { TranslationFile } from '@vocab/cli';
 
   declare const translations: TranslationFile<${serialiseObjectToType(
     translationsType,
