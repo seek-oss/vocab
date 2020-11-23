@@ -6,7 +6,13 @@ import {
   loadConfig,
 } from '@vocab/utils';
 import { getOptions } from 'loader-utils';
-import type { loader } from 'webpack';
+
+interface LoaderContext {
+  addDependency: (filePath: string) => void;
+  target: string;
+  resourcePath: string;
+  async: () => (err: unknown, result: string) => void;
+}
 
 interface LanguageFile {
   lang: string;
@@ -36,7 +42,7 @@ function renderLanguageLoaderSync({
   }${filePath}'), '${lang}')`;
 }
 
-export default async function vocabLoader(this: loader.LoaderContext) {
+export default async function vocabLoader(this: LoaderContext) {
   const callback = this.async();
 
   if (!callback) {
