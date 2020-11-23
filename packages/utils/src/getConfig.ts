@@ -1,11 +1,17 @@
+import path from 'path';
+
 import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import chalk from 'chalk';
 
-interface Config {
+interface UserConfig {
   defaultLanguage: string;
   altLanguages: Array<string>;
   translationsDirname: string;
+}
+
+interface Config extends UserConfig {
+  cwd: string;
 }
 
 let config: Config | null = null;
@@ -38,7 +44,7 @@ const splitMap = (message: string, callback: (value: string) => string) =>
     .map((v) => callback(v))
     .join(' ,');
 
-function validateConfig(c: Config) {
+function validateConfig(c: UserConfig) {
   const isValid = checkConfigFile(c);
   if (isValid !== true) {
     validationError(
@@ -68,19 +74,23 @@ function validateConfig(c: Config) {
 }
 
 export async function loadConfig(customConfigFilePath?: string) {
-  let configFilePath = customConfigFilePath;
+  const configFilePath =
+    customConfigFilePath ?? (await findUp('vocab.config.js'));
 
   if (!configFilePath) {
-    configFilePath = await findUp('vocab.config.js');
+    return validationError('Unable to find a project vocab.config.js');
   }
 
-  if (!configFilePath) {
-    validationError('Unable to find a project vocab.config.js');
-  }
+  const cwd = path.dirname(configFilePath);
 
-  config = require(configFilePath as string);
+  const loadedConfig = require(configFilePath as string) as UserConfig;
 
-  validateConfig(require(configFilePath as string));
+  validateConfig(loadedConfig);
+
+  config = {
+    ...require(configFilePath as string),
+    cwd,
+  } as Config;
 }
 
 export function getConfig(): Config {

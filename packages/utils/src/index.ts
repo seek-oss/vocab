@@ -76,6 +76,7 @@ export function loadTranslation(filePath: string): LoadedTranslation {
 export async function loadAllTranslations() {
   const translationFiles = await glob('**/*.translations.json', {
     absolute: true,
+    cwd: getConfig().cwd,
   });
 
   return Promise.all(translationFiles.map(loadTranslation));
