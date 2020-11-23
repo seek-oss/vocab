@@ -1,10 +1,14 @@
+import path from 'path';
+
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 import WDS from 'webpack-dev-server';
 
-export const makeWebpackConfig = (fixtureName: string, config: any = {}) =>
-  webpackMerge(
+export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
+  const fixtureConfig = require.resolve(`${fixtureName}/vocab.config.js`);
+
+  return webpackMerge(
     {
       entry: require.resolve(`${fixtureName}/src/client.tsx`),
       resolve: {
@@ -20,12 +24,13 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) =>
             use: {
               loader: require.resolve('@vocab/webpack'),
               options: {
-                configFile: require.resolve(`${fixtureName}/vocab.config.js`),
+                configFile: fixtureConfig,
               },
             },
           },
           {
             test: /\.(js|ts|tsx)$/,
+            include: path.dirname(fixtureConfig),
             use: [
               {
                 loader: 'babel-loader',
@@ -46,6 +51,7 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) =>
     },
     config,
   );
+};
 
 export interface TestServer {
   url: string;

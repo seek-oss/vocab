@@ -24,7 +24,7 @@
     "lint.prettier": "prettier --check .",
     "lint.tsc": "tsc",
     "release": "yarn build && yarn copy-readme-to-packages && changeset publish",
-    "test": "echo 'Need some tests'",
+    "test": "jest",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages"
   },
   "workspaces": [

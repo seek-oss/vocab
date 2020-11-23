@@ -8,7 +8,7 @@ function Content() {
   const { t } = useTranslation(translations);
   const message = `${t('hello')} ${t('world')}`;
 
-  return <div>{message}</div>;
+  return <div id="message">{message}</div>;
 }
 
 function App({ children }: { children: ReactNode }) {
