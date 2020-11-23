@@ -9,6 +9,7 @@
     "react": ">=16.3.0"
   },
   "dependencies": {
+    "@vocab/types": "^0.0.2",
     "intl-messageformat": "^9.3.18"
   },
   "devDependencies": {
