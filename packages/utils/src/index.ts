@@ -1,7 +1,8 @@
 import path from 'path';
 
 import glob from 'fast-glob';
-import findUp from 'find-up';
+
+import { getConfig } from './getConfig';
 
 type LoadedTranslation = {
   filePath: string;
@@ -15,48 +16,6 @@ type LoadedTranslation = {
     >
   >;
 };
-
-interface Config {
-  defaultLanguage: string;
-  altLanguages: Array<string>;
-  translationDirName: string;
-}
-
-let configPromise: Promise<Config> | null = null;
-
-function validationError(...params: unknown[]) {
-  // eslint-disable-next-line no-console
-  console.error(...params);
-  process.exit(1);
-}
-
-async function getConfig(): Promise<Config> {
-  if (!configPromise) {
-    configPromise = findUp('vocab.config.js').then((configFilePath) => {
-      if (!configFilePath) {
-        validationError('Unable to find a project vocab.config.js');
-      }
-      const result: Config = require(configFilePath!);
-      if (!result.defaultLanguage) {
-        validationError(
-          `No defaultLanguage found in vocab.config.js at ${configFilePath}`,
-        );
-      }
-      if (!result.altLanguages) {
-        validationError(
-          `No altLanguages found in vocab.config.js at ${configFilePath}`,
-        );
-      }
-      if (!result.translationDirName) {
-        validationError(
-          `No translationDirName found in vocab.config.js at ${configFilePath}`,
-        );
-      }
-      return result;
-    });
-  }
-  return configPromise;
-}
 
 export async function getDefaultLanguage() {
   return (await getConfig()).defaultLanguage;
@@ -79,7 +38,7 @@ export async function getAltLanguageFilePath(
 
   return path.join(
     directory,
-    (await getConfig()).translationDirName,
+    (await getConfig()).translationsDirname,
     `${fileIdentifier}.translations.${language}.json`,
   );
 }
