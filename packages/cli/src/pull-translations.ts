@@ -60,8 +60,8 @@ interface PullOptions {
 export default async function pull({
   branch = 'local-development',
 }: PullOptions) {
-  const alternativeLanguages = await getAltLanguages();
-  const defaultlanguage = await getDefaultLanguage();
+  const alternativeLanguages = getAltLanguages();
+  const defaultlanguage = getDefaultLanguage();
   const allTranslations = await getAllTranslationsFromPhrase(branch);
   const uniqueNames = new Set();
   const files = await getAllTranslationFiles();
@@ -89,7 +89,7 @@ export default async function pull({
     );
 
     for (const alternativeLanguage of alternativeLanguages) {
-      const alternativeLanguageFilePath = await getAltLanguageFilePath(
+      const alternativeLanguageFilePath = getAltLanguageFilePath(
         relativePath,
         alternativeLanguage,
       );

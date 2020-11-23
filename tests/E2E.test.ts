@@ -1,11 +1,11 @@
-import { startFixture, TestServer } from "./helpers";
+import { startFixture, TestServer } from './helpers';
 
 describe('E2E', () => {
   let server: TestServer;
 
   beforeAll(async () => {
-      server = await startFixture('fixture-simple');
-      await page.goto(server.url);
+    server = await startFixture('fixture-simple');
+    await page.goto(server.url);
   });
 
   it('should work', async () => {
@@ -15,4 +15,4 @@ describe('E2E', () => {
   afterAll(() => {
     server.close();
   });
-})
+});

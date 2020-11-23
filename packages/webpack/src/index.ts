@@ -3,14 +3,10 @@ import {
   getChunkName,
   getDefaultLanguage,
   getAltLanguages,
+  loadConfig,
 } from '@vocab/utils';
-
-interface WebpackLoader {
-  addDependency: (filePath: string) => void;
-  target: string;
-  resourcePath: string;
-  async: () => (err: unknown, result: string) => void;
-}
+import { getOptions } from 'loader-utils';
+import type { loader } from 'webpack';
 
 interface LanguageFile {
   lang: string;
@@ -40,15 +36,24 @@ function renderLanguageLoaderSync({
   }${filePath}'), '${lang}')`;
 }
 
-export default async function vocabLoader(this: WebpackLoader) {
+export default async function vocabLoader(this: loader.LoaderContext) {
   const callback = this.async();
 
-  const altLanguages = await getAltLanguages();
+  if (!callback) {
+    throw new Error(`Webpack didn't provide an async callback`);
+  }
+
+  // TODO: Validate loader options
+  const options = getOptions(this);
+
+  await loadConfig(options.configFile as string);
+
+  const altLanguages = getAltLanguages();
 
   const altLanguageFiles = [];
   for (const lang of altLanguages) {
     altLanguageFiles.push({
-      filePath: await getAltLanguageFilePath(this.resourcePath, lang),
+      filePath: getAltLanguageFilePath(this.resourcePath, lang),
       lang,
     });
   }
@@ -69,7 +74,7 @@ export default async function vocabLoader(this: WebpackLoader) {
     export default {
       __DO_NOT_USE__: {
         ${renderLanguageLoader({
-          lang: await getDefaultLanguage(),
+          lang: getDefaultLanguage(),
           filePath: this.resourcePath,
           useJsonLoader: true,
         })},

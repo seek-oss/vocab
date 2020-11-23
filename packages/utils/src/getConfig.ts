@@ -8,7 +8,7 @@ interface Config {
   translationsDirname: string;
 }
 
-let configPromise: Promise<Config> | null = null;
+let config: Config | null = null;
 
 function validationError(message: string) {
   // eslint-disable-next-line no-console
@@ -38,41 +38,54 @@ const splitMap = (message: string, callback: (value: string) => string) =>
     .map((v) => callback(v))
     .join(' ,');
 
-export async function getConfig(): Promise<Config> {
-  if (!configPromise) {
-    configPromise = findUp('vocab.config.js').then((configFilePath) => {
-      if (!configFilePath) {
-        validationError('Unable to find a project vocab.config.js');
-      }
-      const result: Config = require(configFilePath!);
-      const isValid = checkConfigFile(result);
-      if (isValid !== true) {
-        validationError(
-          isValid
-            .map((v) => {
-              if (v.type === 'objectStrict') {
-                return `Invalid key(s) ${splitMap(
-                  v.actual,
-                  (m) => `"${chalk.cyan(m)}"`,
-                )}. Expected one of ${splitMap(v.expected, chalk.green)}`;
-              }
-              if (v.field) {
-                return v.message?.replace(v.field, chalk.cyan(v.field));
-              }
-              return v.message;
-            })
-            .join(' \n'),
-        );
-      }
-      if (result.altLanguages.includes(result.defaultLanguage)) {
-        validationError(
-          `The default language "${chalk.bold.cyan(
-            result.defaultLanguage,
-          )}" should not be included in altLanguages.`,
-        );
-      }
-      return result;
-    });
+function validateConfig(c: Config) {
+  const isValid = checkConfigFile(c);
+  if (isValid !== true) {
+    validationError(
+      isValid
+        .map((v) => {
+          if (v.type === 'objectStrict') {
+            return `Invalid key(s) ${splitMap(
+              v.actual,
+              (m) => `"${chalk.cyan(m)}"`,
+            )}. Expected one of ${splitMap(v.expected, chalk.green)}`;
+          }
+          if (v.field) {
+            return v.message?.replace(v.field, chalk.cyan(v.field));
+          }
+          return v.message;
+        })
+        .join(' \n'),
+    );
   }
-  return configPromise;
+  if (c.altLanguages.includes(c.defaultLanguage)) {
+    validationError(
+      `The default language "${chalk.bold.cyan(
+        c.defaultLanguage,
+      )}" should not be included in altLanguages.`,
+    );
+  }
+}
+
+export async function loadConfig(customConfigFilePath?: string) {
+  let configFilePath = customConfigFilePath;
+
+  if (!configFilePath) {
+    configFilePath = await findUp('vocab.config.js');
+  }
+
+  if (!configFilePath) {
+    validationError('Unable to find a project vocab.config.js');
+  }
+
+  config = require(configFilePath as string);
+
+  validateConfig(require(configFilePath as string));
+}
+
+export function getConfig(): Config {
+  if (!config) {
+    throw new Error('Config not loaded');
+  }
+  return config;
 }

@@ -16,6 +16,10 @@
     "@vocab/types": "^0.0.2",
     "@vocab/utils": "^0.0.3",
     "intl-messageformat": "^9.3.18",
-    "json-loader": "^0.5.7"
+    "json-loader": "^0.5.7",
+    "loader-utils": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/loader-utils": "^2.0.1"
   }
 }

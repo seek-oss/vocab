@@ -63,8 +63,8 @@ interface PushOptions {
   branch: string;
 }
 export default async function pull({ branch }: PushOptions) {
-  const alternativeLanguages = await getAltLanguages();
-  const defaultlanguage = await getDefaultLanguage();
+  const alternativeLanguages = getAltLanguages();
+  const defaultlanguage = getDefaultLanguage();
   await callPhrase(`branches`, {
     method: 'POST',
     headers: {
@@ -107,7 +107,7 @@ export default async function pull({ branch }: PushOptions) {
     }
     for (const alternativeLanguage of alternativeLanguages) {
       const alternativeFileContents = await optionalReadFile(
-        await getAltLanguageFilePath(relativePath, alternativeLanguage),
+        getAltLanguageFilePath(relativePath, alternativeLanguage),
         true,
       );
       if (!alternativeFileContents) {

@@ -1,4 +1,5 @@
 import type { TranslationFile } from '@vocab/types';
+import { loadConfig } from '@vocab/utils';
 import yargs from 'yargs';
 
 import generateTypes from './generate-types';
@@ -18,6 +19,13 @@ const branchDefinition = {
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs(process.argv.slice(2))
   .scriptName('vocab')
+  .option('config', {
+    type: 'string',
+    describe: 'Path to config file',
+  })
+  .middleware(async ({ config }) => {
+    await loadConfig(config);
+  })
   .command({
     command: 'push',
     builder: () => yargs.options({ branch: branchDefinition }),
