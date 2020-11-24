@@ -1,3 +1,5 @@
+import path from 'path';
+
 import {
   getAltLanguageFilePath,
   getChunkName,
@@ -20,15 +22,14 @@ function createIdentifier(lang: string, resourcePath: string) {
 
   const langJson = loadedTranslation.languages.get(lang);
 
-  console.log('createIdentifier', lang, langJson);
-
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
     'base64',
   );
 
   const unloader = `${require.resolve('@vocab/unloader')}?source=${base64}`;
+  const fileIdent = path.basename(resourcePath, '.translations.json');
 
-  return `./${lang}-virtual.json!=!${unloader}!json-loader!`;
+  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
 }
 
 function renderLanguageLoaderAsync(lang: string, resourcePath: string) {
