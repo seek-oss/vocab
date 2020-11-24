@@ -1,7 +1,7 @@
 import {
   getAltLanguageFilePath,
   getChunkName,
-  getDefaultLanguage,
+  getDevLanguage,
   getAltLanguages,
   loadConfig,
   loadTranslation,
@@ -87,7 +87,7 @@ export default async function vocabLoader(this: LoaderContext) {
     export default {
       __DO_NOT_USE__: {
         ${renderLanguageLoader({
-          lang: getDefaultLanguage(),
+          lang: getDevLanguage(),
           filePath: this.resourcePath,
         })},
         ${altLanguageFiles

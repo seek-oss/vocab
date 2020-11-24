@@ -21,14 +21,14 @@ type LoadedTranslation = {
 
 export { loadConfig };
 
-export function getDefaultLanguage() {
+export function getDevLanguage() {
   return getConfig().devLanguage;
 }
 
 export function getAltLanguages() {
   return getConfig()
     .languages.map((v) => v.name)
-    .filter((lang) => lang !== getDefaultLanguage());
+    .filter((lang) => lang !== getDevLanguage());
 }
 
 function getLanguageFallbacks() {
@@ -97,7 +97,7 @@ function loadAltLanguageFile(filePath: string, lang: string) {
   }
 
   for (const fallbackLang of langHierarchy) {
-    if (fallbackLang !== getDefaultLanguage()) {
+    if (fallbackLang !== getDevLanguage()) {
       result = {
         ...result,
         ...require(getAltLanguageFilePath(filePath, fallbackLang)),
@@ -142,7 +142,7 @@ export async function loadAllTranslations() {
 }
 
 export function getTranslationKeys(translation: LoadedTranslation) {
-  const language = translation.languages.get(getDefaultLanguage());
+  const language = translation.languages.get(getDevLanguage());
 
   if (!language) {
     throw new Error('No default language loaded');

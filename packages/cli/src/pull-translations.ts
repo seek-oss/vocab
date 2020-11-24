@@ -5,7 +5,7 @@ import {
   getAllTranslationFiles,
   getAltLanguageFilePath,
   getAltLanguages,
-  getDefaultLanguage,
+  getDevLanguage,
 } from '@vocab/utils';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
@@ -61,7 +61,7 @@ export default async function pull({
   branch = 'local-development',
 }: PullOptions) {
   const alternativeLanguages = getAltLanguages();
-  const defaultlanguage = getDefaultLanguage();
+  const defaultlanguage = getDevLanguage();
   const allTranslations = await getAllTranslationsFromPhrase(branch);
   const uniqueNames = new Set();
   const files = await getAllTranslationFiles();

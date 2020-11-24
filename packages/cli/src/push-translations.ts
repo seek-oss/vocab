@@ -4,7 +4,7 @@ import {
   getAllTranslationFiles,
   getAltLanguageFilePath,
   getAltLanguages,
-  getDefaultLanguage,
+  getDevLanguage,
 } from '@vocab/utils';
 import FormData from 'form-data';
 
@@ -64,7 +64,7 @@ interface PushOptions {
 }
 export default async function pull({ branch }: PushOptions) {
   const alternativeLanguages = getAltLanguages();
-  const defaultlanguage = getDefaultLanguage();
+  const defaultlanguage = getDevLanguage();
   await callPhrase(`branches`, {
     method: 'POST',
     headers: {
