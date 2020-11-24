@@ -87,7 +87,7 @@ function serialiseTranslationTypes(
     translationsType[key] = translationKeyType;
   }
 
-  const declaration = `
+  return `
   import { TranslationFile } from '@vocab/cli';
 
   declare const translations: TranslationFile<${serialiseObjectToType(
@@ -95,8 +95,6 @@ function serialiseTranslationTypes(
   )}>;
 
   export default translations;`;
-
-  return prettier.format(declaration, { parser: 'typescript' });
 }
 
 export default async function main() {
@@ -130,9 +128,12 @@ export default async function main() {
       translationTypes.set(key, { params, message: messages.join(' | ') });
     }
 
-    await fs.writeFile(
-      `${filePath}.d.ts`,
+    const prettierConfig = await prettier.resolveConfig(filePath);
+    const declaration = prettier.format(
       serialiseTranslationTypes(translationTypes),
+      { ...prettierConfig, parser: 'typescript' },
     );
+
+    await fs.writeFile(`${filePath}.d.ts`, declaration);
   }
 }
