@@ -1,5 +1,11 @@
 # @vocab/utils
 
+## 0.0.5
+
+### Patch Changes
+
+- [`f7b6b5c`](https://github.com/seek-oss/vocab/commit/f7b6b5c1cdb3f72bb0a3d0c5c7a3da844b2a1c87) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Fix language fallbacks
+
 ## 0.0.4
 
 ### Patch Changes
