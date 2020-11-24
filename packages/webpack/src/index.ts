@@ -11,7 +11,7 @@ interface LoaderContext {
   addDependency: (filePath: string) => void;
   target: string;
   resourcePath: string;
-  async: () => (err: unknown, result: string) => void;
+  async: () => (err: unknown, result?: string) => void;
 }
 
 interface LanguageFile {
@@ -49,11 +49,12 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  // TODO: Validate loader options
   const options = getOptions(this);
-
-  await loadConfig(options.configFile as string);
-
+  try {
+    await loadConfig(options.configFile as string);
+  } catch (error) {
+    callback(error);
+  }
   const altLanguages = getAltLanguages();
 
   const altLanguageFiles = [];

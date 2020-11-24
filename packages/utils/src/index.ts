@@ -20,11 +20,11 @@ type LoadedTranslation = {
 export { loadConfig };
 
 export function getDefaultLanguage() {
-  return getConfig().defaultLanguage;
+  return getConfig().devLanguage;
 }
 
 export function getAltLanguages() {
-  return getConfig().altLanguages;
+  return getConfig().languages.map((v) => v.name);
 }
 
 export function getChunkName(lang: string) {
