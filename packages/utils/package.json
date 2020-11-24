@@ -1,6 +1,6 @@
 {
   "name": "@vocab/utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/vocab-utils.cjs.js",
   "module": "dist/vocab-utils.esm.js",
   "author": "Matt Jones",

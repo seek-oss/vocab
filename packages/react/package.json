@@ -1,6 +1,6 @@
 {
   "name": "@vocab/react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/vocab-react.cjs.js",
   "module": "dist/vocab-react.esm.js",
   "author": "Matt Jones",

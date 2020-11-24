@@ -1,5 +1,17 @@
 # @vocab/utils
 
+## 0.0.4
+
+### Patch Changes
+
+- [`4589bce`](https://github.com/seek-oss/vocab/commit/4589bce912b7a8fb869e1c3a65d0c4c417043faf) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Support language fallbacks through `extends` config
+
+* [`215eeba`](https://github.com/seek-oss/vocab/commit/215eeba619260b349a39d99a79fc69503dba5ccf) Thanks [@jahredhope](https://github.com/jahredhope)! - Validate vocab.config.js on load
+
+- [`bf36f86`](https://github.com/seek-oss/vocab/commit/bf36f86a74ced4f42271b2f8fb128e995bb8c849) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Use config location as CWD
+
+* [`870a74b`](https://github.com/seek-oss/vocab/commit/870a74b9a15ec2cb493c3de526c599b24fd5830d) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Support custom config file locations
+
 ## 0.0.3
 
 ### Patch Changes
