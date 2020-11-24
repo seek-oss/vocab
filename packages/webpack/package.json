@@ -1,6 +1,6 @@
 {
   "name": "@vocab/webpack",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "author": "Matt Jones",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@vocab/types": "^0.0.2",
     "@vocab/unloader": "^0.0.1",
-    "@vocab/utils": "^0.0.4",
+    "@vocab/utils": "^0.0.5",
     "intl-messageformat": "^9.3.18",
     "json-loader": "^0.5.7",
     "loader-utils": "^2.0.0"

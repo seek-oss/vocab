@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@vocab/cli": "^0.0.4",
+    "@vocab/cli": "^0.0.5",
     "@vocab/react": "^0.0.3",
     "babel-loader": "^8.2.1",
     "html-webpack-plugin": "^4.5.0",

@@ -1,5 +1,16 @@
 # @vocab/webpack
 
+## 0.0.7
+
+### Patch Changes
+
+- [`504a808`](https://github.com/seek-oss/vocab/commit/504a808d61f359336f3b2bd95f61cb051d98922f) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Ensure virtual file uniqueness
+
+* [`f7b6b5c`](https://github.com/seek-oss/vocab/commit/f7b6b5c1cdb3f72bb0a3d0c5c7a3da844b2a1c87) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Fix language fallbacks
+
+* Updated dependencies [[`f7b6b5c`](https://github.com/seek-oss/vocab/commit/f7b6b5c1cdb3f72bb0a3d0c5c7a3da844b2a1c87)]:
+  - @vocab/utils@0.0.5
+
 ## 0.0.6
 
 ### Patch Changes
