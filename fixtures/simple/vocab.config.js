@@ -1,5 +1,4 @@
 module.exports = {
-  defaultLanguage: 'en',
-  altLanguages: ['fr'],
-  translationsDirname: '__translations__',
+  devLanguage: 'en',
+  languages: [{ name: 'en' }, { name: 'fr' }],
 };

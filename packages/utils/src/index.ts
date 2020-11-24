@@ -4,10 +4,12 @@ import glob from 'fast-glob';
 
 import { loadConfig, getConfig } from './getConfig';
 
+type LangaugeName = string;
+
 type LoadedTranslation = {
   filePath: string;
   languages: Map<
-    string,
+    LangaugeName,
     Record<
       string,
       {
@@ -24,7 +26,42 @@ export function getDefaultLanguage() {
 }
 
 export function getAltLanguages() {
-  return getConfig().languages.map((v) => v.name);
+  return getConfig()
+    .languages.map((v) => v.name)
+    .filter((lang) => lang !== getDefaultLanguage());
+}
+
+function getLanguageFallbacks() {
+  const languageFallbackMap = new Map<LangaugeName, LangaugeName>();
+
+  for (const lang of getConfig().languages) {
+    if (lang.extends) {
+      languageFallbackMap.set(lang.name, lang.extends);
+    }
+  }
+
+  return languageFallbackMap;
+}
+
+export function getLanguageHierarcy() {
+  const hierarchyMap = new Map<LangaugeName, Array<LangaugeName>>();
+  const fallbacks = getLanguageFallbacks();
+
+  for (const lang of getConfig().languages) {
+    const langHierachy = [];
+
+    let currLang = lang.extends;
+
+    while (currLang) {
+      langHierachy.push(currLang);
+
+      currLang = fallbacks.get(currLang);
+    }
+
+    hierarchyMap.set(lang.name, langHierachy);
+  }
+
+  return hierarchyMap;
 }
 
 export function getChunkName(lang: string) {
@@ -50,6 +87,27 @@ export async function getAllTranslationFiles() {
   return translationFiles;
 }
 
+function loadAltLanguageFile(filePath: string, lang: string) {
+  let result = require(filePath);
+
+  const langHierarchy = getLanguageHierarcy().get(lang);
+
+  if (!langHierarchy) {
+    throw new Error(`Missing language hierarchy for ${lang}`);
+  }
+
+  for (const fallbackLang of langHierarchy) {
+    if (fallbackLang !== getDefaultLanguage()) {
+      result = {
+        ...result,
+        ...require(getAltLanguageFilePath(filePath, fallbackLang)),
+      };
+    }
+  }
+
+  return result;
+}
+
 export function loadTranslation(filePath: string): LoadedTranslation {
   const languages = new Map();
 
@@ -58,8 +116,7 @@ export function loadTranslation(filePath: string): LoadedTranslation {
   const altLanguages = getAltLanguages();
   for (const lang of altLanguages) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      languages.set(lang, require(getAltLanguageFilePath(filePath, lang)));
+      languages.set(lang, loadAltLanguageFile(filePath, lang));
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log(

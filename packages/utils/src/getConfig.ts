@@ -115,8 +115,9 @@ export function validateConfig(c: UserConfig) {
 }
 
 export async function loadConfig(customConfigFilePath?: string) {
-  const configFilePath =
-    customConfigFilePath ?? (await findUp('vocab.config.js'));
+  const configFilePath = customConfigFilePath
+    ? path.resolve(customConfigFilePath)
+    : await findUp('vocab.config.js');
 
   if (!configFilePath) {
     throw new ValidationError(

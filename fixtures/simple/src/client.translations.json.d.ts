@@ -1,4 +1,4 @@
-import { TranslationFile } from '@vocab/cli';
+import { TranslationFile } from "@vocab/cli";
 
 declare const translations: TranslationFile<{
   hello: { message: string };
