@@ -43,7 +43,9 @@ export function getAltLanguageFilePath(filePath: string, language: string) {
 }
 
 export async function getAllTranslationFiles() {
-  const translationFiles = await glob('**/*.translations.json');
+  const translationFiles = await glob('**/*.translations.json', {
+    cwd: getConfig().cwd,
+  });
 
   return translationFiles;
 }
@@ -52,7 +54,7 @@ export function loadTranslation(filePath: string): LoadedTranslation {
   const languages = new Map();
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  languages.set(getConfig().defaultLanguage, require(filePath));
+  languages.set(getConfig().devLanguage, require(filePath));
   const altLanguages = getAltLanguages();
   for (const lang of altLanguages) {
     try {
