@@ -122,6 +122,7 @@ function loadAltLanguageFile(filePath: string, lang: string) {
 export function loadTranslation(filePath: string): LoadedTranslation {
   const languages = new Map();
 
+  delete require.cache[filePath];
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   languages.set(getConfig().devLanguage, require(filePath));
   const altLanguages = getAltLanguages();
