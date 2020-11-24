@@ -96,12 +96,20 @@ function loadAltLanguageFile(filePath: string, lang: string) {
     throw new Error(`Missing language hierarchy for ${lang}`);
   }
 
-  for (const fallbackLang of langHierarchy) {
+  for (const fallbackLang of [...langHierarchy, lang]) {
     if (fallbackLang !== getDevLanguage()) {
-      result = {
-        ...result,
-        ...require(getAltLanguageFilePath(filePath, fallbackLang)),
-      };
+      try {
+        result = {
+          ...result,
+          ...require(getAltLanguageFilePath(filePath, fallbackLang)),
+        };
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log(
+          'Missing alt language file',
+          getAltLanguageFilePath(filePath, fallbackLang),
+        );
+      }
     }
   }
 
@@ -115,15 +123,7 @@ export function loadTranslation(filePath: string): LoadedTranslation {
   languages.set(getConfig().devLanguage, require(filePath));
   const altLanguages = getAltLanguages();
   for (const lang of altLanguages) {
-    try {
-      languages.set(lang, loadAltLanguageFile(filePath, lang));
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(
-        'Ignore missing alt-language file',
-        getAltLanguageFilePath(filePath, lang),
-      );
-    }
+    languages.set(lang, loadAltLanguageFile(filePath, lang));
   }
 
   return {

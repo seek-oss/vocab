@@ -14,15 +14,13 @@ interface LoaderContext {
   resourcePath: string;
   async: () => (err: unknown, result?: string) => void;
 }
-interface LanguageFile {
-  lang: string;
-  filePath: string;
-}
 
-function createIdentifier(lang: string, filePath: string) {
-  const loadedTranslation = loadTranslation(filePath);
+function createIdentifier(lang: string, resourcePath: string) {
+  const loadedTranslation = loadTranslation(resourcePath);
 
   const langJson = loadedTranslation.languages.get(lang);
+
+  console.log('createIdentifier', lang, langJson);
 
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
     'base64',
@@ -33,19 +31,19 @@ function createIdentifier(lang: string, filePath: string) {
   return `./${lang}-virtual.json!=!${unloader}!json-loader!`;
 }
 
-function renderLanguageLoaderAsync({ lang, filePath }: LanguageFile) {
-  const identifier = createIdentifier(lang, filePath);
+function renderLanguageLoaderAsync(lang: string, resourcePath: string) {
+  const identifier = createIdentifier(lang, resourcePath);
+
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ), '${lang}')`;
 }
 
-function renderLanguageLoaderSync({ lang, filePath }: LanguageFile): string {
-  return `${lang}: createLanguage(require('${createIdentifier(
-    lang,
-    filePath,
-  )}'), '${lang}')`;
+function renderLanguageLoaderSync(lang: string, resourcePath: string) {
+  const identifier = createIdentifier(lang, resourcePath);
+
+  return `${lang}: createLanguage(require('${identifier}'), '${lang}')`;
 }
 
 export default async function vocabLoader(this: LoaderContext) {
@@ -63,16 +61,8 @@ export default async function vocabLoader(this: LoaderContext) {
   }
   const altLanguages = getAltLanguages();
 
-  const altLanguageFiles = [];
   for (const lang of altLanguages) {
-    altLanguageFiles.push({
-      filePath: getAltLanguageFilePath(this.resourcePath, lang),
-      lang,
-    });
-  }
-
-  for (const altLanguageFile of altLanguageFiles) {
-    this.addDependency(altLanguageFile.filePath);
+    this.addDependency(getAltLanguageFilePath(this.resourcePath, lang));
   }
 
   const target = this.target;
@@ -86,12 +76,11 @@ export default async function vocabLoader(this: LoaderContext) {
 
     export default {
       __DO_NOT_USE__: {
-        ${renderLanguageLoader({
-          lang: getDevLanguage(),
-          filePath: this.resourcePath,
-        })},
-        ${altLanguageFiles
-          .map((altLanguageFile) => renderLanguageLoader(altLanguageFile))
+        ${renderLanguageLoader(getDevLanguage(), this.resourcePath)},
+        ${altLanguages
+          .map((altLanguage) =>
+            renderLanguageLoader(altLanguage, this.resourcePath),
+          )
           .join(',')}
       }
     };
