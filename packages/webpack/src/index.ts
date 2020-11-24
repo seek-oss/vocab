@@ -4,6 +4,7 @@ import {
   getDefaultLanguage,
   getAltLanguages,
   loadConfig,
+  loadTranslation,
 } from '@vocab/utils';
 import { getOptions } from 'loader-utils';
 
@@ -13,33 +14,38 @@ interface LoaderContext {
   resourcePath: string;
   async: () => (err: unknown, result?: string) => void;
 }
-
 interface LanguageFile {
   lang: string;
   filePath: string;
-  useJsonLoader?: boolean;
 }
 
-function renderLanguageLoaderAsync({
-  lang,
-  filePath,
-  useJsonLoader = false,
-}: LanguageFile) {
-  const identifier = `!!${useJsonLoader ? 'json-loader!' : ''}${filePath}`;
+function createIdentifier(lang: string, filePath: string) {
+  const loadedTranslation = loadTranslation(filePath);
+
+  const langJson = loadedTranslation.languages.get(lang);
+
+  const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
+    'base64',
+  );
+
+  const unloader = `${require.resolve('@vocab/unloader')}?source=${base64}`;
+
+  return `./${lang}-virtual.json!=!${unloader}!json-loader!`;
+}
+
+function renderLanguageLoaderAsync({ lang, filePath }: LanguageFile) {
+  const identifier = createIdentifier(lang, filePath);
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ), '${lang}')`;
 }
 
-function renderLanguageLoaderSync({
-  lang,
-  filePath,
-  useJsonLoader = false,
-}: LanguageFile): string {
-  return `${lang}: createLanguage(require('!!${
-    useJsonLoader ? 'json-loader!' : ''
-  }${filePath}'), '${lang}')`;
+function renderLanguageLoaderSync({ lang, filePath }: LanguageFile): string {
+  return `${lang}: createLanguage(require('${createIdentifier(
+    lang,
+    filePath,
+  )}'), '${lang}')`;
 }
 
 export default async function vocabLoader(this: LoaderContext) {
@@ -83,7 +89,6 @@ export default async function vocabLoader(this: LoaderContext) {
         ${renderLanguageLoader({
           lang: getDefaultLanguage(),
           filePath: this.resourcePath,
-          useJsonLoader: true,
         })},
         ${altLanguageFiles
           .map((altLanguageFile) => renderLanguageLoader(altLanguageFile))

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@vocab/types": "^0.0.2",
+    "@vocab/unloader": "^0.0.1",
     "@vocab/utils": "^0.0.3",
     "intl-messageformat": "^9.3.18",
     "json-loader": "^0.5.7",
