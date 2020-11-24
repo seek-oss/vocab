@@ -99,9 +99,12 @@ function loadAltLanguageFile(filePath: string, lang: string) {
   for (const fallbackLang of [...langHierarchy, lang]) {
     if (fallbackLang !== getDevLanguage()) {
       try {
+        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang);
+        delete require.cache[altFilePath];
+
         result = {
           ...result,
-          ...require(getAltLanguageFilePath(filePath, fallbackLang)),
+          ...require(altFilePath),
         };
       } catch (e) {
         // eslint-disable-next-line no-console
