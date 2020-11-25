@@ -18,8 +18,11 @@ import { trace } from './logger';
 
 type ICUParams = { [key: string]: string };
 
-function extractParamTypes(ast: MessageFormatElement[]) {
+function extractParamTypes(
+  ast: MessageFormatElement[],
+): [params: ICUParams, imports: Set<string>] {
   let params: ICUParams = {};
+  let imports = new Set<string>();
 
   for (const element of ast) {
     if (isArgumentElement(element)) {
@@ -31,9 +34,13 @@ function extractParamTypes(ast: MessageFormatElement[]) {
     } else if (isDateElement(element) || isTimeElement(element)) {
       params[element.value] = 'Date | number';
     } else if (isTagElement(element)) {
-      params[element.value] = '(v: string) => any';
+      params[element.value] = '(v: ReactNode) => ReactNode';
+      imports.add(`import { ReactNode } from 'react';`);
 
-      params = { ...params, ...extractParamTypes(element.children) };
+      const [subParams, subImports] = extractParamTypes(element.children);
+
+      imports = new Set([...imports, ...subImports]);
+      params = { ...params, ...subParams };
     } else if (isSelectElement(element)) {
       params[element.value] = Object.keys(element.options)
         .map((o) => `'${o}'`)
@@ -42,12 +49,15 @@ function extractParamTypes(ast: MessageFormatElement[]) {
       const children = Object.values(element.options).map((o) => o.value);
 
       for (const child of children) {
-        params = { ...params, ...extractParamTypes(child) };
+        const [subParams, subImports] = extractParamTypes(child);
+
+        imports = new Set([...imports, ...subImports]);
+        params = { ...params, ...subParams };
       }
     }
   }
 
-  return params;
+  return [params, imports];
 }
 
 function parseParamType(icuString: string) {
@@ -72,10 +82,11 @@ function serialiseObjectToType(v: any) {
 
 function serialiseTranslationTypes(
   value: Map<string, { params: ICUParams; message: string }>,
+  imports: Set<string>,
 ) {
   const translationsType: any = {};
 
-  for (const [key, { params }] of Array.from(value.entries())) {
+  for (const [key, { params }] of value.entries()) {
     const translationKeyType: any = {};
 
     if (Object.keys(params).length > 0) {
@@ -88,6 +99,7 @@ function serialiseTranslationTypes(
   }
 
   return `
+  ${Array.from(imports).join('\n')}
   import { TranslationFile } from '@vocab/cli';
 
   declare const translations: TranslationFile<${serialiseObjectToType(
@@ -110,16 +122,22 @@ export default async function main() {
     >();
 
     const translationFileKeys = getTranslationKeys(loadedTranslation);
+    let imports = new Set<string>();
 
     for (const key of translationFileKeys) {
       let params: ICUParams = {};
       const messages = [];
 
-      for (const translatedLanguage of Array.from(languages.values())) {
+      for (const translatedLanguage of languages.values()) {
         if (translatedLanguage[key]) {
+          const [parsedParams, parsedImports] = parseParamType(
+            translatedLanguage[key].message,
+          );
+          imports = new Set([...imports, ...parsedImports]);
+
           params = {
             ...params,
-            ...parseParamType(translatedLanguage[key].message),
+            ...parsedParams,
           };
           messages.push(`'${translatedLanguage[key].message}'`);
         }
@@ -130,7 +148,7 @@ export default async function main() {
 
     const prettierConfig = await prettier.resolveConfig(filePath);
     const declaration = prettier.format(
-      serialiseTranslationTypes(translationTypes),
+      serialiseTranslationTypes(translationTypes, imports),
       { ...prettierConfig, parser: 'typescript' },
     );
 

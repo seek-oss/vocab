@@ -1,5 +1,10 @@
 import { TranslationFile } from '@vocab/types';
-import React, { FunctionComponent, useContext, useReducer } from 'react';
+import React, {
+  FunctionComponent,
+  ReactNode,
+  useContext,
+  useReducer,
+} from 'react';
 
 const trace = (...params: unknown[]) => {
   // eslint-disable-next-line no-console
@@ -40,9 +45,26 @@ type BaseTranslation = Record<string, TranslationItem>;
 
 const SERVER_RENDERING = false;
 
+type TranslateFn<Translations extends BaseTranslation> = {
+  <TranslationKey extends keyof Translations>(
+    key: TranslationKey,
+    params: Translations[TranslationKey]['params'] extends Record<string, any>
+      ? Translations[TranslationKey]['params']
+      : Record<string, unknown>,
+  ): ReactNode;
+  <TranslationKey extends keyof Translations>(
+    key: Translations[TranslationKey]['params'] extends Record<string, any>
+      ? never
+      : TranslationKey,
+  ): ReactNode;
+};
+
 export function useTranslation<Translations extends BaseTranslation>(
   translations: TranslationFile<Translations>,
-) {
+): {
+  ready: boolean;
+  t: TranslateFn<Translations>;
+} {
   const language = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
   let translationsObject = translations.__DO_NOT_USE__[language].getValue();
@@ -56,24 +78,13 @@ export function useTranslation<Translations extends BaseTranslation>(
       forceRender();
     });
     trace('useTranslation', 'returning not ready');
-    return { t: () => ' ', ready: false };
+    return { t: () => ' ' as ReactNode, ready: false };
   }
 
   function t<TranslationKey extends keyof Translations>(
     key: TranslationKey,
-    params: Translations[TranslationKey]['params'] extends Record<string, any>
-      ? Translations[TranslationKey]['params']
-      : Record<string, unknown>,
-  ): string;
-  function t<TranslationKey extends keyof Translations>(
-    key: Translations[TranslationKey]['params'] extends Record<string, any>
-      ? never
-      : TranslationKey,
-  ): string;
-  function t<TranslationKey extends keyof Translations>(
-    key: TranslationKey,
     params?: Translations[TranslationKey]['params'],
-  ) {
+  ): ReactNode {
     if (!translationsObject?.[key]) {
       trace('useTranslation', 't', 'Missing value', key);
       return null;
