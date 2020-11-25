@@ -1,5 +1,11 @@
 # @vocab/utils
 
+## 0.0.6
+
+### Patch Changes
+
+- [`2c7779f`](https://github.com/seek-oss/vocab/commit/2c7779f5384793af6a178f5ab4d56b6a9f09bc02) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Ensure fresh read of translation file for webpack watch mode
+
 ## 0.0.5
 
 ### Patch Changes
