@@ -5,27 +5,25 @@ import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
 
-interface LanguageTarget {
+export interface LanguageTarget {
   // The name or tag of a language
   name: string;
   // Translations will be copied from parent language when they don't exist in child. Defaults to first language.
   extends?: string;
 }
 
-interface UserConfig {
-  // The language contained in translations.json
+interface Config {
+  cwd?: string;
+  /**
+   * The language used in translations.json
+   */
   devLanguage: string;
-  // An array of languages to build for
+  /**
+   * An array of languages to build for
+   */
   languages: Array<LanguageTarget>;
   translationsDirname?: string;
 }
-
-interface Config extends UserConfig {
-  cwd: string;
-  translationsDirname: string;
-}
-
-let config: Config | null = null;
 
 const validator = new Validator();
 const schema = {
@@ -43,7 +41,7 @@ const schema = {
       },
     },
   },
-  translationsDirname: { type: 'string', default: '__translations__' },
+  translationsDirname: { type: 'string', optional: true },
 };
 const checkConfigFile = validator.compile(schema);
 
@@ -53,7 +51,7 @@ const splitMap = (message: string, callback: (value: string) => string) =>
     .map((v) => callback(v))
     .join(' ,');
 
-export function validateConfig(c: UserConfig) {
+export function validateConfig(c: Config) {
   // Note: checkConfigFile mutates the config file by applying defaults
   const isValid = checkConfigFile(c);
   if (isValid !== true) {
@@ -114,33 +112,19 @@ export function validateConfig(c: UserConfig) {
   }
 }
 
-export async function loadConfig(customConfigFilePath?: string) {
+export async function resolveConfig(customConfigFilePath?: string) {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
     : await findUp('vocab.config.js');
 
-  if (!configFilePath) {
-    throw new ValidationError(
-      'NoConfig',
-      'Unable to find a project vocab.config.js',
-    );
+  if (configFilePath) {
+    const cwd = path.dirname(configFilePath);
+
+    return {
+      projectRoot: cwd,
+      ...(require(configFilePath as string) as Config),
+    };
   }
 
-  const cwd = path.dirname(configFilePath);
-
-  const loadedConfig = require(configFilePath as string) as UserConfig;
-
-  validateConfig(loadedConfig);
-
-  config = {
-    ...require(configFilePath as string),
-    cwd,
-  } as Config;
-}
-
-export function getConfig(): Config {
-  if (!config) {
-    throw new Error('Config not loaded');
-  }
-  return config;
+  return null;
 }

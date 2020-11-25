@@ -1,0 +1,20 @@
+{
+  "name": "@vocab/core",
+  "version": "0.0.1",
+  "main": "dist/vocab-core.cjs.js",
+  "module": "dist/vocab-core.esm.js",
+  "author": "SEEK",
+  "license": "MIT",
+  "dependencies": {
+    "@vocab/core": "^0.0.1",
+    "intl-messageformat-parser": "^6.0.16",
+    "prettier": "^2.1.2",
+    "chalk": "^4.1.0",
+    "fast-glob": "^3.2.4",
+    "fastest-validator": "^1.9.0",
+    "find-up": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/prettier": "^2.1.5"
+  }
+}

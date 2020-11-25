@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-import { getTranslationKeys, loadAllTranslations } from '@vocab/utils';
+import { getTranslationKeys, loadAllTranslations } from './utils';
 import {
   isArgumentElement,
   isDateElement,
@@ -15,6 +15,7 @@ import {
 import prettier from 'prettier';
 
 import { trace } from './logger';
+import { LanguageTarget } from './config';
 
 type ICUParams = { [key: string]: string };
 
@@ -109,11 +110,26 @@ function serialiseTranslationTypes(
   export default translations;`;
 }
 
-export default async function main() {
-  const translations = await loadAllTranslations();
+export async function generateTypes({
+  projectRoot,
+  devLanguage,
+  languages,
+  translationsDirname,
+}: {
+  projectRoot?: string;
+  devLanguage: string;
+  languages: Array<LanguageTarget>;
+  translationsDirname: string;
+}) {
+  const translations = await loadAllTranslations({
+    projectRoot,
+    devLanguage,
+    languages,
+    translationsDirname,
+  });
 
   for (const loadedTranslation of translations) {
-    const { languages, filePath } = loadedTranslation;
+    const { languages: loadedLanguages, filePath } = loadedTranslation;
 
     trace('Generating types for', loadedTranslation.filePath);
     const translationTypes = new Map<
@@ -121,14 +137,16 @@ export default async function main() {
       { params: ICUParams; message: string }
     >();
 
-    const translationFileKeys = getTranslationKeys(loadedTranslation);
+    const translationFileKeys = getTranslationKeys(loadedTranslation, {
+      devLanguage,
+    });
     let imports = new Set<string>();
 
     for (const key of translationFileKeys) {
       let params: ICUParams = {};
       const messages = [];
 
-      for (const translatedLanguage of languages.values()) {
+      for (const translatedLanguage of loadedLanguages.values()) {
         if (translatedLanguage[key]) {
           const [parsedParams, parsedImports] = parseParamType(
             translatedLanguage[key].message,

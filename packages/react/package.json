@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "main": "dist/vocab-react.cjs.js",
   "module": "dist/vocab-react.esm.js",
-  "author": "Matt Jones",
+  "author": "SEEK",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=16.3.0"

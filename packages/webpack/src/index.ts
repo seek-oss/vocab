@@ -7,7 +7,7 @@ import {
   getAltLanguages,
   loadConfig,
   loadTranslation,
-} from '@vocab/utils';
+} from '@vocab/core';
 import { getOptions } from 'loader-utils';
 
 interface LoaderContext {

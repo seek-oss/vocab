@@ -6,7 +6,7 @@ import {
   getAltLanguageFilePath,
   getAltLanguages,
   getDevLanguage,
-} from '@vocab/utils';
+} from '@vocab/core';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
 
@@ -57,9 +57,7 @@ function getPhraseKey(key: string, namespace: string) {
 interface PullOptions {
   branch?: string;
 }
-export default async function pull({
-  branch = 'local-development',
-}: PullOptions) {
+export async function pull({ branch = 'local-development' }: PullOptions) {
   const alternativeLanguages = getAltLanguages();
   const defaultlanguage = getDevLanguage();
   const allTranslations = await getAllTranslationsFromPhrase(branch);

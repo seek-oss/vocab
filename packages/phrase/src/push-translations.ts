@@ -5,7 +5,7 @@ import {
   getAltLanguageFilePath,
   getAltLanguages,
   getDevLanguage,
-} from '@vocab/utils';
+} from '@vocab/core';
 import FormData from 'form-data';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
@@ -62,7 +62,7 @@ async function uploadFile(
 interface PushOptions {
   branch: string;
 }
-export default async function pull({ branch }: PushOptions) {
+export async function push({ branch }: PushOptions) {
   const alternativeLanguages = getAltLanguages();
   const defaultlanguage = getDevLanguage();
   await callPhrase(`branches`, {

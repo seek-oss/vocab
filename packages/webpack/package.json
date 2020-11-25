@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
-  "author": "Matt Jones",
+  "author": "SEEK",
   "license": "MIT",
   "preconstruct": {
     "entrypoints": [
@@ -13,7 +13,7 @@
     ]
   },
   "dependencies": {
-    "@vocab/types": "^0.0.2",
+    "@vocab/core": "^0.0.2",
     "@vocab/unloader": "^0.0.1",
     "@vocab/utils": "^0.0.5",
     "intl-messageformat": "^9.3.18",

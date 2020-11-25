@@ -1,0 +1,16 @@
+{
+  "name": "@vocab/phrase",
+  "version": "0.0.1",
+  "main": "dist/vocab-phrase.cjs.js",
+  "module": "dist/vocab-phrase.esm.js",
+  "author": "SEEK",
+  "license": "MIT",
+  "dependencies": {
+    "@vocab/core": "^0.0.1",
+    "form-data": "^3.0.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7"
+  }
+}
