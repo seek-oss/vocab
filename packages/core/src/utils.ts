@@ -6,17 +6,17 @@ import { resolveConfig, LanguageTarget } from './config';
 
 type LanguageName = string;
 
+type TranslationFile = Record<
+  string,
+  {
+    message: string;
+    description?: string;
+  }
+>;
+
 type LoadedTranslation = {
   filePath: string;
-  languages: Map<
-    LanguageName,
-    Record<
-      string,
-      {
-        message: string;
-      }
-    >
-  >;
+  languages: Map<LanguageName, TranslationFile>;
 };
 
 export { resolveConfig };
@@ -106,6 +106,7 @@ export async function getAllTranslationFiles({
 function loadAltLanguageFile(
   filePath: string,
   lang: string,
+  devTranslation: TranslationFile,
   {
     devLanguage,
     languages,
@@ -116,7 +117,9 @@ function loadAltLanguageFile(
     translationsDirname: string;
   },
 ) {
-  let result = require(filePath);
+  const validKeys = Object.keys(devTranslation);
+
+  const result = { ...devTranslation };
 
   const langHierarchy = getLanguageHierarcy({ languages }).get(lang);
 
@@ -132,10 +135,16 @@ function loadAltLanguageFile(
         });
         delete require.cache[altFilePath];
 
-        result = {
-          ...result,
-          ...require(altFilePath),
-        };
+        const translationFile = require(altFilePath);
+
+        for (const key of validKeys) {
+          if (translationFile[key]) {
+            result[key] = {
+              message: translationFile[key].message,
+              description: devTranslation[key].description,
+            };
+          }
+        }
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(
@@ -165,13 +174,14 @@ export function loadTranslation(
 ): LoadedTranslation {
   const languageSet = new Map();
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  languageSet.set(devLanguage, require(filePath));
+  const devTranslation = require(filePath);
+
+  languageSet.set(devLanguage, devTranslation);
   const altLanguages = devLanguage;
   for (const lang of altLanguages) {
     languageSet.set(
       lang,
-      loadAltLanguageFile(filePath, lang, {
+      loadAltLanguageFile(filePath, lang, devTranslation, {
         devLanguage,
         translationsDirname,
         languages,
