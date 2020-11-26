@@ -3,7 +3,9 @@ import path from 'path';
 import glob from 'fast-glob';
 
 import { resolveConfig } from './config';
-import { LanguageTarget } from '@vocab/types';
+import { LanguageTarget, UserConfig } from '@vocab/types';
+
+const defaultTranslationDirname = '__translations__';
 
 type LanguageName = string;
 
@@ -17,6 +19,7 @@ type TranslationFile = Record<
 
 type LoadedTranslation = {
   filePath: string;
+  relativePath: string;
   languages: Map<LanguageName, TranslationFile>;
 };
 
@@ -80,7 +83,9 @@ export function getChunkName(lang: string) {
 export function getAltLanguageFilePath(
   filePath: string,
   language: string,
-  { translationsDirname }: { translationsDirname: string },
+  {
+    translationsDirname = defaultTranslationDirname,
+  }: { translationsDirname?: string },
 ) {
   const directory = path.dirname(filePath);
   const [fileIdentifier] = path.basename(filePath).split('.translations.json');
@@ -127,15 +132,7 @@ function loadAltLanguageFile(
   lang: string,
   devTranslation: TranslationFile,
   useFallbacks: boolean,
-  {
-    devLanguage,
-    languages,
-    translationsDirname,
-  }: {
-    devLanguage: LanguageName;
-    languages: Array<LanguageTarget>;
-    translationsDirname: string;
-  },
+  { devLanguage, languages, translationsDirname }: UserConfig,
 ) {
   const result = {};
   if (useFallbacks) {
@@ -181,53 +178,41 @@ function loadAltLanguageFile(
 export function loadTranslation(
   filePath: string,
   useFallbacks: boolean,
-  {
-    devLanguage,
-    languages,
-    translationsDirname,
-  }: {
-    devLanguage: LanguageName;
-    languages: Array<LanguageTarget>;
-    translationsDirname: string;
-  },
+  userConfig: UserConfig,
 ): LoadedTranslation {
   const languageSet = new Map();
 
   delete require.cache[filePath];
   const devTranslation = require(filePath);
 
-  languageSet.set(devLanguage, devTranslation);
-  const altLanguages = devLanguage;
+  languageSet.set(userConfig.devLanguage, devTranslation);
+  const altLanguages = userConfig.devLanguage;
   for (const lang of altLanguages) {
     languageSet.set(
       lang,
-      loadAltLanguageFile(filePath, lang, devTranslation, useFallbacks, {
-        devLanguage,
-        translationsDirname,
-        languages,
-      }),
+      loadAltLanguageFile(
+        filePath,
+        lang,
+        devTranslation,
+        useFallbacks,
+        userConfig,
+      ),
     );
   }
 
   return {
     filePath,
+    relativePath: path.relative(
+      userConfig.projectRoot || process.cwd(),
+      filePath,
+    ),
     languages: languageSet,
   };
 }
 
 export async function loadAllTranslations(
   useFallbacks: boolean,
-  {
-    projectRoot,
-    devLanguage,
-    languages,
-    translationsDirname,
-  }: {
-    projectRoot?: string;
-    devLanguage: LanguageName;
-    languages: Array<LanguageTarget>;
-    translationsDirname: string;
-  },
+  { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
 ) {
   const translationFiles = await glob('**/*.translations.json', {
     absolute: true,

@@ -1,3 +1,8 @@
 export { generateTypes } from './generate-types';
 export { resolveConfig, validateConfig } from './config';
-export { loadAllTranslations } from './utils';
+export {
+  getAltLanguages,
+  loadTranslation,
+  loadAllTranslations,
+  getAltLanguageFilePath,
+} from './utils';

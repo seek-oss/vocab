@@ -2,10 +2,9 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import {
-  getAllTranslationFiles,
+  loadAllTranslations,
   getAltLanguageFilePath,
   getAltLanguages,
-  getDevLanguage,
 } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
 
@@ -15,23 +14,6 @@ interface TranslationFile {
   [k: string]: { message: string; description?: string };
 }
 type Language = string;
-
-function readTranslationFromDisk<Optional extends boolean>(
-  relativePath: string,
-  optional: Optional,
-): Optional extends false ? TranslationFile : TranslationFile | null {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const result = require(path.resolve(relativePath));
-    return result;
-  } catch (error) {
-    if (optional) {
-      // @ts-ignore
-      return null;
-    }
-    throw error;
-  }
-}
 
 async function getAllTranslationsFromPhrase(
   branch: string,
@@ -62,12 +44,13 @@ export async function pull(
   { branch = 'local-development' }: PullOptions,
   config: UserConfig,
 ) {
-  const alternativeLanguages = getAltLanguages();
-  const defaultlanguage = getDevLanguage();
-  const allTranslations = await getAllTranslationsFromPhrase(branch);
+  const alternativeLanguages = getAltLanguages(config);
+  const allPhraseTranslations = await getAllTranslationsFromPhrase(branch);
   const uniqueNames = new Set();
-  const files = await getAllTranslationFiles();
-  for (const relativePath of files) {
+
+  const allVocabTranslations = await loadAllTranslations(false, config);
+
+  for (const { filePath, relativePath, languages } of allVocabTranslations) {
     const uniqueName = getUniqueNameForFile(relativePath);
     if (uniqueNames.has(uniqueName)) {
       throw new Error(
@@ -75,49 +58,56 @@ export async function pull(
       );
     }
     uniqueNames.add(uniqueName);
-    const defaultValues = readTranslationFromDisk(relativePath, false);
 
+    const devTranslations = languages.get(config.devLanguage);
+
+    if (!devTranslations) {
+      throw new Error('No dev language translations loaded');
+    }
+
+    const defaultValues = { ...devTranslations };
     const localKeys = Object.keys(defaultValues);
 
     for (const key of localKeys) {
       defaultValues[key] = {
         ...defaultValues[key],
-        ...allTranslations[defaultlanguage][getPhraseKey(key, uniqueName)],
+        ...allPhraseTranslations[config.devLanguage][
+          getPhraseKey(key, uniqueName)
+        ],
       };
     }
-    await fs.writeFile(
-      relativePath,
-      `${JSON.stringify(defaultValues, null, 2)}\n`,
-    );
+    await fs.writeFile(filePath, `${JSON.stringify(defaultValues, null, 2)}\n`);
 
     for (const alternativeLanguage of alternativeLanguages) {
-      const alternativeLanguageFilePath = getAltLanguageFilePath(
-        relativePath,
-        alternativeLanguage,
-      );
-      const extraValues =
-        readTranslationFromDisk(alternativeLanguageFilePath, true) || {};
+      const altTranslations = { ...languages.get(alternativeLanguage) };
+      const phraseAltTranslations = allPhraseTranslations[alternativeLanguage];
 
       for (const key of localKeys) {
-        if (
-          !allTranslations[alternativeLanguage][getPhraseKey(key, uniqueName)]
-            .message
-        ) {
+        const phraseTranslationMessage =
+          phraseAltTranslations[getPhraseKey(key, uniqueName)].message;
+
+        if (!phraseTranslationMessage) {
           throw new Error('Error. No message on translation');
         }
-        extraValues[key] = {
-          ...extraValues[key],
-          message:
-            allTranslations[alternativeLanguage][getPhraseKey(key, uniqueName)]
-              .message,
+
+        altTranslations[key] = {
+          ...altTranslations[key],
+          message: phraseTranslationMessage,
         };
       }
-      await fs.mkdir(path.dirname(alternativeLanguageFilePath), {
+
+      const altTranslationFilePath = getAltLanguageFilePath(
+        filePath,
+        alternativeLanguage,
+        config,
+      );
+
+      await fs.mkdir(path.dirname(altTranslationFilePath), {
         recursive: true,
       });
       await fs.writeFile(
-        alternativeLanguageFilePath,
-        `${JSON.stringify(extraValues, null, 2)}\n`,
+        altTranslationFilePath,
+        `${JSON.stringify(altTranslations, null, 2)}\n`,
       );
     }
   }
