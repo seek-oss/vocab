@@ -1,6 +1,6 @@
 {
   "name": "@vocab/cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "dist/vocab-cli.cjs.js",
   "module": "dist/vocab-cli.esm.js",
   "bin": {
