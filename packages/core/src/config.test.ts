@@ -1,4 +1,4 @@
-import { validateConfig } from './getConfig';
+import { validateConfig } from './config';
 
 describe('validateConfig', () => {
   it('should allow a valid config', () => {

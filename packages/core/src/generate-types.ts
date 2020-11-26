@@ -15,7 +15,7 @@ import {
 import prettier from 'prettier';
 
 import { trace } from './logger';
-import { LanguageTarget } from './config';
+import { LanguageTarget } from '@vocab/types';
 
 type ICUParams = { [key: string]: string };
 
@@ -121,7 +121,8 @@ export async function generateTypes({
   languages: Array<LanguageTarget>;
   translationsDirname: string;
 }) {
-  const translations = await loadAllTranslations({
+  const useFallbacks = true;
+  const translations = await loadAllTranslations(useFallbacks, {
     projectRoot,
     devLanguage,
     languages,

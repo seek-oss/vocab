@@ -1,37 +1,12 @@
-import { promises as fs } from 'fs';
-
-import {
-  getAllTranslationFiles,
-  getAltLanguageFilePath,
-  getAltLanguages,
-  getDevLanguage,
-} from '@vocab/core';
 import FormData from 'form-data';
 
 import { callPhrase, getUniqueNameForFile } from './phrase-api';
-import { logError, trace } from './logger';
+import { trace } from './logger';
+import { loadAllTranslations } from '@vocab/core';
+import { UserConfig } from '@vocab/types';
 
 interface TranslationFile {
   [k: string]: { message: string; description?: string };
-}
-type AlternativeLanguage = string;
-
-async function optionalReadFile(relativePath: string, optional?: boolean) {
-  const fileContent = await fs.readFile(relativePath, 'utf8').catch((error) => {
-    if (optional) {
-      trace('No file for optional:', relativePath);
-    } else {
-      logError('Error reading file:', relativePath, '. Error: ', error);
-    }
-  });
-  if (!fileContent) {
-    if (optional) {
-      trace('Ignoring missing optional file');
-      return;
-    }
-    throw new Error(`Error reading ${relativePath}`);
-  }
-  return fileContent;
 }
 
 async function uploadFile(
@@ -62,9 +37,13 @@ async function uploadFile(
 interface PushOptions {
   branch: string;
 }
-export async function push({ branch }: PushOptions) {
-  const alternativeLanguages = getAltLanguages();
-  const defaultlanguage = getDevLanguage();
+
+/**
+ * Uploading to the Phrase API for each language. Adding a unique namespace to each key using file path they key came from
+ */
+export async function push({ branch }: PushOptions, config: UserConfig) {
+  const allLanguageTranslations = await loadAllTranslations(true, config);
+  const allLanguages = config.languages.map((v) => v.name);
   await callPhrase(`branches`, {
     method: 'POST',
     headers: {
@@ -74,84 +53,38 @@ export async function push({ branch }: PushOptions) {
   });
   trace('Created branch:', branch);
 
-  const defaultLanguageTranslationFile: TranslationFile = {};
-  const alternativeLanguageTranslations: Record<
-    AlternativeLanguage,
-    TranslationFile
-  > = {};
+  const phraseTranslations: Record<string, TranslationFile> = {};
   const uniqueNames = new Set();
 
-  const files = await getAllTranslationFiles();
-  for (const relativePath of files) {
-    const uniqueName = getUniqueNameForFile(relativePath);
+  for (const loadedTranslation of allLanguageTranslations) {
+    const uniqueName = getUniqueNameForFile(loadedTranslation.filePath);
     if (uniqueNames.has(uniqueName)) {
       throw new Error(
-        'Duplicate unique names found. Improve name hasing algorthym',
+        `Duplicate unique names found. Improve name hashing algorthym. Hash: "${uniqueName}"`,
       );
     }
     uniqueNames.add(uniqueName);
-    const fileContents = await optionalReadFile(relativePath, false);
-    if (!fileContents) {
-      throw new Error(`Error reading file ${relativePath}`);
-    }
-    const defaultValues: TranslationFile = JSON.parse(fileContents);
-
-    const localKeys = Object.keys(defaultValues);
-
-    for (const key of localKeys) {
-      if (defaultLanguageTranslationFile[`${uniqueName}-${key}`]) {
-        throw new Error(`Duplicate key found`);
-      }
-      defaultLanguageTranslationFile[`${uniqueName}-${key}`] =
-        defaultValues[key];
-    }
-    for (const alternativeLanguage of alternativeLanguages) {
-      const alternativeFileContents = await optionalReadFile(
-        getAltLanguageFilePath(relativePath, alternativeLanguage),
-        true,
-      );
-      if (!alternativeFileContents) {
+    for (const language of allLanguages) {
+      const localTranslations = loadedTranslation.languages.get(language);
+      if (!localTranslations) {
         continue;
       }
-      if (!alternativeLanguageTranslations[alternativeLanguage]) {
-        alternativeLanguageTranslations[alternativeLanguage] = {};
+      if (!phraseTranslations[language]) {
+        phraseTranslations[language] = {};
       }
-
-      const extraValues: TranslationFile = JSON.parse(alternativeFileContents);
-
-      for (const key of localKeys) {
-        if (
-          alternativeLanguageTranslations[alternativeLanguage][
-            `${uniqueName}-${key}`
-          ]
-        ) {
-          throw new Error(`Duplicate key found`);
+      for (const localKey of Object.keys(localTranslations)) {
+        const phraseKey = `${uniqueName}-${localKey}`;
+        if (phraseTranslations[language][phraseKey]) {
+          throw new Error(`Duplicate key found. Key "${phraseKey}"`);
         }
-        if (!extraValues[key]) {
-          logError(
-            `Missing message for key ${key} in language ${alternativeLanguage}. Recieved:`,
-            extraValues[key],
-          );
-          continue;
-        }
-        alternativeLanguageTranslations[alternativeLanguage][
-          `${uniqueName}-${key}`
-        ] = {
-          message: extraValues[key].message,
-          description: defaultValues[key].description,
-        };
+        phraseTranslations[language][phraseKey] = localTranslations[localKey];
       }
     }
   }
 
-  await uploadFile(defaultLanguageTranslationFile, defaultlanguage, branch);
-  for (const alternativeLanguage of alternativeLanguages) {
-    if (alternativeLanguageTranslations[alternativeLanguage]) {
-      await uploadFile(
-        alternativeLanguageTranslations[alternativeLanguage],
-        alternativeLanguage,
-        branch,
-      );
+  for (const language of allLanguages) {
+    if (phraseTranslations[language]) {
+      await uploadFile(phraseTranslations[language], language, branch);
     }
   }
 }

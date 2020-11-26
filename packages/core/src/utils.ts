@@ -2,7 +2,8 @@ import path from 'path';
 
 import glob from 'fast-glob';
 
-import { resolveConfig, LanguageTarget } from './config';
+import { resolveConfig } from './config';
+import { LanguageTarget } from '@vocab/types';
 
 type LanguageName = string;
 
@@ -103,10 +104,29 @@ export async function getAllTranslationFiles({
   return translationFiles;
 }
 
+function mergeWithDevLanguage(
+  translation: TranslationFile,
+  devTranslation: TranslationFile,
+) {
+  // Only use keys from the dev translation
+  const keys = Object.keys(devTranslation);
+  const newLanguage: TranslationFile = {};
+  for (const key of keys) {
+    if (translation[key]) {
+      newLanguage[key] = {
+        message: translation[key].message,
+        description: devTranslation[key].description,
+      };
+    }
+  }
+  return newLanguage;
+}
+
 function loadAltLanguageFile(
   filePath: string,
   lang: string,
   devTranslation: TranslationFile,
+  useFallbacks: boolean,
   {
     devLanguage,
     languages,
@@ -117,11 +137,14 @@ function loadAltLanguageFile(
     translationsDirname: string;
   },
 ) {
-  const validKeys = Object.keys(devTranslation);
+  const result = {};
+  if (useFallbacks) {
+    Object.assign(result, devTranslation);
+  }
 
-  const result = { ...devTranslation };
-
-  const langHierarchy = getLanguageHierarcy({ languages }).get(lang);
+  const langHierarchy = useFallbacks
+    ? getLanguageHierarcy({ languages }).get(lang)
+    : [];
 
   if (!langHierarchy) {
     throw new Error(`Missing language hierarchy for ${lang}`);
@@ -136,15 +159,10 @@ function loadAltLanguageFile(
         delete require.cache[altFilePath];
 
         const translationFile = require(altFilePath);
-
-        for (const key of validKeys) {
-          if (translationFile[key]) {
-            result[key] = {
-              message: translationFile[key].message,
-              description: devTranslation[key].description,
-            };
-          }
-        }
+        Object.assign(
+          result,
+          mergeWithDevLanguage(translationFile, devTranslation),
+        );
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(
@@ -162,6 +180,7 @@ function loadAltLanguageFile(
 
 export function loadTranslation(
   filePath: string,
+  useFallbacks: boolean,
   {
     devLanguage,
     languages,
@@ -174,6 +193,7 @@ export function loadTranslation(
 ): LoadedTranslation {
   const languageSet = new Map();
 
+  delete require.cache[filePath];
   const devTranslation = require(filePath);
 
   languageSet.set(devLanguage, devTranslation);
@@ -181,7 +201,7 @@ export function loadTranslation(
   for (const lang of altLanguages) {
     languageSet.set(
       lang,
-      loadAltLanguageFile(filePath, lang, devTranslation, {
+      loadAltLanguageFile(filePath, lang, devTranslation, useFallbacks, {
         devLanguage,
         translationsDirname,
         languages,
@@ -195,25 +215,31 @@ export function loadTranslation(
   };
 }
 
-export async function loadAllTranslations({
-  projectRoot,
-  devLanguage,
-  languages,
-  translationsDirname,
-}: {
-  projectRoot?: string;
-  devLanguage: LanguageName;
-  languages: Array<LanguageTarget>;
-  translationsDirname: string;
-}) {
+export async function loadAllTranslations(
+  useFallbacks: boolean,
+  {
+    projectRoot,
+    devLanguage,
+    languages,
+    translationsDirname,
+  }: {
+    projectRoot?: string;
+    devLanguage: LanguageName;
+    languages: Array<LanguageTarget>;
+    translationsDirname: string;
+  },
+) {
   const translationFiles = await glob('**/*.translations.json', {
     absolute: true,
     cwd: projectRoot,
   });
-
   return Promise.all(
     translationFiles.map((v) =>
-      loadTranslation(v, { devLanguage, languages, translationsDirname }),
+      loadTranslation(v, useFallbacks, {
+        devLanguage,
+        languages,
+        translationsDirname,
+      }),
     ),
   );
 }

@@ -1,29 +1,10 @@
+import { UserConfig } from '@vocab/types';
 import path from 'path';
 
 import chalk from 'chalk';
 import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
-
-export interface LanguageTarget {
-  // The name or tag of a language
-  name: string;
-  // Translations will be copied from parent language when they don't exist in child. Defaults to first language.
-  extends?: string;
-}
-
-interface Config {
-  cwd?: string;
-  /**
-   * The language used in translations.json
-   */
-  devLanguage: string;
-  /**
-   * An array of languages to build for
-   */
-  languages: Array<LanguageTarget>;
-  translationsDirname?: string;
-}
 
 const validator = new Validator();
 const schema = {
@@ -51,7 +32,7 @@ const splitMap = (message: string, callback: (value: string) => string) =>
     .map((v) => callback(v))
     .join(' ,');
 
-export function validateConfig(c: Config) {
+export function validateConfig(c: UserConfig) {
   // Note: checkConfigFile mutates the config file by applying defaults
   const isValid = checkConfigFile(c);
   if (isValid !== true) {
@@ -122,7 +103,7 @@ export async function resolveConfig(customConfigFilePath?: string) {
 
     return {
       projectRoot: cwd,
-      ...(require(configFilePath as string) as Config),
+      ...(require(configFilePath as string) as UserConfig),
     };
   }
 

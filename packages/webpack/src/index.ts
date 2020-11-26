@@ -18,7 +18,7 @@ interface LoaderContext {
 }
 
 function createIdentifier(lang: string, resourcePath: string) {
-  const loadedTranslation = loadTranslation(resourcePath);
+  const loadedTranslation = loadTranslation(resourcePath, true);
 
   const langJson = loadedTranslation.languages.get(lang);
 
