@@ -1,5 +1,12 @@
 # @vocab/webpack
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [[`2c7779f`](https://github.com/seek-oss/vocab/commit/2c7779f5384793af6a178f5ab4d56b6a9f09bc02)]:
+  - @vocab/utils@0.0.6
+
 ## 0.0.7
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @vocab/react
 
+## 0.0.4
+
+### Patch Changes
+
+- [`45c4fe2`](https://github.com/seek-oss/vocab/commit/45c4fe273c5157475cb03ca57db662956ad5cbc9) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Improved type definitions for `t` function
+
 ## 0.0.3
 
 ### Patch Changes

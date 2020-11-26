@@ -1,5 +1,16 @@
 # @vocab/cli
 
+## 0.0.6
+
+### Patch Changes
+
+- [`45c4fe2`](https://github.com/seek-oss/vocab/commit/45c4fe273c5157475cb03ca57db662956ad5cbc9) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Improved type definitions for `t` function
+
+* [`33aeb0f`](https://github.com/seek-oss/vocab/commit/33aeb0f210687b8ce57417e963bba9db7c7cb4e3) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Respect prettier config for generated typescript declarations
+
+* Updated dependencies [[`2c7779f`](https://github.com/seek-oss/vocab/commit/2c7779f5384793af6a178f5ab4d56b6a9f09bc02)]:
+  - @vocab/utils@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
