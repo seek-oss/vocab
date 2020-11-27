@@ -19,3 +19,39 @@ export interface RawJsonTranslations {
     message: string;
   };
 }
+
+export interface LanguageTarget {
+  // The name or tag of a language
+  name: string;
+  // Translations will be copied from parent language when they don't exist in child. Defaults to first language.
+  extends?: string;
+}
+
+export interface UserConfig {
+  projectRoot?: string;
+  /**
+   * The language used in translations.json
+   */
+  devLanguage: string;
+  /**
+   * An array of languages to build for
+   */
+  languages: Array<LanguageTarget>;
+  translationsDirname?: string;
+}
+
+export type LanguageName = string;
+
+export type TranslationsByLanguage = Record<
+  string,
+  {
+    message: string;
+    description?: string;
+  }
+>;
+
+export type LoadedTranslation = {
+  filePath: string;
+  relativePath: string;
+  languages: Map<LanguageName, TranslationsByLanguage>;
+};

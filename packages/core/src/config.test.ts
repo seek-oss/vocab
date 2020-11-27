@@ -1,15 +1,9 @@
-import { validateConfig } from './getConfig';
+import { validateConfig } from './config';
 
 describe('validateConfig', () => {
   it('should allow a valid config', () => {
     const config = { devLanguage: 'en', languages: [{ name: 'en' }] };
     expect(() => validateConfig(config)).not.toThrow();
-  });
-
-  it('should add defaults to config', () => {
-    const config: any = { devLanguage: 'en', languages: [{ name: 'en' }] };
-    validateConfig(config);
-    expect(config.translationsDirname).toBe('__translations__');
   });
 
   it('should throw an error on no config', () => {

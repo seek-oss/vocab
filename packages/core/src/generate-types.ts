@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-import { getTranslationKeys, loadAllTranslations } from '@vocab/utils';
+import { getTranslationKeys, loadAllTranslations } from './utils';
 import {
   isArgumentElement,
   isDateElement,
@@ -15,8 +15,25 @@ import {
 import prettier from 'prettier';
 
 import { trace } from './logger';
+import { UserConfig } from '@vocab/types';
 
 type ICUParams = { [key: string]: string };
+
+interface TranslationTypeInfo {
+  params: ICUParams;
+  message: string;
+  returnType: string;
+}
+
+function extractHasTags(ast: MessageFormatElement[]): boolean {
+  return ast.some((element) => {
+    if (isSelectElement(element)) {
+      const children = Object.values(element.options).map((o) => o.value);
+      return children.some((child) => extractHasTags(child));
+    }
+    return isTagElement(element);
+  });
+}
 
 function extractParamTypes(
   ast: MessageFormatElement[],
@@ -60,12 +77,6 @@ function extractParamTypes(
   return [params, imports];
 }
 
-function parseParamType(icuString: string) {
-  const ast = parse(icuString);
-
-  return extractParamTypes(ast);
-}
-
 function serialiseObjectToType(v: any) {
   let result = '';
 
@@ -81,17 +92,18 @@ function serialiseObjectToType(v: any) {
 }
 
 function serialiseTranslationTypes(
-  value: Map<string, { params: ICUParams; message: string }>,
+  value: Map<string, TranslationTypeInfo>,
   imports: Set<string>,
 ) {
   const translationsType: any = {};
 
-  for (const [key, { params }] of value.entries()) {
+  for (const [key, { params, returnType }] of value.entries()) {
     const translationKeyType: any = {};
 
     if (Object.keys(params).length > 0) {
       translationKeyType.params = params;
     }
+    translationKeyType.returnType = returnType;
 
     translationKeyType.message = 'string';
 
@@ -100,7 +112,7 @@ function serialiseTranslationTypes(
 
   return `
   ${Array.from(imports).join('\n')}
-  import { TranslationFile } from '@vocab/cli';
+  import { TranslationFile } from '@vocab/core';
 
   declare const translations: TranslationFile<${serialiseObjectToType(
     translationsType,
@@ -109,30 +121,33 @@ function serialiseTranslationTypes(
   export default translations;`;
 }
 
-export default async function main() {
-  const translations = await loadAllTranslations();
+export async function generateTypes(config: UserConfig) {
+  const translations = await loadAllTranslations(
+    { useFallbacks: true },
+    config,
+  );
 
   for (const loadedTranslation of translations) {
-    const { languages, filePath } = loadedTranslation;
+    const { languages: loadedLanguages, filePath } = loadedTranslation;
 
     trace('Generating types for', loadedTranslation.filePath);
-    const translationTypes = new Map<
-      string,
-      { params: ICUParams; message: string }
-    >();
+    const translationTypes = new Map<string, TranslationTypeInfo>();
 
-    const translationFileKeys = getTranslationKeys(loadedTranslation);
+    const translationFileKeys = getTranslationKeys(loadedTranslation, config);
     let imports = new Set<string>();
 
     for (const key of translationFileKeys) {
       let params: ICUParams = {};
       const messages = [];
+      let hasTags = false;
 
-      for (const translatedLanguage of languages.values()) {
+      for (const translatedLanguage of loadedLanguages.values()) {
         if (translatedLanguage[key]) {
-          const [parsedParams, parsedImports] = parseParamType(
-            translatedLanguage[key].message,
-          );
+          const ast = parse(translatedLanguage[key].message);
+
+          hasTags = hasTags || extractHasTags(ast);
+
+          const [parsedParams, parsedImports] = extractParamTypes(ast);
           imports = new Set([...imports, ...parsedImports]);
 
           params = {
@@ -143,7 +158,13 @@ export default async function main() {
         }
       }
 
-      translationTypes.set(key, { params, message: messages.join(' | ') });
+      const returnType = hasTags ? 'ReactNode' : 'string';
+
+      translationTypes.set(key, {
+        params,
+        message: messages.join(' | '),
+        returnType,
+      });
     }
 
     const prettierConfig = await prettier.resolveConfig(filePath);

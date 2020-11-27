@@ -1,5 +1,6 @@
 import path from 'path';
 
+import VocabWebpackPlugin from '@vocab/webpack';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpackMerge from 'webpack-merge';
@@ -19,16 +20,6 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
       module: {
         rules: [
           {
-            test: /translations\.json$/,
-            type: 'javascript/auto',
-            use: {
-              loader: require.resolve('@vocab/webpack'),
-              options: {
-                configFile: fixtureConfig,
-              },
-            },
-          },
-          {
             test: /\.(js|ts|tsx)$/,
             include: path.dirname(fixtureConfig),
             use: [
@@ -47,7 +38,10 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
           },
         ],
       },
-      plugins: [new HtmlWebpackPlugin()],
+      plugins: [
+        new HtmlWebpackPlugin(),
+        new VocabWebpackPlugin({ configFile: fixtureConfig }),
+      ],
     },
     config,
   );

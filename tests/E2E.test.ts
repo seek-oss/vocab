@@ -12,22 +12,17 @@ describe('E2E', () => {
   });
 
   it('should default to english', async () => {
-    const message = await page.$eval(
-      '#message',
-      (el) => (el as HTMLDivElement).innerText,
-    );
+    const message = await page.waitForSelector('#message');
 
-    expect(message).toBe('Hello world');
+    await expect(message).toMatch('Hello world');
   });
 
   it('should switch to french', async () => {
-    await page.$eval('button', (el) => (el as HTMLButtonElement).click());
-    const message = await page.$eval(
-      '#message',
-      (el) => (el as HTMLDivElement).innerText,
-    );
+    await page.click('button');
 
-    expect(message).toBe('Bonjour monde');
+    const message = await page.waitForSelector('#message');
+
+    await expect(message).toMatch('Bonjour monde');
   });
 
   afterAll(() => {

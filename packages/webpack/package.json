@@ -3,19 +3,21 @@
   "version": "0.0.8",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
-  "author": "Matt Jones",
+  "author": "SEEK",
   "license": "MIT",
   "preconstruct": {
     "entrypoints": [
       "index.ts",
+      "loader.ts",
       "node.ts",
-      "web.ts"
+      "web.ts",
+      "chunk-name.ts"
     ]
   },
   "dependencies": {
+    "@vocab/core": "^0.0.1",
     "@vocab/types": "^0.0.2",
     "@vocab/unloader": "^0.0.1",
-    "@vocab/utils": "^0.0.6",
     "intl-messageformat": "^9.3.18",
     "json-loader": "^0.5.7",
     "loader-utils": "^2.0.0"

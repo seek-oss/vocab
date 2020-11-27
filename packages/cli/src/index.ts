@@ -1,10 +1,8 @@
-import type { TranslationFile } from '@vocab/types';
-import { loadConfig } from '@vocab/utils';
+/* eslint-disable no-console */
+import type { UserConfig } from '@vocab/types';
+import { pull, push } from '@vocab/phrase';
+import { resolveConfig, generateTypes } from '@vocab/core';
 import yargs from 'yargs';
-
-import generateTypes from './generate-types';
-import pull from './pull-translations';
-import push from './push-translations';
 
 import envCi from 'env-ci';
 
@@ -16,6 +14,8 @@ const branchDefinition = {
   default: branch || 'local-development',
 } as const;
 
+let config: UserConfig | null = null;
+
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs(process.argv.slice(2))
   .scriptName('vocab')
@@ -23,31 +23,29 @@ yargs(process.argv.slice(2))
     type: 'string',
     describe: 'Path to config file',
   })
-  .middleware(async ({ config }) => {
-    await loadConfig(config);
+  .middleware(async ({ config: configPath }) => {
+    config = await resolveConfig(configPath);
+    console.log('Loaded config from', configPath || process.cwd());
   })
   .command({
     command: 'push',
     builder: () => yargs.options({ branch: branchDefinition }),
     handler: async (options) => {
-      await push(options);
+      await push(options, config!);
     },
   })
   .command({
     command: 'pull',
     builder: () => yargs.options({ branch: branchDefinition }),
     handler: async (options) => {
-      await pull(options);
+      await pull(options, config!);
     },
   })
   .command({
     command: 'generate-types',
     handler: async () => {
-      await generateTypes();
+      await generateTypes(config!);
     },
   })
   .help()
   .wrap(72).argv;
-
-// Export TranslationFile type for use in generated translation file type declarations
-export type { TranslationFile };

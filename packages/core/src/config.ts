@@ -1,31 +1,10 @@
+import { UserConfig } from '@vocab/types';
 import path from 'path';
 
 import chalk from 'chalk';
 import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
-
-interface LanguageTarget {
-  // The name or tag of a language
-  name: string;
-  // Translations will be copied from parent language when they don't exist in child. Defaults to first language.
-  extends?: string;
-}
-
-interface UserConfig {
-  // The language contained in translations.json
-  devLanguage: string;
-  // An array of languages to build for
-  languages: Array<LanguageTarget>;
-  translationsDirname?: string;
-}
-
-interface Config extends UserConfig {
-  cwd: string;
-  translationsDirname: string;
-}
-
-let config: Config | null = null;
 
 const validator = new Validator();
 const schema = {
@@ -43,7 +22,8 @@ const schema = {
       },
     },
   },
-  translationsDirname: { type: 'string', default: '__translations__' },
+  translationsDirname: { type: 'string', optional: true },
+  projectRoot: { type: 'string', optional: true },
 };
 const checkConfigFile = validator.compile(schema);
 
@@ -112,35 +92,45 @@ export function validateConfig(c: UserConfig) {
       );
     }
   }
+
+  return true;
 }
 
-export async function loadConfig(customConfigFilePath?: string) {
+function createConfig(configFilePath: string) {
+  const cwd = path.dirname(configFilePath);
+
+  return {
+    projectRoot: cwd,
+    ...(require(configFilePath as string) as UserConfig),
+  };
+}
+
+export async function resolveConfig(
+  customConfigFilePath?: string,
+): Promise<UserConfig | null> {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
     : await findUp('vocab.config.js');
 
-  if (!configFilePath) {
-    throw new ValidationError(
-      'NoConfig',
-      'Unable to find a project vocab.config.js',
-    );
+  if (configFilePath) {
+    return createConfig(configFilePath);
   }
 
-  const cwd = path.dirname(configFilePath);
-
-  const loadedConfig = require(configFilePath as string) as UserConfig;
-
-  validateConfig(loadedConfig);
-
-  config = {
-    ...require(configFilePath as string),
-    cwd,
-  } as Config;
+  return null;
 }
 
-export function getConfig(): Config {
-  if (!config) {
-    throw new Error('Config not loaded');
+export function resolveConfigSync(
+  customConfigFilePath?: string,
+): UserConfig | null {
+  const configFilePath = customConfigFilePath
+    ? path.resolve(customConfigFilePath)
+    : findUp.sync('vocab.config.js');
+
+  if (configFilePath) {
+    if (configFilePath) {
+      return createConfig(configFilePath);
+    }
   }
-  return config;
+
+  return null;
 }
