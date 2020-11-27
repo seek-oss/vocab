@@ -1,9 +1,10 @@
 import FormData from 'form-data';
 
-import { callPhrase, getUniqueNameForFile } from './phrase-api';
+import { callPhrase, ensureBranch, getUniqueNameForFile } from './phrase-api';
 import { trace } from './logger';
 import { loadAllTranslations } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
+import { getPhraseKey } from './utils';
 
 interface TranslationFile {
   [k: string]: { message: string; description?: string };
@@ -42,22 +43,18 @@ interface PushOptions {
  * Uploading to the Phrase API for each language. Adding a unique namespace to each key using file path they key came from
  */
 export async function push({ branch }: PushOptions, config: UserConfig) {
-  const allLanguageTranslations = await loadAllTranslations(true, config);
+  const allLanguageTranslations = await loadAllTranslations(
+    { useFallbacks: false },
+    config,
+  );
   const allLanguages = config.languages.map((v) => v.name);
-  await callPhrase(`branches`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name: branch }),
-  });
-  trace('Created branch:', branch);
+  await ensureBranch(branch);
 
   const phraseTranslations: Record<string, TranslationFile> = {};
   const uniqueNames = new Set();
 
   for (const loadedTranslation of allLanguageTranslations) {
-    const uniqueName = getUniqueNameForFile(loadedTranslation.filePath);
+    const uniqueName = getUniqueNameForFile(loadedTranslation);
     if (uniqueNames.has(uniqueName)) {
       throw new Error(
         `Duplicate unique names found. Improve name hashing algorthym. Hash: "${uniqueName}"`,
@@ -73,7 +70,7 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
         phraseTranslations[language] = {};
       }
       for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = `${uniqueName}-${localKey}`;
+        const phraseKey = getPhraseKey(localKey, uniqueName);
         if (phraseTranslations[language][phraseKey]) {
           throw new Error(`Duplicate key found. Key "${phraseKey}"`);
         }

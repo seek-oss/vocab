@@ -39,3 +39,19 @@ export interface UserConfig {
   languages: Array<LanguageTarget>;
   translationsDirname?: string;
 }
+
+export type LanguageName = string;
+
+export type TranslationsByLanguage = Record<
+  string,
+  {
+    message: string;
+    description?: string;
+  }
+>;
+
+export type LoadedTranslation = {
+  filePath: string;
+  relativePath: string;
+  languages: Map<LanguageName, TranslationsByLanguage>;
+};

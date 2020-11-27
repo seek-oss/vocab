@@ -3,25 +3,15 @@ import path from 'path';
 import glob from 'fast-glob';
 
 import { resolveConfig } from './config';
-import { LanguageTarget, UserConfig } from '@vocab/types';
+import type {
+  LanguageName,
+  LanguageTarget,
+  LoadedTranslation,
+  TranslationsByLanguage,
+  UserConfig,
+} from '@vocab/types';
 
 const defaultTranslationDirname = '__translations__';
-
-type LanguageName = string;
-
-type TranslationFile = Record<
-  string,
-  {
-    message: string;
-    description?: string;
-  }
->;
-
-type LoadedTranslation = {
-  filePath: string;
-  relativePath: string;
-  languages: Map<LanguageName, TranslationFile>;
-};
 
 export { resolveConfig };
 
@@ -106,12 +96,12 @@ export async function getAllTranslationFiles({
 }
 
 function mergeWithDevLanguage(
-  translation: TranslationFile,
-  devTranslation: TranslationFile,
+  translation: TranslationsByLanguage,
+  devTranslation: TranslationsByLanguage,
 ) {
   // Only use keys from the dev translation
   const keys = Object.keys(devTranslation);
-  const newLanguage: TranslationFile = {};
+  const newLanguage: TranslationsByLanguage = {};
   for (const key of keys) {
     if (translation[key]) {
       newLanguage[key] = {
@@ -124,10 +114,17 @@ function mergeWithDevLanguage(
 }
 
 function loadAltLanguageFile(
-  filePath: string,
-  lang: string,
-  devTranslation: TranslationFile,
-  useFallbacks: boolean,
+  {
+    filePath,
+    languageName,
+    devTranslation,
+    useFallbacks,
+  }: {
+    filePath: string;
+    languageName: string;
+    devTranslation: TranslationsByLanguage;
+    useFallbacks: boolean;
+  },
   { devLanguage, languages, translationsDirname }: UserConfig,
 ) {
   const result = {};
@@ -136,14 +133,14 @@ function loadAltLanguageFile(
   }
 
   const langHierarchy = useFallbacks
-    ? getLanguageHierarcy({ languages }).get(lang)
+    ? getLanguageHierarcy({ languages }).get(languageName)
     : [];
 
   if (!langHierarchy) {
-    throw new Error(`Missing language hierarchy for ${lang}`);
+    throw new Error(`Missing language hierarchy for ${languageName}`);
   }
 
-  for (const fallbackLang of [...langHierarchy, lang]) {
+  for (const fallbackLang of [...langHierarchy, languageName]) {
     if (fallbackLang !== devLanguage) {
       try {
         const altFilePath = getAltLanguageFilePath(filePath, fallbackLang, {
@@ -172,8 +169,13 @@ function loadAltLanguageFile(
 }
 
 export function loadTranslation(
-  filePath: string,
-  useFallbacks: boolean,
+  {
+    filePath,
+    useFallbacks,
+  }: {
+    filePath: string;
+    useFallbacks: boolean;
+  },
   userConfig: UserConfig,
 ): LoadedTranslation {
   const languageSet = new Map();
@@ -183,14 +185,16 @@ export function loadTranslation(
 
   languageSet.set(userConfig.devLanguage, devTranslation);
   const altLanguages = getAltLanguages(userConfig);
-  for (const lang of altLanguages) {
+  for (const languageName of altLanguages) {
     languageSet.set(
-      lang,
+      languageName,
       loadAltLanguageFile(
-        filePath,
-        lang,
-        devTranslation,
-        useFallbacks,
+        {
+          filePath,
+          languageName,
+          devTranslation,
+          useFallbacks,
+        },
         userConfig,
       ),
     );
@@ -207,7 +211,7 @@ export function loadTranslation(
 }
 
 export async function loadAllTranslations(
-  useFallbacks: boolean,
+  { useFallbacks }: { useFallbacks: boolean },
   { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
 ) {
   const translationFiles = await glob('**/*.translations.json', {
@@ -215,12 +219,15 @@ export async function loadAllTranslations(
     cwd: projectRoot,
   });
   return Promise.all(
-    translationFiles.map((v) =>
-      loadTranslation(v, useFallbacks, {
-        devLanguage,
-        languages,
-        translationsDirname,
-      }),
+    translationFiles.map((filePath) =>
+      loadTranslation(
+        { filePath, useFallbacks },
+        {
+          devLanguage,
+          languages,
+          translationsDirname,
+        },
+      ),
     ),
   );
 }

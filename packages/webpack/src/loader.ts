@@ -7,10 +7,8 @@ import {
   loadTranslation,
 } from '@vocab/core';
 import { getOptions } from 'loader-utils';
+import { getChunkName } from './chunk-name';
 
-export function getChunkName(lang: string) {
-  return `${lang}-translations`;
-}
 interface LoaderContext {
   addDependency: (filePath: string) => void;
   target: string;
@@ -23,7 +21,10 @@ function createIdentifier(
   resourcePath: string,
   config: UserConfig,
 ) {
-  const loadedTranslation = loadTranslation(resourcePath, true, config);
+  const loadedTranslation = loadTranslation(
+    { filePath: resourcePath, useFallbacks: true },
+    config,
+  );
 
   const langJson = loadedTranslation.languages.get(lang);
 

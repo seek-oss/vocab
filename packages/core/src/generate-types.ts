@@ -122,8 +122,10 @@ function serialiseTranslationTypes(
 }
 
 export async function generateTypes(config: UserConfig) {
-  const useFallbacks = true;
-  const translations = await loadAllTranslations(useFallbacks, config);
+  const translations = await loadAllTranslations(
+    { useFallbacks: true },
+    config,
+  );
 
   for (const loadedTranslation of translations) {
     const { languages: loadedLanguages, filePath } = loadedTranslation;

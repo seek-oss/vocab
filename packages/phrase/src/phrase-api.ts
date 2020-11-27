@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
+import { LoadedTranslation } from '@vocab/types';
 import fetch from 'node-fetch';
+import { trace } from './logger';
 
 function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   const phraseApiToken = process.env.PHRASE_API_TOKEN;
@@ -88,9 +90,20 @@ export async function callPhrase(
     });
 }
 
-export function getUniqueNameForFile(relativePath: string) {
-  return relativePath
+export function getUniqueNameForFile(loadedTranslation: LoadedTranslation) {
+  return loadedTranslation.relativePath
     .replace(/^src\//, '')
     .replace(/\.translations\.json$/, '')
     .replace(/\//g, '_');
+}
+
+export async function ensureBranch(branch: string) {
+  await callPhrase(`branches`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: branch }),
+  });
+  trace('Created branch:', branch);
 }

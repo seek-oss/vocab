@@ -10,7 +10,8 @@
       "index.ts",
       "loader.ts",
       "node.ts",
-      "web.ts"
+      "web.ts",
+      "chunk-name.ts"
     ]
   },
   "dependencies": {
