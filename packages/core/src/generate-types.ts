@@ -112,7 +112,7 @@ function serialiseTranslationTypes(
 
   return `
   ${Array.from(imports).join('\n')}
-  import { TranslationFile } from '@vocab/cli';
+  import { TranslationFile } from '@vocab/core';
 
   declare const translations: TranslationFile<${serialiseObjectToType(
     translationsType,

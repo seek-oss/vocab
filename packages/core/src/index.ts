@@ -6,3 +6,4 @@ export {
   loadAllTranslations,
   getAltLanguageFilePath,
 } from './utils';
+export type { TranslationFile } from '@vocab/types';
