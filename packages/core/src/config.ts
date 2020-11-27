@@ -23,6 +23,7 @@ const schema = {
     },
   },
   translationsDirname: { type: 'string', optional: true },
+  projectRoot: { type: 'string', optional: true },
 };
 const checkConfigFile = validator.compile(schema);
 
@@ -91,20 +92,44 @@ export function validateConfig(c: UserConfig) {
       );
     }
   }
+
+  return true;
 }
 
-export async function resolveConfig(customConfigFilePath?: string) {
+function createConfig(configFilePath: string) {
+  const cwd = path.dirname(configFilePath);
+
+  return {
+    projectRoot: cwd,
+    ...(require(configFilePath as string) as UserConfig),
+  };
+}
+
+export async function resolveConfig(
+  customConfigFilePath?: string,
+): Promise<UserConfig | null> {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
     : await findUp('vocab.config.js');
 
   if (configFilePath) {
-    const cwd = path.dirname(configFilePath);
+    return createConfig(configFilePath);
+  }
 
-    return {
-      projectRoot: cwd,
-      ...(require(configFilePath as string) as UserConfig),
-    };
+  return null;
+}
+
+export function resolveConfigSync(
+  customConfigFilePath?: string,
+): UserConfig | null {
+  const configFilePath = customConfigFilePath
+    ? path.resolve(customConfigFilePath)
+    : findUp.sync('vocab.config.js');
+
+  if (configFilePath) {
+    if (configFilePath) {
+      return createConfig(configFilePath);
+    }
   }
 
   return null;

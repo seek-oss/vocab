@@ -12,7 +12,6 @@
     "@types/env-ci": "^3.1.0",
     "@vocab/core": "^0.0.1",
     "@vocab/phrase": "^0.0.1",
-    "@vocab/utils": "^0.0.5",
     "env-ci": "^5.0.2",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",

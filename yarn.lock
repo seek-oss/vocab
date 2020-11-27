@@ -2190,10 +2190,10 @@
     "@typescript-eslint/types" "4.8.1"
     eslint-visitor-keys "^2.0.0"
 
-"@vocab/utils@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@vocab/utils/-/utils-0.0.5.tgz#74149a2a0e2e3ced36c29898bae3e58c99b09d39"
-  integrity sha512-wWODN5D5CG3ztsMQX8JWsoTB5uyz1sEhAk9CL59/sG2Jxe/rd4Sf6sVY0qsOwgLCY018xOsDZLXvWTLDzCGzQQ==
+"@vocab/utils@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@vocab/utils/-/utils-0.0.6.tgz#b5bfba9e35f202ac1f48988b4c0dcc827e1db70c"
+  integrity sha512-L0tiRQfibflKqrJ7o68ZK64YVDL9jnSEhVS3cILNJnXWoIOB9vrttUtv0H2bZTzxhUonMRzsFiY713k9Ioe4tg==
   dependencies:
     chalk "^4.1.0"
     fast-glob "^3.2.4"

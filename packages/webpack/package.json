@@ -8,12 +8,14 @@
   "preconstruct": {
     "entrypoints": [
       "index.ts",
+      "loader.ts",
       "node.ts",
       "web.ts"
     ]
   },
   "dependencies": {
     "@vocab/core": "^0.0.1",
+    "@vocab/types": "^0.0.2",
     "@vocab/unloader": "^0.0.1",
     "@vocab/utils": "^0.0.6",
     "intl-messageformat": "^9.3.18",

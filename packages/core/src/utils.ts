@@ -76,10 +76,6 @@ export function getLanguageHierarcy({
   return hierarchyMap;
 }
 
-export function getChunkName(lang: string) {
-  return `${lang}-translations`;
-}
-
 export function getAltLanguageFilePath(
   filePath: string,
   language: string,
@@ -186,7 +182,7 @@ export function loadTranslation(
   const devTranslation = require(filePath);
 
   languageSet.set(userConfig.devLanguage, devTranslation);
-  const altLanguages = userConfig.devLanguage;
+  const altLanguages = getAltLanguages(userConfig);
   for (const lang of altLanguages) {
     languageSet.set(
       lang,
