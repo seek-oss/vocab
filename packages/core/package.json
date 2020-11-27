@@ -1,12 +1,12 @@
 {
   "name": "@vocab/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/vocab-core.cjs.js",
   "module": "dist/vocab-core.esm.js",
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {
-    "@vocab/types": "^0.0.2",
+    "@vocab/types": "^0.0.3",
     "chalk": "^4.1.0",
     "fast-glob": "^3.2.4",
     "fastest-validator": "^1.9.0",

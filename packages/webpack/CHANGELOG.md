@@ -1,5 +1,17 @@
 # @vocab/webpack
 
+## 0.0.9
+
+### Patch Changes
+
+- [`4710f34`](https://github.com/seek-oss/vocab/commit/4710f341f2827643e3eff69ef7e26d44ec6e8a2b) [#8](https://github.com/seek-oss/vocab/pull/8) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Convert from webpack loader to plugin
+
+  The plugin supports passing custom config options as well as resolving `vocab.config.js`.
+
+- Updated dependencies [[`4710f34`](https://github.com/seek-oss/vocab/commit/4710f341f2827643e3eff69ef7e26d44ec6e8a2b), [`4710f34`](https://github.com/seek-oss/vocab/commit/4710f341f2827643e3eff69ef7e26d44ec6e8a2b)]:
+  - @vocab/types@0.0.3
+  - @vocab/core@0.0.2
+
 ## 0.0.8
 
 ### Patch Changes
