@@ -17,9 +17,9 @@ interface TranslationsValue {
   language: Language;
 }
 
-export const TranslationsContext = React.createContext<
-  TranslationsValue | undefined
->(undefined);
+const TranslationsContext = React.createContext<TranslationsValue | undefined>(
+  undefined,
+);
 
 export const TranslationsProvider: FunctionComponent<TranslationsValue> = ({
   children,
@@ -39,11 +39,15 @@ export const useLanguage = (): Language => {
   }
   return context.language;
 };
-type TranslationItem = { message: string; params?: Record<string, any> };
+type TranslationItem = {
+  message: string;
+  params?: Record<string, any>;
+  returnType: string | ReactNode;
+};
 
 type BaseTranslation = Record<string, TranslationItem>;
 
-const SERVER_RENDERING = false;
+const SERVER_RENDERING = typeof window === 'undefined';
 
 type TranslateFn<Translations extends BaseTranslation> = {
   <TranslationKey extends keyof Translations>(
@@ -51,12 +55,12 @@ type TranslateFn<Translations extends BaseTranslation> = {
     params: Translations[TranslationKey]['params'] extends Record<string, any>
       ? Translations[TranslationKey]['params']
       : Record<string, unknown>,
-  ): ReactNode;
+  ): Translations[TranslationKey]['returnType'];
   <TranslationKey extends keyof Translations>(
     key: Translations[TranslationKey]['params'] extends Record<string, any>
       ? never
       : TranslationKey,
-  ): ReactNode;
+  ): Translations[TranslationKey]['returnType'];
 };
 
 export function useTranslation<Translations extends BaseTranslation>(
@@ -78,13 +82,13 @@ export function useTranslation<Translations extends BaseTranslation>(
       forceRender();
     });
     trace('useTranslation', 'returning not ready');
-    return { t: () => ' ' as ReactNode, ready: false };
+    return { t: () => ' ', ready: false };
   }
 
   function t<TranslationKey extends keyof Translations>(
     key: TranslationKey,
     params?: Translations[TranslationKey]['params'],
-  ): ReactNode {
+  ) {
     if (!translationsObject?.[key]) {
       trace('useTranslation', 't', 'Missing value', key);
       return null;

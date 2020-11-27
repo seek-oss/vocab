@@ -19,6 +19,22 @@ import { LanguageTarget } from '@vocab/types';
 
 type ICUParams = { [key: string]: string };
 
+interface TranslationTypeInfo {
+  params: ICUParams;
+  message: string;
+  returnType: string;
+}
+
+function extractHasTags(ast: MessageFormatElement[]): boolean {
+  return ast.some((element) => {
+    if (isSelectElement(element)) {
+      const children = Object.values(element.options).map((o) => o.value);
+      return children.some((child) => extractHasTags(child));
+    }
+    return isTagElement(element);
+  });
+}
+
 function extractParamTypes(
   ast: MessageFormatElement[],
 ): [params: ICUParams, imports: Set<string>] {
@@ -61,12 +77,6 @@ function extractParamTypes(
   return [params, imports];
 }
 
-function parseParamType(icuString: string) {
-  const ast = parse(icuString);
-
-  return extractParamTypes(ast);
-}
-
 function serialiseObjectToType(v: any) {
   let result = '';
 
@@ -82,7 +92,7 @@ function serialiseObjectToType(v: any) {
 }
 
 function serialiseTranslationTypes(
-  value: Map<string, { params: ICUParams; message: string }>,
+  value: Map<string, TranslationTypeInfo>,
   imports: Set<string>,
 ) {
   const translationsType: any = {};
@@ -133,10 +143,7 @@ export async function generateTypes({
     const { languages: loadedLanguages, filePath } = loadedTranslation;
 
     trace('Generating types for', loadedTranslation.filePath);
-    const translationTypes = new Map<
-      string,
-      { params: ICUParams; message: string }
-    >();
+    const translationTypes = new Map<string, TranslationTypeInfo>();
 
     const translationFileKeys = getTranslationKeys(loadedTranslation, {
       devLanguage,
@@ -146,12 +153,15 @@ export async function generateTypes({
     for (const key of translationFileKeys) {
       let params: ICUParams = {};
       const messages = [];
+      let hasTags = false;
 
       for (const translatedLanguage of loadedLanguages.values()) {
         if (translatedLanguage[key]) {
-          const [parsedParams, parsedImports] = parseParamType(
-            translatedLanguage[key].message,
-          );
+          const ast = parse(translatedLanguage[key].message);
+
+          hasTags = hasTags || extractHasTags(ast);
+
+          const [parsedParams, parsedImports] = extractParamTypes(ast);
           imports = new Set([...imports, ...parsedImports]);
 
           params = {
@@ -162,7 +172,13 @@ export async function generateTypes({
         }
       }
 
-      translationTypes.set(key, { params, message: messages.join(' | ') });
+      const returnType = hasTags ? 'ReactNode' : 'string';
+
+      translationTypes.set(key, {
+        params,
+        message: messages.join(' | '),
+        returnType,
+      });
     }
 
     const prettierConfig = await prettier.resolveConfig(filePath);
