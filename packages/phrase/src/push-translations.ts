@@ -44,7 +44,7 @@ interface PushOptions {
  */
 export async function push({ branch }: PushOptions, config: UserConfig) {
   const allLanguageTranslations = await loadAllTranslations(
-    { useFallbacks: false },
+    { fallbacks: 'none' },
     config,
   );
   const allLanguages = config.languages.map((v) => v.name);

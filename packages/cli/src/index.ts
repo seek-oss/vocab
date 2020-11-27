@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { UserConfig } from '@vocab/types';
 import { pull, push } from '@vocab/phrase';
-import { resolveConfig, generateTypes } from '@vocab/core';
+import { resolveConfig, generateTypes, validate } from '@vocab/core';
 import yargs from 'yargs';
 
 import envCi from 'env-ci';
@@ -45,6 +45,16 @@ yargs(process.argv.slice(2))
     command: 'generate-types',
     handler: async () => {
       await generateTypes(config!);
+    },
+  })
+  .command({
+    command: 'validate',
+    handler: async () => {
+      const valid = await validate(config!);
+
+      if (!valid) {
+        throw new Error('Project invalid');
+      }
     },
   })
   .help()
