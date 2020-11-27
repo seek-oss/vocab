@@ -9,7 +9,7 @@ interface UserOptions extends Partial<UserConfig> {
 export default class VocabWebpackPlugin {
   options: UserConfig;
 
-  constructor({ configFile, ...rest }: UserOptions) {
+  constructor({ configFile, ...rest }: UserOptions = {}) {
     this.options = {
       ...resolveConfigSync(configFile),
       ...rest,
