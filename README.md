@@ -1,6 +1,6 @@
 # Vocab
 
-Vocab is a strongly-typed internationalisation framework for React.
+Vocab is a strongly typed internationalisation framework for React.
 
 ## Getting started
 
@@ -48,7 +48,7 @@ module.exports = {
 
 Vocab doesn't tell you how to select or change your language. You just need to tell Vocab what language to use.
 
-**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However after this changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
+**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
 
 **src/App.tsx**
 
@@ -74,7 +74,7 @@ A translation file is a JSON file consisting of a flat structure of keys, each w
 {
   "my key": {
     "message": "Hello from Vocab",
-    "decription": "An optional description to help when translating"
+    "description": "An optional description to help when translating"
   }
 }
 ```
@@ -95,7 +95,7 @@ function MyComponent({ children }) {
 
 ### Step 5: Create translations
 
-So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually, however you can also integrate with a remote translation platform to push and pull translations automatically.
+So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically.
 
 **./\_\_translations\_\_/translations.fr-FR.json**
 
