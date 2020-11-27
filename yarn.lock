@@ -2190,16 +2190,6 @@
     "@typescript-eslint/types" "4.8.1"
     eslint-visitor-keys "^2.0.0"
 
-"@vocab/utils@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@vocab/utils/-/utils-0.0.6.tgz#b5bfba9e35f202ac1f48988b4c0dcc827e1db70c"
-  integrity sha512-L0tiRQfibflKqrJ7o68ZK64YVDL9jnSEhVS3cILNJnXWoIOB9vrttUtv0H2bZTzxhUonMRzsFiY713k9Ioe4tg==
-  dependencies:
-    chalk "^4.1.0"
-    fast-glob "^3.2.4"
-    fastest-validator "^1.9.0"
-    find-up "^5.0.0"
-
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"

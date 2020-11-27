@@ -15,7 +15,7 @@ import {
 import prettier from 'prettier';
 
 import { trace } from './logger';
-import { LanguageTarget } from '@vocab/types';
+import { UserConfig } from '@vocab/types';
 
 type ICUParams = { [key: string]: string };
 
@@ -97,12 +97,13 @@ function serialiseTranslationTypes(
 ) {
   const translationsType: any = {};
 
-  for (const [key, { params }] of value.entries()) {
+  for (const [key, { params, returnType }] of value.entries()) {
     const translationKeyType: any = {};
 
     if (Object.keys(params).length > 0) {
       translationKeyType.params = params;
     }
+    translationKeyType.returnType = returnType;
 
     translationKeyType.message = 'string';
 
@@ -120,24 +121,9 @@ function serialiseTranslationTypes(
   export default translations;`;
 }
 
-export async function generateTypes({
-  projectRoot,
-  devLanguage,
-  languages,
-  translationsDirname,
-}: {
-  projectRoot?: string;
-  devLanguage: string;
-  languages: Array<LanguageTarget>;
-  translationsDirname: string;
-}) {
+export async function generateTypes(config: UserConfig) {
   const useFallbacks = true;
-  const translations = await loadAllTranslations(useFallbacks, {
-    projectRoot,
-    devLanguage,
-    languages,
-    translationsDirname,
-  });
+  const translations = await loadAllTranslations(useFallbacks, config);
 
   for (const loadedTranslation of translations) {
     const { languages: loadedLanguages, filePath } = loadedTranslation;
@@ -145,9 +131,7 @@ export async function generateTypes({
     trace('Generating types for', loadedTranslation.filePath);
     const translationTypes = new Map<string, TranslationTypeInfo>();
 
-    const translationFileKeys = getTranslationKeys(loadedTranslation, {
-      devLanguage,
-    });
+    const translationFileKeys = getTranslationKeys(loadedTranslation, config);
     let imports = new Set<string>();
 
     for (const key of translationFileKeys) {

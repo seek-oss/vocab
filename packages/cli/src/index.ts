@@ -1,6 +1,51 @@
-// Please implement me
+/* eslint-disable no-console */
+import type { UserConfig } from '@vocab/types';
+import { pull, push } from '@vocab/phrase';
+import { resolveConfig, generateTypes } from '@vocab/core';
+import yargs from 'yargs';
 
-// eslint-disable-next-line no-console
-console.error(
-  '@vocab/cli has been removed. It will be back... but next time, it will work!',
-);
+import envCi from 'env-ci';
+
+const { branch } = envCi();
+
+const branchDefinition = {
+  type: 'string',
+  describe: 'The Phrase branch to target',
+  default: branch || 'local-development',
+} as const;
+
+let config: UserConfig | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+yargs(process.argv.slice(2))
+  .scriptName('vocab')
+  .option('config', {
+    type: 'string',
+    describe: 'Path to config file',
+  })
+  .middleware(async ({ config: configPath }) => {
+    config = await resolveConfig(configPath);
+    console.log('Loaded config from', configPath || process.cwd());
+  })
+  .command({
+    command: 'push',
+    builder: () => yargs.options({ branch: branchDefinition }),
+    handler: async (options) => {
+      await push(options, config!);
+    },
+  })
+  .command({
+    command: 'pull',
+    builder: () => yargs.options({ branch: branchDefinition }),
+    handler: async (options) => {
+      await pull(options, config!);
+    },
+  })
+  .command({
+    command: 'generate-types',
+    handler: async () => {
+      await generateTypes(config!);
+    },
+  })
+  .help()
+  .wrap(72).argv;
