@@ -1,5 +1,3 @@
-[![npm](https://img.shields.io/npm/v/@vocab/core.svg?style=for-the-badge)](https://www.npmjs.com/package/@vocab/core)
-
 # Vocab
 
 Vocab is a strongly-typed internationalisation framework for React.
@@ -110,7 +108,7 @@ So far your app will run, but you're missing any translations other than the ini
 }
 ```
 
-### Step 6: Optimize for fast loads
+### Step 6: Optimize for fast page loading
 
 Using the above method without optimizing what chunks webpack uses you may find the page needing to do an extra round trip to load languages on a page.
 
@@ -164,9 +162,9 @@ $ vocab generate-types
 
 Vocab can be used to syncronize your translations with translations from a remote translation platform.
 
-| Platform                                     | Status   | Environment Variables               |
-| -------------------------------------------- | -------- | ----------------------------------- |
-| [Phrase](https://developers.phrase.com/api/) | Complete | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
+| Platform                                     | Environment Variables               |
+| -------------------------------------------- | ----------------------------------- |
+| [Phrase](https://developers.phrase.com/api/) | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
 
 ```bash
 $ vocab push --branch my-branch
