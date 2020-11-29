@@ -22,7 +22,7 @@ function createIdentifier(
   config: UserConfig,
 ) {
   const loadedTranslation = loadTranslation(
-    { filePath: resourcePath, useFallbacks: true },
+    { filePath: resourcePath, fallbacks: 'all' },
     config,
   );
 

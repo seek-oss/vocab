@@ -13,6 +13,8 @@ import type {
 
 const defaultTranslationDirname = '__translations__';
 
+type Fallback = 'none' | 'valid' | 'all';
+
 export { resolveConfig };
 
 export function getAltLanguages({
@@ -118,29 +120,36 @@ function loadAltLanguageFile(
     filePath,
     languageName,
     devTranslation,
-    useFallbacks,
+    fallbacks,
   }: {
     filePath: string;
     languageName: string;
     devTranslation: TranslationsByLanguage;
-    useFallbacks: boolean;
+    fallbacks: Fallback;
   },
   { devLanguage, languages, translationsDirname }: UserConfig,
 ) {
   const result = {};
-  if (useFallbacks) {
-    Object.assign(result, devTranslation);
-  }
 
-  const langHierarchy = useFallbacks
-    ? getLanguageHierarcy({ languages }).get(languageName)
-    : [];
+  const languageHierarchy = getLanguageHierarcy({ languages }).get(
+    languageName,
+  );
 
-  if (!langHierarchy) {
+  if (!languageHierarchy) {
     throw new Error(`Missing language hierarchy for ${languageName}`);
   }
 
-  for (const fallbackLang of [...langHierarchy, languageName]) {
+  const fallbackLanguages: Array<string> = [languageName];
+
+  if (fallbacks !== 'none') {
+    fallbackLanguages.unshift(...languageHierarchy);
+
+    if (fallbacks === 'all' && fallbackLanguages[0] !== devLanguage) {
+      fallbackLanguages.unshift(devLanguage);
+    }
+  }
+
+  for (const fallbackLang of fallbackLanguages) {
     if (fallbackLang !== devLanguage) {
       try {
         const altFilePath = getAltLanguageFilePath(filePath, fallbackLang, {
@@ -162,6 +171,8 @@ function loadAltLanguageFile(
           }),
         );
       }
+    } else {
+      Object.assign(result, devTranslation);
     }
   }
 
@@ -171,10 +182,10 @@ function loadAltLanguageFile(
 export function loadTranslation(
   {
     filePath,
-    useFallbacks,
+    fallbacks,
   }: {
     filePath: string;
-    useFallbacks: boolean;
+    fallbacks: Fallback;
   },
   userConfig: UserConfig,
 ): LoadedTranslation {
@@ -193,7 +204,7 @@ export function loadTranslation(
           filePath,
           languageName,
           devTranslation,
-          useFallbacks,
+          fallbacks,
         },
         userConfig,
       ),
@@ -211,9 +222,9 @@ export function loadTranslation(
 }
 
 export async function loadAllTranslations(
-  { useFallbacks }: { useFallbacks: boolean },
+  { fallbacks }: { fallbacks: Fallback },
   { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
-) {
+): Promise<Array<LoadedTranslation>> {
   const translationFiles = await glob('**/*.translations.json', {
     absolute: true,
     cwd: projectRoot,
@@ -221,7 +232,7 @@ export async function loadAllTranslations(
   return Promise.all(
     translationFiles.map((filePath) =>
       loadTranslation(
-        { filePath, useFallbacks },
+        { filePath, fallbacks },
         {
           devLanguage,
           languages,

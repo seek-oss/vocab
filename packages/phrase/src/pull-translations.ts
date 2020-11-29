@@ -45,7 +45,7 @@ export async function pull(
   const uniqueNames = new Set();
 
   const allVocabTranslations = await loadAllTranslations(
-    { useFallbacks: false },
+    { fallbacks: 'none' },
     config,
   );
 
