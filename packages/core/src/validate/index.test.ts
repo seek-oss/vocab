@@ -13,6 +13,8 @@ const testCases: Array<TestCase> = [
   {
     loadedTranslation: {
       filePath: 'some-file.json',
+      namespace: 'some-file',
+      keys: ['key1', 'key2'],
       relativePath: 'some-file.json',
       languages: new Map([
         ['en', { key1: { message: 'Hi' } }],
@@ -27,6 +29,8 @@ const testCases: Array<TestCase> = [
     loadedTranslation: {
       filePath: 'some-file.json',
       relativePath: 'some-file.json',
+      namespace: 'some-file-2',
+      keys: ['key1'],
       // @ts-expect-error
       languages: new Map([
         ['en', { key1: { message: 'Hi' } }],

@@ -1,10 +1,9 @@
 import FormData from 'form-data';
 
-import { callPhrase, ensureBranch, getUniqueNameForFile } from './phrase-api';
+import { callPhrase, ensureBranch } from './phrase-api';
 import { trace } from './logger';
-import { loadAllTranslations } from '@vocab/core';
+import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
-import { getPhraseKey } from './utils';
 
 interface TranslationFile {
   [k: string]: { message: string; description?: string };
@@ -51,16 +50,8 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
   await ensureBranch(branch);
 
   const phraseTranslations: Record<string, TranslationFile> = {};
-  const uniqueNames = new Set();
 
   for (const loadedTranslation of allLanguageTranslations) {
-    const uniqueName = getUniqueNameForFile(loadedTranslation);
-    if (uniqueNames.has(uniqueName)) {
-      throw new Error(
-        `Duplicate unique names found. Improve name hashing algorthym. Hash: "${uniqueName}"`,
-      );
-    }
-    uniqueNames.add(uniqueName);
     for (const language of allLanguages) {
       const localTranslations = loadedTranslation.languages.get(language);
       if (!localTranslations) {
@@ -70,10 +61,7 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
         phraseTranslations[language] = {};
       }
       for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = getPhraseKey(localKey, uniqueName);
-        if (phraseTranslations[language][phraseKey]) {
-          throw new Error(`Duplicate key found. Key "${phraseKey}"`);
-        }
+        const phraseKey = getUniqueKey(localKey, loadedTranslation.namespace);
         phraseTranslations[language][phraseKey] = localTranslations[localKey];
       }
     }

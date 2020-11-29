@@ -42,16 +42,18 @@ export interface UserConfig {
 
 export type LanguageName = string;
 
-export type TranslationsByLanguage = Record<
-  string,
+export type TranslationsByLanguage<Key extends string = string> = Record<
+  Key,
   {
     message: string;
     description?: string;
   }
 >;
 
-export type LoadedTranslation = {
+export type LoadedTranslation<Key extends string = string> = {
+  namespace: string;
+  keys: Array<Key>;
   filePath: string;
   relativePath: string;
-  languages: Map<LanguageName, TranslationsByLanguage>;
+  languages: Map<LanguageName, TranslationsByLanguage<Key>>;
 };
