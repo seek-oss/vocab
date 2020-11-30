@@ -268,16 +268,3 @@ export async function loadAllTranslations(
   }
   return result;
 }
-
-export function getTranslationKeys(
-  translation: LoadedTranslation,
-  { devLanguage }: { devLanguage: LanguageName },
-) {
-  const language = translation.languages.get(devLanguage);
-
-  if (!language) {
-    throw new Error('No default language loaded');
-  }
-
-  return Object.keys(language);
-}
