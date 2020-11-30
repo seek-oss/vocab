@@ -9,6 +9,7 @@ import type {
   TranslationsByLanguage,
   UserConfig,
 } from '@vocab/types';
+import debug from './logger';
 
 const defaultTranslationDirname = '__translations__';
 
@@ -169,13 +170,14 @@ function loadAltLanguageFile(
           mergeWithDevLanguage(translationFile, devTranslation),
         );
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(
-          'Missing alt language file',
-          getAltLanguageFilePath(filePath, fallbackLang, {
+        debug(`Missing alt language file ${getAltLanguageFilePath(
+          filePath,
+          fallbackLang,
+          {
             translationsDirname,
-          }),
-        );
+          },
+        )}
+        `);
       }
     } else {
       Object.assign(result, devTranslation);
@@ -202,6 +204,10 @@ export function loadTranslation(
   },
   userConfig: UserConfig,
 ): LoadedTranslation {
+  debug(
+    `Loading translation file in "${fallbacks}" fallback mode: "${filePath}"`,
+  );
+
   const languageSet = new Map();
 
   delete require.cache[filePath];
@@ -247,6 +253,9 @@ export async function loadAllTranslations(
     absolute: true,
     cwd: projectRoot,
   });
+
+  debug(`Found ${translationFiles.length} translation files`);
+
   const result = await Promise.all(
     translationFiles.map((filePath) =>
       loadTranslation(
