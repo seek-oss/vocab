@@ -1,5 +1,14 @@
 # @vocab/react
 
+## 0.0.6
+
+### Patch Changes
+
+- [`26b52f4`](https://github.com/seek-oss/vocab/commit/26b52f4878ded440841e08c858bdc9e685500c2a) [#16](https://github.com/seek-oss/vocab/pull/16) Thanks [@jahredhope](https://github.com/jahredhope)! - Enable debugging with DEBUG environment variable
+
+- Updated dependencies [[`08de30d`](https://github.com/seek-oss/vocab/commit/08de30d338c2a5ebdcf14da7c736dddf22e7ca9e)]:
+  - @vocab/types@0.0.4
+
 ## 0.0.5
 
 ### Patch Changes

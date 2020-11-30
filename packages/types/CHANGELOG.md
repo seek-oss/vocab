@@ -1,5 +1,11 @@
 # @vocab/types
 
+## 0.0.4
+
+### Patch Changes
+
+- [`08de30d`](https://github.com/seek-oss/vocab/commit/08de30d338c2a5ebdcf14da7c736dddf22e7ca9e) [#14](https://github.com/seek-oss/vocab/pull/14) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Add ability to override files namespace with \$namespace
+
 ## 0.0.3
 
 ### Patch Changes

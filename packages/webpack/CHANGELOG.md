@@ -1,5 +1,19 @@
 # @vocab/webpack
 
+## 0.0.10
+
+### Patch Changes
+
+- [`08de30d`](https://github.com/seek-oss/vocab/commit/08de30d338c2a5ebdcf14da7c736dddf22e7ca9e) [#14](https://github.com/seek-oss/vocab/pull/14) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Only add neccesary data to translation build output
+
+* [`26b52f4`](https://github.com/seek-oss/vocab/commit/26b52f4878ded440841e08c858bdc9e685500c2a) [#16](https://github.com/seek-oss/vocab/pull/16) Thanks [@jahredhope](https://github.com/jahredhope)! - Enable debugging with DEBUG environment variable
+
+- [`e4b5faa`](https://github.com/seek-oss/vocab/commit/e4b5faacf1381892bcdb68ac3f0c178263d810aa) [#10](https://github.com/seek-oss/vocab/pull/10) Thanks [@jahredhope](https://github.com/jahredhope)! - Allow no parameters in Webpack plugin
+
+- Updated dependencies [[`08de30d`](https://github.com/seek-oss/vocab/commit/08de30d338c2a5ebdcf14da7c736dddf22e7ca9e), [`ed6cf40`](https://github.com/seek-oss/vocab/commit/ed6cf408973f2e9c4d07a71fcb52f40294ebaf65), [`26b52f4`](https://github.com/seek-oss/vocab/commit/26b52f4878ded440841e08c858bdc9e685500c2a), [`b5a5a05`](https://github.com/seek-oss/vocab/commit/b5a5a05a5bb87b48e6e9160af75f555728143ea2)]:
+  - @vocab/core@0.0.3
+  - @vocab/types@0.0.4
+
 ## 0.0.9
 
 ### Patch Changes
