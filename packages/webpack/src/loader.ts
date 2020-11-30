@@ -1,12 +1,17 @@
 import path from 'path';
 
-import { UserConfig } from '@vocab/types';
+import {
+  LoadedTranslation,
+  UserConfig,
+  RawJsonTranslations,
+} from '@vocab/types';
 import {
   getAltLanguageFilePath,
   getAltLanguages,
   loadTranslation,
 } from '@vocab/core';
 import { getOptions } from 'loader-utils';
+
 import { getChunkName } from './chunk-name';
 
 interface LoaderContext {
@@ -19,14 +24,15 @@ interface LoaderContext {
 function createIdentifier(
   lang: string,
   resourcePath: string,
-  config: UserConfig,
+  loadedTranslation: LoadedTranslation,
 ) {
-  const loadedTranslation = loadTranslation(
-    { filePath: resourcePath, fallbacks: 'all' },
-    config,
-  );
+  const languageTranslations = loadedTranslation.languages.get(lang) ?? {};
 
-  const langJson = loadedTranslation.languages.get(lang);
+  const langJson: RawJsonTranslations = {};
+
+  for (const key of loadedTranslation.keys) {
+    langJson[key] = languageTranslations[key].message;
+  }
 
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
     'base64',
@@ -38,28 +44,26 @@ function createIdentifier(
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
 }
 
-function renderLanguageLoaderAsync(
-  lang: string,
+const renderLanguageLoaderAsync = (
   resourcePath: string,
-  config: UserConfig,
-) {
-  const identifier = createIdentifier(lang, resourcePath, config);
+  loadedTranslation: LoadedTranslation,
+) => (lang: string) => {
+  const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ), '${lang}')`;
-}
+};
 
-function renderLanguageLoaderSync(
-  lang: string,
+const renderLanguageLoaderSync = (
   resourcePath: string,
-  config: UserConfig,
-) {
-  const identifier = createIdentifier(lang, resourcePath, config);
+  loadedTranslation: LoadedTranslation,
+) => (lang: string) => {
+  const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
   return `${lang}: createLanguage(require('${identifier}'), '${lang}')`;
-}
+};
 
 export default async function vocabLoader(this: LoaderContext) {
   const callback = this.async();
@@ -76,9 +80,16 @@ export default async function vocabLoader(this: LoaderContext) {
     this.addDependency(getAltLanguageFilePath(this.resourcePath, lang, config));
   }
 
+  const loadedTranslation = loadTranslation(
+    { filePath: this.resourcePath, fallbacks: 'all' },
+    config,
+  );
+
   const target = this.target;
   const renderLanguageLoader =
-    target === 'web' ? renderLanguageLoaderAsync : renderLanguageLoaderSync;
+    target === 'web'
+      ? renderLanguageLoaderAsync(this.resourcePath, loadedTranslation)
+      : renderLanguageLoaderSync(this.resourcePath, loadedTranslation);
 
   callback(
     null,
@@ -87,11 +98,9 @@ export default async function vocabLoader(this: LoaderContext) {
 
     export default {
       __DO_NOT_USE__: {
-        ${renderLanguageLoader(config.devLanguage, this.resourcePath, config)},
+        ${renderLanguageLoader(config.devLanguage)},
         ${altLanguages
-          .map((altLanguage) =>
-            renderLanguageLoader(altLanguage, this.resourcePath, config),
-          )
+          .map((altLanguage) => renderLanguageLoader(altLanguage))
           .join(',')}
       }
     };

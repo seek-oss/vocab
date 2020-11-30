@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-import { getTranslationKeys, loadAllTranslations } from './utils';
+import { loadAllTranslations } from './utils';
 import {
   isArgumentElement,
   isDateElement,
@@ -130,10 +130,9 @@ export async function generateTypes(config: UserConfig) {
     trace('Generating types for', loadedTranslation.filePath);
     const translationTypes = new Map<string, TranslationTypeInfo>();
 
-    const translationFileKeys = getTranslationKeys(loadedTranslation, config);
     let imports = new Set<string>();
 
-    for (const key of translationFileKeys) {
+    for (const key of loadedTranslation.keys) {
       let params: ICUParams = {};
       const messages = [];
       let hasTags = false;

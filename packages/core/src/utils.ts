@@ -2,7 +2,6 @@ import path from 'path';
 
 import glob from 'fast-glob';
 
-import { resolveConfig } from './config';
 import type {
   LanguageName,
   LanguageTarget,
@@ -15,7 +14,9 @@ const defaultTranslationDirname = '__translations__';
 
 type Fallback = 'none' | 'valid' | 'all';
 
-export { resolveConfig };
+export function getUniqueKey(key: string, namespace: string) {
+  return `${key}.${namespace}`;
+}
 
 export function getAltLanguages({
   devLanguage,
@@ -179,6 +180,13 @@ function loadAltLanguageFile(
   return result;
 }
 
+function getNamespaceByFilePath(relativePath: string) {
+  return relativePath
+    .replace(/^src\//, '')
+    .replace(/\.translations\.json$/, '')
+    .replace(/\//g, '_');
+}
+
 export function loadTranslation(
   {
     filePath,
@@ -192,7 +200,13 @@ export function loadTranslation(
   const languageSet = new Map();
 
   delete require.cache[filePath];
-  const devTranslation = require(filePath);
+  const translationContent = require(filePath);
+  const relativePath = path.relative(
+    userConfig.projectRoot || process.cwd(),
+    filePath,
+  );
+  const { $namespace, ...devTranslation } = translationContent;
+  const namespace = $namespace || getNamespaceByFilePath(relativePath);
 
   languageSet.set(userConfig.devLanguage, devTranslation);
   const altLanguages = getAltLanguages(userConfig);
@@ -213,10 +227,9 @@ export function loadTranslation(
 
   return {
     filePath,
-    relativePath: path.relative(
-      userConfig.projectRoot || process.cwd(),
-      filePath,
-    ),
+    keys: Object.keys(devTranslation),
+    namespace,
+    relativePath,
     languages: languageSet,
   };
 }
@@ -229,7 +242,7 @@ export async function loadAllTranslations(
     absolute: true,
     cwd: projectRoot,
   });
-  return Promise.all(
+  const result = await Promise.all(
     translationFiles.map((filePath) =>
       loadTranslation(
         { filePath, fallbacks },
@@ -241,17 +254,17 @@ export async function loadAllTranslations(
       ),
     ),
   );
-}
-
-export function getTranslationKeys(
-  translation: LoadedTranslation,
-  { devLanguage }: { devLanguage: LanguageName },
-) {
-  const language = translation.languages.get(devLanguage);
-
-  if (!language) {
-    throw new Error('No default language loaded');
+  const keys = new Set();
+  for (const loadedTranslation of result) {
+    for (const key of loadedTranslation.keys) {
+      const uniqueKey = getUniqueKey(key, loadedTranslation.namespace);
+      if (keys.has(uniqueKey)) {
+        throw new Error(
+          `Duplicate keys found. Key with namespace ${loadedTranslation.namespace} and key ${key} was found multiple times.`,
+        );
+      }
+      keys.add(uniqueKey);
+    }
   }
-
-  return Object.keys(language);
+  return result;
 }

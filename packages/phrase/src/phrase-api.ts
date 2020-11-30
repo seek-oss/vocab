@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { LoadedTranslation } from '@vocab/types';
 import fetch from 'node-fetch';
 import { trace } from './logger';
 
@@ -88,13 +87,6 @@ export async function callPhrase(
       console.error(`Error calling phrase for ${relativePath}:`, error);
       throw Error;
     });
-}
-
-export function getUniqueNameForFile(loadedTranslation: LoadedTranslation) {
-  return loadedTranslation.relativePath
-    .replace(/^src\//, '')
-    .replace(/\.translations\.json$/, '')
-    .replace(/\//g, '_');
 }
 
 export async function ensureBranch(branch: string) {

@@ -5,6 +5,7 @@ import {
   loadAllTranslations,
   getAltLanguageFilePath,
   getAltLanguages,
+  getUniqueKey,
 } from '@vocab/core';
 import type {
   UserConfig,
@@ -12,8 +13,7 @@ import type {
   TranslationsByLanguage,
 } from '@vocab/types';
 
-import { callPhrase, ensureBranch, getUniqueNameForFile } from './phrase-api';
-import { getPhraseKey } from './utils';
+import { callPhrase, ensureBranch } from './phrase-api';
 
 async function getAllTranslationsFromPhrase(
   branch: string,
@@ -42,7 +42,6 @@ export async function pull(
   await ensureBranch(branch);
   const alternativeLanguages = getAltLanguages(config);
   const allPhraseTranslations = await getAllTranslationsFromPhrase(branch);
-  const uniqueNames = new Set();
 
   const allVocabTranslations = await loadAllTranslations(
     { fallbacks: 'none' },
@@ -50,14 +49,6 @@ export async function pull(
   );
 
   for (const loadedTranslation of allVocabTranslations) {
-    const uniqueName = getUniqueNameForFile(loadedTranslation);
-    if (uniqueNames.has(uniqueName)) {
-      throw new Error(
-        'Duplicate unique names found. Improve name hasing algorthym',
-      );
-    }
-    uniqueNames.add(uniqueName);
-
     const devTranslations = loadedTranslation.languages.get(config.devLanguage);
 
     if (!devTranslations) {
@@ -71,7 +62,7 @@ export async function pull(
       defaultValues[key] = {
         ...defaultValues[key],
         ...allPhraseTranslations[config.devLanguage][
-          getPhraseKey(key, uniqueName)
+          getUniqueKey(key, loadedTranslation.namespace)
         ],
       };
     }
@@ -87,7 +78,7 @@ export async function pull(
       const phraseAltTranslations = allPhraseTranslations[alternativeLanguage];
 
       for (const key of localKeys) {
-        const phraseKey = getPhraseKey(key, uniqueName);
+        const phraseKey = getUniqueKey(key, loadedTranslation.namespace);
         const phraseTranslationMessage =
           phraseAltTranslations[phraseKey]?.message;
 
