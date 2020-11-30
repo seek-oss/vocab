@@ -15,9 +15,7 @@ export type TranslationFile<TranslatedLanguage> = {
 };
 
 export interface RawJsonTranslations {
-  [translationKey: string]: {
-    message: string;
-  };
+  [translationKey: string]: string;
 }
 
 export interface LanguageTarget {
