@@ -1,8 +1,8 @@
-import { TranslationFile } from '@vocab/cli';
+import { TranslationFile } from '@vocab/core';
 
 declare const translations: TranslationFile<{
-  hello: { message: string };
-  world: { message: string };
+  hello: { returnType: string; message: string };
+  world: { returnType: string; message: string };
 }>;
 
 export default translations;

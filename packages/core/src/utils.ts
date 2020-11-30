@@ -12,6 +12,9 @@ import type {
 
 const defaultTranslationDirname = '__translations__';
 
+export const translationFileExtension = 'translations.json';
+export const translationFileGlob = `**/*.${translationFileExtension}`;
+
 type Fallback = 'none' | 'valid' | 'all';
 
 export function getUniqueKey(key: string, namespace: string) {
@@ -77,7 +80,9 @@ export function getAltLanguageFilePath(
   }: { translationsDirname?: string },
 ) {
   const directory = path.dirname(filePath);
-  const [fileIdentifier] = path.basename(filePath).split('.translations.json');
+  const [fileIdentifier] = path
+    .basename(filePath)
+    .split(`.${translationFileExtension}`);
 
   return path.join(
     directory,
@@ -91,7 +96,7 @@ export async function getAllTranslationFiles({
 }: {
   projectRoot?: string;
 }) {
-  const translationFiles = await glob('**/*.translations.json', {
+  const translationFiles = await glob(translationFileGlob, {
     cwd: projectRoot,
   });
 
