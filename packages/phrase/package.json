@@ -8,6 +8,8 @@
   "dependencies": {
     "@vocab/core": "^0.0.2",
     "@vocab/types": "^0.0.3",
+    "chalk": "^4.1.0",
+    "debug": "^4.3.1",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1"
   },

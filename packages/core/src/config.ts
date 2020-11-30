@@ -5,6 +5,7 @@ import chalk from 'chalk';
 import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
+import { trace } from './logger';
 
 const validator = new Validator();
 const schema = {
@@ -34,6 +35,7 @@ const splitMap = (message: string, callback: (value: string) => string) =>
     .join(' ,');
 
 export function validateConfig(c: UserConfig) {
+  trace('Validating configuration file');
   // Note: checkConfigFile mutates the config file by applying defaults
   const isValid = checkConfigFile(c);
   if (isValid !== true) {
@@ -92,7 +94,7 @@ export function validateConfig(c: UserConfig) {
       );
     }
   }
-
+  trace('Configuration file is valid');
   return true;
 }
 
@@ -113,9 +115,10 @@ export async function resolveConfig(
     : await findUp('vocab.config.js');
 
   if (configFilePath) {
+    trace(`Resolved configuration file to ${configFilePath}`);
     return createConfig(configFilePath);
   }
-
+  trace('No configuration file found');
   return null;
 }
 
@@ -127,10 +130,10 @@ export function resolveConfigSync(
     : findUp.sync('vocab.config.js');
 
   if (configFilePath) {
-    if (configFilePath) {
-      return createConfig(configFilePath);
-    }
+    trace(`Resolved configuration file to ${configFilePath}`);
+    return createConfig(configFilePath);
   }
+  trace('No configuration file found');
 
   return null;
 }

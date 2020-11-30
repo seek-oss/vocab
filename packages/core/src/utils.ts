@@ -9,7 +9,7 @@ import type {
   TranslationsByLanguage,
   UserConfig,
 } from '@vocab/types';
-import debug from './logger';
+import { trace } from './logger';
 
 const defaultTranslationDirname = '__translations__';
 
@@ -97,9 +97,11 @@ export async function getAllTranslationFiles({
 }: {
   projectRoot?: string;
 }) {
+  trace(`Looking for translation files with ${translationFileGlob}`);
   const translationFiles = await glob(translationFileGlob, {
     cwd: projectRoot,
   });
+  trace(`Found ${translationFiles.length} translation files`);
 
   return translationFiles;
 }
@@ -170,7 +172,7 @@ function loadAltLanguageFile(
           mergeWithDevLanguage(translationFile, devTranslation),
         );
       } catch (e) {
-        debug(`Missing alt language file ${getAltLanguageFilePath(
+        trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
           fallbackLang,
           {
@@ -204,7 +206,7 @@ export function loadTranslation(
   },
   userConfig: UserConfig,
 ): LoadedTranslation {
-  debug(
+  trace(
     `Loading translation file in "${fallbacks}" fallback mode: "${filePath}"`,
   );
 
@@ -218,6 +220,8 @@ export function loadTranslation(
   );
   const { $namespace, ...devTranslation } = translationContent;
   const namespace = $namespace || getNamespaceByFilePath(relativePath);
+
+  trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
   languageSet.set(userConfig.devLanguage, devTranslation);
   const altLanguages = getAltLanguages(userConfig);
@@ -254,7 +258,7 @@ export async function loadAllTranslations(
     cwd: projectRoot,
   });
 
-  debug(`Found ${translationFiles.length} translation files`);
+  trace(`Found ${translationFiles.length} translation files`);
 
   const result = await Promise.all(
     translationFiles.map((filePath) =>
