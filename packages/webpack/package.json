@@ -18,6 +18,8 @@
     "@vocab/core": "^0.0.2",
     "@vocab/types": "^0.0.3",
     "@vocab/unloader": "^0.0.1",
+    "chalk": "^4.1.0",
+    "debug": "^4.3.1",
     "intl-messageformat": "^9.3.18",
     "json-loader": "^0.5.7",
     "loader-utils": "^2.0.0"

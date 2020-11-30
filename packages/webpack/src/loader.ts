@@ -13,6 +13,7 @@ import {
 import { getOptions } from 'loader-utils';
 
 import { getChunkName } from './chunk-name';
+import { trace } from './logger';
 
 interface LoaderContext {
   addDependency: (filePath: string) => void;
@@ -66,6 +67,7 @@ const renderLanguageLoaderSync = (
 };
 
 export default async function vocabLoader(this: LoaderContext) {
+  trace(`Using vocab loader for ${this.resourcePath}`);
   const callback = this.async();
 
   if (!callback) {

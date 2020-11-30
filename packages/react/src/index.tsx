@@ -6,11 +6,6 @@ import React, {
   useReducer,
 } from 'react';
 
-const trace = (...params: unknown[]) => {
-  // eslint-disable-next-line no-console
-  console.log(...params);
-};
-
 type Language = string;
 
 interface TranslationsValue {
@@ -81,7 +76,6 @@ export function useTranslation<Translations extends BaseTranslation>(
       translationsObject = translations.__DO_NOT_USE__[language].getValue();
       forceRender();
     });
-    trace('useTranslation', 'returning not ready');
     return { t: () => ' ', ready: false };
   }
 
@@ -90,7 +84,6 @@ export function useTranslation<Translations extends BaseTranslation>(
     params?: Translations[TranslationKey]['params'],
   ) {
     if (!translationsObject?.[key]) {
-      trace('useTranslation', 't', 'Missing value', key);
       return null;
     }
 

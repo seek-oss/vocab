@@ -14,6 +14,7 @@ import type {
 } from '@vocab/types';
 
 import { callPhrase, ensureBranch } from './phrase-api';
+import { trace } from './logger';
 
 async function getAllTranslationsFromPhrase(
   branch: string,
@@ -83,8 +84,7 @@ export async function pull(
           phraseAltTranslations[phraseKey]?.message;
 
         if (!phraseTranslationMessage) {
-          // eslint-disable-next-line no-console
-          console.warn(
+          trace(
             `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
           );
           continue;

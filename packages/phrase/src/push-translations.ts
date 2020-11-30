@@ -1,7 +1,7 @@
 import FormData from 'form-data';
 
 import { callPhrase, ensureBranch } from './phrase-api';
-import { trace } from './logger';
+import { log, trace } from './logger';
 import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
 
@@ -31,7 +31,7 @@ async function uploadFile(
     method: 'POST',
     body: formData,
   });
-  trace('Successfully Uploaded:', locale_id, '\n');
+  log('Successfully Uploaded:', locale_id, '\n');
 }
 
 interface PushOptions {
@@ -46,6 +46,7 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
     { fallbacks: 'none' },
     config,
   );
+  trace(`Pushing translations to branch ${branch}`);
   const allLanguages = config.languages.map((v) => v.name);
   await ensureBranch(branch);
 
