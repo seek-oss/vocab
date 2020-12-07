@@ -172,8 +172,9 @@ export async function generateTypes(loadedTranslation: LoadedTranslation) {
     serialiseTranslationTypes(translationTypes, imports),
     { ...prettierConfig, parser: 'typescript' },
   );
-
-  await fs.writeFile(`${filePath}.d.ts`, declaration);
+  const outputFilePath = `${filePath}.d.ts`;
+  trace(`Writing translation types to ${outputFilePath}`);
+  await fs.writeFile(outputFilePath, declaration);
 }
 
 export function watchAll(
@@ -188,6 +189,7 @@ export function watchAll(
   });
 
   const onTranslationChange = async (relativePath: string) => {
+    trace(`Detected change for file ${relativePath}`);
     if (relativePath.endsWith(translationFileExtension)) {
       try {
         const loadedTranslation = await loadTranslation(
@@ -221,6 +223,7 @@ export async function generateAllTypes(
   }
 
   if (watch) {
+    trace('Listening for changes to files...');
     return watchAll(config);
   }
 }
