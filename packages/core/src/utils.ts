@@ -277,6 +277,7 @@ export async function loadAllTranslations(
     for (const key of loadedTranslation.keys) {
       const uniqueKey = getUniqueKey(key, loadedTranslation.namespace);
       if (keys.has(uniqueKey)) {
+        trace(`Duplicate keys found`);
         throw new Error(
           `Duplicate keys found. Key with namespace ${loadedTranslation.namespace} and key ${key} was found multiple times.`,
         );

@@ -50,6 +50,10 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
   const allLanguages = config.languages.map((v) => v.name);
   await ensureBranch(branch);
 
+  trace(
+    `Pushing translations to phrase for languages ${allLanguages.join(', ')}`,
+  );
+
   const phraseTranslations: Record<string, TranslationFile> = {};
 
   for (const loadedTranslation of allLanguageTranslations) {

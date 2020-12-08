@@ -11,7 +11,11 @@ export default class VocabWebpackPlugin {
   options: UserConfig;
 
   constructor({ configFile, ...rest }: UserOptions = {}) {
-    trace(`Creating Vocab plugin`);
+    trace(
+      `Creating Vocab plugin${
+        configFile ? ` with config file ${configFile}` : ''
+      }`,
+    );
     this.options = {
       ...resolveConfigSync(configFile),
       ...rest,

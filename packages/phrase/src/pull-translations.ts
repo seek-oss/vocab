@@ -40,9 +40,15 @@ export async function pull(
   { branch = 'local-development' }: PullOptions,
   config: UserConfig,
 ) {
+  trace(`Pulling translations from branch ${branch}`);
   await ensureBranch(branch);
   const alternativeLanguages = getAltLanguages(config);
   const allPhraseTranslations = await getAllTranslationsFromPhrase(branch);
+  trace(
+    `Pulling translations from Phrase for languages ${
+      config.devLanguage
+    } and ${alternativeLanguages.join(', ')}`,
+  );
 
   const allVocabTranslations = await loadAllTranslations(
     { fallbacks: 'none' },
