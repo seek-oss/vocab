@@ -31,11 +31,10 @@ const testCases: Array<TestCase> = [
       relativePath: 'some-file.json',
       namespace: 'some-file-2',
       keys: ['key1'],
-      // @ts-expect-error
-      languages: new Map([
-        ['en', { key1: { message: 'Hi' } }],
-        ['th', {}],
-      ]),
+      languages: {
+        en: { key1: { message: 'Hi' } },
+        th: {},
+      },
     },
     devLanguage: 'en',
     altLanguages: ['th'],
