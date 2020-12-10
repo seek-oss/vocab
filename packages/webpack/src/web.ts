@@ -1,4 +1,4 @@
-import { TranslationModule, RawJsonTranslations } from '@vocab/types';
+import { TranslationModule, TranslationMessagesByKey } from '@vocab/types';
 
 import { getParsedICUMessages } from './icu-handler';
 
@@ -17,7 +17,7 @@ export const createLanguage = (
       }
 
       // @ts-expect-error Missing webpack types
-      const m = __webpack_require__(moduleId) as RawJsonTranslations;
+      const m = __webpack_require__(moduleId) as TranslationMessagesByKey;
 
       return getParsedICUMessages(m, locale);
     },

@@ -58,7 +58,7 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
 
   for (const loadedTranslation of allLanguageTranslations) {
     for (const language of allLanguages) {
-      const localTranslations = loadedTranslation.languages.get(language);
+      const localTranslations = loadedTranslation.languages[language];
       if (!localTranslations) {
         continue;
       }

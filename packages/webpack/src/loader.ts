@@ -3,7 +3,7 @@ import path from 'path';
 import {
   LoadedTranslation,
   UserConfig,
-  RawJsonTranslations,
+  TranslationMessagesByKey,
 } from '@vocab/types';
 import {
   getAltLanguageFilePath,
@@ -27,9 +27,9 @@ function createIdentifier(
   resourcePath: string,
   loadedTranslation: LoadedTranslation,
 ) {
-  const languageTranslations = loadedTranslation.languages.get(lang) ?? {};
+  const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
-  const langJson: RawJsonTranslations = {};
+  const langJson: TranslationMessagesByKey = {};
 
   for (const key of loadedTranslation.keys) {
     langJson[key] = languageTranslations[key].message;

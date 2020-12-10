@@ -7,24 +7,20 @@ import {
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
-import type {
-  UserConfig,
-  LanguageName,
-  TranslationsByLanguage,
-} from '@vocab/types';
+import type { UserConfig, TranslationsByLanguage } from '@vocab/types';
 
 import { callPhrase, ensureBranch } from './phrase-api';
 import { trace } from './logger';
 
 async function getAllTranslationsFromPhrase(
   branch: string,
-): Promise<Record<LanguageName, TranslationsByLanguage>> {
+): Promise<TranslationsByLanguage> {
   const phraseResult: Array<{
     key: { name: string };
     locale: { code: string };
     content: string;
   }> = await callPhrase(`translations?branch=${branch}&per_page=100`);
-  const translations: Record<LanguageName, TranslationsByLanguage> = {};
+  const translations: TranslationsByLanguage = {};
   for (const r of phraseResult) {
     if (!translations[r.locale.code]) {
       translations[r.locale.code] = {};
@@ -56,7 +52,7 @@ export async function pull(
   );
 
   for (const loadedTranslation of allVocabTranslations) {
-    const devTranslations = loadedTranslation.languages.get(config.devLanguage);
+    const devTranslations = loadedTranslation.languages[config.devLanguage];
 
     if (!devTranslations) {
       throw new Error('No dev language translations loaded');
@@ -80,7 +76,7 @@ export async function pull(
 
     for (const alternativeLanguage of alternativeLanguages) {
       const altTranslations = {
-        ...loadedTranslation.languages.get(alternativeLanguage),
+        ...loadedTranslation.languages[alternativeLanguage],
       };
       const phraseAltTranslations = allPhraseTranslations[alternativeLanguage];
 

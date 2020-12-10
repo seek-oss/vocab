@@ -1,5 +1,10 @@
 import type { IntlMessageFormat } from 'intl-messageformat';
 
+export type LanguageName = string;
+
+export type TranslationKey = string;
+export type TranslationMessage = string;
+
 export type ParsedICUMessages<TranslatedLanguage> = Record<
   keyof TranslatedLanguage,
   IntlMessageFormat
@@ -10,19 +15,16 @@ export type TranslationModule<TranslatedLanguage> = {
   load: () => Promise<void>;
 };
 
-export type TranslationFile<TranslatedLanguage> = {
-  __DO_NOT_USE__: Record<string, TranslationModule<TranslatedLanguage>>;
-};
-
-export interface RawJsonTranslations {
-  [translationKey: string]: string;
-}
+export type TranslationFile<TranslatedLanguage> = Record<
+  LanguageName,
+  TranslationModule<TranslatedLanguage>
+>;
 
 export interface LanguageTarget {
   // The name or tag of a language
-  name: string;
+  name: LanguageName;
   // Translations will be copied from parent language when they don't exist in child. Defaults to first language.
-  extends?: string;
+  extends?: LanguageName;
 }
 
 export interface UserConfig {
@@ -30,28 +32,33 @@ export interface UserConfig {
   /**
    * The language used in translations.json
    */
-  devLanguage: string;
+  devLanguage: LanguageName;
   /**
    * An array of languages to build for
    */
   languages: Array<LanguageTarget>;
   translationsDirname?: string;
 }
-
-export type LanguageName = string;
-
-export type TranslationsByLanguage<Key extends string = string> = Record<
+export interface TranslationData {
+  message: TranslationMessage;
+  description?: string;
+}
+export type TranslationsByKey<Key extends TranslationKey = string> = Record<
   Key,
-  {
-    message: string;
-    description?: string;
-  }
+  TranslationData
 >;
+export type TranslationMessagesByKey<
+  Key extends TranslationKey = string
+> = Record<Key, TranslationMessage>;
 
-export type LoadedTranslation<Key extends string = string> = {
+export type TranslationsByLanguage<
+  Key extends TranslationKey = string
+> = Record<LanguageName, TranslationsByKey<Key>>;
+
+export type LoadedTranslation<Key extends TranslationKey = string> = {
   namespace: string;
   keys: Array<Key>;
   filePath: string;
   relativePath: string;
-  languages: Map<LanguageName, TranslationsByLanguage<Key>>;
+  languages: TranslationsByLanguage<Key>;
 };

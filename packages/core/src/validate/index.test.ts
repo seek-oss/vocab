@@ -16,10 +16,10 @@ const testCases: Array<TestCase> = [
       namespace: 'some-file',
       keys: ['key1', 'key2'],
       relativePath: 'some-file.json',
-      languages: new Map([
-        ['en', { key1: { message: 'Hi' } }],
-        ['th', { key1: { message: 'Bye' } }],
-      ]),
+      languages: {
+        en: { key1: { message: 'Hi' } },
+        th: { key1: { message: 'Bye' } },
+      },
     },
     devLanguage: 'en',
     altLanguages: ['th'],

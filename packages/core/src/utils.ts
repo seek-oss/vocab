@@ -7,6 +7,8 @@ import type {
   LanguageTarget,
   LoadedTranslation,
   TranslationsByLanguage,
+  TranslationsByKey,
+  TranslationMessagesByKey,
   UserConfig,
 } from '@vocab/types';
 import { trace } from './logger';
@@ -210,7 +212,10 @@ export function loadTranslation(
     `Loading translation file in "${fallbacks}" fallback mode: "${filePath}"`,
   );
 
-  const languageSet = new Map();
+  const languageSet: Record<
+    string,
+    Record<string, { message: string; description?: string | undefined }>
+  > = {};
 
   delete require.cache[filePath];
   const translationContent = require(filePath);
@@ -223,20 +228,17 @@ export function loadTranslation(
 
   trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
-  languageSet.set(userConfig.devLanguage, devTranslation);
+  languageSet[userConfig.devLanguage] = devTranslation;
   const altLanguages = getAltLanguages(userConfig);
   for (const languageName of altLanguages) {
-    languageSet.set(
-      languageName,
-      loadAltLanguageFile(
-        {
-          filePath,
-          languageName,
-          devTranslation,
-          fallbacks,
-        },
-        userConfig,
-      ),
+    languageSet[languageName] = loadAltLanguageFile(
+      {
+        filePath,
+        languageName,
+        devTranslation,
+        fallbacks,
+      },
+      userConfig,
     );
   }
 
@@ -286,4 +288,22 @@ export async function loadAllTranslations(
     }
   }
   return result;
+}
+
+export function mapValues<Key extends string, OriginalValue, ReturnValue>(
+  obj: Record<Key, OriginalValue>,
+  func: (val: OriginalValue) => ReturnValue,
+): TranslationMessagesByKey<Key> {
+  const newObj: any = {};
+  const keys = Object.keys(obj) as Key[];
+  for (const key of keys) {
+    newObj[key] = func(obj[key]);
+  }
+  return newObj;
+}
+
+export function getTranslationMessages<Key extends string>(
+  translations: TranslationsByKey<Key>,
+): TranslationMessagesByKey<Key> {
+  return mapValues(translations, (v) => v.message);
 }

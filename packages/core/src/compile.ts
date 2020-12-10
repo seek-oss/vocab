@@ -17,6 +17,7 @@ import prettier from 'prettier';
 import chokidar from 'chokidar';
 
 import {
+  getTranslationMessages,
   loadAllTranslations,
   translationFileGlob,
   loadTranslation,
@@ -101,7 +102,9 @@ function serialiseObjectToType(v: any) {
 function serialiseTranslationTypes(
   value: Map<string, TranslationTypeInfo>,
   imports: Set<string>,
+  loadedTranslation: LoadedTranslation,
 ) {
+  trace('Serialising translations:', loadedTranslation);
   const translationsType: any = {};
 
   for (const [key, { params, returnType }] of value.entries()) {
@@ -117,16 +120,54 @@ function serialiseTranslationTypes(
     translationsType[key] = translationKeyType;
   }
 
+  const content = Object.entries(loadedTranslation.languages)
+    .map(
+      ([languageName, translations]) =>
+        `"${languageName}": createLanguage(${JSON.stringify(
+          getTranslationMessages(translations),
+        )}, "${languageName}")`,
+    )
+    .join(',');
+
   return `
   ${Array.from(imports).join('\n')}
+  import { createLanguage } from '@vocab/webpack/node';
   import { TranslationFile } from '@vocab/core';
 
-  declare const translations: TranslationFile<${serialiseObjectToType(
+  const translations: TranslationFile<${serialiseObjectToType(
     translationsType,
-  )}>;
+  )}> = {${content}};
 
   export default translations;`;
 }
+
+/*
+import { createLanguage } from '@vocab/webpack/node';
+import { TranslationFile } from '@vocab/core';
+type T = TranslationFile<{
+  hello: { returnType: string; message: string };
+  world: { returnType: string; message: string };
+}>;
+const translations: T = {
+  __DO_NOT_USE__: {
+    en: createLanguage(
+      {
+        hello: 'Hello',
+        world: 'world',
+      },
+      'en',
+    ),
+    fr: createLanguage(
+      {
+        hello: 'Bonjour',
+        world: 'monde',
+      },
+      'fr',
+    ),
+  },
+};
+export default translations;
+*/
 
 export async function generateTypes(loadedTranslation: LoadedTranslation) {
   const { languages: loadedLanguages, filePath } = loadedTranslation;
@@ -141,7 +182,7 @@ export async function generateTypes(loadedTranslation: LoadedTranslation) {
     const messages = [];
     let hasTags = false;
 
-    for (const translatedLanguage of loadedLanguages.values()) {
+    for (const translatedLanguage of Object.values(loadedLanguages)) {
       if (translatedLanguage[key]) {
         const ast = parse(translatedLanguage[key].message);
 
@@ -168,11 +209,16 @@ export async function generateTypes(loadedTranslation: LoadedTranslation) {
   }
 
   const prettierConfig = await prettier.resolveConfig(filePath);
-  const declaration = prettier.format(
-    serialiseTranslationTypes(translationTypes, imports),
-    { ...prettierConfig, parser: 'typescript' },
+  const serializedTranslationType = serialiseTranslationTypes(
+    translationTypes,
+    imports,
+    loadedTranslation,
   );
-  const outputFilePath = `${filePath}.d.ts`;
+  const declaration = prettier.format(serializedTranslationType, {
+    ...prettierConfig,
+    parser: 'typescript',
+  });
+  const outputFilePath = filePath.replace(/\.json$/, '.ts');
   trace(`Writing translation types to ${outputFilePath}`);
   await fs.writeFile(outputFilePath, declaration);
 }

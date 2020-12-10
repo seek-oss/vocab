@@ -66,14 +66,14 @@ export function useTranslation<Translations extends BaseTranslation>(
 } {
   const language = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
-  let translationsObject = translations.__DO_NOT_USE__[language].getValue();
+  let translationsObject = translations[language].getValue();
 
   if (!translationsObject) {
     if (SERVER_RENDERING) {
       throw new Error('You should have preloaded this. Call Matt');
     }
-    translations.__DO_NOT_USE__[language].load().then(() => {
-      translationsObject = translations.__DO_NOT_USE__[language].getValue();
+    translations[language].load().then(() => {
+      translationsObject = translations[language].getValue();
       forceRender();
     });
     return { t: () => ' ', ready: false };

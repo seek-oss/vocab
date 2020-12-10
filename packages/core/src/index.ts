@@ -1,4 +1,4 @@
-export { generateTypes, generateAllTypes } from './generate-types';
+export { generateTypes, generateAllTypes } from './compile';
 export { validate } from './validate';
 export { resolveConfig, resolveConfigSync, validateConfig } from './config';
 export {

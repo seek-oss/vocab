@@ -1,10 +1,10 @@
-import { ParsedICUMessages, RawJsonTranslations } from '@vocab/types';
+import { ParsedICUMessages, TranslationMessagesByKey } from '@vocab/types';
 import IntlMessageFormat from 'intl-messageformat';
 
 const moduleCache = new WeakMap();
 
 export const getParsedICUMessages = (
-  m: RawJsonTranslations,
+  m: TranslationMessagesByKey,
   locale: string,
 ): ParsedICUMessages<any> => {
   if (moduleCache.has(m)) {

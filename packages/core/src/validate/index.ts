@@ -9,7 +9,7 @@ export function findMissingKeys(
   devLanguageName: LanguageName,
   altLangauges: Array<LanguageName>,
 ) {
-  const devLanguage = loadedTranslation.languages.get(devLanguageName);
+  const devLanguage = loadedTranslation.languages[devLanguageName];
 
   if (!devLanguage) {
     throw new Error(
@@ -24,8 +24,7 @@ export function findMissingKeys(
 
   if (requiredKeys.length > 0) {
     for (const altLanguageName of altLangauges) {
-      const altLanguage =
-        loadedTranslation.languages.get(altLanguageName) ?? {};
+      const altLanguage = loadedTranslation.languages[altLanguageName] ?? {};
 
       for (const key of requiredKeys) {
         if (typeof altLanguage[key]?.message !== 'string') {
