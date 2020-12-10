@@ -42,7 +42,7 @@ yargs(process.argv.slice(2))
     },
   })
   .command({
-    command: 'generate-types',
+    command: 'compile',
     builder: () =>
       yargs.options({
         watch: { type: 'boolean', default: false },

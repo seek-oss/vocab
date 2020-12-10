@@ -93,19 +93,17 @@ export default async function vocabLoader(this: LoaderContext) {
       ? renderLanguageLoaderAsync(this.resourcePath, loadedTranslation)
       : renderLanguageLoaderSync(this.resourcePath, loadedTranslation);
 
-  callback(
-    null,
-    `
-    import { createLanguage } from '@vocab/webpack/${target}';
+  const result = `
+      import { createLanguage } from '@vocab/webpack/${target}';
 
-    export default {
-      __DO_NOT_USE__: {
-        ${renderLanguageLoader(config.devLanguage)},
-        ${altLanguages
-          .map((altLanguage) => renderLanguageLoader(altLanguage))
-          .join(',')}
-      }
-    };
-  `,
-  );
+      export default {
+          ${renderLanguageLoader(config.devLanguage)},
+          ${altLanguages
+            .map((altLanguage) => renderLanguageLoader(altLanguage))
+            .join(',')}
+      };
+    `;
+  trace('Created translation file', result);
+
+  callback(null, result);
 }

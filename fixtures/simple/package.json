@@ -4,7 +4,7 @@
   "author": "SEEK",
   "private": true,
   "scripts": {
-    "generate-types": "vocab generate-types",
+    "compile": "vocab compile",
     "start": "webpack serve"
   },
   "dependencies": {
