@@ -22,6 +22,7 @@ import {
   translationFileGlob,
   loadTranslation,
   translationFileExtension,
+  getTSFileFromDevLanguageFile,
 } from './utils';
 import { trace } from './logger';
 
@@ -218,12 +219,12 @@ export async function generateTypes(loadedTranslation: LoadedTranslation) {
     ...prettierConfig,
     parser: 'typescript',
   });
-  const outputFilePath = filePath.replace(/\.json$/, '.ts');
+  const outputFilePath = getTSFileFromDevLanguageFile(filePath);
   trace(`Writing translation types to ${outputFilePath}`);
   await fs.writeFile(outputFilePath, declaration);
 }
 
-export function watchAll(
+export function watch(
   config: UserConfig,
   { ignored = ['node_modules'] }: { ignored?: Array<string> } = {},
 ) {
@@ -258,8 +259,8 @@ export function watchAll(
   return () => watcher.close();
 }
 
-export async function generateAllTypes(
-  { watch = false } = {},
+export async function compile(
+  { watch: shouldWatch = false } = {},
   config: UserConfig,
 ) {
   const translations = await loadAllTranslations({ fallbacks: 'all' }, config);
@@ -268,8 +269,8 @@ export async function generateAllTypes(
     await generateTypes(loadedTranslation);
   }
 
-  if (watch) {
+  if (shouldWatch) {
     trace('Listening for changes to files...');
-    return watchAll(config);
+    return watch(config);
   }
 }

@@ -12,7 +12,6 @@ import type {
   UserConfig,
 } from '@vocab/types';
 import { trace } from './logger';
-import ts from 'typescript';
 
 const defaultTranslationDirname = '__translations__';
 
@@ -84,7 +83,7 @@ export function getDevLanguageFileFromTsFile(
 ) {
   const directory = path.dirname(tsFilePath);
   const [fileIdentifier] = path
-    .basename(tsFilePath)
+    .basename(tsFilePath, '.translations.ts')
     .split(`.${translationFileExtension}`);
 
   const result = path.join(
@@ -93,7 +92,18 @@ export function getDevLanguageFileFromTsFile(
     `${fileIdentifier}.translations.json`,
   );
   trace(`Returning dev language path ${result} for path ${tsFilePath}`);
-  return result;
+  return path.normalize(result);
+}
+
+export function getTSFileFromDevLanguageFile(devLanguageFilePath: string) {
+  const result = path.join(
+    path.dirname(devLanguageFilePath),
+    '..',
+    path.basename(devLanguageFilePath, '.json').concat('.ts'),
+  );
+
+  trace(`Returning TS path ${result} for path ${devLanguageFilePath}`);
+  return path.normalize(result);
 }
 
 export function getAltLanguageFilePath(
@@ -107,7 +117,7 @@ export function getAltLanguageFilePath(
   trace(
     `Returning alt language path ${result} for path ${devLanguageFilePath}`,
   );
-  return result;
+  return path.normalize(result);
 }
 
 export async function getAllTranslationFiles({
