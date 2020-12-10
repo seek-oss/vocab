@@ -12,6 +12,7 @@ import type {
   UserConfig,
 } from '@vocab/types';
 import { trace } from './logger';
+import ts from 'typescript';
 
 const defaultTranslationDirname = '__translations__';
 
@@ -75,23 +76,38 @@ export function getLanguageHierarcy({
   return hierarchyMap;
 }
 
-export function getAltLanguageFilePath(
-  filePath: string,
-  language: string,
+export function getDevLanguageFileFromTsFile(
+  tsFilePath: string,
   {
     translationsDirname = defaultTranslationDirname,
   }: { translationsDirname?: string },
 ) {
-  const directory = path.dirname(filePath);
+  const directory = path.dirname(tsFilePath);
   const [fileIdentifier] = path
-    .basename(filePath)
+    .basename(tsFilePath)
     .split(`.${translationFileExtension}`);
 
-  return path.join(
+  const result = path.join(
     directory,
     translationsDirname,
-    `${fileIdentifier}.translations.${language}.json`,
+    `${fileIdentifier}.translations.json`,
   );
+  trace(`Returning dev language path ${result} for path ${tsFilePath}`);
+  return result;
+}
+
+export function getAltLanguageFilePath(
+  devLanguageFilePath: string,
+  language: string,
+) {
+  const result = devLanguageFilePath.replace(
+    /translations\.json$/,
+    `translations.${language}.json`,
+  );
+  trace(
+    `Returning alt language path ${result} for path ${devLanguageFilePath}`,
+  );
+  return result;
 }
 
 export async function getAllTranslationFiles({
@@ -138,7 +154,7 @@ function loadAltLanguageFile(
     devTranslation: TranslationsByLanguage;
     fallbacks: Fallback;
   },
-  { devLanguage, languages, translationsDirname }: UserConfig,
+  { devLanguage, languages }: UserConfig,
 ) {
   const result = {};
 
@@ -163,9 +179,7 @@ function loadAltLanguageFile(
   for (const fallbackLang of fallbackLanguages) {
     if (fallbackLang !== devLanguage) {
       try {
-        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang, {
-          translationsDirname,
-        });
+        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang);
         delete require.cache[altFilePath];
 
         const translationFile = require(altFilePath);
@@ -177,9 +191,6 @@ function loadAltLanguageFile(
         trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
           fallbackLang,
-          {
-            translationsDirname,
-          },
         )}
         `);
       }

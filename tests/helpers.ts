@@ -21,7 +21,7 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
         rules: [
           {
             test: /\.(js|ts|tsx)$/,
-            include: path.dirname(fixtureConfig),
+            include: [path.dirname(fixtureConfig), path.resolve('packages')],
             use: [
               {
                 loader: 'babel-loader',

@@ -8,13 +8,15 @@ import {
 import {
   getAltLanguageFilePath,
   getAltLanguages,
+  getDevLanguageFileFromTsFile,
   loadTranslation,
 } from '@vocab/core';
 import { getOptions } from 'loader-utils';
 
 import { getChunkName } from './chunk-name';
-import { trace } from './logger';
+import { trace as _trace } from './logger';
 
+const trace = _trace.extend('loader');
 interface LoaderContext {
   addDependency: (filePath: string) => void;
   target: string;
@@ -57,15 +59,6 @@ const renderLanguageLoaderAsync = (
     ), '${lang}')`;
 };
 
-const renderLanguageLoaderSync = (
-  resourcePath: string,
-  loadedTranslation: LoadedTranslation,
-) => (lang: string) => {
-  const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
-
-  return `${lang}: createLanguage(require('${identifier}'), '${lang}')`;
-};
-
 export default async function vocabLoader(this: LoaderContext) {
   trace(`Using vocab loader for ${this.resourcePath}`);
   const callback = this.async();
@@ -76,22 +69,32 @@ export default async function vocabLoader(this: LoaderContext) {
 
   const config = (getOptions(this) as unknown) as UserConfig;
 
+  const devJsonFilePath = getDevLanguageFileFromTsFile(
+    this.resourcePath,
+    config,
+  );
+
   const altLanguages = getAltLanguages(config);
 
   for (const lang of altLanguages) {
-    this.addDependency(getAltLanguageFilePath(this.resourcePath, lang, config));
+    this.addDependency(getAltLanguageFilePath(devJsonFilePath, lang));
   }
 
   const loadedTranslation = loadTranslation(
-    { filePath: this.resourcePath, fallbacks: 'all' },
+    { filePath: devJsonFilePath, fallbacks: 'all' },
     config,
   );
 
   const target = this.target;
-  const renderLanguageLoader =
-    target === 'web'
-      ? renderLanguageLoaderAsync(this.resourcePath, loadedTranslation)
-      : renderLanguageLoaderSync(this.resourcePath, loadedTranslation);
+  if (target && target !== 'web') {
+    trace(`Why are you using the loader on ${target}?`);
+    callback(new Error('Called Vocab Loader with non-web target'));
+    return;
+  }
+  const renderLanguageLoader = renderLanguageLoaderAsync(
+    devJsonFilePath,
+    loadedTranslation,
+  );
 
   const result = `
       import { createLanguage } from '@vocab/webpack/${target}';

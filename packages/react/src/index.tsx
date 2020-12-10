@@ -65,6 +65,7 @@ export function useTranslation<Translations extends BaseTranslation>(
   t: TranslateFn<Translations>;
 } {
   const language = useLanguage();
+  console.log('Recieved translations:', translations);
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
   let translationsObject = translations[language].getValue();
 
