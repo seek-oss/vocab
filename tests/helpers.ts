@@ -6,7 +6,15 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 import WDS from 'webpack-dev-server';
 
-export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
+interface Options {
+  config?: any;
+  disableVocabPlugin?: boolean;
+}
+
+export const makeWebpackConfig = (
+  fixtureName: string,
+  { config = {}, disableVocabPlugin = false }: Options = {},
+) => {
   const fixtureConfig = require.resolve(`${fixtureName}/vocab.config.js`);
 
   return webpackMerge(
@@ -38,11 +46,11 @@ export const makeWebpackConfig = (fixtureName: string, config: any = {}) => {
           },
         ],
       },
-      plugins: [
-        new HtmlWebpackPlugin(),
-        new VocabWebpackPlugin({ configFile: fixtureConfig }),
-      ],
+      plugins: [new HtmlWebpackPlugin()],
     },
+    disableVocabPlugin
+      ? {}
+      : { plugins: [new VocabWebpackPlugin({ configFile: fixtureConfig })] },
     config,
   );
 };
@@ -54,9 +62,12 @@ export interface TestServer {
 
 let portCounter = 10001;
 
-export const startFixture = (fixtureName: string): Promise<TestServer> =>
+export const startFixture = (
+  fixtureName: string,
+  options?: Options,
+): Promise<TestServer> =>
   new Promise((resolve) => {
-    const compiler = webpack(makeWebpackConfig(fixtureName));
+    const compiler = webpack(makeWebpackConfig(fixtureName, options));
 
     const port = portCounter++;
     const server = new WDS(compiler);

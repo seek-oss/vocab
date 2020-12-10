@@ -1,31 +1,65 @@
 import { startFixture, TestServer } from './helpers';
 
 describe('E2E', () => {
-  let server: TestServer;
+  describe('Simple with plugin', () => {
+    let server: TestServer;
 
-  beforeAll(async () => {
-    server = await startFixture('fixture-simple');
+    beforeAll(async () => {
+      server = await startFixture('fixture-simple');
+    });
+
+    beforeEach(async () => {
+      await page.goto(server.url);
+    });
+
+    it('should default to english', async () => {
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Hello world');
+    });
+
+    it('should switch to french', async () => {
+      await page.click('button');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Bonjour monde');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
   });
 
-  beforeEach(async () => {
-    await page.goto(server.url);
-  });
+  describe('Simple without plugin', () => {
+    let server: TestServer;
 
-  it('should default to english', async () => {
-    const message = await page.waitForSelector('#message');
+    beforeAll(async () => {
+      server = await startFixture('fixture-simple', {
+        disableVocabPlugin: true,
+      });
+    });
 
-    await expect(message).toMatch('Hello world');
-  });
+    beforeEach(async () => {
+      await page.goto(server.url);
+    });
 
-  it('should switch to french', async () => {
-    await page.click('button');
+    it('should default to english', async () => {
+      const message = await page.waitForSelector('#message');
 
-    const message = await page.waitForSelector('#message');
+      await expect(message).toMatch('Hello world');
+    });
 
-    await expect(message).toMatch('Bonjour monde');
-  });
+    it('should switch to french', async () => {
+      await page.click('button');
 
-  afterAll(() => {
-    server.close();
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Bonjour monde');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
   });
 });
