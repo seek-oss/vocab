@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { writeFile, mkdir } from './file';
 import path from 'path';
 
 import {
@@ -7,31 +7,15 @@ import {
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
-import type { UserConfig, TranslationsByLanguage } from '@vocab/types';
+import type { UserConfig } from '@vocab/types';
 
-import { callPhrase, ensureBranch } from './phrase-api';
+import { pullAllTranslations, ensureBranch } from './phrase-api';
 import { trace } from './logger';
 
-async function getAllTranslationsFromPhrase(
-  branch: string,
-): Promise<TranslationsByLanguage> {
-  const phraseResult: Array<{
-    key: { name: string };
-    locale: { code: string };
-    content: string;
-  }> = await callPhrase(`translations?branch=${branch}&per_page=100`);
-  const translations: TranslationsByLanguage = {};
-  for (const r of phraseResult) {
-    if (!translations[r.locale.code]) {
-      translations[r.locale.code] = {};
-    }
-    translations[r.locale.code][r.key.name] = { message: r.content };
-  }
-  return translations;
-}
 interface PullOptions {
   branch?: string;
 }
+
 export async function pull(
   { branch = 'local-development' }: PullOptions,
   config: UserConfig,
@@ -39,7 +23,7 @@ export async function pull(
   trace(`Pulling translations from branch ${branch}`);
   await ensureBranch(branch);
   const alternativeLanguages = getAltLanguages(config);
-  const allPhraseTranslations = await getAllTranslationsFromPhrase(branch);
+  const allPhraseTranslations = await pullAllTranslations(branch);
   trace(
     `Pulling translations from Phrase for languages ${
       config.devLanguage
@@ -69,7 +53,7 @@ export async function pull(
         ],
       };
     }
-    await fs.writeFile(
+    await writeFile(
       loadedTranslation.filePath,
       `${JSON.stringify(defaultValues, null, 2)}\n`,
     );
@@ -101,13 +85,12 @@ export async function pull(
       const altTranslationFilePath = getAltLanguageFilePath(
         loadedTranslation.filePath,
         alternativeLanguage,
-        config,
       );
 
-      await fs.mkdir(path.dirname(altTranslationFilePath), {
+      await mkdir(path.dirname(altTranslationFilePath), {
         recursive: true,
       });
-      await fs.writeFile(
+      await writeFile(
         altTranslationFilePath,
         `${JSON.stringify(altTranslations, null, 2)}\n`,
       );

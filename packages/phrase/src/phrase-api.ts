@@ -1,6 +1,9 @@
+import FormData from 'form-data';
+import { TranslationsByKey } from './../../types/src/index';
 /* eslint-disable no-console */
+import type { TranslationsByLanguage } from '@vocab/types';
 import fetch from 'node-fetch';
-import { trace } from './logger';
+import { log, trace } from './logger';
 
 function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   const phraseApiToken = process.env.PHRASE_API_TOKEN;
@@ -87,6 +90,50 @@ export async function callPhrase(
       console.error(`Error calling phrase for ${relativePath}:`, error);
       throw Error;
     });
+}
+
+export async function pullAllTranslations(
+  branch: string,
+): Promise<TranslationsByLanguage> {
+  const phraseResult: Array<{
+    key: { name: string };
+    locale: { code: string };
+    content: string;
+  }> = await callPhrase(`translations?branch=${branch}&per_page=100`);
+  const translations: TranslationsByLanguage = {};
+  for (const r of phraseResult) {
+    if (!translations[r.locale.code]) {
+      translations[r.locale.code] = {};
+    }
+    translations[r.locale.code][r.key.name] = { message: r.content };
+  }
+  return translations;
+}
+
+export async function pushTranslationsByLocale(
+  contents: TranslationsByKey,
+  locale: string,
+  branch: string,
+) {
+  const formData = new FormData();
+  const fileContents = Buffer.from(JSON.stringify(contents));
+  formData.append('file', fileContents, {
+    contentType: 'application/json',
+    filename: `${locale}.json`,
+  });
+
+  formData.append('file_format', 'json');
+  formData.append('locale_id', locale);
+  formData.append('branch', branch);
+  formData.append('update_translations', 'true');
+
+  trace('Starting to upload:', locale);
+
+  await callPhrase(`uploads`, {
+    method: 'POST',
+    body: formData,
+  });
+  log('Successfully Uploaded:', locale, '\n');
 }
 
 export async function ensureBranch(branch: string) {

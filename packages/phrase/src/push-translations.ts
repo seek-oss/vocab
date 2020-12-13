@@ -1,38 +1,9 @@
-import FormData from 'form-data';
+import { TranslationsByLanguage } from './../../types/src/index';
 
-import { callPhrase, ensureBranch } from './phrase-api';
-import { log, trace } from './logger';
+import { ensureBranch, pushTranslationsByLocale } from './phrase-api';
+import { trace } from './logger';
 import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
-
-interface TranslationFile {
-  [k: string]: { message: string; description?: string };
-}
-
-async function uploadFile(
-  contents: TranslationFile,
-  locale_id: string,
-  branch: string,
-) {
-  const formData = new FormData();
-  formData.append('file', Buffer.from(JSON.stringify(contents)), {
-    contentType: 'application/json',
-    filename: `${locale_id}.json`,
-  });
-
-  formData.append('file_format', 'json');
-  formData.append('locale_id', locale_id);
-  formData.append('branch', branch);
-  formData.append('update_translations', 'true');
-
-  trace('Starting to upload:', locale_id);
-
-  await callPhrase(`uploads`, {
-    method: 'POST',
-    body: formData,
-  });
-  log('Successfully Uploaded:', locale_id, '\n');
-}
 
 interface PushOptions {
   branch: string;
@@ -54,7 +25,7 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
     `Pushing translations to phrase for languages ${allLanguages.join(', ')}`,
   );
 
-  const phraseTranslations: Record<string, TranslationFile> = {};
+  const phraseTranslations: TranslationsByLanguage = {};
 
   for (const loadedTranslation of allLanguageTranslations) {
     for (const language of allLanguages) {
@@ -74,7 +45,11 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
 
   for (const language of allLanguages) {
     if (phraseTranslations[language]) {
-      await uploadFile(phraseTranslations[language], language, branch);
+      await pushTranslationsByLocale(
+        phraseTranslations[language],
+        language,
+        branch,
+      );
     }
   }
 }
