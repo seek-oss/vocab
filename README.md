@@ -68,7 +68,9 @@ function App({ children }) {
 
 A translation file is a JSON file consisting of a flat structure of keys, each with a message and an optional description.
 
-**./translations.json**
+**Note:** Currently, to create a new translation it must be placed inside a **`__translations__`** folder, this folder name can be configured with `translationsDirname` configuration.
+
+**`./__translations__/translations.json`**
 
 ```json
 {
