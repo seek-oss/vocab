@@ -1,3 +1,4 @@
+import { compile, resolveConfigSync } from '@vocab/core';
 import { startFixture, TestServer } from './helpers';
 
 describe('E2E', () => {
@@ -5,6 +6,15 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
+      const config = resolveConfigSync(
+        require.resolve('fixture-simple/vocab.config.js'),
+      );
+
+      if (!config) {
+        throw new Error(`Can't resolve "fixture-simple" vocab config`);
+      }
+
+      await compile({}, config);
       server = await startFixture('fixture-simple');
     });
 
@@ -35,6 +45,15 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
+      const config = resolveConfigSync(
+        require.resolve('fixture-simple/vocab.config.js'),
+      );
+
+      if (!config) {
+        throw new Error(`Can't resolve "fixture-simple" vocab config`);
+      }
+
+      await compile({}, config);
       server = await startFixture('fixture-simple', {
         disableVocabPlugin: true,
       });
