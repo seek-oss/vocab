@@ -2,6 +2,7 @@ import {
   getDevLanguageFileFromTsFile,
   getAltLanguageFilePath,
   getTSFileFromDevLanguageFile,
+  getDevLanguageFileFromAltLanguageFile,
 } from './utils';
 
 describe('getDevLanguageFileFromTsFile', () => {
@@ -35,11 +36,21 @@ describe('getAltLanguageFilePath', () => {
 });
 
 describe('getTSFileFromDevLanguageFile', () => {
-  it('should be good', () => {
+  it('should find a translation.ts file', () => {
     expect(
       getTSFileFromDevLanguageFile(
         '/my/awesome/__translations__/client.translations.json',
       ),
     ).toBe('/my/awesome/client.translations.ts');
+  });
+});
+
+describe('getDevLanguageFileFromAltLanguageFile', () => {
+  it('should find a translation.json file', () => {
+    expect(
+      getDevLanguageFileFromAltLanguageFile(
+        '/my/awesome/__translations__/client.translations.fr.json',
+      ),
+    ).toBe('/my/awesome/__translations__/client.translations.json');
   });
 });

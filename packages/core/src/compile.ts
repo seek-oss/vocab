@@ -21,8 +21,9 @@ import {
   loadAllTranslations,
   getDevTranslationFileGlob,
   loadTranslation,
-  translationFileExtension,
   getTSFileFromDevLanguageFile,
+  getDevLanguageFileFromAltLanguageFile,
+  getAltTranslationFileGlob,
 } from './utils';
 import { trace } from './logger';
 
@@ -205,19 +206,32 @@ export function watch(
 ) {
   const cwd = config.projectRoot || process.cwd();
 
-  // TODO Handle changes in alt language files, currently only watching dev language
-  const watcher = chokidar.watch(getDevTranslationFileGlob(config), {
-    cwd,
-    ignored,
-    ignoreInitial: true,
-  });
+  const watcher = chokidar.watch(
+    [getDevTranslationFileGlob(config), getAltTranslationFileGlob(config)],
+    {
+      cwd,
+      ignored,
+      ignoreInitial: true,
+    },
+  );
 
   const onTranslationChange = async (relativePath: string) => {
     trace(`Detected change for file ${relativePath}`);
-    if (relativePath.endsWith(translationFileExtension)) {
+
+    let targetFile;
+
+    if (relativePath.match(/translations.json$/)) {
+      targetFile = path.resolve(cwd, relativePath);
+    } else if (relativePath.match(/translations.(\w)+.json$/)) {
+      targetFile = getDevLanguageFileFromAltLanguageFile(
+        path.resolve(cwd, relativePath),
+      );
+    }
+
+    if (targetFile) {
       try {
         const loadedTranslation = await loadTranslation(
-          { filePath: path.resolve(cwd, relativePath), fallbacks: 'all' },
+          { filePath: targetFile, fallbacks: 'all' },
           config,
         );
 

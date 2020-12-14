@@ -108,6 +108,19 @@ export function getDevLanguageFileFromTsFile(
   return path.normalize(result);
 }
 
+export function getDevLanguageFileFromAltLanguageFile(
+  altLanguageFilePath: string,
+) {
+  const result = altLanguageFilePath.replace(
+    /translations.(\w)+.json$/,
+    'translations.json',
+  );
+  trace(
+    `Returning dev language path ${result} for path ${altLanguageFilePath}`,
+  );
+  return path.normalize(result);
+}
+
 export function getTSFileFromDevLanguageFile(devLanguageFilePath: string) {
   const result = path.join(
     path.dirname(devLanguageFilePath),
