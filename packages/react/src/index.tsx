@@ -70,7 +70,9 @@ export function useTranslation<Translations extends BaseTranslation>(
 
   if (!translationsObject) {
     if (SERVER_RENDERING) {
-      throw new Error(`Translations not syncronously available on server render. This should not happen.s`);
+      throw new Error(
+        `Translations not syncronously available on server render. This should not happen.`,
+      );
     }
     translations[language].load().then(() => {
       translationsObject = translations[language].getValue();
