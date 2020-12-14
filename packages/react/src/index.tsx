@@ -16,7 +16,7 @@ const TranslationsContext = React.createContext<TranslationsValue | undefined>(
   undefined,
 );
 
-export const TranslationsProvider: FunctionComponent<TranslationsValue> = ({
+export const VocabProvider: FunctionComponent<TranslationsValue> = ({
   children,
   language,
 }) => (
@@ -29,11 +29,17 @@ export const useLanguage = (): Language => {
   const context = useContext(TranslationsContext);
   if (!context) {
     throw new Error(
-      'Attempted to access translation without language set. Did you forget to render TranslationsProvider?',
+      'Attempted to access translation without Vocab context set. Did you forget to render VocabProvider?',
+    );
+  }
+  if (!context.language) {
+    throw new Error(
+      'Attempted to access translation without language set. Did you forget to pass language to VocabProvider?',
     );
   }
   return context.language;
 };
+
 type TranslationItem = {
   message: string;
   params?: Record<string, any>;
@@ -66,6 +72,13 @@ export function useTranslation<Translations extends BaseTranslation>(
 } {
   const language = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
+  if (!translations[language]) {
+    throw new Error(
+      `Translations does not include passed language "${language}". Translations include possible options ${Object.keys(
+        translations,
+      )}`,
+    );
+  }
   let translationsObject = translations[language].getValue();
 
   if (!translationsObject) {

@@ -1,4 +1,4 @@
-import { TranslationsProvider, useTranslation } from '@vocab/react';
+import { VocabProvider, useTranslation } from '@vocab/react';
 import React, { ReactNode, useState } from 'react';
 import { render } from 'react-dom';
 
@@ -15,12 +15,12 @@ function App({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState('en');
 
   return (
-    <TranslationsProvider language={lang}>
+    <VocabProvider language={lang}>
       <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
         Toggle language
       </button>
       {children}
-    </TranslationsProvider>
+    </VocabProvider>
   );
 }
 
