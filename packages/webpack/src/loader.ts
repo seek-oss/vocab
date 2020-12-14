@@ -42,7 +42,7 @@ function createIdentifier(
   );
 
   const unloader = `${require.resolve('@vocab/unloader')}?source=${base64}`;
-  const fileIdent = path.basename(resourcePath, '.translations.json');
+  const fileIdent = path.basename(resourcePath, 'translations.json');
 
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
 }

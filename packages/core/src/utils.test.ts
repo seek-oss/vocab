@@ -5,7 +5,14 @@ import {
 } from './utils';
 
 describe('getDevLanguageFileFromTsFile', () => {
-  it('should be good', () => {
+  it('should find a translation.json file', () => {
+    expect(
+      getDevLanguageFileFromTsFile('/my/awesome/translations.ts', {
+        translationsDirname: 'monkeys',
+      }),
+    ).toBe('/my/awesome/monkeys/translations.json');
+  });
+  it('should support using namespace prefix', () => {
     expect(
       getDevLanguageFileFromTsFile('/my/awesome/client.translations.ts', {
         translationsDirname: 'monkeys',
@@ -15,7 +22,12 @@ describe('getDevLanguageFileFromTsFile', () => {
 });
 
 describe('getAltLanguageFilePath', () => {
-  it('should be good', () => {
+  it('should find a translation.json file', () => {
+    expect(getAltLanguageFilePath('/my/awesome/translations.json', 'fr')).toBe(
+      '/my/awesome/translations.fr.json',
+    );
+  });
+  it('should support using namespace prefix', () => {
     expect(
       getAltLanguageFilePath('/my/awesome/client.translations.json', 'fr'),
     ).toBe('/my/awesome/client.translations.fr.json');

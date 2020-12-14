@@ -82,15 +82,13 @@ export function getDevLanguageFileFromTsFile(
   }: { translationsDirname?: string },
 ) {
   const directory = path.dirname(tsFilePath);
-  const [fileIdentifier] = path
-    .basename(tsFilePath, '.translations.ts')
-    .split(`.${translationFileExtension}`);
-
-  const result = path.join(
-    directory,
-    translationsDirname,
-    `${fileIdentifier}.translations.json`,
+  const basename = path.basename(tsFilePath);
+  const jsonFileName = basename.replace(
+    /translations\.ts$/,
+    translationFileExtension,
   );
+
+  const result = path.join(directory, translationsDirname, jsonFileName);
   trace(`Returning dev language path ${result} for path ${tsFilePath}`);
   return path.normalize(result);
 }
@@ -215,7 +213,7 @@ function loadAltLanguageFile(
 function getNamespaceByFilePath(relativePath: string) {
   return relativePath
     .replace(/^src\//, '')
-    .replace(/\.translations\.json$/, '')
+    .replace(/\.?translations\.json$/, '')
     .replace(/\//g, '_');
 }
 
@@ -276,7 +274,7 @@ export async function loadAllTranslations(
   { fallbacks }: { fallbacks: Fallback },
   { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
-  const translationFiles = await glob('**/*.translations.json', {
+  const translationFiles = await glob('**/?(*.)translations.json', {
     absolute: true,
     cwd: projectRoot,
   });
