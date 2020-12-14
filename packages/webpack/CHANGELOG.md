@@ -1,5 +1,25 @@
 # @vocab/webpack
 
+## 0.0.11
+
+### Patch Changes
+
+- [`5f5c581`](https://github.com/seek-oss/vocab/commit/5f5c581a65bff28729ee19e1ec0bdea488a9d6c2) [#19](https://github.com/seek-oss/vocab/pull/19) Thanks [@jahredhope](https://github.com/jahredhope)! - Compile useable TypeScript importable files with `vocab compile`.
+
+  The new `vocab compile` step replaces `vocab generate-types` in creating a fully functional **translations.ts** file.
+
+  This allows vocab to be used **without the Webpack Plugin**, however use of the plugin is still heavily advised to ensure optimal loading of translation content on the web.
+
+  Support for unit testing is now better than ever! The newly created **translations.ts** means your unit test code will see the same code as available while rendering.
+
+  See the [documentation](https://github.com/seek-oss/vocab) for further usage details.
+
+* [`02f943c`](https://github.com/seek-oss/vocab/commit/02f943ca892913b41f9e4720a72400777cf14b3d) [#17](https://github.com/seek-oss/vocab/pull/17) Thanks [@jahredhope](https://github.com/jahredhope)! - Add additional debug traces
+
+* Updated dependencies [[`5f5c581`](https://github.com/seek-oss/vocab/commit/5f5c581a65bff28729ee19e1ec0bdea488a9d6c2), [`02f943c`](https://github.com/seek-oss/vocab/commit/02f943ca892913b41f9e4720a72400777cf14b3d)]:
+  - @vocab/core@0.0.4
+  - @vocab/types@0.0.5
+
 ## 0.0.10
 
 ### Patch Changes
