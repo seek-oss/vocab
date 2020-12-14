@@ -1,6 +1,6 @@
 {
   "name": "@vocab/core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/vocab-core.cjs.js",
   "module": "dist/vocab-core.esm.js",
   "author": "SEEK",

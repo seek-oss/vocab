@@ -1,6 +1,6 @@
 {
   "name": "@vocab/react",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "dist/vocab-react.cjs.js",
   "module": "dist/vocab-react.esm.js",
   "author": "SEEK",
