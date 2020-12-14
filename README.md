@@ -53,13 +53,13 @@ Vocab doesn't tell you how to select or change your language. You just need to t
 **src/App.tsx**
 
 ```tsx
-import { TranslationsProvider } from '@vocab/react';
+import { VocabProvider } from '@vocab/react';
 
 function App({ children }) {
   return (
-    <TranslationsProvider language={language}>
+    <VocabProvider language={language}>
       {children}
-    </TranslationsProvider>
+    </VocabProvider>
   );
 }
 ```
