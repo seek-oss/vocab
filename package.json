@@ -12,6 +12,7 @@
     "url": "git+https://github.com/seek-oss/vocab.git"
   },
   "scripts": {
+    "start": "yarn dev && yarn compile-fixtures && yarn start-fixture fixture-simple",
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",
