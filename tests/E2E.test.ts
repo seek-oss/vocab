@@ -1,31 +1,84 @@
+import { compile, resolveConfigSync } from '@vocab/core';
 import { startFixture, TestServer } from './helpers';
 
 describe('E2E', () => {
-  let server: TestServer;
+  describe('Simple with plugin', () => {
+    let server: TestServer;
 
-  beforeAll(async () => {
-    server = await startFixture('fixture-simple');
+    beforeAll(async () => {
+      const config = resolveConfigSync(
+        require.resolve('fixture-simple/vocab.config.js'),
+      );
+
+      if (!config) {
+        throw new Error(`Can't resolve "fixture-simple" vocab config`);
+      }
+
+      await compile({}, config);
+      server = await startFixture('fixture-simple');
+    });
+
+    beforeEach(async () => {
+      await page.goto(server.url);
+    });
+
+    it('should default to english', async () => {
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Hello world');
+    });
+
+    it('should switch to french', async () => {
+      await page.click('button');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Bonjour monde');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
   });
 
-  beforeEach(async () => {
-    await page.goto(server.url);
-  });
+  describe('Simple without plugin', () => {
+    let server: TestServer;
 
-  it('should default to english', async () => {
-    const message = await page.waitForSelector('#message');
+    beforeAll(async () => {
+      const config = resolveConfigSync(
+        require.resolve('fixture-simple/vocab.config.js'),
+      );
 
-    await expect(message).toMatch('Hello world');
-  });
+      if (!config) {
+        throw new Error(`Can't resolve "fixture-simple" vocab config`);
+      }
 
-  it('should switch to french', async () => {
-    await page.click('button');
+      await compile({}, config);
+      server = await startFixture('fixture-simple', {
+        disableVocabPlugin: true,
+      });
+    });
 
-    const message = await page.waitForSelector('#message');
+    beforeEach(async () => {
+      await page.goto(server.url);
+    });
 
-    await expect(message).toMatch('Bonjour monde');
-  });
+    it('should default to english', async () => {
+      const message = await page.waitForSelector('#message');
 
-  afterAll(() => {
-    server.close();
+      await expect(message).toMatch('Hello world');
+    });
+
+    it('should switch to french', async () => {
+      await page.click('button');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('Bonjour monde');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
   });
 });

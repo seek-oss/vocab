@@ -7,6 +7,8 @@ import type {
   LanguageTarget,
   LoadedTranslation,
   TranslationsByLanguage,
+  TranslationsByKey,
+  TranslationMessagesByKey,
   UserConfig,
 } from '@vocab/types';
 import { trace } from './logger';
@@ -73,23 +75,47 @@ export function getLanguageHierarcy({
   return hierarchyMap;
 }
 
-export function getAltLanguageFilePath(
-  filePath: string,
-  language: string,
+export function getDevLanguageFileFromTsFile(
+  tsFilePath: string,
   {
     translationsDirname = defaultTranslationDirname,
   }: { translationsDirname?: string },
 ) {
-  const directory = path.dirname(filePath);
-  const [fileIdentifier] = path
-    .basename(filePath)
-    .split(`.${translationFileExtension}`);
-
-  return path.join(
-    directory,
-    translationsDirname,
-    `${fileIdentifier}.translations.${language}.json`,
+  const directory = path.dirname(tsFilePath);
+  const basename = path.basename(tsFilePath);
+  const jsonFileName = basename.replace(
+    /translations\.ts$/,
+    translationFileExtension,
   );
+
+  const result = path.join(directory, translationsDirname, jsonFileName);
+  trace(`Returning dev language path ${result} for path ${tsFilePath}`);
+  return path.normalize(result);
+}
+
+export function getTSFileFromDevLanguageFile(devLanguageFilePath: string) {
+  const result = path.join(
+    path.dirname(devLanguageFilePath),
+    '..',
+    path.basename(devLanguageFilePath, '.json').concat('.ts'),
+  );
+
+  trace(`Returning TS path ${result} for path ${devLanguageFilePath}`);
+  return path.normalize(result);
+}
+
+export function getAltLanguageFilePath(
+  devLanguageFilePath: string,
+  language: string,
+) {
+  const result = devLanguageFilePath.replace(
+    /translations\.json$/,
+    `translations.${language}.json`,
+  );
+  trace(
+    `Returning alt language path ${result} for path ${devLanguageFilePath}`,
+  );
+  return path.normalize(result);
 }
 
 export async function getAllTranslationFiles({
@@ -136,7 +162,7 @@ function loadAltLanguageFile(
     devTranslation: TranslationsByLanguage;
     fallbacks: Fallback;
   },
-  { devLanguage, languages, translationsDirname }: UserConfig,
+  { devLanguage, languages }: UserConfig,
 ) {
   const result = {};
 
@@ -161,9 +187,7 @@ function loadAltLanguageFile(
   for (const fallbackLang of fallbackLanguages) {
     if (fallbackLang !== devLanguage) {
       try {
-        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang, {
-          translationsDirname,
-        });
+        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang);
         delete require.cache[altFilePath];
 
         const translationFile = require(altFilePath);
@@ -175,9 +199,6 @@ function loadAltLanguageFile(
         trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
           fallbackLang,
-          {
-            translationsDirname,
-          },
         )}
         `);
       }
@@ -192,7 +213,7 @@ function loadAltLanguageFile(
 function getNamespaceByFilePath(relativePath: string) {
   return relativePath
     .replace(/^src\//, '')
-    .replace(/\.translations\.json$/, '')
+    .replace(/\.?translations\.json$/, '')
     .replace(/\//g, '_');
 }
 
@@ -210,7 +231,10 @@ export function loadTranslation(
     `Loading translation file in "${fallbacks}" fallback mode: "${filePath}"`,
   );
 
-  const languageSet = new Map();
+  const languageSet: Record<
+    string,
+    Record<string, { message: string; description?: string | undefined }>
+  > = {};
 
   delete require.cache[filePath];
   const translationContent = require(filePath);
@@ -223,20 +247,17 @@ export function loadTranslation(
 
   trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
-  languageSet.set(userConfig.devLanguage, devTranslation);
+  languageSet[userConfig.devLanguage] = devTranslation;
   const altLanguages = getAltLanguages(userConfig);
   for (const languageName of altLanguages) {
-    languageSet.set(
-      languageName,
-      loadAltLanguageFile(
-        {
-          filePath,
-          languageName,
-          devTranslation,
-          fallbacks,
-        },
-        userConfig,
-      ),
+    languageSet[languageName] = loadAltLanguageFile(
+      {
+        filePath,
+        languageName,
+        devTranslation,
+        fallbacks,
+      },
+      userConfig,
     );
   }
 
@@ -253,7 +274,7 @@ export async function loadAllTranslations(
   { fallbacks }: { fallbacks: Fallback },
   { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
-  const translationFiles = await glob('**/*.translations.json', {
+  const translationFiles = await glob('**/?(*.)translations.json', {
     absolute: true,
     cwd: projectRoot,
   });
@@ -286,4 +307,22 @@ export async function loadAllTranslations(
     }
   }
   return result;
+}
+
+export function mapValues<Key extends string, OriginalValue, ReturnValue>(
+  obj: Record<Key, OriginalValue>,
+  func: (val: OriginalValue) => ReturnValue,
+): TranslationMessagesByKey<Key> {
+  const newObj: any = {};
+  const keys = Object.keys(obj) as Key[];
+  for (const key of keys) {
+    newObj[key] = func(obj[key]);
+  }
+  return newObj;
+}
+
+export function getTranslationMessages<Key extends string>(
+  translations: TranslationsByKey<Key>,
+): TranslationMessagesByKey<Key> {
+  return mapValues(translations, (v) => v.message);
 }

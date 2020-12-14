@@ -2,7 +2,7 @@ import { TranslationsProvider, useTranslation } from '@vocab/react';
 import React, { ReactNode, useState } from 'react';
 import { render } from 'react-dom';
 
-import translations from './client.translations.json';
+import translations from './translations';
 
 function Content() {
   const { t } = useTranslation(translations);

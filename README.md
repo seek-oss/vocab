@@ -68,7 +68,9 @@ function App({ children }) {
 
 A translation file is a JSON file consisting of a flat structure of keys, each with a message and an optional description.
 
-**./translations.json**
+**Note:** Currently, to create a new translation it must be placed inside a **`__translations__`** folder, this folder name can be configured with `translationsDirname` configuration.
+
+**`./__translations__/translations.json`**
 
 ```json
 {
@@ -79,13 +81,16 @@ A translation file is a JSON file consisting of a flat structure of keys, each w
 }
 ```
 
+Then run `vocab compile`. Or `vocab compile --watch`.
+This will create new `translation.ts` files for each `translation.json` file.
+
 You can then import these translations into your React components. Translations can be used by calling the `t` function returned by `useTranslation`.
 
 **./MyComponent.tsx**
 
 ```tsx
 import { useTranslation } from '@vocab/react';
-import translations from './translations.json';
+import translations from './translations';
 
 function MyComponent({ children }) {
   const { t } = useTranslation(translations);
@@ -150,12 +155,18 @@ module.exports = {
 
 ## Generate Types
 
-Vocab generates custom `translation.json.d.ts` files that give your React components strongly typed translations to work with.
+Vocab generates custom `translation.ts` files that give your React components strongly typed translations to work with.
 
 To generate these types run:
 
 ```bash
-$ vocab generate-types
+$ vocab compile
+```
+
+Or to rerun the compiler when files change use:
+
+```bash
+$ vocab compile --watch
 ```
 
 ## External translation tooling

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { UserConfig } from '@vocab/types';
 import { pull, push } from '@vocab/phrase';
-import { resolveConfig, generateAllTypes, validate } from '@vocab/core';
+import { resolveConfig, compile, validate } from '@vocab/core';
 import yargs from 'yargs';
 
 import envCi from 'env-ci';
@@ -42,13 +42,13 @@ yargs(process.argv.slice(2))
     },
   })
   .command({
-    command: 'generate-types',
+    command: 'compile',
     builder: () =>
       yargs.options({
         watch: { type: 'boolean', default: false },
       }),
     handler: async ({ watch }) => {
-      await generateAllTypes({ watch }, config!);
+      await compile({ watch }, config!);
     },
   })
   .command({
