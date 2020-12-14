@@ -16,9 +16,24 @@ import { trace } from './logger';
 const defaultTranslationDirname = '__translations__';
 
 export const translationFileExtension = 'translations.json';
-export const translationFileGlob = `**/*.${translationFileExtension}`;
 
 type Fallback = 'none' | 'valid' | 'all';
+
+export function getDevTranslationFileGlob({
+  translationsDirname = defaultTranslationDirname,
+}: {
+  translationsDirname?: string;
+}) {
+  return `**/${translationsDirname}/?(*.)translations.json`;
+}
+
+export function getAltTranslationFileGlob({
+  translationsDirname = defaultTranslationDirname,
+}: {
+  translationsDirname?: string;
+}) {
+  return `**/${translationsDirname}/?(*.)translations.*.json`;
+}
 
 export function getUniqueKey(key: string, namespace: string) {
   return `${key}.${namespace}`;
@@ -120,9 +135,14 @@ export function getAltLanguageFilePath(
 
 export async function getAllTranslationFiles({
   projectRoot,
+  translationsDirname,
 }: {
+  translationsDirname?: string;
   projectRoot?: string;
 }) {
+  const translationFileGlob = getDevTranslationFileGlob({
+    translationsDirname,
+  });
   trace(`Looking for translation files with ${translationFileGlob}`);
   const translationFiles = await glob(translationFileGlob, {
     cwd: projectRoot,
@@ -281,10 +301,13 @@ export async function loadAllTranslations(
   { fallbacks }: { fallbacks: Fallback },
   { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
-  const translationFiles = await glob('**/?(*.)translations.json', {
-    absolute: true,
-    cwd: projectRoot,
-  });
+  const translationFiles = await glob(
+    getDevTranslationFileGlob({ translationsDirname }),
+    {
+      absolute: true,
+      cwd: projectRoot,
+    },
+  );
 
   trace(`Found ${translationFiles.length} translation files`);
 
