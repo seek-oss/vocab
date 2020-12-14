@@ -28,7 +28,7 @@ export default class VocabWebpackPlugin {
     trace(
       `Applying plugin: ${compiler.options.name} (${compiler.options.target})`,
     );
-    if (compiler.options.target !== 'web') {
+    if (compiler.options.target && compiler.options.target !== 'web') {
       // eslint-disable-next-line no-console
       console.error(
         'Vocab plugin is only intended to be used on web builds. Did you add Vocab to the correct config?',
