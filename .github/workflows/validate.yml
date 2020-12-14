@@ -25,6 +25,9 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Compile fixtures
+        run: yarn compile-fixtures
+
       - name: Lint
         run: yarn lint
 

@@ -3,5 +3,8 @@
   "description": "A playground reading and writing files for Phrase tests",
   "version": "1.0.0",
   "author": "SEEK",
-  "private": true
+  "private": true,
+  "scripts": {
+    "compile": "vocab compile"
+  }
 }
