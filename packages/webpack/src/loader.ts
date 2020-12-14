@@ -6,7 +6,6 @@ import {
   TranslationMessagesByKey,
 } from '@vocab/types';
 import {
-  getAltLanguageFilePath,
   getAltLanguages,
   getDevLanguageFileFromTsFile,
   loadTranslation,
@@ -74,12 +73,6 @@ export default async function vocabLoader(this: LoaderContext) {
     config,
   );
 
-  const altLanguages = getAltLanguages(config);
-
-  for (const lang of altLanguages) {
-    this.addDependency(getAltLanguageFilePath(devJsonFilePath, lang));
-  }
-
   const loadedTranslation = loadTranslation(
     { filePath: devJsonFilePath, fallbacks: 'all' },
     config,
@@ -101,7 +94,7 @@ export default async function vocabLoader(this: LoaderContext) {
 
       export default {
           ${renderLanguageLoader(config.devLanguage)},
-          ${altLanguages
+          ${getAltLanguages(config)
             .map((altLanguage) => renderLanguageLoader(altLanguage))
             .join(',')}
       };
