@@ -184,6 +184,13 @@ function loadAltLanguageFile(
     }
   }
 
+  trace(
+    `Loading alt language file with precendence: ${fallbackLanguages
+      .slice()
+      .reverse()
+      .join(' -> ')}`,
+  );
+
   for (const fallbackLang of fallbackLanguages) {
     if (fallbackLang !== devLanguage) {
       try {
