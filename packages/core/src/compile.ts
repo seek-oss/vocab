@@ -206,7 +206,6 @@ export function watch(
 ) {
   const cwd = config.projectRoot || process.cwd();
 
-  // TODO Handle changes in alt language files, currently only watching dev language
   const watcher = chokidar.watch(
     [getDevTranslationFileGlob(config), getAltTranslationFileGlob(config)],
     {
