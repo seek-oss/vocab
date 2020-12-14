@@ -1,5 +1,13 @@
 # @vocab/core
 
+## 0.0.5
+
+### Patch Changes
+
+- [`371ed16`](https://github.com/seek-oss/vocab/commit/371ed16a232a04dab13afa7e2b352dfb6724eea4) [#25](https://github.com/seek-oss/vocab/pull/25) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Watch alt language files as well as dev language
+
+* [`c222d68`](https://github.com/seek-oss/vocab/commit/c222d68a3c0c24723a338eccb959798881f6a118) [#24](https://github.com/seek-oss/vocab/pull/24) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Changed glob constants to functions
+
 ## 0.0.4
 
 ### Patch Changes

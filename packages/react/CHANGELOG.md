@@ -1,5 +1,11 @@
 # @vocab/react
 
+## 0.0.8
+
+### Patch Changes
+
+- [`b51db12`](https://github.com/seek-oss/vocab/commit/b51db125b6d5e29feb77eac20a45b410e79be9b2) [#21](https://github.com/seek-oss/vocab/pull/21) Thanks [@jahredhope](https://github.com/jahredhope)! - Rename TranslationsProvider to VocabProvider
+
 ## 0.0.7
 
 ### Patch Changes
