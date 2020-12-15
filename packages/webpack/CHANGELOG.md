@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 0.0.14
+
+### Patch Changes
+
+- [`80f85e9`](https://github.com/seek-oss/vocab/commit/80f85e9c45051da233a3edae062d8af6d7ca50e5) [#29](https://github.com/seek-oss/vocab/pull/29) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Fix mismatched file hashes across systems
+
 ## 0.0.13
 
 ### Patch Changes
