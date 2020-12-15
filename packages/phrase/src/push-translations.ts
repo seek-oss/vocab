@@ -14,7 +14,7 @@ interface PushOptions {
  */
 export async function push({ branch }: PushOptions, config: UserConfig) {
   const allLanguageTranslations = await loadAllTranslations(
-    { fallbacks: 'none' },
+    { fallbacks: 'none', includeNodeModules: false },
     config,
   );
   trace(`Pushing translations to branch ${branch}`);

@@ -31,7 +31,7 @@ export async function pull(
   );
 
   const allVocabTranslations = await loadAllTranslations(
-    { fallbacks: 'none' },
+    { fallbacks: 'none', includeNodeModules: false },
     config,
   );
 

@@ -38,6 +38,10 @@ export interface UserConfig {
    */
   languages: Array<LanguageTarget>;
   translationsDirname?: string;
+  /**
+   * An array of glob paths to ignore from compilation and validation
+   */
+  ignore?: Array<string>;
 }
 export interface TranslationData {
   message: TranslationMessage;

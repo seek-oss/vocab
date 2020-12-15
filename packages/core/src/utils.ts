@@ -146,25 +146,6 @@ export function getAltLanguageFilePath(
   return path.normalize(result);
 }
 
-export async function getAllTranslationFiles({
-  projectRoot,
-  translationsDirname,
-}: {
-  translationsDirname?: string;
-  projectRoot?: string;
-}) {
-  const translationFileGlob = getDevTranslationFileGlob({
-    translationsDirname,
-  });
-  trace(`Looking for translation files with ${translationFileGlob}`);
-  const translationFiles = await glob(translationFileGlob, {
-    cwd: projectRoot,
-  });
-  trace(`Found ${translationFiles.length} translation files`);
-
-  return translationFiles;
-}
-
 function mergeWithDevLanguage(
   translation: TranslationsByLanguage,
   devTranslation: TranslationsByLanguage,
@@ -311,12 +292,22 @@ export function loadTranslation(
 }
 
 export async function loadAllTranslations(
-  { fallbacks }: { fallbacks: Fallback },
-  { projectRoot, devLanguage, languages, translationsDirname }: UserConfig,
+  {
+    fallbacks,
+    includeNodeModules,
+  }: { fallbacks: Fallback; includeNodeModules: boolean },
+  {
+    projectRoot,
+    devLanguage,
+    languages,
+    translationsDirname,
+    ignore = [],
+  }: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
   const translationFiles = await glob(
     getDevTranslationFileGlob({ translationsDirname }),
     {
+      ignore: includeNodeModules ? ignore : [...ignore, '**/node_modules/**'],
       absolute: true,
       cwd: projectRoot,
     },

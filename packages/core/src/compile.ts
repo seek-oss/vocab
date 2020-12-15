@@ -200,17 +200,16 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   await fs.writeFile(outputFilePath, declaration);
 }
 
-export function watch(
-  config: UserConfig,
-  { ignored = ['node_modules'] }: { ignored?: Array<string> } = {},
-) {
+export function watch(config: UserConfig) {
   const cwd = config.projectRoot || process.cwd();
 
   const watcher = chokidar.watch(
     [getDevTranslationFileGlob(config), getAltTranslationFileGlob(config)],
     {
       cwd,
-      ignored,
+      ignored: config.ignore
+        ? [...config.ignore, '**/node_modules/**']
+        : ['**/node_modules/**'],
       ignoreInitial: true,
     },
   );
@@ -254,7 +253,10 @@ export async function compile(
   { watch: shouldWatch = false } = {},
   config: UserConfig,
 ) {
-  const translations = await loadAllTranslations({ fallbacks: 'all' }, config);
+  const translations = await loadAllTranslations(
+    { fallbacks: 'all', includeNodeModules: false },
+    config,
+  );
 
   for (const loadedTranslation of translations) {
     await generateRuntime(loadedTranslation);

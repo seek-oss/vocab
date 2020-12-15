@@ -43,7 +43,7 @@ export function findMissingKeys(
 
 export async function validate(config: UserConfig) {
   const allTranslations = await loadAllTranslations(
-    { fallbacks: 'valid' },
+    { fallbacks: 'valid', includeNodeModules: true },
     config,
   );
 
