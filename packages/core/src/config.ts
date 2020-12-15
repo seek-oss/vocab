@@ -25,6 +25,11 @@ const schema = {
   },
   translationsDirname: { type: 'string', optional: true },
   projectRoot: { type: 'string', optional: true },
+  ignore: {
+    type: 'array',
+    items: 'string',
+    optional: true,
+  },
 };
 const checkConfigFile = validator.compile(schema);
 
