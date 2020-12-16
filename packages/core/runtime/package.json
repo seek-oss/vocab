@@ -1,0 +1,4 @@
+{
+  "main": "dist/vocab-core-runtime.cjs.js",
+  "module": "dist/vocab-core-runtime.esm.js"
+}

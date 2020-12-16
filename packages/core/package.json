@@ -5,6 +5,13 @@
   "module": "dist/vocab-core.esm.js",
   "author": "SEEK",
   "license": "MIT",
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts",
+      "runtime.ts",
+      "icu-handler.ts"
+    ]
+  },
   "dependencies": {
     "@vocab/types": "^0.0.6",
     "chalk": "^4.1.0",
@@ -13,6 +20,7 @@
     "fast-glob": "^3.2.4",
     "fastest-validator": "^1.9.0",
     "find-up": "^5.0.0",
+    "intl-messageformat": "^9.3.18",
     "intl-messageformat-parser": "^6.0.16",
     "prettier": "^2.1.2"
   },
