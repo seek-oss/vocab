@@ -24,6 +24,8 @@ import {
   getTSFileFromDevLanguageFile,
   getDevLanguageFileFromAltLanguageFile,
   getAltTranslationFileGlob,
+  isDevLanguageFile,
+  isAltLanguageFile,
 } from './utils';
 import { trace } from './logger';
 
@@ -219,9 +221,9 @@ export function watch(config: UserConfig) {
 
     let targetFile;
 
-    if (relativePath.match(/translations.json$/)) {
+    if (isDevLanguageFile(relativePath)) {
       targetFile = path.resolve(cwd, relativePath);
-    } else if (relativePath.match(/translations.(\w)+.json$/)) {
+    } else if (isAltLanguageFile(relativePath)) {
       targetFile = getDevLanguageFileFromAltLanguageFile(
         path.resolve(cwd, relativePath),
       );
