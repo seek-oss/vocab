@@ -136,8 +136,8 @@ function serialiseTranslationRuntime(
   return `${banner}
 
   ${Array.from(imports).join('\n')}
-  import { createLanguage } from '@vocab/webpack/node';
-  import { TranslationFile } from '@vocab/core';
+  import type { TranslationFile } from '@vocab/core';
+  import { createLanguage } from '@vocab/core/runtime';
 
   const translations: TranslationFile<${serialiseObjectToType(
     translationsType,
