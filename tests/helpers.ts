@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import path from 'path';
 
 import VocabWebpackPlugin from '@vocab/webpack';
@@ -5,23 +6,80 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpackMerge from 'webpack-merge';
 import WDS from 'webpack-dev-server';
+import LoadablePlugin from '@loadable/webpack-plugin';
+
+import { spawn } from 'child_process';
 
 interface Options {
   config?: any;
+  port?: number;
   disableVocabPlugin?: boolean;
+  enableServerRender?: boolean;
 }
+
+const makeServerConfig = (fixtureName: string) => ({
+  name: 'server',
+  entry: { server: require.resolve(`${fixtureName}/src/server.tsx`) },
+  resolve: {
+    extensions: ['.js', '.json', '.ts', '.tsx'],
+  },
+  output: {
+    path: path.join(
+      path.dirname(require.resolve(`${fixtureName}/package.json`)),
+      'dist-server',
+    ),
+  },
+  target: 'node',
+  mode: 'development',
+  devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.(js|ts|tsx)$/,
+        include: [path.resolve('fixtures'), path.resolve('packages')],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              plugins: ['@loadable/babel-plugin'],
+              presets: [
+                ['@babel/preset-env', { modules: false }],
+                '@babel/preset-typescript',
+                '@babel/preset-react',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+});
 
 export const makeWebpackConfig = (
   fixtureName: string,
-  { config = {}, disableVocabPlugin = false }: Options = {},
+  {
+    config = {},
+    disableVocabPlugin = false,
+    enableServerRender = false,
+    port,
+  }: Options = {},
 ) => {
   const fixtureConfig = require.resolve(`${fixtureName}/vocab.config.js`);
 
-  return webpackMerge(
+  const clientConfig = webpackMerge(
     {
+      name: 'client',
       entry: require.resolve(`${fixtureName}/src/client.tsx`),
       resolve: {
         extensions: ['.js', '.json', '.ts', '.tsx'],
+      },
+      output: {
+        publicPath: `/static/`,
+        path: path.join(
+          path.dirname(require.resolve(`${fixtureName}/package.json`)),
+          'dist-client',
+        ),
       },
       mode: 'development',
       devtool: 'source-map',
@@ -29,12 +87,13 @@ export const makeWebpackConfig = (
         rules: [
           {
             test: /\.(js|ts|tsx)$/,
-            include: [path.dirname(fixtureConfig), path.resolve('packages')],
+            include: [path.resolve('fixtures'), path.resolve('packages')],
             use: [
               {
                 loader: 'babel-loader',
                 options: {
                   babelrc: false,
+                  plugins: ['@loadable/babel-plugin'],
                   presets: [
                     ['@babel/preset-env', { modules: false }],
                     '@babel/preset-typescript',
@@ -46,13 +105,17 @@ export const makeWebpackConfig = (
           },
         ],
       },
-      plugins: [new HtmlWebpackPlugin()],
+      plugins: [new HtmlWebpackPlugin(), new LoadablePlugin()],
     },
     disableVocabPlugin
       ? {}
       : { plugins: [new VocabWebpackPlugin({ configFile: fixtureConfig })] },
     config,
   );
+  if (!enableServerRender) {
+    return clientConfig;
+  }
+  return [clientConfig, makeServerConfig(fixtureName)];
 };
 
 export interface TestServer {
@@ -67,14 +130,43 @@ export const startFixture = (
   options?: Options,
 ): Promise<TestServer> =>
   new Promise((resolve) => {
-    const compiler = webpack(makeWebpackConfig(fixtureName, options));
-
+    console.log({ options });
     const port = portCounter++;
-    const server = new WDS(compiler);
+    const compiler = webpack(
+      makeWebpackConfig(fixtureName, { ...options, port }),
+    );
+
+    let childProcess: any;
+    // eslint-disable-next-line prefer-const
+    let watcher: any;
 
     compiler.hooks.done.tap('vocab-test-helper', () => {
-      resolve({ url: `http://localhost:${port}`, close: () => server.close() });
+      console.log('Done hook');
+      if (options?.enableServerRender) {
+        const cwd = path.dirname(
+          require.resolve(`${fixtureName}/vocab.config.js`),
+        );
+        childProcess = spawn('node', ['./dist-server/server.js'], {
+          stdio: 'inherit',
+          cwd,
+        });
+      }
+      console.log('Resolving.');
+      resolve({
+        url: `http://localhost:${port}`,
+        close: () => {
+          watcher.close(() => {
+            console.log('Compiler closed');
+          });
+          childProcess.kill();
+        },
+      });
     });
-
-    server.listen(port);
+    compiler.hooks.watchRun.tap('vocab-test-helper', () => childProcess.kill());
+    compiler.run(() => {
+      console.log('Run running...');
+    });
+    // watcher = compiler.watch({}, () => {
+    //   console.log('Watch running...');
+    // });
   });

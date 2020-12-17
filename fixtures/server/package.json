@@ -1,0 +1,33 @@
+{
+  "name": "fixture-server",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "compile": "vocab compile",
+    "start": "webpack serve"
+  },
+  "dependencies": {
+    "@loadable/babel-plugin": "^5.13.2",
+    "@loadable/component": "^5.14.1",
+    "@loadable/server": "^5.14.0",
+    "@loadable/webpack-plugin": "^5.14.0",
+    "@types/loadable__component": "^5.13.1",
+    "@types/loadable__server": "^5.12.3",
+    "@types/loadable__webpack-plugin": "^5.7.1",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/start-server-webpack-plugin": "^2.2.0",
+    "@vocab/cli": "^0.0.12",
+    "@vocab/react": "^0.0.10",
+    "babel-loader": "^8.2.1",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^4.5.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "start-server-webpack-plugin": "^2.2.5",
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
