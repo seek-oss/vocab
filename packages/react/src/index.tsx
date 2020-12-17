@@ -64,7 +64,7 @@ type TranslateFn<Translations extends BaseTranslation> = {
   ): Translations[TranslationKey]['returnType'];
 };
 
-export function useTranslation<Translations extends BaseTranslation>(
+export function useTranslations<Translations extends BaseTranslation>(
   translations: TranslationFile<Translations>,
 ): {
   ready: boolean;
