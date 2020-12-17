@@ -26,6 +26,9 @@ import {
   getAltTranslationFileGlob,
   isDevLanguageFile,
   isAltLanguageFile,
+  getTranslationFolderGlob,
+  devTranslationFileName,
+  isTranslationDirectory,
 } from './utils';
 import { trace } from './logger';
 
@@ -206,7 +209,11 @@ export function watch(config: UserConfig) {
   const cwd = config.projectRoot || process.cwd();
 
   const watcher = chokidar.watch(
-    [getDevTranslationFileGlob(config), getAltTranslationFileGlob(config)],
+    [
+      getDevTranslationFileGlob(config),
+      getAltTranslationFileGlob(config),
+      getTranslationFolderGlob(config),
+    ],
     {
       cwd,
       ignored: config.ignore
@@ -246,6 +253,18 @@ export function watch(config: UserConfig) {
     }
   };
 
+  const onNewDirectory = async (relativePath: string) => {
+    trace('Detected new directory', relativePath);
+    if (!isTranslationDirectory(relativePath, config)) {
+      trace('Ignoring non-translation directory:', relativePath);
+      return;
+    }
+    const newFilePath = path.join(relativePath, devTranslationFileName);
+    await fs.writeFile(newFilePath, JSON.stringify({}, null, 2));
+    trace('Created new empty translation file:', newFilePath);
+  };
+
+  watcher.on('addDir', onNewDirectory);
   watcher.on('add', onTranslationChange).on('change', onTranslationChange);
 
   return () => watcher.close();

@@ -28,6 +28,9 @@ export interface LanguageTarget {
 }
 
 export interface UserConfig {
+  /**
+   * The root directory to compile and validate translations
+   */
   projectRoot?: string;
   /**
    * The language used in translations.json

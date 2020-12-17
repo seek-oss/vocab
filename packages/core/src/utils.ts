@@ -1,3 +1,4 @@
+import { TranslationKey } from './../../types/src/index';
 import path from 'path';
 
 import glob from 'fast-glob';
@@ -12,6 +13,7 @@ import type {
   UserConfig,
 } from '@vocab/types';
 import { trace } from './logger';
+import chalk from 'chalk';
 
 const defaultTranslationDirSuffix = '.vocab';
 export const devTranslationFileName = 'translations.json';
@@ -26,6 +28,28 @@ export function isDevLanguageFile(filePath: string) {
 }
 export function isAltLanguageFile(filePath: string) {
   return filePath.endsWith('.translations.json');
+}
+export function isTranslationDirectory(
+  filePath: string,
+  {
+    translationsDirectorySuffix = defaultTranslationDirSuffix,
+  }: {
+    translationsDirectorySuffix?: string;
+  },
+) {
+  return filePath.endsWith(translationsDirectorySuffix);
+}
+
+export function getTranslationFolderGlob({
+  translationsDirectorySuffix = defaultTranslationDirSuffix,
+}: {
+  translationsDirectorySuffix?: string;
+}) {
+  const result = `**/*${translationsDirectorySuffix}`;
+
+  trace('getTranslationFolderGlob', result);
+
+  return result;
 }
 
 export function getDevTranslationFileGlob({
@@ -150,12 +174,12 @@ export function getAltLanguageFilePath(
 }
 
 function mergeWithDevLanguage(
-  translation: TranslationsByLanguage,
-  devTranslation: TranslationsByLanguage,
+  translation: TranslationsByKey,
+  devTranslation: TranslationsByKey,
 ) {
   // Only use keys from the dev translation
   const keys = Object.keys(devTranslation);
-  const newLanguage: TranslationsByLanguage = {};
+  const newLanguage: TranslationsByKey = {};
   for (const key of keys) {
     if (translation[key]) {
       newLanguage[key] = {
@@ -176,11 +200,11 @@ function loadAltLanguageFile(
   }: {
     filePath: string;
     languageName: string;
-    devTranslation: TranslationsByLanguage;
+    devTranslation: TranslationsByKey;
     fallbacks: Fallback;
   },
   { devLanguage, languages }: UserConfig,
-) {
+): TranslationsByKey {
   const result = {};
 
   const languageHierarchy = getLanguageHierarcy({ languages }).get(
@@ -215,10 +239,11 @@ function loadAltLanguageFile(
         delete require.cache[altFilePath];
 
         const translationFile = require(altFilePath);
-        Object.assign(
-          result,
-          mergeWithDevLanguage(translationFile, devTranslation),
-        );
+        const { keys } = getTranslationsFromFile(translationFile, {
+          filePath: altFilePath,
+          isAltLanguage: true,
+        });
+        Object.assign(result, mergeWithDevLanguage(keys, devTranslation));
       } catch (e) {
         trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
@@ -250,6 +275,56 @@ function getNamespaceByFilePath(
   return namespace;
 }
 
+function printValidationError(...params: unknown[]) {
+  // eslint-disable-next-line no-console
+  console.error(chalk.red('Error loading translation:'), ...params);
+}
+
+function getTranslationsFromFile(
+  translations: unknown,
+  { isAltLanguage, filePath }: { isAltLanguage: boolean; filePath: string },
+): { $namespace: unknown; keys: TranslationsByKey } {
+  if (!translations || typeof translations !== 'object') {
+    throw new Error(
+      `Unable to read translation file ${filePath}. Translations must be an object`,
+    );
+  }
+  const { $namespace, ...keys } = translations as TranslationsByKey;
+  if (isAltLanguage && $namespace) {
+    printValidationError(
+      `Found $namespace in alt language file in ${filePath}. $namespace is only used in the dev language and will be ignored.`,
+    );
+  }
+  if (!isAltLanguage && $namespace && typeof $namespace !== 'string') {
+    printValidationError(
+      `Found non-string $namespace in language file in ${filePath}. $namespace must be a string.`,
+    );
+  }
+  const validKeys: TranslationsByKey = {};
+  for (const [translationKey, translation] of Object.entries(keys)) {
+    if (typeof translation === 'string') {
+      printValidationError(
+        `Found string for a translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+      );
+      continue;
+    }
+    if (!translation) {
+      printValidationError(
+        `Found empty translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+      );
+      continue;
+    }
+    if (!translation.message || typeof translation.message !== 'string') {
+      printValidationError(
+        `No message found for translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+      );
+      continue;
+    }
+    validKeys[translationKey] = translation;
+  }
+  return { $namespace, keys: validKeys };
+}
+
 export function loadTranslation(
   {
     filePath,
@@ -275,9 +350,17 @@ export function loadTranslation(
     userConfig.projectRoot || process.cwd(),
     filePath,
   );
-  const { $namespace, ...devTranslation } = translationContent;
-  const namespace =
-    $namespace || getNamespaceByFilePath(relativePath, userConfig);
+  const { $namespace, keys: devTranslation } = getTranslationsFromFile(
+    translationContent,
+    {
+      filePath,
+      isAltLanguage: false,
+    },
+  );
+  const namespace: string =
+    typeof $namespace === 'string'
+      ? $namespace
+      : getNamespaceByFilePath(relativePath, userConfig);
 
   trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
