@@ -68,10 +68,7 @@ export default async function vocabLoader(this: LoaderContext) {
 
   const config = (getOptions(this) as unknown) as UserConfig;
 
-  const devJsonFilePath = getDevLanguageFileFromTsFile(
-    this.resourcePath,
-    config,
-  );
+  const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
 
   const loadedTranslation = loadTranslation(
     { filePath: devJsonFilePath, fallbacks: 'all' },

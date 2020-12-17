@@ -39,10 +39,10 @@ describe('push', () => {
 
     expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
       {
-        'hello.fixtures_phrase_src___translations___client': {
+        'hello.mytranslations': {
           message: 'Hello',
         },
-        'world.fixtures_phrase_src___translations___client': {
+        'world.mytranslations': {
           message: 'world',
         },
       },
@@ -51,10 +51,10 @@ describe('push', () => {
     );
     expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
       {
-        'hello.fixtures_phrase_src___translations___client': {
+        'hello.mytranslations': {
           message: 'Bonjour',
         },
-        'world.fixtures_phrase_src___translations___client': {
+        'world.mytranslations': {
           message: 'monde',
         },
       },

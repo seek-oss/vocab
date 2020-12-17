@@ -37,7 +37,10 @@ export interface UserConfig {
    * An array of languages to build for
    */
   languages: Array<LanguageTarget>;
-  translationsDirname?: string;
+  /**
+   * A custom suffix to name vocab translation directories
+   */
+  translationsDirectorySuffix?: string;
   /**
    * An array of glob paths to ignore from compilation and validation
    */

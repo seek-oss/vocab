@@ -38,12 +38,12 @@ describe('pull', () => {
     (pullAllTranslations as jest.Mock).mockImplementation(() =>
       Promise.resolve({
         en: {
-          'hello.fixtures_phrase_src___translations___client': {
+          'hello.mytranslations': {
             message: 'Hi there',
           },
         },
         fr: {
-          'hello.fixtures_phrase_src___translations___client': {
+          'hello.mytranslations': {
             message: 'merci',
           },
         },

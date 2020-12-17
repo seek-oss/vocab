@@ -23,7 +23,7 @@ const schema = {
       },
     },
   },
-  translationsDirname: { type: 'string', optional: true },
+  translationsDirectorySuffix: { type: 'string', optional: true },
   projectRoot: { type: 'string', optional: true },
   ignore: {
     type: 'array',

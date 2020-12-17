@@ -13,26 +13,44 @@ import type {
 } from '@vocab/types';
 import { trace } from './logger';
 
-const defaultTranslationDirname = '__translations__';
-
-export const translationFileExtension = 'translations.json';
+const defaultTranslationDirSuffix = '.vocab';
+export const devTranslationFileName = 'translations.json';
 
 type Fallback = 'none' | 'valid' | 'all';
 
-export function getDevTranslationFileGlob({
-  translationsDirname = defaultTranslationDirname,
-}: {
-  translationsDirname?: string;
-}) {
-  return `**/${translationsDirname}/?(*.)translations.json`;
+export function isDevLanguageFile(filePath: string) {
+  return (
+    filePath.endsWith(`/${devTranslationFileName}`) ||
+    filePath === devTranslationFileName
+  );
+}
+export function isAltLanguageFile(filePath: string) {
+  return filePath.endsWith('.translations.json');
 }
 
-export function getAltTranslationFileGlob({
-  translationsDirname = defaultTranslationDirname,
+export function getDevTranslationFileGlob({
+  translationsDirectorySuffix = defaultTranslationDirSuffix,
 }: {
-  translationsDirname?: string;
+  translationsDirectorySuffix?: string;
 }) {
-  return `**/${translationsDirname}/?(*.)translations.*.json`;
+  const result = `**/*${translationsDirectorySuffix}/${devTranslationFileName}`;
+
+  trace('getDevTranslationFileGlob', result);
+
+  return result;
+}
+
+export function getAltTranslationFileGlob(config: UserConfig) {
+  const altLanguages = getAltLanguages(config);
+  const langMatch =
+    altLanguages.length === 1 ? altLanguages[0] : `{${altLanguages.join(',')}}`;
+
+  const { translationsDirectorySuffix = defaultTranslationDirSuffix } = config;
+  const result = `**/*${translationsDirectorySuffix}/${langMatch}.translations.json`;
+
+  trace('getAltTranslationFileGlob', result);
+
+  return result;
 }
 
 export function getUniqueKey(key: string, namespace: string) {
@@ -90,55 +108,40 @@ export function getLanguageHierarcy({
   return hierarchyMap;
 }
 
-export function getDevLanguageFileFromTsFile(
-  tsFilePath: string,
-  {
-    translationsDirname = defaultTranslationDirname,
-  }: { translationsDirname?: string },
-) {
+export function getDevLanguageFileFromTsFile(tsFilePath: string) {
   const directory = path.dirname(tsFilePath);
-  const basename = path.basename(tsFilePath);
-  const jsonFileName = basename.replace(
-    /translations\.ts$/,
-    translationFileExtension,
-  );
+  const result = path.normalize(path.join(directory, devTranslationFileName));
 
-  const result = path.join(directory, translationsDirname, jsonFileName);
   trace(`Returning dev language path ${result} for path ${tsFilePath}`);
-  return path.normalize(result);
+  return result;
 }
 
 export function getDevLanguageFileFromAltLanguageFile(
   altLanguageFilePath: string,
 ) {
-  const result = altLanguageFilePath.replace(
-    /translations.(\w)+.json$/,
-    'translations.json',
-  );
+  const directory = path.dirname(altLanguageFilePath);
+  const result = path.normalize(path.join(directory, devTranslationFileName));
   trace(
     `Returning dev language path ${result} for path ${altLanguageFilePath}`,
   );
-  return path.normalize(result);
+  return result;
 }
 
 export function getTSFileFromDevLanguageFile(devLanguageFilePath: string) {
-  const result = path.join(
-    path.dirname(devLanguageFilePath),
-    '..',
-    path.basename(devLanguageFilePath, '.json').concat('.ts'),
-  );
+  const directory = path.dirname(devLanguageFilePath);
+  const result = path.normalize(path.join(directory, 'index.ts'));
 
   trace(`Returning TS path ${result} for path ${devLanguageFilePath}`);
-  return path.normalize(result);
+  return result;
 }
 
 export function getAltLanguageFilePath(
   devLanguageFilePath: string,
   language: string,
 ) {
-  const result = devLanguageFilePath.replace(
-    /translations\.json$/,
-    `translations.${language}.json`,
+  const directory = path.dirname(devLanguageFilePath);
+  const result = path.normalize(
+    path.join(directory, `${language}.translations.json`),
   );
   trace(
     `Returning alt language path ${result} for path ${devLanguageFilePath}`,
@@ -231,11 +234,20 @@ function loadAltLanguageFile(
   return result;
 }
 
-function getNamespaceByFilePath(relativePath: string) {
-  return relativePath
+function getNamespaceByFilePath(
+  relativePath: string,
+  { translationsDirectorySuffix = defaultTranslationDirSuffix }: UserConfig,
+) {
+  let namespace = path
+    .dirname(relativePath)
     .replace(/^src\//, '')
-    .replace(/\.?translations\.json$/, '')
     .replace(/\//g, '_');
+
+  if (namespace.endsWith(translationsDirectorySuffix)) {
+    namespace = namespace.slice(0, -translationsDirectorySuffix.length);
+  }
+
+  return namespace;
 }
 
 export function loadTranslation(
@@ -264,7 +276,8 @@ export function loadTranslation(
     filePath,
   );
   const { $namespace, ...devTranslation } = translationContent;
-  const namespace = $namespace || getNamespaceByFilePath(relativePath);
+  const namespace =
+    $namespace || getNamespaceByFilePath(relativePath, userConfig);
 
   trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
@@ -296,35 +309,21 @@ export async function loadAllTranslations(
     fallbacks,
     includeNodeModules,
   }: { fallbacks: Fallback; includeNodeModules: boolean },
-  {
-    projectRoot,
-    devLanguage,
-    languages,
-    translationsDirname,
-    ignore = [],
-  }: UserConfig,
+  config: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
-  const translationFiles = await glob(
-    getDevTranslationFileGlob({ translationsDirname }),
-    {
-      ignore: includeNodeModules ? ignore : [...ignore, '**/node_modules/**'],
-      absolute: true,
-      cwd: projectRoot,
-    },
-  );
+  const { projectRoot, ignore = [] } = config;
+
+  const translationFiles = await glob(getDevTranslationFileGlob(config), {
+    ignore: includeNodeModules ? ignore : [...ignore, '**/node_modules/**'],
+    absolute: true,
+    cwd: projectRoot,
+  });
 
   trace(`Found ${translationFiles.length} translation files`);
 
   const result = await Promise.all(
     translationFiles.map((filePath) =>
-      loadTranslation(
-        { filePath, fallbacks },
-        {
-          devLanguage,
-          languages,
-          translationsDirname,
-        },
-      ),
+      loadTranslation({ filePath, fallbacks }, config),
     ),
   );
   const keys = new Set();
