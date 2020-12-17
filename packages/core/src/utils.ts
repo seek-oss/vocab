@@ -40,17 +40,13 @@ export function getDevTranslationFileGlob({
   return result;
 }
 
-export function getAltTranslationFileGlob({
-  translationsDirectorySuffix = defaultTranslationDirSuffix,
-  languages,
-  devLanguage,
-}: UserConfig) {
-  const langMatch = languages
-    .map(({ name }) => name)
-    .filter((lang) => lang !== devLanguage)
-    .join(',');
+export function getAltTranslationFileGlob(config: UserConfig) {
+  const altLanguages = getAltLanguages(config);
+  const langMatch =
+    altLanguages.length === 1 ? altLanguages[0] : `{${altLanguages.join(',')}}`;
 
-  const result = `**/*${translationsDirectorySuffix}/{${langMatch}}.json`;
+  const { translationsDirectorySuffix = defaultTranslationDirSuffix } = config;
+  const result = `**/*${translationsDirectorySuffix}/${langMatch}.translations.json`;
 
   trace('getAltTranslationFileGlob', result);
 
