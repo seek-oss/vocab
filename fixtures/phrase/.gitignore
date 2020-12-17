@@ -1,2 +1,1 @@
-*.translations.ts
-translations.ts
+**/*.vocab/index.ts
