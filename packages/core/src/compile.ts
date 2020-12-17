@@ -134,7 +134,7 @@ function serialiseTranslationRuntime(
       ([languageName, translations]) =>
         `"${languageName}": createLanguage(${JSON.stringify(
           getTranslationMessages(translations),
-        )}, "${languageName}")`,
+        )})`,
     )
     .join(',');
 

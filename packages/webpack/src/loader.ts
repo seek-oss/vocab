@@ -55,7 +55,7 @@ const renderLanguageLoaderAsync = (
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
-    ), '${lang}')`;
+    ))`;
 };
 
 export default async function vocabLoader(this: LoaderContext) {
