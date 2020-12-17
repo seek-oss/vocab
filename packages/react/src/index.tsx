@@ -1,15 +1,17 @@
-import { TranslationFile } from '@vocab/types';
+import { TranslationFile, LanguageName } from '@vocab/types';
 import React, {
   FunctionComponent,
   ReactNode,
   useContext,
+  useMemo,
   useReducer,
 } from 'react';
 
-type Language = string;
+type Locale = string;
 
 interface TranslationsValue {
-  language: Language;
+  language: LanguageName;
+  locale?: Locale;
 }
 
 const TranslationsContext = React.createContext<TranslationsValue | undefined>(
@@ -19,13 +21,18 @@ const TranslationsContext = React.createContext<TranslationsValue | undefined>(
 export const VocabProvider: FunctionComponent<TranslationsValue> = ({
   children,
   language,
-}) => (
-  <TranslationsContext.Provider value={{ language }}>
-    {children}
-  </TranslationsContext.Provider>
-);
+  locale,
+}) => {
+  const value = useMemo(() => ({ language, locale }), [language, locale]);
 
-export const useLanguage = (): Language => {
+  return (
+    <TranslationsContext.Provider value={value}>
+      {children}
+    </TranslationsContext.Provider>
+  );
+};
+
+export const useLanguage = (): TranslationsValue => {
   const context = useContext(TranslationsContext);
   if (!context) {
     throw new Error(
@@ -37,7 +44,7 @@ export const useLanguage = (): Language => {
       'Attempted to access translation without language set. Did you forget to pass language to VocabProvider?',
     );
   }
-  return context.language;
+  return context;
 };
 
 type TranslationItem = {
@@ -70,7 +77,7 @@ export function useTranslation<Translations extends BaseTranslation>(
   ready: boolean;
   t: TranslateFn<Translations>;
 } {
-  const language = useLanguage();
+  const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
   if (!translations[language]) {
     throw new Error(
@@ -79,7 +86,7 @@ export function useTranslation<Translations extends BaseTranslation>(
       )}`,
     );
   }
-  let translationsObject = translations[language].getValue();
+  let translationsObject = translations[language].getValue(locale || language);
 
   if (!translationsObject) {
     if (SERVER_RENDERING) {
@@ -88,7 +95,7 @@ export function useTranslation<Translations extends BaseTranslation>(
       );
     }
     translations[language].load().then(() => {
-      translationsObject = translations[language].getValue();
+      translationsObject = translations[language].getValue(locale || language);
       forceRender();
     });
     return { t: () => ' ', ready: false };

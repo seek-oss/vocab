@@ -4,12 +4,11 @@ import { getParsedICUMessages } from '@vocab/core/icu-handler';
 export const createLanguage = (
   moduleId: string,
   loadImport: () => Promise<any>,
-  locale: string,
 ): TranslationModule<any> => {
   let promiseValue: Promise<any>;
 
   return {
-    getValue: () => {
+    getValue: (locale) => {
       // @ts-expect-error Missing webpack types
       if (!__webpack_modules__[moduleId]) {
         return undefined;

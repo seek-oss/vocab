@@ -11,7 +11,9 @@ export type ParsedICUMessages<TranslatedLanguage> = Record<
 >;
 
 export type TranslationModule<TranslatedLanguage> = {
-  getValue: () => ParsedICUMessages<TranslatedLanguage> | undefined;
+  getValue: (
+    locale: string,
+  ) => ParsedICUMessages<TranslatedLanguage> | undefined;
   load: () => Promise<void>;
 };
 

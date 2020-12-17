@@ -1,14 +1,23 @@
 import { ParsedICUMessages, TranslationMessagesByKey } from '@vocab/types';
 import IntlMessageFormat from 'intl-messageformat';
 
-const moduleCache = new WeakMap();
+type ICUMessagesByLocale = {
+  [locale: string]: ParsedICUMessages<any>;
+};
+
+const moduleCache = new WeakMap<
+  TranslationMessagesByKey,
+  ICUMessagesByLocale
+>();
 
 export const getParsedICUMessages = (
   m: TranslationMessagesByKey,
   locale: string,
 ): ParsedICUMessages<any> => {
-  if (moduleCache.has(m)) {
-    return moduleCache.get(m);
+  const moduleCachedResult = moduleCache.get(m);
+
+  if (moduleCachedResult && moduleCachedResult[locale]) {
+    return moduleCachedResult[locale];
   }
 
   const parsedICUMessages: ParsedICUMessages<any> = {};
@@ -20,7 +29,7 @@ export const getParsedICUMessages = (
     );
   }
 
-  moduleCache.set(m, parsedICUMessages);
+  moduleCache.set(m, { ...moduleCachedResult, [locale]: parsedICUMessages });
 
   return parsedICUMessages;
 };
