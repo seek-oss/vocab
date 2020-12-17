@@ -1,4 +1,3 @@
-import { TranslationKey } from './../../types/src/index';
 import path from 'path';
 
 import glob from 'fast-glob';
@@ -7,7 +6,6 @@ import type {
   LanguageName,
   LanguageTarget,
   LoadedTranslation,
-  TranslationsByLanguage,
   TranslationsByKey,
   TranslationMessagesByKey,
   UserConfig,
