@@ -35,7 +35,7 @@ export default class VocabWebpackPlugin {
       );
     }
     compiler.options.module.rules?.splice(0, 0, {
-      test: /translations\.ts$/,
+      test: /\.vocab[\\\/]index\.ts$/,
       loader: require.resolve('@vocab/webpack/loader'),
       options: this.options,
     });
