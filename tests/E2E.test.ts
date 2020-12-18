@@ -62,14 +62,24 @@ describe('E2E', () => {
       await page.goto(server.url);
     });
 
-    it('should default to english', async () => {
+    it('should default to en-AU english', async () => {
       const message = await page.waitForSelector('#message');
+      const publishDate = await page.waitForSelector('#publish-date');
 
       await expect(message).toMatch('Hello world');
+      await expect(publishDate).toMatch('Vocab was published on 20/11/2020');
+    });
+
+    it('should handle to en-US locale', async () => {
+      await page.click('#toggle-locale');
+
+      const publishDate = await page.waitForSelector('#publish-date');
+
+      await expect(publishDate).toMatch('Vocab was published on 11/20/2020');
     });
 
     it('should switch to french', async () => {
-      await page.click('button');
+      await page.click('#toggle-language');
 
       const message = await page.waitForSelector('#message');
 

@@ -4,5 +4,8 @@
   },
   "world": {
     "message": "world"
+  },
+  "vocabPublishDate": {
+    "message": "Vocab was published on {publishDate, date, small}"
   }
 }

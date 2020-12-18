@@ -4,5 +4,8 @@
   },
   "world": {
     "message": "monde"
+  },
+  "vocabPublishDate": {
+    "message": "Vocab a été publié le {publishDate, date, medium}"
   }
 }
