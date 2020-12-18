@@ -29,7 +29,7 @@
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
     "start-fixture": "ts-node tests/start-fixture",
     "run-server-fixture": "ts-node tests/run-server-fixture",
-    "compile-fixtures": "manypkg run fixture-simple compile && manypkg run fixture-server compile && manypkg run fixture-phrase compile"
+    "compile-fixtures": "manypkg run fixture-simple compile && manypkg run fixture-server compile"
   },
   "workspaces": [
     "packages/*",
