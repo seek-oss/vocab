@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { TranslationFile } from '@vocab/types';
 import React, {
   FunctionComponent,
@@ -92,9 +91,6 @@ export function useTranslation<Translations extends BaseTranslation>(
       translationsObject = translations[language].getValue();
       forceRender();
     });
-    console.warn(
-      `React useTranslations: Translations not ready for ${language}`,
-    );
     return { t: () => ' ', ready: false };
   }
 
