@@ -5,10 +5,11 @@ import VocabWebpackPlugin from '@vocab/webpack';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpackMerge from 'webpack-merge';
-import WDS from 'webpack-dev-server';
+// import WDS from 'webpack-dev-server';
 import LoadablePlugin from '@loadable/webpack-plugin';
 
 import { spawn } from 'child_process';
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 interface Options {
   config?: any;
@@ -137,8 +138,6 @@ export const startFixture = (
     );
 
     let childProcess: any;
-    // eslint-disable-next-line prefer-const
-    let watcher: any;
 
     compiler.hooks.done.tap('vocab-test-helper', () => {
       console.log('Done hook');
@@ -155,9 +154,6 @@ export const startFixture = (
       resolve({
         url: `http://localhost:${port}`,
         close: () => {
-          watcher.close(() => {
-            console.log('Compiler closed');
-          });
           childProcess.kill();
         },
       });
@@ -166,7 +162,10 @@ export const startFixture = (
     compiler.run(() => {
       console.log('Run running...');
     });
-    // watcher = compiler.watch({}, () => {
-    //   console.log('Watch running...');
+    // compiler.watch({}, () => {
+    //   console.log('Watch handler called');
     // });
+    // setTimeout(() => {
+    //   console.log('timeout');
+    // }, 30000);
   });

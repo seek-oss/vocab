@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { TranslationFile } from '@vocab/types';
 import React, {
   FunctionComponent,
@@ -84,13 +85,16 @@ export function useTranslation<Translations extends BaseTranslation>(
   if (!translationsObject) {
     if (SERVER_RENDERING) {
       throw new Error(
-        `Translations not syncronously available on server render. This should not happen.`,
+        `Translations not syncronously available on server render. Applying translations dynamically server-side is not supported.`,
       );
     }
     translations[language].load().then(() => {
       translationsObject = translations[language].getValue();
       forceRender();
     });
+    console.error(
+      `React useTranslations: Translations not ready for ${language}`,
+    );
     return { t: () => ' ', ready: false };
   }
 

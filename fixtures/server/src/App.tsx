@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { useTranslation, VocabProvider } from '@vocab/react';
 
@@ -16,7 +17,15 @@ export function App({ initialLanguage }: { initialLanguage: string }) {
 
   return (
     <VocabProvider language={lang}>
-      <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
+      <button
+        onClick={() =>
+          setLang((curr) => {
+            const newLanguage = curr === 'en' ? 'fr' : 'en';
+            console.log(`Changing language from ${curr} to ${newLanguage}`);
+            return newLanguage;
+          })
+        }
+      >
         Toggle language
       </button>
       <Content />
