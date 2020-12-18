@@ -1,5 +1,17 @@
 # @vocab/webpack
 
+## 0.0.16
+
+### Patch Changes
+
+- [`3d4fa18`](https://github.com/seek-oss/vocab/commit/3d4fa18b2b8c8f640d778ba30603df323a563a38) [#37](https://github.com/seek-oss/vocab/pull/37) Thanks [@jahredhope](https://github.com/jahredhope)! - Apply loader to all vocab translation index files
+
+* [`f2fca67`](https://github.com/seek-oss/vocab/commit/f2fca679c66ae65405a0aa24f0a0e472026aad0d) [#36](https://github.com/seek-oss/vocab/pull/36) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Support custom locales for ICU message parsing
+
+* Updated dependencies [[`f2fca67`](https://github.com/seek-oss/vocab/commit/f2fca679c66ae65405a0aa24f0a0e472026aad0d)]:
+  - @vocab/core@0.0.8
+  - @vocab/types@0.0.8
+
 ## 0.0.15
 
 ### Patch Changes
