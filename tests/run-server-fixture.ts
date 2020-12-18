@@ -1,9 +1,9 @@
 #!/usr/bin/env ts-node
-import { startFixture } from './helpers';
+import { runServerFixture } from './helpers';
 
 const fixtureName = process.argv[2];
 
-startFixture(fixtureName).then((server) => {
+runServerFixture(fixtureName).then((server: any) => {
   // eslint-disable-next-line no-console
   console.log('Fixture running on', server.url);
 });

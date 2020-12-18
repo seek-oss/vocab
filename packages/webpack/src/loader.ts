@@ -66,7 +66,6 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  // @ts-expect-error Webpack 4
   const config = (getOptions(this) as unknown) as UserConfig;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);

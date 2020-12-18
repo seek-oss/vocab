@@ -3,6 +3,7 @@
 node_modules*/
 
 /**/dist/
+/**/dist-*/
 /packages/**/README.md
 
 .DS_Store
