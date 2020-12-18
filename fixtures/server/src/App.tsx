@@ -5,8 +5,7 @@ import { useTranslation, VocabProvider } from '@vocab/react';
 import translations from './App.vocab';
 
 function Content() {
-  const { t, ready } = useTranslation(translations);
-  console.log('Rendering translations while', ready ? 'Ready' : 'NOT Ready');
+  const { t } = useTranslation(translations);
   const message = `${t('hello')} ${t('world')}`;
 
   return <div id="message">{message}</div>;
@@ -17,15 +16,7 @@ export function App({ initialLanguage }: { initialLanguage: string }) {
 
   return (
     <VocabProvider language={lang}>
-      <button
-        onClick={() =>
-          setLang((curr) => {
-            const newLanguage = curr === 'en' ? 'fr' : 'en';
-            console.log(`Changing language from ${curr} to ${newLanguage}`);
-            return newLanguage;
-          })
-        }
-      >
+      <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
         Toggle language
       </button>
       <Content />

@@ -92,7 +92,7 @@ export function useTranslation<Translations extends BaseTranslation>(
       translationsObject = translations[language].getValue();
       forceRender();
     });
-    console.error(
+    console.warn(
       `React useTranslations: Translations not ready for ${language}`,
     );
     return { t: () => ' ', ready: false };
