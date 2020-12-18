@@ -6,6 +6,8 @@ node_modules*/
 /**/dist-*/
 /packages/**/README.md
 
+**/*.vocab/index.ts
+
 .DS_Store
 .npmrc
 *.tgz
