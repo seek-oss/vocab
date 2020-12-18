@@ -84,7 +84,7 @@ export function useTranslations<Translations extends BaseTranslation>(
   if (!translationsObject) {
     if (SERVER_RENDERING) {
       throw new Error(
-        `Translations not syncronously available on server render. This should not happen.`,
+        `Translations not syncronously available on server render. Applying translations dynamically server-side is not supported.`,
       );
     }
     translations[language].load().then(() => {
