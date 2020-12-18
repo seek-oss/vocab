@@ -84,16 +84,16 @@ A translation file is a JSON file consisting of a flat structure of keys, each w
 Then run `vocab compile`. Or `vocab compile --watch`.
 This will create a new `index.ts` file for each folder ending in **`.vocab`**.
 
-You can then import these translations into your React components. Translations can be used by calling the `t` function returned by `useTranslation`.
+You can then import these translations into your React components. Translations can be used by calling the `t` function returned by `useTranslations`.
 
 **./MyComponent.tsx**
 
 ```tsx
-import { useTranslation } from '@vocab/react';
+import { useTranslations } from '@vocab/react';
 import translations from './example.vocab';
 
 function MyComponent({ children }) {
-  const { t } = useTranslation(translations);
+  const { t } = useTranslations(translations);
   return <div>{t('my key')}</div>;
 }
 ```
