@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useTranslation, VocabProvider } from '@vocab/react';
+import { useTranslations, VocabProvider } from '@vocab/react';
 
 import translations from './App.vocab';
 
 function Content() {
-  const { t } = useTranslation(translations);
+  const { t } = useTranslations(translations);
   const message = `${t('hello')} ${t('world')}`;
 
   return <div id="message">{message}</div>;
