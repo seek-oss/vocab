@@ -34,8 +34,14 @@ export default class VocabWebpackPlugin {
         'Vocab plugin is only intended to be used on web builds. Did you add Vocab to the correct config?',
       );
     }
-    compiler.options.module.rules?.splice(0, 0, {
-      test: /translations\.ts$/,
+    if (!compiler.options.module) {
+      compiler.options.module = { rules: [] };
+    }
+    if (!compiler.options.module.rules) {
+      compiler.options.module.rules = [];
+    }
+    compiler.options.module.rules.splice(0, 0, {
+      test: /\.vocab[\\\/]index\.ts$/,
       loader: require.resolve('@vocab/webpack/loader'),
       options: this.options,
     });
