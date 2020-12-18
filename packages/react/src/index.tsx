@@ -86,7 +86,9 @@ export function useTranslations<Translations extends BaseTranslation>(
       )}`,
     );
   }
-  let translationsObject = translations[language].getValue(locale || language);
+  const translationsObject = translations[language].getValue(
+    locale || language,
+  );
 
   if (!translationsObject) {
     if (SERVER_RENDERING) {
@@ -95,7 +97,6 @@ export function useTranslations<Translations extends BaseTranslation>(
       );
     }
     translations[language].load().then(() => {
-      translationsObject = translations[language].getValue(locale || language);
       forceRender();
     });
     return { t: () => ' ', ready: false };
