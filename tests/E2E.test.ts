@@ -9,6 +9,7 @@ import {
 describe('E2E', () => {
   describe('Server with initial render', () => {
     let server: TestServer;
+
     beforeAll(async () => {
       const config = resolveConfigSync(
         require.resolve('fixture-server/vocab.config.js'),
