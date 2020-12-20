@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { UserConfig, LoadedTranslation, LanguageName } from '@vocab/types';
 import chalk from 'chalk';
-import { loadAllTranslations } from '../load-translations';
 
+import { loadAllTranslations } from '../load-translations';
 import { getAltLanguages } from '../utils';
 
 export function findMissingKeys(
