@@ -1,5 +1,11 @@
 # @vocab/types
 
+## 0.0.8
+
+### Patch Changes
+
+- [`f2fca67`](https://github.com/seek-oss/vocab/commit/f2fca679c66ae65405a0aa24f0a0e472026aad0d) [#36](https://github.com/seek-oss/vocab/pull/36) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Support custom locales for ICU message parsing
+
 ## 0.0.7
 
 ### Patch Changes

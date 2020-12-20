@@ -1,5 +1,16 @@
 # @vocab/react
 
+## 0.0.11
+
+### Patch Changes
+
+- [`f2fca67`](https://github.com/seek-oss/vocab/commit/f2fca679c66ae65405a0aa24f0a0e472026aad0d) [#36](https://github.com/seek-oss/vocab/pull/36) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Support custom locales for ICU message parsing
+
+* [`6c725f4`](https://github.com/seek-oss/vocab/commit/6c725f43c5eaed9b248c8452ff6f83cef1b2f61c) [#35](https://github.com/seek-oss/vocab/pull/35) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Rename `useTranslation` to `useTranslations`
+
+* Updated dependencies [[`f2fca67`](https://github.com/seek-oss/vocab/commit/f2fca679c66ae65405a0aa24f0a0e472026aad0d)]:
+  - @vocab/types@0.0.8
+
 ## 0.0.10
 
 ### Patch Changes
