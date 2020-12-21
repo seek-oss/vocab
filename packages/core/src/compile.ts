@@ -18,9 +18,7 @@ import chokidar from 'chokidar';
 
 import {
   getTranslationMessages,
-  loadAllTranslations,
   getDevTranslationFileGlob,
-  loadTranslation,
   getTSFileFromDevLanguageFile,
   getDevLanguageFileFromAltLanguageFile,
   getAltTranslationFileGlob,
@@ -31,6 +29,7 @@ import {
   isTranslationDirectory,
 } from './utils';
 import { trace } from './logger';
+import { loadAllTranslations, loadTranslation } from './load-translations';
 
 type ICUParams = { [key: string]: string };
 

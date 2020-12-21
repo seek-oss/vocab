@@ -2,7 +2,8 @@
 import { UserConfig, LoadedTranslation, LanguageName } from '@vocab/types';
 import chalk from 'chalk';
 
-import { getAltLanguages, loadAllTranslations } from '../utils';
+import { loadAllTranslations } from '../load-translations';
+import { getAltLanguages } from '../utils';
 
 export function findMissingKeys(
   loadedTranslation: LoadedTranslation,

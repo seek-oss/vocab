@@ -5,8 +5,10 @@ export {
   getAltLanguages,
   getAltLanguageFilePath,
   getDevLanguageFileFromTsFile,
+} from './utils';
+export {
   getUniqueKey,
   loadAllTranslations,
   loadTranslation,
-} from './utils';
+} from './load-translations';
 export type { TranslationFile } from '@vocab/types';

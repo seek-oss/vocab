@@ -100,7 +100,7 @@ function MyComponent({ children }) {
 
 ### Step 5: Create translations
 
-So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [Externeral translation tooling](#external-translation-tooling) for more information.
+So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
 
 **./example.vocab/fr-FR.translations.json**
 
