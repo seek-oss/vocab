@@ -12,6 +12,7 @@ type Locale = string;
 interface TranslationsValue {
   language: LanguageName;
   locale?: Locale;
+  registerModule?: (moduleId: string) => void;
 }
 
 const TranslationsContext = React.createContext<TranslationsValue | undefined>(
@@ -21,9 +22,14 @@ const TranslationsContext = React.createContext<TranslationsValue | undefined>(
 export const VocabProvider: FunctionComponent<TranslationsValue> = ({
   children,
   language,
+  registerModule,
   locale,
 }) => {
-  const value = useMemo(() => ({ language, locale }), [language, locale]);
+  const value = useMemo(() => ({ language, locale, registerModule }), [
+    language,
+    locale,
+    registerModule,
+  ]);
 
   return (
     <TranslationsContext.Provider value={value}>
@@ -32,7 +38,7 @@ export const VocabProvider: FunctionComponent<TranslationsValue> = ({
   );
 };
 
-export const useLanguage = (): TranslationsValue => {
+export const useVocabContext = (): TranslationsValue => {
   const context = useContext(TranslationsContext);
   if (!context) {
     throw new Error(
@@ -77,7 +83,7 @@ export function useTranslations<Translations extends BaseTranslation>(
   ready: boolean;
   t: TranslateFn<Translations>;
 } {
-  const { language, locale } = useLanguage();
+  const { language, locale, registerModule } = useVocabContext();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
   if (!translations[language]) {
     throw new Error(
@@ -100,6 +106,10 @@ export function useTranslations<Translations extends BaseTranslation>(
       forceRender();
     });
     return { t: () => ' ', ready: false };
+  }
+
+  if (registerModule && typeof translations[language].id === 'string') {
+    registerModule(translations[language].id!);
   }
 
   function t<TranslationKey extends keyof Translations>(

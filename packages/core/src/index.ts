@@ -5,6 +5,7 @@ export {
   getAltLanguages,
   getAltLanguageFilePath,
   getDevLanguageFileFromTsFile,
+  getTranslationModuleId,
 } from './utils';
 export {
   getUniqueKey,

@@ -13,7 +13,7 @@ const isVocabModule = (m: Module) =>
   m.identifier().endsWith('.vocab/index.ts');
 
 const getLangFromTranslationRequest = (request?: string) => {
-  const result = request?.match(/lang=([\w_-]+)!/);
+  const result = request?.match(/lang=([\w_-]+)&/);
 
   if (!result || !result[1]) {
     throw new Error(`Can't find language for translation module: ${request}`);
@@ -68,12 +68,7 @@ const assignModuleToChunkGroup = (
     const chunkGroup = chunkGroupCache[id];
     trace('Using pre-existing chunk/chunkgroup with cache id:', id);
 
-    chunkGroup.addOrigin(
-      module,
-      // @ts-expect-error Don't know why this is whinging, it's correct from my POV
-      block.loc,
-      block.request,
-    );
+    chunkGroup.addOrigin(module, block.loc!, block.request!);
 
     assignModule(chunkGroup, chunkGroup.chunks[0]);
 
@@ -84,14 +79,18 @@ const assignModuleToChunkGroup = (
   const chunkGroup = compilation.addChunkInGroup(
     {},
     module,
-    // @ts-expect-error Don't know why this is whinging, it's correct from my POV
-    block.loc,
-    block.request,
+    block.loc!,
+    block.request!,
   );
+
+  // Name the chunkgroup (mostly for loadable compatibility)
+  chunkGroup.name = id;
+  chunkGroup.addOptions({ name: id });
+  compilation.namedChunkGroups.set(id, chunkGroup);
 
   // Chunk group will only contain a single chunk holding out translations
   const chunk = chunkGroup.chunks[0];
-  chunk!.runtime = 'runtime';
+  chunk.runtime = 'runtime';
 
   translationChunks.add(chunk);
 
@@ -109,13 +108,12 @@ export function optimizeTranslationChunks(
   const chunkGroupCache: { [id: string]: ChunkGroup } = {};
   const translationChunks = new Set<Chunk>();
 
+  const chunkGraph = compilation.chunkGraph;
+  if (!chunkGraph) {
+    throw new Error('Missing ChunkGraph');
+  }
+
   for (const chunk of chunks) {
-    const chunkGraph = compilation.chunkGraph;
-
-    if (!chunkGraph) {
-      throw new Error('Missing ChunkGraph');
-    }
-
     const chunkModules = compilation.chunkGraph?.getChunkModules(chunk) ?? [];
     const vocabModules = chunkModules.filter(isVocabModule);
 

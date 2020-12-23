@@ -9,9 +9,11 @@ import {
   getAltLanguages,
   getDevLanguageFileFromTsFile,
   loadTranslation,
+  getTranslationModuleId,
 } from '@vocab/core';
 import { getOptions } from 'loader-utils';
 
+import { getChunkName } from './chunk-name';
 import { trace as _trace } from './logger';
 
 const trace = _trace.extend('loader');
@@ -44,7 +46,10 @@ function createIdentifier(
     'base64',
   );
 
-  const unloader = `@vocab/unloader?source=${base64}&lang=${lang}`;
+  const unloader = `@vocab/unloader?source=${base64}&lang=${lang}&moduleId=${getTranslationModuleId(
+    loadedTranslation,
+    lang,
+  )}`;
   const fileIdent = path.basename(resourcePath, 'translations.json');
 
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
@@ -57,6 +62,7 @@ const renderLanguageLoaderAsync = (
   const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
+      /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ))`;
 };

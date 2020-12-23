@@ -44,6 +44,7 @@ module.exports = () => [
       new LoadablePlugin(),
       new VocabWebpackPlugin({
         configFile: require.resolve('./vocab.config.js'),
+        vocabChunkMapDir: path.join(__dirname, 'dist-server'),
       }),
     ],
   },

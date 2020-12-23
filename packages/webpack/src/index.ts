@@ -1,3 +1,6 @@
+import path from 'path';
+import { promises as fs } from 'fs';
+
 import { resolveConfigSync, validateConfig } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
 import type { Compiler } from 'webpack';
@@ -7,12 +10,14 @@ import { optimizeTranslationChunks } from './optimize-chunks';
 const PLUGIN_NAME = 'VocabWebpackPlugin';
 interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
+  vocabChunkMapDir?: string;
 }
 
 export default class VocabWebpackPlugin {
   options: UserConfig;
+  vocabChunkMapDir?: string;
 
-  constructor({ configFile, ...rest }: UserOptions = {}) {
+  constructor({ configFile, vocabChunkMapDir, ...rest }: UserOptions = {}) {
     trace(
       `Creating Vocab plugin${
         configFile ? ` with config file ${configFile}` : ''
@@ -22,6 +27,7 @@ export default class VocabWebpackPlugin {
       ...resolveConfigSync(configFile),
       ...rest,
     } as UserConfig;
+    this.vocabChunkMapDir = vocabChunkMapDir;
 
     validateConfig(this.options);
   }
@@ -70,5 +76,39 @@ export default class VocabWebpackPlugin {
         },
       );
     });
+
+    if (this.vocabChunkMapDir) {
+      compiler.hooks.afterEmit.tapAsync(PLUGIN_NAME, async (compilation) => {
+        const moduleIdsToChunks: { [moduleId: string]: string } = {};
+
+        for (const module of compilation.modules) {
+          if (module.identifier().includes('vocab-unloader')) {
+            trace('Found vocab transaltion module', module.identifier());
+            const result = module.identifier().match(/moduleId=([^!&]+)/);
+
+            const chunkGroup = compilation.chunkGroups.find((cg) =>
+              compilation.chunkGraph?.isModuleInChunkGroup(module, cg),
+            );
+
+            if (result && typeof result[1] === 'string' && chunkGroup) {
+              trace(
+                'Assign module id:',
+                result[1],
+                'to chunk group:',
+                chunkGroup.name,
+              );
+
+              // @ts-expect-error Make TS happy...
+              moduleIdsToChunks[result[1]] = chunkGroup.name;
+            }
+          }
+        }
+
+        await fs.writeFile(
+          path.join(this.vocabChunkMapDir!, 'vocabChunkMap.json'),
+          JSON.stringify(moduleIdsToChunks, null, 2),
+        );
+      });
+    }
   }
 }

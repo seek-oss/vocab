@@ -6,6 +6,7 @@ import type {
   TranslationsByKey,
   TranslationMessagesByKey,
   UserConfig,
+  LoadedTranslation,
 } from '@vocab/types';
 import { trace } from './logger';
 
@@ -138,4 +139,11 @@ export function getTranslationMessages<Key extends string>(
   translations: TranslationsByKey<Key>,
 ): TranslationMessagesByKey<Key> {
   return mapValues(translations, (v) => v.message);
+}
+
+export function getTranslationModuleId(
+  loadedTranslation: LoadedTranslation,
+  language: LanguageName,
+) {
+  return `${loadedTranslation.relativePath}:${language}`;
 }

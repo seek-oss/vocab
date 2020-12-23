@@ -11,6 +11,7 @@ export type ParsedICUMessages<TranslatedLanguage> = Record<
 >;
 
 export type TranslationModule<TranslatedLanguage> = {
+  id?: string;
   getValue: (
     locale: string,
   ) => ParsedICUMessages<TranslatedLanguage> | undefined;

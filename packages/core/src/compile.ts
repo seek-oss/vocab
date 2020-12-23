@@ -27,6 +27,7 @@ import {
   getTranslationFolderGlob,
   devTranslationFileName,
   isTranslationDirectory,
+  getTranslationModuleId,
 } from './utils';
 import { trace } from './logger';
 import { loadAllTranslations, loadTranslation } from './load-translations';
@@ -133,6 +134,8 @@ function serialiseTranslationRuntime(
       ([languageName, translations]) =>
         `"${languageName}": createLanguage(${JSON.stringify(
           getTranslationMessages(translations),
+        )}, ${JSON.stringify(
+          getTranslationModuleId(loadedTranslation, languageName),
         )})`,
     )
     .join(',');

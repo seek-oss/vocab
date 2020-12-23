@@ -1,6 +1,7 @@
 const path = require('path');
 const VocabWebpackPlugin = require('@vocab/webpack').default;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 module.exports = {
   entry: require.resolve('./src/client.ts'),
@@ -44,6 +45,8 @@ module.exports = {
     new HtmlWebpackPlugin(),
     new VocabWebpackPlugin({
       configFile: require.resolve('./vocab.config.js'),
+      vocabChunkMapDir: path.resolve(__dirname, 'dist'),
     }),
+    new LoadablePlugin(),
   ],
 };

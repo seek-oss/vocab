@@ -3,16 +3,18 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { ChunkExtractor } from '@loadable/server';
 import path from 'path';
-import { getChunkName } from '@vocab/webpack/chunk-name';
 
 // @ts-expect-error Haven't loaded webpack types
 const statsFile = __non_webpack_require__('../dist-client/loadable-stats.json');
+// @ts-expect-error Haven't loaded webpack types
+const vocabChunkMap = __non_webpack_require__('./vocabChunkMap.json');
 
 import { App } from './App';
 
 import express from 'express';
 
 import type { Request, Response } from 'express';
+import { VocabProvider } from '@vocab/react';
 
 const app = express();
 
@@ -30,10 +32,17 @@ app.get('*', (req: Request, res: Response) => {
 
   const extractor = new ChunkExtractor({ stats: statsFile });
 
-  // @ts-expect-error addChunk is not documented in types
-  extractor.addChunk(getChunkName(language));
-
-  const jsx = extractor.collectChunks(<App initialLanguage={language} />);
+  const jsx = extractor.collectChunks(
+    <VocabProvider
+      language={language}
+      registerModule={(moduleId) => {
+        // @ts-expect-error addChunk is not documented in types
+        extractor.addChunk(vocabChunkMap[moduleId]);
+      }}
+    >
+      <App />
+    </VocabProvider>,
+  );
 
   const appHtml = renderToString(jsx);
 
