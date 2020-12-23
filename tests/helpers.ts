@@ -54,7 +54,7 @@ export const startFixture = (
 ): Promise<TestServer> =>
   new Promise(async (resolve) => {
     const getConfig = require(`${fixtureName}/webpack.config.js`);
-    const config = getConfig(options);
+    const config = getConfig;
     const compiler = webpack(config);
 
     const port = portCounter++;
@@ -65,6 +65,19 @@ export const startFixture = (
     });
 
     server.listen(port);
+  });
+
+export const buildFixture = (
+  fixtureName: string,
+  options: Options = {},
+): Promise<void> =>
+  new Promise(async (resolve) => {
+    const getConfig = require(`${fixtureName}/webpack.config.js`);
+
+    const config = getConfig;
+    const compiler = webpack(config);
+
+    compiler.run(() => resolve());
   });
 
 export const getAppSnapshot = async (

@@ -1,0 +1,17 @@
+{
+  "name": "fixture-advanced-chunking",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "compile": "vocab compile",
+    "start": "webpack serve"
+  },
+  "dependencies": {
+    "@vocab/cli": "^0.0.13",
+    "babel-loader": "^8.2.1",
+    "html-webpack-plugin": "^4.5.0",
+    "webpack": "^5.11.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

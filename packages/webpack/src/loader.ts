@@ -12,7 +12,6 @@ import {
 } from '@vocab/core';
 import { getOptions } from 'loader-utils';
 
-import { getChunkName } from './chunk-name';
 import { trace as _trace } from './logger';
 
 const trace = _trace.extend('loader');
@@ -20,7 +19,12 @@ interface LoaderContext {
   addDependency: (filePath: string) => void;
   target: string;
   resourcePath: string;
-  async: () => (err: unknown, result?: string) => void;
+  async: () => (
+    err: unknown,
+    result?: string,
+    sourceMap?: any,
+    meta?: any,
+  ) => void;
 }
 
 function createIdentifier(
@@ -40,7 +44,7 @@ function createIdentifier(
     'base64',
   );
 
-  const unloader = `@vocab/unloader?source=${base64}`;
+  const unloader = `@vocab/unloader?source=${base64}&lang=${lang}`;
   const fileIdent = path.basename(resourcePath, 'translations.json');
 
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
@@ -53,7 +57,6 @@ const renderLanguageLoaderAsync = (
   const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
   return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
-      /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ))`;
 };
@@ -98,5 +101,5 @@ export default async function vocabLoader(this: LoaderContext) {
     `;
   trace('Created translation file', result);
 
-  callback(null, result);
+  callback(null, result, null, { test: 'HI' });
 }

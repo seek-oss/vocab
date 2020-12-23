@@ -2,7 +2,9 @@ import { resolveConfigSync, validateConfig } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
 import type { Compiler } from 'webpack';
 import { trace } from './logger';
+import { optimizeTranslationChunks } from './optimize-chunks';
 
+const PLUGIN_NAME = 'VocabWebpackPlugin';
 interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
 }
@@ -44,6 +46,29 @@ export default class VocabWebpackPlugin {
       test: /\.vocab[\\\/]index\.ts$/,
       loader: require.resolve('@vocab/webpack/loader'),
       options: this.options,
+    });
+
+    compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation) => {
+      let alreadyOptimized = false;
+
+      compilation.hooks.unseal.tap(PLUGIN_NAME, () => {
+        alreadyOptimized = false;
+      });
+
+      compilation.hooks.optimizeChunks.tap(
+        {
+          name: PLUGIN_NAME,
+          stage: 10,
+        },
+        (chunks) => {
+          if (alreadyOptimized) {
+            return;
+          }
+          alreadyOptimized = true;
+
+          optimizeTranslationChunks(compilation, chunks);
+        },
+      );
     });
   }
 }
