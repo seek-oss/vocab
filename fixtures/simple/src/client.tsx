@@ -2,11 +2,12 @@ import { VocabProvider, useTranslations } from '@vocab/react';
 import React, { ReactNode, useState } from 'react';
 import { render } from 'react-dom';
 
-import translations from './client.vocab';
+import clientTranslations from './client.vocab';
+import appTranslations from './app.vocab';
 
 function Content() {
-  const { t } = useTranslations(translations);
-  const message = `${t('hello')} ${t('world')}`;
+  const { t } = useTranslations(clientTranslations, appTranslations);
+  const message = `${t('hello')} ${t('world')}, ${t('welcome')}`;
 
   return (
     <>

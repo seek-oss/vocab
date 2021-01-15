@@ -3,8 +3,10 @@ import React, {
   FunctionComponent,
   ReactNode,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
+  useRef,
 } from 'react';
 
 type Locale = string;
@@ -71,46 +73,94 @@ type TranslateFn<Translations extends BaseTranslation> = {
   ): Translations[TranslationKey]['returnType'];
 };
 
-export function useTranslations<Translations extends BaseTranslation>(
-  translations: TranslationFile<Translations>,
-): {
+type UseTranslationsReturn<Translations extends BaseTranslation> = {
   ready: boolean;
   t: TranslateFn<Translations>;
-} {
+};
+
+// Ideally we could extract the translation keys from the Array. Using overload strategy supporting upto 3 files for now.
+export function useTranslations<Translations extends BaseTranslation>(
+  translations: TranslationFile<Translations>,
+): UseTranslationsReturn<Translations>;
+export function useTranslations<
+  TranslationsA extends BaseTranslation,
+  TranslationsB extends BaseTranslation
+>(
+  translationsA: TranslationFile<TranslationsA>,
+  translationsB: TranslationFile<TranslationsB>,
+): UseTranslationsReturn<TranslationsA & TranslationsB>;
+export function useTranslations<
+  TranslationsA extends BaseTranslation,
+  TranslationsB extends BaseTranslation,
+  TranslationsC extends BaseTranslation
+>(
+  translationsA: TranslationFile<TranslationsA>,
+  translationsB: TranslationFile<TranslationsB>,
+  translationsC: TranslationFile<TranslationsC>,
+): UseTranslationsReturn<TranslationsA & TranslationsB & TranslationsC>;
+export function useTranslations(
+  ...translationFiles: Array<TranslationFile<BaseTranslation>>
+): UseTranslationsReturn<BaseTranslation> {
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
-  if (!translations[language]) {
-    throw new Error(
-      `Translations does not include passed language "${language}". Translations include possible options ${Object.keys(
-        translations,
-      )}`,
-    );
-  }
-  const translationsObject = translations[language].getValue(
-    locale || language,
-  );
+  const ready = useRef(true);
 
-  if (!translationsObject) {
-    if (SERVER_RENDERING) {
-      throw new Error(
-        `Translations not syncronously available on server render. Applying translations dynamically server-side is not supported.`,
-      );
+  const [allTranslations, loadPromises] = useMemo(() => {
+    const loads = [];
+    const combinedTranslations = {};
+
+    for (const translationFile of translationFiles) {
+      if (!translationFile[language]) {
+        throw new Error(
+          `Translations does not include passed language "${language}". Translations include possible options ${Object.keys(
+            translationFile,
+          )}`,
+        );
+      }
+
+      const value = translationFile[language].getValue(locale || language);
+
+      if (!value) {
+        if (SERVER_RENDERING) {
+          throw new Error(
+            `Translations not syncronously available on server render. Applying translations dynamically server-side is not supported.`,
+          );
+        }
+
+        loads.push(() => translationFile[language].load());
+      }
+
+      Object.assign(combinedTranslations, value);
     }
-    translations[language].load().then(() => {
-      forceRender();
-    });
+
+    return [combinedTranslations, loads];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language, locale, ready.current, ...translationFiles]);
+
+  useEffect(() => {
+    if (loadPromises.length) {
+      Promise.all(loadPromises.map((load) => load())).then(() => {
+        ready.current = false;
+
+        forceRender();
+      });
+    } else {
+      ready.current = true;
+    }
+  }, [loadPromises]);
+
+  if (loadPromises.length) {
     return { t: () => ' ', ready: false };
   }
 
-  function t<TranslationKey extends keyof Translations>(
-    key: TranslationKey,
-    params?: Translations[TranslationKey]['params'],
-  ) {
-    if (!translationsObject?.[key]) {
+  function t(key: string, params?: any) {
+    // @ts-expect-error
+    if (!allTranslations?.[key]) {
       return null;
     }
 
-    return translationsObject[key].format<string>(params);
+    // @ts-expect-error
+    return allTranslations[key].format<string>(params);
   }
 
   return {
