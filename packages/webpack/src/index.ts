@@ -78,7 +78,7 @@ export default class VocabWebpackPlugin {
     });
 
     if (this.vocabChunkMapDir) {
-      compiler.hooks.afterEmit.tapAsync(PLUGIN_NAME, async (compilation) => {
+      compiler.hooks.afterEmit.tapPromise(PLUGIN_NAME, async (compilation) => {
         const moduleIdsToChunks: { [moduleId: string]: string } = {};
 
         for (const module of compilation.modules) {
