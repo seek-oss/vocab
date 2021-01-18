@@ -2,17 +2,19 @@ import { VocabProvider, useTranslations } from '@vocab/react';
 import React, { ReactNode, useState } from 'react';
 import { render } from 'react-dom';
 
-import translations from './client.vocab';
+import commonTranslations from './.vocab';
+import clientTranslations from './client.vocab';
 
 function Content() {
-  const { t } = useTranslations(translations);
-  const message = `${t('hello')} ${t('world')}`;
+  const common = useTranslations(commonTranslations);
+  const client = useTranslations(clientTranslations);
+  const message = `${common.t('hello')} ${common.t('world')}`;
 
   return (
     <>
       <div id="message">{message}</div>
       <div id="publish-date">
-        {t('vocabPublishDate', { publishDate: 1605847714000 })}
+        {client.t('vocabPublishDate', { publishDate: 1605847714000 })}
       </div>
     </>
   );
