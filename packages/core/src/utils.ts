@@ -14,6 +14,8 @@ export const devTranslationFileName = 'translations.json';
 
 export type Fallback = 'none' | 'valid' | 'all';
 
+const globAnyPathWithOptionalPrefix = '**/?(*)';
+
 export function isDevLanguageFile(filePath: string) {
   return (
     filePath.endsWith(`/${devTranslationFileName}`) ||
@@ -39,7 +41,7 @@ export function getTranslationFolderGlob({
 }: {
   translationsDirectorySuffix?: string;
 }) {
-  const result = `**/*${translationsDirectorySuffix}`;
+  const result = `${globAnyPathWithOptionalPrefix}${translationsDirectorySuffix}`;
 
   trace('getTranslationFolderGlob', result);
 
@@ -51,7 +53,7 @@ export function getDevTranslationFileGlob({
 }: {
   translationsDirectorySuffix?: string;
 }) {
-  const result = `**/*${translationsDirectorySuffix}/${devTranslationFileName}`;
+  const result = `${globAnyPathWithOptionalPrefix}${translationsDirectorySuffix}/${devTranslationFileName}`;
 
   trace('getDevTranslationFileGlob', result);
 
