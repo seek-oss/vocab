@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { promises as fs, existsSync } from 'fs';
 import path from 'path';
 
 import { LoadedTranslation, UserConfig } from '@vocab/types';
@@ -259,8 +259,14 @@ export function watch(config: UserConfig) {
       return;
     }
     const newFilePath = path.join(relativePath, devTranslationFileName);
-    await fs.writeFile(newFilePath, JSON.stringify({}, null, 2));
-    trace('Created new empty translation file:', newFilePath);
+    if (!existsSync(newFilePath)) {
+      await fs.writeFile(newFilePath, JSON.stringify({}, null, 2));
+      trace('Created new empty translation file:', newFilePath);
+    } else {
+      trace(
+        `New directory already contains translation file. Skipping creation. Existing file ${newFilePath}`,
+      );
+    }
   };
 
   watcher.on('addDir', onNewDirectory);
