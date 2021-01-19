@@ -1,5 +1,13 @@
 # @vocab/core
 
+## 0.0.9
+
+### Patch Changes
+
+- [`3034bd3`](https://github.com/seek-oss/vocab/commit/3034bd3de610a9d1f3bfbd8caefa27064dee2710) [#40](https://github.com/seek-oss/vocab/pull/40) Thanks [@jahredhope](https://github.com/jahredhope)! - Fix .vocab files with no prefix not compiling
+
+* [`c110745`](https://github.com/seek-oss/vocab/commit/c110745b79df1a8ade6b1d8a49e798b04a7b95e1) [#42](https://github.com/seek-oss/vocab/pull/42) Thanks [@jahredhope](https://github.com/jahredhope)! - Avoid overriding existing translations files for new directories
+
 ## 0.0.8
 
 ### Patch Changes
