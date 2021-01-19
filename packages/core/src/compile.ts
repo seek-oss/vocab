@@ -259,7 +259,7 @@ export function watch(config: UserConfig) {
       return;
     }
     const newFilePath = path.join(relativePath, devTranslationFileName);
-    if (existsSync(newFilePath)) {
+    if (!existsSync(newFilePath)) {
       await fs.writeFile(newFilePath, JSON.stringify({}, null, 2));
       trace('Created new empty translation file:', newFilePath);
     } else {
