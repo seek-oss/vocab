@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 0.0.10
+
+### Patch Changes
+
+- [`7c96a14`](https://github.com/seek-oss/vocab/commit/7c96a142f602132d38c1df1a47a1f4657dc5c94c) [#43](https://github.com/seek-oss/vocab/pull/43) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Return `NonNullable<ReactNode>` instead of `ReactNode` from translation function
+
 ## 0.0.9
 
 ### Patch Changes
