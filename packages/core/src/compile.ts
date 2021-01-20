@@ -180,7 +180,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
       }
     }
 
-    const returnType = hasTags ? 'ReactNode' : 'string';
+    const returnType = hasTags ? 'NonNullable<ReactNode>' : 'string';
 
     translationTypes.set(key, {
       params,
