@@ -1,6 +1,8 @@
 import type { TranslationModule, TranslationMessagesByKey } from '@vocab/types';
 import { getParsedICUMessages } from '@vocab/core/icu-handler';
 
+export { createTranslationFile } from '@vocab/core/translation-file';
+
 export const createLanguage = (
   moduleId: string,
   loadImport: () => Promise<any>,

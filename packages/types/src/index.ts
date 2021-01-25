@@ -1,26 +1,65 @@
-import type { IntlMessageFormat } from 'intl-messageformat';
+import { ReactNode } from 'react';
 
 export type LanguageName = string;
 
 export type TranslationKey = string;
 export type TranslationMessage = string;
 
-export type ParsedICUMessages<TranslatedLanguage> = Record<
-  keyof TranslatedLanguage,
-  IntlMessageFormat
+interface TranslationRequirements {
+  params?: Record<string, any>;
+  returnType: string | ReactNode;
+}
+export type TranslationRequirementsByKey = Record<
+  string,
+  TranslationRequirements
 >;
 
-export type TranslationModule<TranslatedLanguage> = {
+/**
+ * StrictParsedICUMessage A limited strictly typed format from intl-messageformat
+ */
+export interface StrictParsedICUMessage<
+  Requirements extends TranslationRequirements
+> {
+  format: Requirements['params'] extends Record<string, any>
+    ? (params: Requirements['params']) => Requirements['returnType']
+    : () => Requirements['returnType'];
+}
+
+export type ParsedICUMessages<
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
+  [key in keyof RequirementsByKey]: StrictParsedICUMessage<
+    RequirementsByKey[key]
+  >;
+};
+
+/**
+ * TranslationModule is a wrapper around a potentially asyncronously loaded set of ParsedICUMessages
+ */
+export type TranslationModule<
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
   getValue: (
     locale: string,
-  ) => ParsedICUMessages<TranslatedLanguage> | undefined;
+  ) => ParsedICUMessages<RequirementsByKey> | undefined;
   load: () => Promise<void>;
 };
 
-export type TranslationFile<TranslatedLanguage> = Record<
-  LanguageName,
-  TranslationModule<TranslatedLanguage>
->;
+export type TranslationModuleByLanguage<
+  Language extends LanguageName,
+  RequirementsByKey extends TranslationRequirementsByKey
+> = Record<Language, TranslationModule<RequirementsByKey>>;
+
+export type TranslationFile<
+  Language extends LanguageName,
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
+  getMessages: (
+    language: Language,
+    locale: string,
+  ) => ParsedICUMessages<RequirementsByKey> | null;
+  load: (language: Language) => Promise<void>;
+};
 
 export interface LanguageTarget {
   // The name or tag of a language

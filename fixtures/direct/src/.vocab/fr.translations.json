@@ -1,0 +1,11 @@
+{
+  "hello": {
+    "message": "Bonjour"
+  },
+  "world": {
+    "message": "monde"
+  },
+  "time is": {
+    "message": "L'heure actuelle est {currentTime, date}"
+  }
+}

@@ -167,6 +167,34 @@ module.exports = {
 };
 ```
 
+## Use without React
+
+Vocab integrates well with React using `@vocab/react` Vocab is able to ensure translations are loaded when needed and the page is updated as translations load.
+
+However, if you need to use Vocab outside of the React integration you can access the returned Vocab file directly. Note that you'll then be responsible for when to load translations and how to update on translation load.
+
+A vocab translation file returns two methods:
+
+- `getMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`.
+- `load` attempts to load messages for the given language. Returning a promise once complete. Note that you'll then need to call `getMessages` to access the messages.
+
+**Example: Promise based formatting of messages**
+
+```typescript
+import translations from './.vocab';
+
+async function getMessage(language, locale) {
+  let messages = translations.getMessages(language, locale);
+  if (!messages) {
+    await translations.load(language, locale);
+    messages = translations.getMessages(language, locale);
+  }
+  return messages;
+}
+
+getMessages('en').then((messages) => messages.foo.format());
+```
+
 ## Generate Types
 
 Vocab generates custom `index.ts` files that give your React components strongly typed translations to work with.

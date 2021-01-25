@@ -87,14 +87,14 @@ export default async function vocabLoader(this: LoaderContext) {
   );
 
   const result = `
-      import { createLanguage } from '@vocab/webpack/${target}';
+      import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
-      export default {
+      export default createTranslationFile({
           ${renderLanguageLoader(config.devLanguage)},
           ${getAltLanguages(config)
             .map((altLanguage) => renderLanguageLoader(altLanguage))
             .join(',')}
-      };
+      });
     `;
   trace('Created translation file', result);
 

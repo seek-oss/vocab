@@ -123,8 +123,6 @@ function serialiseTranslationRuntime(
     }
     translationKeyType.returnType = returnType;
 
-    translationKeyType.message = 'string';
-
     translationsType[key] = translationKeyType;
   }
 
@@ -137,15 +135,18 @@ function serialiseTranslationRuntime(
     )
     .join(',');
 
+  const languagesUnionAsString = Object.keys(loadedTranslation.languages)
+    .map((l) => `'${l}'`)
+    .join(' | ');
+
   return `${banner}
 
   ${Array.from(imports).join('\n')}
-  import type { TranslationFile } from '@vocab/core';
-  import { createLanguage } from '@vocab/core/runtime';
+  import { createLanguage, createTranslationFile } from '@vocab/core/runtime';
 
-  const translations: TranslationFile<${serialiseObjectToType(
+  const translations = createTranslationFile<${languagesUnionAsString}, ${serialiseObjectToType(
     translationsType,
-  )}> = {${content}};
+  )}>({${content}});
 
   export default translations;`;
 }

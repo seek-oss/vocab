@@ -1,0 +1,11 @@
+{
+  "hello": {
+    "message": "Hello"
+  },
+  "world": {
+    "message": "world"
+  },
+  "time is": {
+    "message": "The current time is {currentTime, date}"
+  }
+}

@@ -1,7 +1,10 @@
-import { TranslationFile, LanguageName } from '@vocab/types';
+import {
+  TranslationFile,
+  LanguageName,
+  TranslationRequirementsByKey,
+} from '@vocab/types';
 import React, {
   FunctionComponent,
-  ReactNode,
   useContext,
   useMemo,
   useReducer,
@@ -47,46 +50,38 @@ export const useLanguage = (): TranslationsValue => {
   return context;
 };
 
-type TranslationItem = {
-  message: string;
-  params?: Record<string, any>;
-  returnType: string | ReactNode;
-};
-
-type BaseTranslation = Record<string, TranslationItem>;
-
 const SERVER_RENDERING = typeof window === 'undefined';
 
-type TranslateFn<Translations extends BaseTranslation> = {
-  <TranslationKey extends keyof Translations>(
+type TranslateFn<RequirementsByKey extends TranslationRequirementsByKey> = {
+  <TranslationKey extends keyof RequirementsByKey>(
     key: TranslationKey,
-    params: Translations[TranslationKey]['params'] extends Record<string, any>
-      ? Translations[TranslationKey]['params']
+    params: RequirementsByKey[TranslationKey]['params'] extends Record<
+      string,
+      any
+    >
+      ? RequirementsByKey[TranslationKey]['params']
       : Record<string, unknown>,
-  ): Translations[TranslationKey]['returnType'];
-  <TranslationKey extends keyof Translations>(
-    key: Translations[TranslationKey]['params'] extends Record<string, any>
+  ): RequirementsByKey[TranslationKey]['returnType'];
+  <TranslationKey extends keyof RequirementsByKey>(
+    key: RequirementsByKey[TranslationKey]['params'] extends Record<string, any>
       ? never
       : TranslationKey,
-  ): Translations[TranslationKey]['returnType'];
+  ): RequirementsByKey[TranslationKey]['returnType'];
 };
-
-export function useTranslations<Translations extends BaseTranslation>(
-  translations: TranslationFile<Translations>,
+export function useTranslations<
+  Language extends string,
+  RequirementsByKey extends TranslationRequirementsByKey
+>(
+  translations: TranslationFile<Language, RequirementsByKey>,
 ): {
   ready: boolean;
-  t: TranslateFn<Translations>;
+  t: TranslateFn<RequirementsByKey>;
 } {
+  // TranslationFile<Language, Translations>['__translatedLanguageRequirements']
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
-  if (!translations[language]) {
-    throw new Error(
-      `Translations does not include passed language "${language}". Translations include possible options ${Object.keys(
-        translations,
-      )}`,
-    );
-  }
-  const translationsObject = translations[language].getValue(
+  const translationsObject = translations.getMessages(
+    language as any,
     locale || language,
   );
 
@@ -96,22 +91,19 @@ export function useTranslations<Translations extends BaseTranslation>(
         `Translations not syncronously available on server render. Applying translations dynamically server-side is not supported.`,
       );
     }
-    translations[language].load().then(() => {
+    translations.load(language as any).then(() => {
       forceRender();
     });
     return { t: () => ' ', ready: false };
   }
 
-  function t<TranslationKey extends keyof Translations>(
-    key: TranslationKey,
-    params?: Translations[TranslationKey]['params'],
-  ) {
+  const t: TranslateFn<RequirementsByKey> = (key: string, params?: any) => {
     if (!translationsObject?.[key]) {
       return null;
     }
 
-    return translationsObject[key].format<string>(params);
-  }
+    return translationsObject[key].format(params as any);
+  };
 
   return {
     ready: true,
