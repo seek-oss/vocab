@@ -15,9 +15,10 @@ export function getSyncMessage(language: LanguageName, locale: string) {
     );
     return null;
   }
-  return `${languageTranslations.hello.format()} ${languageTranslations[
-    'time is'
-  ].format({ currentTime: Date.now() })}`;
+  return `${languageTranslations.hello.format()} Syncronously
+  ${languageTranslations.vocabPublishDate.format({
+    publishDate: 1605847714000,
+  })}`;
 }
 
 export async function getAsyncMessage(language: LanguageName, locale: string) {
@@ -31,5 +32,5 @@ export async function getAsyncMessage(language: LanguageName, locale: string) {
       );
     }
   }
-  return `${languageTranslations.hello.format()} ${languageTranslations.world.format()}`;
+  return `${languageTranslations.hello.format()} Asyncronously`;
 }

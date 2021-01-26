@@ -19,7 +19,9 @@ function App() {
         Toggle language: {language}
       </button>
 
-      <button onClick={() => setShowMessage(true)}>Show Message</button>
+      <button id="show-message" onClick={() => setShowMessage(true)}>
+        Show Message
+      </button>
       <button
         onClick={() => {
           setShowMessage(false);
@@ -32,14 +34,17 @@ function App() {
         <>
           <div>
             <label>Sync Message:&nbsp;</label>
-            <strong>{getSyncMessage(language, language) || ''}</strong>
+            <strong id="sync-message">
+              {getSyncMessage(language, language) || ''}
+            </strong>
           </div>
 
           <div>
             <label>Async Message:&nbsp;</label>
-            <strong>{asyncMessage}</strong>
+            <strong id="async-message">{asyncMessage}</strong>
           </div>
           <button
+            id="update-message"
             onClick={async () =>
               setAsyncMessage(await getAsyncMessage(language, language))
             }

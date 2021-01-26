@@ -5,7 +5,7 @@
   "world": {
     "message": "monde"
   },
-  "time is": {
-    "message": "L'heure actuelle est {currentTime, date}"
+  "vocabPublishDate": {
+    "message": "Vocab a été publié le {publishDate, date, medium}"
   }
 }
