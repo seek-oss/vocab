@@ -1,23 +1,35 @@
 import { createTranslationFile, createLanguage } from './runtime';
 
+const createDemoTranslationFile = () =>
+  createTranslationFile<
+    'en' | 'fr',
+    {
+      vocabPublishDate: {
+        params: { publishDate: Date | number };
+        returnType: string;
+      };
+    }
+  >({
+    en: createLanguage({
+      vocabPublishDate: 'Vocab was published on {publishDate, date, small}',
+    }),
+    fr: createLanguage({
+      vocabPublishDate: 'Vocab a été publié le {publishDate, date, medium}',
+    }),
+  });
+
 describe('createTranslationFile', () => {
-  it('should return TranslationModules', () => {
-    const translations = createTranslationFile<
-      'en' | 'fr',
-      {
-        vocabPublishDate: {
-          params: { publishDate: Date | number };
-          returnType: string;
-        };
-      }
-    >({
-      en: createLanguage({
-        vocabPublishDate: 'Vocab was published on {publishDate, date, small}',
+  it('should return TranslationModules with language as locale', () => {
+    const translations = createDemoTranslationFile();
+    const translationModule = translations.getMessages('en');
+    expect(
+      translationModule?.vocabPublishDate.format({
+        publishDate: 1605847714000,
       }),
-      fr: createLanguage({
-        vocabPublishDate: 'Vocab a été publié le {publishDate, date, medium}',
-      }),
-    });
+    ).toBe('Vocab was published on 11/20/2020');
+  });
+  it('should return TranslationModules with en-AU locale', () => {
+    const translations = createDemoTranslationFile();
     const translationModule = translations.getMessages('en', 'en-AU');
     expect(
       translationModule?.vocabPublishDate.format({
@@ -25,23 +37,17 @@ describe('createTranslationFile', () => {
       }),
     ).toBe('Vocab was published on 20/11/2020');
   });
+  it('should return TranslationModules with en-US locale', () => {
+    const translations = createDemoTranslationFile();
+    const translationModule = translations.getMessages('en', 'en-AU');
+    expect(
+      translationModule?.vocabPublishDate.format({
+        publishDate: 1605847714000,
+      }),
+    ).toBe('Vocab was published on 11/20/2020');
+  });
   it('should require parameters to be passed in', () => {
-    const translations = createTranslationFile<
-      'en' | 'fr',
-      {
-        vocabPublishDate: {
-          params: { publishDate: Date | number };
-          returnType: string;
-        };
-      }
-    >({
-      en: createLanguage({
-        vocabPublishDate: 'Vocab was published on {publishDate, date, small}',
-      }),
-      fr: createLanguage({
-        vocabPublishDate: 'Vocab a été publié le {publishDate, date, medium}',
-      }),
-    });
+    const translations = createDemoTranslationFile();
     const translationModule = translations.getMessages('en', 'en-AU');
     expect(
       // @ts-expect-error Missing params parameter

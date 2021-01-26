@@ -17,7 +17,7 @@ export function createTranslationFile<
 ): {
   getMessages: (
     language: Language,
-    locale: string,
+    locale?: string,
   ) => ParsedICUMessages<RequirementsByKey> | null;
   load: (language: Language) => Promise<void>;
 } {
@@ -36,10 +36,10 @@ export function createTranslationFile<
   return {
     getMessages(
       language: Language,
-      locale: string,
+      locale?: string,
     ): ParsedICUMessages<RequirementsByKey> | null {
       const translationModule = getByLanguage(language);
-      return translationModule.getValue(locale) || null;
+      return translationModule.getValue(locale || language) || null;
     },
     load(language: Language): Promise<void> {
       const translationModule = getByLanguage(language);
