@@ -135,6 +135,32 @@ const extractor = new ChunkExtractor();
 extractor.addChunk(chunkName);
 ```
 
+## ICU Message format
+
+Translation messages can sometimes contain dynamic values, such a date/time, link or username. These values can often exist somewhere in the middle of a message and change location based on translation.
+
+To support this Vocab uses [Format.js's intl-messageformat] allowing you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
+
+In the below example we use two messages, one that passes in a single parameter and one
+
+```json
+{
+  "my key with param": {
+    "message": "Bonjour de {name}"
+  }
+  "my key2": {
+    "message": "Bonjour de <Link>Vocab</Link>"
+  }
+}
+```
+
+Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure Typescript knows the values must be passed in.
+
+```tsx
+t('my key with param', {name: 'Vocab'});
+t('my key with param', {Link: children => (<a href="/foo">{children}</Link>)});
+```
+
 ## Configuration
 
 Configuration can either be passed into the Node API directly or be gathered from the nearest _vocab.config.js_ file.
@@ -169,14 +195,12 @@ module.exports = {
 
 ## Use without React
 
-Vocab integrates well with React, using `@vocab/react` Vocab is able to ensure translations are loaded when needed and updating the page as translations load.
-
-However, if you need to use Vocab outside of React, you can access the returned Vocab file directly. Note that you'll then be responsible for when to load translations and how to update on translation load.
+If you need to use Vocab outside of React, you can access the returned Vocab file directly. You'll then be responsible for when to load translations and how to update on translation load.
 
 A vocab translation file returns three methods:
 
-- `load` attempts to load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
-- `getMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
+- `load(language: string) => Promise<void>` attempts to load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
+- `getMessages(language: string) => Promise<void>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
 - `getLoadedMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
 
 **Example: Promise based formatting of messages**
@@ -186,7 +210,7 @@ import translations from './.vocab';
 
 async function getFooMessage(language) {
   let messages = await translations.getMessages(language);
-  return messages.foo.format();
+  return messages['my key'].format();
 }
 
 getFooMessage().then((m) => console.log(m));
