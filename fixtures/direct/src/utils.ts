@@ -7,7 +7,7 @@ export function preloadLanguage(language: LanguageName) {
 }
 
 export function getSyncMessage(language: LanguageName, locale: string) {
-  const languageTranslations = translations.getMessages(language, locale);
+  const languageTranslations = translations.getLoadedMessages(language, locale);
   if (!languageTranslations) {
     // eslint-disable-next-line no-console
     console.error(
@@ -22,15 +22,6 @@ export function getSyncMessage(language: LanguageName, locale: string) {
 }
 
 export async function getAsyncMessage(language: LanguageName, locale: string) {
-  let languageTranslations = translations.getMessages(language, locale);
-  if (!languageTranslations) {
-    await translations.load(language);
-    languageTranslations = translations.getMessages(language, locale);
-    if (!languageTranslations) {
-      throw new Error(
-        `Unable to load translations for language "${language}" and locale "${locale}"`,
-      );
-    }
-  }
+  const languageTranslations = await translations.getMessages(language, locale);
   return `${languageTranslations.hello.format()} Asyncronously`;
 }

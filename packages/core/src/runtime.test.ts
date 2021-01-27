@@ -19,9 +19,18 @@ const createDemoTranslationFile = () =>
   });
 
 describe('createTranslationFile', () => {
+  it('should return translations as a promise', async () => {
+    const translations = createDemoTranslationFile();
+    const translationModule = await translations.getMessages('en');
+    expect(
+      translationModule?.vocabPublishDate.format({
+        publishDate: 1605847714000,
+      }),
+    ).toBe('Vocab was published on 11/20/2020');
+  });
   it('should return TranslationModules with language as locale', () => {
     const translations = createDemoTranslationFile();
-    const translationModule = translations.getMessages('en');
+    const translationModule = translations.getLoadedMessages('en');
     expect(
       translationModule?.vocabPublishDate.format({
         publishDate: 1605847714000,
@@ -34,7 +43,7 @@ describe('createTranslationFile', () => {
   // eslint-disable-next-line jest/no-disabled-tests
   it.skip('should return TranslationModules with en-AU locale', () => {
     const translations = createDemoTranslationFile();
-    const translationModule = translations.getMessages('en', 'en-AU');
+    const translationModule = translations.getLoadedMessages('en', 'en-AU');
     expect(
       translationModule?.vocabPublishDate.format({
         publishDate: 1605847714000,
@@ -43,7 +52,7 @@ describe('createTranslationFile', () => {
   });
   it('should return TranslationModules with en-US locale', () => {
     const translations = createDemoTranslationFile();
-    const translationModule = translations.getMessages('en', 'en-US');
+    const translationModule = translations.getLoadedMessages('en', 'en-US');
     expect(
       translationModule?.vocabPublishDate.format({
         publishDate: 1605847714000,
@@ -52,7 +61,7 @@ describe('createTranslationFile', () => {
   });
   it('should require parameters to be passed in', () => {
     const translations = createDemoTranslationFile();
-    const translationModule = translations.getMessages('en');
+    const translationModule = translations.getLoadedMessages('en');
     expect(
       // @ts-expect-error Missing params parameter
       () => translationModule?.vocabPublishDate.format(),

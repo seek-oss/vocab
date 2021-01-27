@@ -15,10 +15,14 @@ export function createTranslationFile<
     RequirementsByKey
   >,
 ): {
-  getMessages: (
+  getLoadedMessages: (
     language: Language,
     locale?: string,
   ) => ParsedICUMessages<RequirementsByKey> | null;
+  getMessages: (
+    language: Language,
+    locale?: string,
+  ) => Promise<ParsedICUMessages<RequirementsByKey>>;
   load: (language: Language) => Promise<void>;
 } {
   function getByLanguage(
@@ -34,12 +38,26 @@ export function createTranslationFile<
   }
 
   return {
-    getMessages(
+    getLoadedMessages(
       language: Language,
       locale?: string,
     ): ParsedICUMessages<RequirementsByKey> | null {
       const translationModule = getByLanguage(language);
       return translationModule.getValue(locale || language) || null;
+    },
+    async getMessages(
+      language: Language,
+      locale?: string,
+    ): Promise<ParsedICUMessages<RequirementsByKey>> {
+      const translationModule = getByLanguage(language);
+      await translationModule.load();
+      const result = translationModule.getValue(locale || language);
+      if (!result) {
+        throw new Error(
+          `Unable to find translations for ${language} after attempting to load. Module may have failed to load to an internal error may have occurred.`,
+        );
+      }
+      return result;
     },
     load(language: Language): Promise<void> {
       const translationModule = getByLanguage(language);

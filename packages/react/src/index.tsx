@@ -80,7 +80,7 @@ export function useTranslations<
   // TranslationFile<Language, Translations>['__translatedLanguageRequirements']
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
-  const translationsObject = translations.getMessages(
+  const translationsObject = translations.getLoadedMessages(
     language as any,
     locale || language,
   );

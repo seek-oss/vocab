@@ -169,30 +169,51 @@ module.exports = {
 
 ## Use without React
 
-Vocab integrates well with React using `@vocab/react` Vocab is able to ensure translations are loaded when needed and the page is updated as translations load.
+Vocab integrates well with React, using `@vocab/react` Vocab is able to ensure translations are loaded when needed and updating the page as translations load.
 
-However, if you need to use Vocab outside of the React integration you can access the returned Vocab file directly. Note that you'll then be responsible for when to load translations and how to update on translation load.
+However, if you need to use Vocab outside of React, you can access the returned Vocab file directly. Note that you'll then be responsible for when to load translations and how to update on translation load.
 
-A vocab translation file returns two methods:
+A vocab translation file returns three methods:
 
-- `getMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`.
-- `load` attempts to load messages for the given language. Returning a promise once complete. Note that you'll then need to call `getMessages` to access the messages.
+- `load` attempts to load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
+- `getMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
+- `getLoadedMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
 
 **Example: Promise based formatting of messages**
 
 ```typescript
 import translations from './.vocab';
 
-async function getMessage(language, locale) {
-  let messages = translations.getMessages(language, locale);
-  if (!messages) {
-    await translations.load(language, locale);
-    messages = translations.getMessages(language, locale);
-  }
-  return messages;
+async function getFooMessage(language) {
+  let messages = await translations.getMessages(language);
+  return messages.foo.format();
 }
 
-getMessages('en').then((messages) => messages.foo.format());
+getFooMessage().then((m) => console.log(m));
+```
+
+**Example: Syncronously returning a message**
+
+```typescript
+import translations from './.vocab';
+
+async function getFooMessage(language) {
+  let messages = await translations.getLoadedMessages(
+    language
+  );
+  if (!messages) {
+    // Translations not loaded, start loading and return null for now
+    translations.load();
+    return null;
+  }
+  return messages.foo.format();
+}
+
+translations.load();
+
+const onClick = () => {
+  console.log(getFooMessage());
+};
 ```
 
 ## Generate Types

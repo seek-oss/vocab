@@ -55,6 +55,10 @@ export type TranslationFile<
   getMessages: (
     language: Language,
     locale?: string,
+  ) => Promise<ParsedICUMessages<RequirementsByKey>>;
+  getLoadedMessages: (
+    language: Language,
+    locale?: string,
   ) => ParsedICUMessages<RequirementsByKey> | null;
   load: (language: Language) => Promise<void>;
 };
