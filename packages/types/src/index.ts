@@ -17,9 +17,7 @@ export type TranslationRequirementsByKey = Record<
 /**
  * StrictParsedICUMessage A limited strictly typed format from intl-messageformat
  */
-export interface StrictParsedICUMessage<
-  Requirements extends TranslationRequirements
-> {
+interface StrictParsedICUMessage<Requirements extends TranslationRequirements> {
   format: Requirements['params'] extends Record<string, any>
     ? (params: Requirements['params']) => Requirements['returnType']
     : () => Requirements['returnType'];

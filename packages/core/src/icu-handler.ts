@@ -23,9 +23,9 @@ export const getParsedICUMessages = (
   const parsedICUMessages: ParsedICUMessages<any> = {};
 
   for (const translation of Object.keys(m)) {
-    const res = new IntlMessageFormat(m[translation], locale);
+    const intlMessageFormat = new IntlMessageFormat(m[translation], locale);
     parsedICUMessages[translation] = {
-      format: (params: any) => res.format(params),
+      format: (params: any) => intlMessageFormat.format(params),
     };
   }
 
