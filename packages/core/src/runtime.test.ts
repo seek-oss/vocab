@@ -28,7 +28,11 @@ describe('createTranslationFile', () => {
       }),
     ).toBe('Vocab was published on 11/20/2020');
   });
-  it('should return TranslationModules with en-AU locale', () => {
+
+  // Support for alternative ICU locales in Node not available in current CI environment
+  // Disabling test for now until `full-icu` can be added. See https://nodejs.org/api/intl.html#intl_options_for_building_node_js
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('should return TranslationModules with en-AU locale', () => {
     const translations = createDemoTranslationFile();
     const translationModule = translations.getMessages('en', 'en-AU');
     expect(
