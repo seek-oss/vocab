@@ -148,7 +148,7 @@ In the below example we use two messages, one that passes in a single parameter 
   "my key with param": {
     "message": "Bonjour de {name}"
   },
-  "my key2": {
+  "my key with component": {
     "message": "Bonjour de <Link>Vocab</Link>"
   }
 }
@@ -158,7 +158,7 @@ Vocab will automatically parse these strings as ICU messages, identify the requi
 
 ```tsx
 t('my key with param', {name: 'Vocab'});
-t('my key with param', {Link: children => (<a href="/foo">{children}</Link>)});
+t('my key with component', {Link: children => (<a href="/foo">{children}</Link>)});
 ```
 
 ## Configuration
@@ -200,8 +200,8 @@ If you need to use Vocab outside of React, you can access the returned Vocab fil
 A vocab translation file returns three methods:
 
 - `load(language: string) => Promise<void>` attempts to load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
-- `getMessages(language: string) => Promise<void>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
-- `getLoadedMessages` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
+- `getMessages(language: string) => Promise<Messages>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
+- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
 
 **Example: Promise based formatting of messages**
 
