@@ -11,6 +11,9 @@ jobs:
     env:
       CI: true
     steps:
+      - name: Check out repo
+        uses: actions/checkout@master
+
       - name: Set up Node.js 12.x
         uses: actions/setup-node@master
         with:
@@ -20,9 +23,6 @@ jobs:
         id: setup-icu
         with:
           noexport: true
-
-      - name: Check out repo
-        uses: actions/checkout@master
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
