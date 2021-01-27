@@ -19,32 +19,17 @@ jobs:
         with:
           node-version: 12.x
 
-      - uses: sarisia/setup-icu@v1
-        id: setup-icu
-        with:
-          noexport: true
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        env:
-          NODE_ICU_DATA: ${{ steps.setup-icu.outputs.icu-data-dir }}
 
       - name: Build
         run: yarn build
-        env:
-          NODE_ICU_DATA: ${{ steps.setup-icu.outputs.icu-data-dir }}
 
       - name: Compile fixtures
         run: yarn compile-fixtures
-        env:
-          NODE_ICU_DATA: ${{ steps.setup-icu.outputs.icu-data-dir }}
 
       - name: Lint
         run: yarn lint
-        env:
-          NODE_ICU_DATA: ${{ steps.setup-icu.outputs.icu-data-dir }}
 
       - name: Test
         run: yarn test
-        env:
-          NODE_ICU_DATA: ${{ steps.setup-icu.outputs.icu-data-dir }}
