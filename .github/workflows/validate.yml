@@ -12,7 +12,6 @@ jobs:
       CI: true
     steps:
       - uses: sarisia/setup-icu@v1
-      - uses: sarisia/action-uses-icu-function@v2
 
       - name: Check out repo
         uses: actions/checkout@master
