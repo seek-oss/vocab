@@ -4,6 +4,7 @@ import {
   ParsedICUMessages,
   LanguageName,
   TranslationRequirementsByKey,
+  TranslationFile,
 } from '@vocab/types';
 
 export function createTranslationFile<
@@ -14,17 +15,7 @@ export function createTranslationFile<
     Language,
     RequirementsByKey
   >,
-): {
-  getLoadedMessages: (
-    language: Language,
-    locale?: string,
-  ) => ParsedICUMessages<RequirementsByKey> | null;
-  getMessages: (
-    language: Language,
-    locale?: string,
-  ) => Promise<ParsedICUMessages<RequirementsByKey>>;
-  load: (language: Language) => Promise<void>;
-} {
+): TranslationFile<Language, RequirementsByKey> {
   function getByLanguage(
     language: Language,
   ): TranslationModule<RequirementsByKey> {

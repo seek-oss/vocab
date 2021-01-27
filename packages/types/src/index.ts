@@ -15,9 +15,9 @@ export type TranslationRequirementsByKey = Record<
 >;
 
 /**
- * StrictParsedICUMessage A limited strictly typed format from intl-messageformat
+ * ParsedICUMessage A strictly typed formatter from intl-messageformat
  */
-interface StrictParsedICUMessage<Requirements extends TranslationRequirements> {
+interface ParsedICUMessage<Requirements extends TranslationRequirements> {
   format: Requirements['params'] extends Record<string, any>
     ? (params: Requirements['params']) => Requirements['returnType']
     : () => Requirements['returnType'];
@@ -26,9 +26,7 @@ interface StrictParsedICUMessage<Requirements extends TranslationRequirements> {
 export type ParsedICUMessages<
   RequirementsByKey extends TranslationRequirementsByKey
 > = {
-  [key in keyof RequirementsByKey]: StrictParsedICUMessage<
-    RequirementsByKey[key]
-  >;
+  [key in keyof RequirementsByKey]: ParsedICUMessage<RequirementsByKey[key]>;
 };
 
 /**
@@ -48,18 +46,30 @@ export type TranslationModuleByLanguage<
   RequirementsByKey extends TranslationRequirementsByKey
 > = Record<Language, TranslationModule<RequirementsByKey>>;
 
+/**
+ * TranslationFile contains a record of TranslationModules per language, exposing a set of methods to load and return the module by language
+ */
 export type TranslationFile<
   Language extends LanguageName,
   RequirementsByKey extends TranslationRequirementsByKey
 > = {
+  /**
+   *  Retrieve messages. If not loaded will attempt to load messages and resolve once complete.
+   */
   getMessages: (
     language: Language,
     locale?: string,
   ) => Promise<ParsedICUMessages<RequirementsByKey>>;
+  /**
+   *  Retrieve already loaded messages. Will return null if no messages have not been loaded.
+   */
   getLoadedMessages: (
     language: Language,
     locale?: string,
   ) => ParsedICUMessages<RequirementsByKey> | null;
+  /**
+   *  Load messages for the given language. Resolving once complete.
+   */
   load: (language: Language) => Promise<void>;
 };
 
