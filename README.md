@@ -147,7 +147,7 @@ In the below example we use two messages, one that passes in a single parameter 
 {
   "my key with param": {
     "message": "Bonjour de {name}"
-  }
+  },
   "my key2": {
     "message": "Bonjour de <Link>Vocab</Link>"
   }
