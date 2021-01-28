@@ -137,7 +137,7 @@ extractor.addChunk(chunkName);
 
 ## ICU Message format
 
-Translation messages can sometimes contain dynamic values, such a date/time, link or username. These values can often exist somewhere in the middle of a message and change location based on translation.
+Translation messages can sometimes contain dynamic values, such as dates/times, links or usernames. These values can often exist somewhere in the middle of a message and change location based on translation.
 
 To support this Vocab uses [Format.js's intl-messageformat] allowing you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
 
