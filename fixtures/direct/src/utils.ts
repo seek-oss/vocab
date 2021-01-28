@@ -21,7 +21,11 @@ export function getSyncMessage(language: LanguageName, locale: string) {
   })}`;
 }
 
-export async function getAsyncMessage(language: LanguageName, locale: string) {
-  const languageTranslations = await translations.getMessages(language, locale);
-  return `${languageTranslations.hello.format()} Asyncronously`;
+export function getAsyncMessage(language: LanguageName, locale: string) {
+  return translations
+    .getMessages(language, locale)
+    .then(
+      (languageTranslations) =>
+        `${languageTranslations.hello.format()} Asyncronously`,
+    );
 }
