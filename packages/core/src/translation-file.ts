@@ -36,19 +36,20 @@ export function createTranslationFile<
       const translationModule = getByLanguage(language);
       return translationModule.getValue(locale || language) || null;
     },
-    async getMessages(
+    getMessages(
       language: Language,
       locale?: string,
     ): Promise<ParsedICUMessages<RequirementsByKey>> {
       const translationModule = getByLanguage(language);
-      await translationModule.load();
-      const result = translationModule.getValue(locale || language);
-      if (!result) {
-        throw new Error(
-          `Unable to find translations for ${language} after attempting to load. Module may have failed to load to an internal error may have occurred.`,
-        );
-      }
-      return result;
+      return translationModule.load().then(() => {
+        const result = translationModule.getValue(locale || language);
+        if (!result) {
+          throw new Error(
+            `Unable to find translations for ${language} after attempting to load. Module may have failed to load to an internal error may have occurred.`,
+          );
+        }
+        return result;
+      });
     },
     load(language: Language): Promise<void> {
       const translationModule = getByLanguage(language);

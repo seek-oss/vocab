@@ -45,8 +45,10 @@ function App() {
           </div>
           <button
             id="update-message"
-            onClick={async () =>
-              setAsyncMessage(await getAsyncMessage(language, language))
+            onClick={() =>
+              getAsyncMessage(language, language).then((v) =>
+                setAsyncMessage(v),
+              )
             }
           >
             Update Async Message
