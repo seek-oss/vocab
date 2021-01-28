@@ -141,7 +141,7 @@ Translation messages can sometimes contain dynamic values, such as dates/times, 
 
 To support this Vocab uses [Format.js's intl-messageformat] allowing you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
 
-In the below example we use two messages, one that passes in a single parameter and one
+In the below example we use two messages, one that passes in a single parameter and one uses a component.
 
 ```json
 {
@@ -154,7 +154,7 @@ In the below example we use two messages, one that passes in a single parameter 
 }
 ```
 
-Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure Typescript knows the values must be passed in.
+Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure TypeScript knows the values must be passed in.
 
 ```tsx
 t('my key with param', {name: 'Vocab'});
