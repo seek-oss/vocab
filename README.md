@@ -48,7 +48,7 @@ module.exports = {
 
 Vocab doesn't tell you how to select or change your language. You just need to tell Vocab what language to use.
 
-**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
+**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this, changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
 
 **src/App.tsx**
 
@@ -100,7 +100,7 @@ function MyComponent({ children }) {
 
 ### Step 5: Create translations
 
-So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
+So far, your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
 
 **./example.vocab/fr-FR.translations.json**
 
@@ -119,7 +119,7 @@ Using the above method without optimizing what chunks webpack uses you may find 
 
 This is where `getChunkName` can be used to retrieve the Webpack chunk used for a specific language.
 
-For example here is a Server Render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
+For example, here is a Server Render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
 
 **src/render.tsx**
 
@@ -221,7 +221,7 @@ async function getFooMessage(language) {
 getFooMessage().then((m) => console.log(m));
 ```
 
-**Example: Syncronously returning a message**
+**Example: Synchronously returning a message**
 
 ```typescript
 import translations from './.vocab';
