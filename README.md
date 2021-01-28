@@ -197,13 +197,13 @@ module.exports = {
 
 If you need to use Vocab outside of React, you can access the returned Vocab file directly. You'll then be responsible for when to load translations and how to update on translation load.
 
-### Async access
+#### Async access
 
 - `getMessages(language: string) => Promise<Messages>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
 
 **Note:** To optimize loading time you may want to call `load` (see below) ahead of use.
 
-### Sync access
+#### Sync access
 
 - `load(language: string) => Promise<void>` attempts to preload messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
 - `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
