@@ -9,7 +9,7 @@ Enable the use of translation files directly with 3 new documented methods for w
 
 ```typescript
 /**
- *  Retrieve messages. If not available will attempt to load messages and resolve once complete.
+ *  Retrieve messages. If not available, will attempt to load messages and resolve once complete.
  */
 translations.getMessages(language);
 /**

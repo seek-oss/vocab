@@ -54,7 +54,7 @@ export type TranslationFile<
   RequirementsByKey extends TranslationRequirementsByKey
 > = {
   /**
-   *  Retrieve messages. If not loaded will attempt to load messages and resolve once complete.
+   *  Retrieve messages. If not loaded, will attempt to load messages and resolve once complete.
    */
   getMessages: (
     language: Language,

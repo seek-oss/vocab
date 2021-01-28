@@ -45,7 +45,7 @@ export function createTranslationFile<
         const result = translationModule.getValue(locale || language);
         if (!result) {
           throw new Error(
-            `Unable to find translations for ${language} after attempting to load. Module may have failed to load to an internal error may have occurred.`,
+            `Unable to find translations for ${language} after attempting to load. Module may have failed to load or an internal error may have occurred.`,
           );
         }
         return result;
