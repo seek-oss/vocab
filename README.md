@@ -226,10 +226,8 @@ getFooMessage().then((m) => console.log(m));
 ```typescript
 import translations from './.vocab';
 
-async function getFooMessage(language) {
-  let messages = await translations.getLoadedMessages(
-    language
-  );
+function getFooMessageSync(language) {
+  let messages = translations.getLoadedMessages(language);
   if (!messages) {
     // Translations not loaded, start loading and return null for now
     translations.load();
@@ -241,7 +239,7 @@ async function getFooMessage(language) {
 translations.load();
 
 const onClick = () => {
-  console.log(getFooMessage());
+  console.log(getFooMessageSync());
 };
 ```
 
