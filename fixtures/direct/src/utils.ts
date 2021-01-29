@@ -15,7 +15,7 @@ export function getSyncMessage(language: LanguageName, locale: string) {
     );
     return null;
   }
-  return `${languageTranslations.hello.format()} Syncronously
+  return `${languageTranslations.hello.format()} Synchronously
   ${languageTranslations.vocabPublishDate.format({
     publishDate: 1605847714000,
   })}`;
@@ -26,6 +26,6 @@ export function getAsyncMessage(language: LanguageName, locale: string) {
     .getMessages(language, locale)
     .then(
       (languageTranslations) =>
-        `${languageTranslations.hello.format()} Asyncronously`,
+        `${languageTranslations.hello.format()} Asynchronously`,
     );
 }

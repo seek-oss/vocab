@@ -1,6 +1,6 @@
 # Vocab
 
-Vocab is a strongly typed internationalisation framework for React.
+Vocab is a strongly typed internationalization framework for React.
 
 ## Getting started
 
@@ -108,7 +108,7 @@ So far, your app will run, but you're missing any translations other than the in
 {
   "my key": {
     "message": "Bonjour de Vocab",
-    "decription": "An optional description to help when translating"
+    "description": "An optional description to help when translating"
   }
 }
 ```
@@ -205,8 +205,8 @@ If you need to use Vocab outside of React, you can access the returned Vocab fil
 
 #### Sync access
 
-- `load(language: string) => Promise<void>` attempts to preload messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
-- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
+- `load(language: string) => Promise<void>` attempts to pre-load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
+- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a synchronous (non-promise) return is required.
 
 **Example: Promise based formatting of messages**
 
@@ -261,7 +261,7 @@ $ vocab compile --watch
 
 ## External translation tooling
 
-Vocab can be used to syncronize your translations with translations from a remote translation platform.
+Vocab can be used to synchronize your translations with translations from a remote translation platform.
 
 | Platform                                     | Environment Variables               |
 | -------------------------------------------- | ----------------------------------- |

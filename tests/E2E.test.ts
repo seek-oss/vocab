@@ -160,8 +160,8 @@ describe('E2E', () => {
       const syncMessage = await page.waitForSelector('#sync-message');
       const asyncMessage = await page.waitForSelector('#async-message');
 
-      await expect(syncMessage).toMatch('Hello Syncronously');
-      await expect(asyncMessage).toMatch('Hello Asyncronously');
+      await expect(syncMessage).toMatch('Hello Synchronously');
+      await expect(asyncMessage).toMatch('Hello Asynchronously');
       await expect(syncMessage).toMatch('Vocab was published on 11/20/2020');
     });
     it('should switch to french', async () => {
@@ -173,8 +173,8 @@ describe('E2E', () => {
       const syncMessage = await page.waitForSelector('#sync-message');
       const asyncMessage = await page.waitForSelector('#async-message');
 
-      await expect(syncMessage).toMatch('Bonjour Syncronously');
-      await expect(asyncMessage).toMatch('Bonjour Asyncronously');
+      await expect(syncMessage).toMatch('Bonjour Synchronously');
+      await expect(asyncMessage).toMatch('Bonjour Asynchronously');
     });
 
     afterAll(() => {
