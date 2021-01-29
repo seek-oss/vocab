@@ -23,10 +23,10 @@ export const getParsedICUMessages = (
   const parsedICUMessages: ParsedICUMessages<any> = {};
 
   for (const translation of Object.keys(m)) {
-    parsedICUMessages[translation] = new IntlMessageFormat(
-      m[translation],
-      locale,
-    );
+    const intlMessageFormat = new IntlMessageFormat(m[translation], locale);
+    parsedICUMessages[translation] = {
+      format: (params: any) => intlMessageFormat.format(params),
+    };
   }
 
   moduleCache.set(m, { ...moduleCachedResult, [locale]: parsedICUMessages });

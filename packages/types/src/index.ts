@@ -1,26 +1,77 @@
-import type { IntlMessageFormat } from 'intl-messageformat';
+import { ReactNode } from 'react';
 
 export type LanguageName = string;
 
 export type TranslationKey = string;
 export type TranslationMessage = string;
 
-export type ParsedICUMessages<TranslatedLanguage> = Record<
-  keyof TranslatedLanguage,
-  IntlMessageFormat
+interface TranslationRequirements {
+  params?: Record<string, any>;
+  returnType: string | ReactNode;
+}
+export type TranslationRequirementsByKey = Record<
+  string,
+  TranslationRequirements
 >;
 
-export type TranslationModule<TranslatedLanguage> = {
+/**
+ * ParsedICUMessage A strictly typed formatter from intl-messageformat
+ */
+interface ParsedICUMessage<Requirements extends TranslationRequirements> {
+  format: Requirements['params'] extends Record<string, any>
+    ? (params: Requirements['params']) => Requirements['returnType']
+    : () => Requirements['returnType'];
+}
+
+export type ParsedICUMessages<
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
+  [key in keyof RequirementsByKey]: ParsedICUMessage<RequirementsByKey[key]>;
+};
+
+/**
+ * TranslationModule is a wrapper around a potentially asyncronously loaded set of ParsedICUMessages
+ */
+export type TranslationModule<
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
   getValue: (
     locale: string,
-  ) => ParsedICUMessages<TranslatedLanguage> | undefined;
+  ) => ParsedICUMessages<RequirementsByKey> | undefined;
   load: () => Promise<void>;
 };
 
-export type TranslationFile<TranslatedLanguage> = Record<
-  LanguageName,
-  TranslationModule<TranslatedLanguage>
->;
+export type TranslationModuleByLanguage<
+  Language extends LanguageName,
+  RequirementsByKey extends TranslationRequirementsByKey
+> = Record<Language, TranslationModule<RequirementsByKey>>;
+
+/**
+ * TranslationFile contains a record of TranslationModules per language, exposing a set of methods to load and return the module by language
+ */
+export type TranslationFile<
+  Language extends LanguageName,
+  RequirementsByKey extends TranslationRequirementsByKey
+> = {
+  /**
+   *  Retrieve messages. If not loaded, will attempt to load messages and resolve once complete.
+   */
+  getMessages: (
+    language: Language,
+    locale?: string,
+  ) => Promise<ParsedICUMessages<RequirementsByKey>>;
+  /**
+   *  Retrieve already loaded messages. Will return null if no messages have not been loaded.
+   */
+  getLoadedMessages: (
+    language: Language,
+    locale?: string,
+  ) => ParsedICUMessages<RequirementsByKey> | null;
+  /**
+   *  Load messages for the given language. Resolving once complete.
+   */
+  load: (language: Language) => Promise<void>;
+};
 
 export interface LanguageTarget {
   // The name or tag of a language

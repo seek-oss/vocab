@@ -9,7 +9,8 @@
     "entrypoints": [
       "index.ts",
       "runtime.ts",
-      "icu-handler.ts"
+      "icu-handler.ts",
+      "translation-file.ts"
     ]
   },
   "dependencies": {

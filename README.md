@@ -48,7 +48,7 @@ module.exports = {
 
 Vocab doesn't tell you how to select or change your language. You just need to tell Vocab what language to use.
 
-**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
+**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this, changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
 
 **src/App.tsx**
 
@@ -100,7 +100,7 @@ function MyComponent({ children }) {
 
 ### Step 5: Create translations
 
-So far your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
+So far, your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
 
 **./example.vocab/fr-FR.translations.json**
 
@@ -119,7 +119,7 @@ Using the above method without optimizing what chunks webpack uses you may find 
 
 This is where `getChunkName` can be used to retrieve the Webpack chunk used for a specific language.
 
-For example here is a Server Render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
+For example, here is a Server Render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
 
 **src/render.tsx**
 
@@ -133,6 +133,32 @@ const chunkName = getChunkName(language);
 const extractor = new ChunkExtractor();
 
 extractor.addChunk(chunkName);
+```
+
+## ICU Message format
+
+Translation messages can sometimes contain dynamic values, such as dates/times, links or usernames. These values can often exist somewhere in the middle of a message and change location based on translation.
+
+To support this Vocab uses [Format.js's intl-messageformat] allowing you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
+
+In the below example we use two messages, one that passes in a single parameter and one uses a component.
+
+```json
+{
+  "my key with param": {
+    "message": "Bonjour de {name}"
+  },
+  "my key with component": {
+    "message": "Bonjour de <Link>Vocab</Link>"
+  }
+}
+```
+
+Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure TypeScript knows the values must be passed in.
+
+```tsx
+t('my key with param', {name: 'Vocab'});
+t('my key with component', {Link: children => (<a href="/foo">{children}</Link>)});
 ```
 
 ## Configuration
@@ -167,6 +193,56 @@ module.exports = {
 };
 ```
 
+## Use without React
+
+If you need to use Vocab outside of React, you can access the returned Vocab file directly. You'll then be responsible for when to load translations and how to update on translation load.
+
+#### Async access
+
+- `getMessages(language: string) => Promise<Messages>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
+
+**Note:** To optimize loading time you may want to call `load` (see below) ahead of use.
+
+#### Sync access
+
+- `load(language: string) => Promise<void>` attempts to preload messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
+- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a syncronous (non-promise) return is required.
+
+**Example: Promise based formatting of messages**
+
+```typescript
+import translations from './.vocab';
+
+async function getFooMessage(language) {
+  let messages = await translations.getMessages(language);
+  return messages['my key'].format();
+}
+
+getFooMessage().then((m) => console.log(m));
+```
+
+**Example: Synchronously returning a message**
+
+```typescript
+import translations from './.vocab';
+
+function getFooMessageSync(language) {
+  let messages = translations.getLoadedMessages(language);
+  if (!messages) {
+    // Translations not loaded, start loading and return null for now
+    translations.load();
+    return null;
+  }
+  return messages.foo.format();
+}
+
+translations.load();
+
+const onClick = () => {
+  console.log(getFooMessageSync());
+};
+```
+
 ## Generate Types
 
 Vocab generates custom `index.ts` files that give your React components strongly typed translations to work with.
@@ -195,6 +271,13 @@ Vocab can be used to syncronize your translations with translations from a remot
 $ vocab push --branch my-branch
 $ vocab pull --branch my-branch
 ```
+
+## Troubleshooting
+
+### Problem: Passed locale is being ignored or using en-US instead
+
+When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intl_internationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
+See Node's documentation on [Options for building Node.js](https://nodejs.org/api/intl.html#intl_options_for_building_node_js) for information on ensuring Node has the locales you need.
 
 ### License
 

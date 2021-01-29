@@ -1,0 +1,23 @@
+{
+  "name": "fixture-direct",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "compile": "vocab compile",
+    "start": "vocab compile --watch & webpack serve"
+  },
+  "dependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@vocab/cli": "^0.0.15",
+    "@vocab/react": "^0.0.11",
+    "babel-loader": "^8.2.1",
+    "html-webpack-plugin": "^4.5.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.4.0",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

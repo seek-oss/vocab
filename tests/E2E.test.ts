@@ -132,4 +132,53 @@ describe('E2E', () => {
       server.close();
     });
   });
+
+  describe('Direct with plugin', () => {
+    let server: TestServer;
+
+    beforeAll(async () => {
+      const config = resolveConfigSync(
+        require.resolve('fixture-direct/vocab.config.js'),
+      );
+
+      if (!config) {
+        throw new Error(`Can't resolve "fixture-direct" vocab config`);
+      }
+
+      await compile({}, config);
+      server = await startFixture('fixture-direct');
+    });
+
+    beforeEach(async () => {
+      await page.goto(server.url);
+    });
+
+    it('should default to en-US english', async () => {
+      await page.click('#show-message');
+      await page.click('#update-message');
+
+      const syncMessage = await page.waitForSelector('#sync-message');
+      const asyncMessage = await page.waitForSelector('#async-message');
+
+      await expect(syncMessage).toMatch('Hello Syncronously');
+      await expect(asyncMessage).toMatch('Hello Asyncronously');
+      await expect(syncMessage).toMatch('Vocab was published on 11/20/2020');
+    });
+    it('should switch to french', async () => {
+      await page.click('#toggle-language');
+
+      await page.click('#show-message');
+      await page.click('#update-message');
+
+      const syncMessage = await page.waitForSelector('#sync-message');
+      const asyncMessage = await page.waitForSelector('#async-message');
+
+      await expect(syncMessage).toMatch('Bonjour Syncronously');
+      await expect(asyncMessage).toMatch('Bonjour Asyncronously');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
+  });
 });
