@@ -30,7 +30,7 @@ export type ParsedICUMessages<
 };
 
 /**
- * TranslationModule is a wrapper around a potentially asyncronously loaded set of ParsedICUMessages
+ * TranslationModule is a wrapper around a potentially asynchronously loaded set of ParsedICUMessages
  */
 export type TranslationModule<
   RequirementsByKey extends TranslationRequirementsByKey
