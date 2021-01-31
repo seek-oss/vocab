@@ -1,6 +1,6 @@
 const path = require('path');
 
-const VocabWebpackPlugin = require('@vocab/webpack').default;
+const { VocabWebpackPlugin } = require('@vocab/webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 

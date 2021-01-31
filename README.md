@@ -105,11 +105,11 @@ This is done using the **VocabWebpackPlugin**. Applying this plugin to your clie
 **webpack.config.js**
 
 ```js
-const VocabWebpackPlugin = require('@vocab/webpack').default;
+const { VocabWebpackPlugin } = require('@vocab/webpack');
 
 module.exports = {
   ...,
-  plugins: [new VocabWebpackPlugin({})]
+  plugins: [new VocabWebpackPlugin()]
 }
 ```
 
