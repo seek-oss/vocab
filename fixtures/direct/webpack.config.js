@@ -1,4 +1,4 @@
-const VocabWebpackPlugin = require('@vocab/webpack').default;
+const { VocabWebpackPlugin } = require('@vocab/webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = ({ disableVocabPlugin }) => ({

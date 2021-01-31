@@ -12,24 +12,7 @@ Vocab is a monorepo with different packages you can install depending on your us
 $ npm i --save @vocab/cli @vocab/react @vocab/webpack
 ```
 
-### Step 2: Setup Webpack plugin
-
-Before starting to write code you'll need to setup webpack to understand how to use `translation.json` files.
-
-This is done using the **VocabWebpackPlugin**.
-
-**webpack.config.js**
-
-```js
-const VocabWebpackPlugin = require('@vocab/webpack').default;
-
-module.exports = {
-  ...,
-  plugins: [new VocabWebpackPlugin({})]
-}
-```
-
-### Step 3: Configure Vocab
+### Step 2: Configure Vocab
 
 You can configure Vocab directly when calling the API or via a `vocab.config.js` file.
 
@@ -113,7 +96,24 @@ So far, your app will run, but you're missing any translations other than the in
 }
 ```
 
-### Step 6: Optimize for fast page loading
+### Step 6: [Optional] Setup Webpack plugin
+
+Right now every language is loaded into your web application all the time, which could lead to a large bundle size. Ideally you will want to switch out the Node/default runtime for web runtime that will load only the active language.
+
+This is done using the **VocabWebpackPlugin**. Applying this plugin to your client webpack configuration will replace all vocab files with a dynamic asynchronous chunks designed for the web.
+
+**webpack.config.js**
+
+```js
+const { VocabWebpackPlugin } = require('@vocab/webpack');
+
+module.exports = {
+  ...,
+  plugins: [new VocabWebpackPlugin()]
+}
+```
+
+### Step 7: [Optional] Optimize for fast page loading
 
 Using the above method without optimizing what chunks webpack uses you may find the page needing to do an extra round trip to load languages on a page.
 

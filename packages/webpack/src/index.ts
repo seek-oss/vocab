@@ -7,7 +7,7 @@ interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
 }
 
-export default class VocabWebpackPlugin {
+export class VocabWebpackPlugin {
   options: UserConfig;
 
   constructor({ configFile, ...rest }: UserOptions = {}) {
