@@ -113,7 +113,6 @@ module.exports = {
 }
 ```
 
-
 ### Step 7: [Optional] Optimize for fast page loading
 
 Using the above method without optimizing what chunks webpack uses you may find the page needing to do an extra round trip to load languages on a page.
