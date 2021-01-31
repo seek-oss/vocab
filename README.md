@@ -100,7 +100,7 @@ So far, your app will run, but you're missing any translations other than the in
 
 Right now every language is loaded into your web application all the time, which could lead to a large bundle size. Ideally you will want to switch out the Node/default runtime for web runtime that will load only the active language.
 
-This is done using the **VocabWebpackPlugin**. Applying this plugin to your client webpack configuration will switchout all vocab files with a dynamic asyncronous chunks designed for the web.
+This is done using the **VocabWebpackPlugin**. Applying this plugin to your client webpack configuration will replace all vocab files with a dynamic asyncronous chunks designed for the web.
 
 **webpack.config.js**
 
