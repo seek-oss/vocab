@@ -3,8 +3,11 @@ import path from 'path';
 
 import glob from 'fast-glob';
 
+const ignore = ['virtual-resource-loader'];
+
 (async () => {
   const packages = await glob('packages/*', {
+    ignore,
     onlyDirectories: true,
     absolute: true,
   });

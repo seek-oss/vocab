@@ -5,6 +5,7 @@ node_modules*/
 /**/dist/
 /**/dist-*/
 /packages/**/README.md
+!/packages/virtual-resource-loader/README.md
 
 **/*.vocab/index.ts
 
