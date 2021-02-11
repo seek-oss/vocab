@@ -162,7 +162,7 @@ describe('E2E', () => {
 
       await expect(syncMessage).toMatch('Hello Synchronously');
       await expect(asyncMessage).toMatch('Hello Asynchronously');
-      await expect(syncMessage).toMatch('Vocab was published on 11/20/2020');
+      await expect(syncMessage).toMatch('*Vocab* was published on 11/20/2020');
     });
     it('should switch to french', async () => {
       await page.click('#toggle-language');

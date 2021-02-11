@@ -1,26 +1,25 @@
-import { ReactNode } from 'react';
-
 export type LanguageName = string;
 
 export type TranslationKey = string;
 export type TranslationMessage = string;
 
+type AnyFunction = (...args: any) => any;
+
 interface TranslationRequirements {
-  params?: Record<string, any>;
-  returnType: string | ReactNode;
+  format: AnyFunction;
 }
 export type TranslationRequirementsByKey = Record<
   string,
   TranslationRequirements
 >;
 
+export type ICUFormatResult<T = unknown> = string | T | (string | T);
+
 /**
  * ParsedICUMessage A strictly typed formatter from intl-messageformat
  */
 interface ParsedICUMessage<Requirements extends TranslationRequirements> {
-  format: Requirements['params'] extends Record<string, any>
-    ? (params: Requirements['params']) => Requirements['returnType']
-    : () => Requirements['returnType'];
+  format: Requirements['format'];
 }
 
 export type ParsedICUMessages<

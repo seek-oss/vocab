@@ -15,10 +15,13 @@ export function getSyncMessage(language: LanguageName, locale: string) {
     );
     return null;
   }
-  return `${languageTranslations.hello.format()} Synchronously
-  ${languageTranslations.vocabPublishDate.format({
+  const publishedText = languageTranslations.vocabPublishDate.format({
     publishDate: 1605847714000,
-  })}`;
+    strong: (c): string => `*${c}*`,
+  });
+  const helloText = languageTranslations.hello.format();
+  return `${helloText} Synchronously
+  ${publishedText}`;
 }
 
 export function getAsyncMessage(language: LanguageName, locale: string) {

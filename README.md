@@ -2,6 +2,20 @@
 
 Vocab is a strongly typed internationalization framework for React.
 
+Vocab helps you ship multiple languages without compromising the reliability of your site or slowing down delivery.
+
+- Shareable translations
+
+  Translations are co-located with the components that use them. Vocab uses the module graph allowing shared components to be installed with package managers like npm, just like any other module.
+
+- Loading translations dynamically
+
+  Translations are loaded dynamically, ensuring only the language being used is downloaded by the user. Translations are then loaded dynamically if the language changes, without the need to reload the page.
+
+- Strongly typed with TypeScript
+
+  When using translations TypeScript will ensure code only accesses valid translations and translations are passed all required dynamic values.
+
 ## Getting started
 
 ### Step 1: Install Dependencies

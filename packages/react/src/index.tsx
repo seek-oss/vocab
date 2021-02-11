@@ -5,6 +5,7 @@ import {
 } from '@vocab/types';
 import React, {
   FunctionComponent,
+  ReactNode,
   useContext,
   useMemo,
   useReducer,
@@ -52,22 +53,33 @@ export const useLanguage = (): TranslationsValue => {
 
 const SERVER_RENDERING = typeof window === 'undefined';
 
+type AnyFunction = (...args: any) => any;
+type FormatXMLElementReactNodeFn = (parts: ReactNode[]) => ReactNode;
+
+type MapToReactNodeFunction<Params extends Record<string, any>> = {
+  [key in keyof Params]: Params[key] extends AnyFunction
+    ? FormatXMLElementReactNodeFn
+    : Params[key];
+};
+
 type TranslateFn<RequirementsByKey extends TranslationRequirementsByKey> = {
   <TranslationKey extends keyof RequirementsByKey>(
     key: TranslationKey,
-    params: RequirementsByKey[TranslationKey]['params'] extends Record<
-      string,
-      any
-    >
-      ? RequirementsByKey[TranslationKey]['params']
-      : Record<string, unknown>,
-  ): RequirementsByKey[TranslationKey]['returnType'];
+    params: MapToReactNodeFunction<
+      Parameters<RequirementsByKey[TranslationKey]['format']>[0]
+    >,
+  ): ReturnType<RequirementsByKey[TranslationKey]['format']> extends string
+    ? string
+    : ReactNode | string | Array<ReactNode | string>;
   <TranslationKey extends keyof RequirementsByKey>(
-    key: RequirementsByKey[TranslationKey]['params'] extends Record<string, any>
+    key: Parameters<
+      RequirementsByKey[TranslationKey]['format']
+    >[0] extends Record<string, any>
       ? never
       : TranslationKey,
-  ): RequirementsByKey[TranslationKey]['returnType'];
+  ): string;
 };
+
 export function useTranslations<
   Language extends string,
   RequirementsByKey extends TranslationRequirementsByKey
@@ -77,7 +89,6 @@ export function useTranslations<
   ready: boolean;
   t: TranslateFn<RequirementsByKey>;
 } {
-  // TranslationFile<Language, Translations>['__translatedLanguageRequirements']
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
   const translationsObject = translations.getLoadedMessages(
@@ -94,7 +105,10 @@ export function useTranslations<
     translations.load(language as any).then(() => {
       forceRender();
     });
-    return { t: () => ' ', ready: false };
+    return {
+      t: (() => ' ') as TranslateFn<TranslationRequirementsByKey>,
+      ready: false,
+    };
   }
 
   const t: TranslateFn<RequirementsByKey> = (key: string, params?: any) => {
@@ -102,7 +116,8 @@ export function useTranslations<
       return null;
     }
 
-    return translationsObject[key].format(params as any);
+    const formattedResult = translationsObject[key].format(params as any);
+    return formattedResult;
   };
 
   return {
