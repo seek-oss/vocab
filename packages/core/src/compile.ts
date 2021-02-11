@@ -37,6 +37,7 @@ interface TranslationTypeInfo {
   params: ICUParams;
   message: string;
   returnType: string;
+  hasTags: boolean;
 }
 
 function extractHasTags(ast: MessageFormatElement[]): boolean {
@@ -65,8 +66,8 @@ function extractParamTypes(
     } else if (isDateElement(element) || isTimeElement(element)) {
       params[element.value] = 'Date | number';
     } else if (isTagElement(element)) {
-      params[element.value] = '(v: ReactNode) => ReactNode';
-      imports.add(`import { ReactNode } from 'react';`);
+      params[element.value] = 'FormatXMLElementFn<T>';
+      imports.add(`import { FormatXMLElementFn } from '@vocab/types';`);
 
       const [subParams, subImports] = extractParamTypes(element.children);
 
@@ -115,15 +116,20 @@ function serialiseTranslationRuntime(
   trace('Serialising translations:', loadedTranslation);
   const translationsType: any = {};
 
-  for (const [key, { params, returnType }] of value.entries()) {
-    const translationKeyType: any = {};
+  for (const [key, { params, message, hasTags }] of value.entries()) {
+    let translationFunctionString = `() => ${message}`;
 
     if (Object.keys(params).length > 0) {
-      translationKeyType.params = params;
+      const formatGeneric = hasTags ? '<T = string>' : '';
+      const formatReturn = hasTags
+        ? 'string | T | Array<string | T>'
+        : 'string';
+      translationFunctionString = `${formatGeneric}(values: ${serialiseObjectToType(
+        params,
+      )}) => ${formatReturn}`;
     }
-    translationKeyType.returnType = returnType;
 
-    translationsType[key] = translationKeyType;
+    translationsType[key] = translationFunctionString;
   }
 
   const content = Object.entries(loadedTranslation.languages)
@@ -185,6 +191,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
 
     translationTypes.set(key, {
       params,
+      hasTags,
       message: messages.join(' | '),
       returnType,
     });

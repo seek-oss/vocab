@@ -9,13 +9,15 @@ function Content() {
   const common = useTranslations(commonTranslations);
   const client = useTranslations(clientTranslations);
   const message = `${common.t('hello')} ${common.t('world')}`;
+  const vocabPublishNode = client.t('vocabPublishDate', {
+    publishDate: 1605847714000,
+    strong: (children) => <strong key="s1">{children[0]}</strong>,
+  });
 
   return (
     <>
       <div id="message">{message}</div>
-      <div id="publish-date">
-        {client.t('vocabPublishDate', { publishDate: 1605847714000 })}
-      </div>
+      <div id="publish-date">{vocabPublishNode}</div>
     </>
   );
 }

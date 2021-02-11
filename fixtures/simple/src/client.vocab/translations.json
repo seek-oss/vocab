@@ -1,5 +1,5 @@
 {
   "vocabPublishDate": {
-    "message": "Vocab was published on {publishDate, date, small}"
+    "message": "<strong>Vocab</strong> was published on <strong>{publishDate, date, small}</strong>"
   }
 }
