@@ -5,11 +5,9 @@ const createDemoTranslationFile = () =>
   createTranslationFile<
     'en' | 'fr',
     {
-      vocabPublishDate: {
-        format: <T = string>(values: {
-          publishDate: Date | number;
-        }) => string | T | Array<string | T>;
-      };
+      vocabPublishDate: <T = string>(values: {
+        publishDate: Date | number;
+      }) => string | T | Array<string | T>;
     }
   >({
     en: createLanguage({
@@ -23,12 +21,10 @@ const createDemoTranslationFileWithTag = () =>
   createTranslationFile<
     'en' | 'fr',
     {
-      vocabPublishDate: {
-        format: <T = string>(values: {
-          link: FormatXMLElementFn<T>;
-          strong: FormatXMLElementFn<T>;
-        }) => string | T | Array<string | T>;
-      };
+      vocabPublishDate: <T = string>(values: {
+        link: FormatXMLElementFn<T>;
+        strong: FormatXMLElementFn<T>;
+      }) => string | T | Array<string | T>;
     }
   >({
     en: createLanguage({

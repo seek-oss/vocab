@@ -3,22 +3,17 @@ import {
   TranslationModuleByLanguage,
   ParsedICUMessages,
   LanguageName,
-  TranslationRequirementsByKey,
+  ParsedFormatFnByKey,
   TranslationFile,
 } from '@vocab/types';
 
 export function createTranslationFile<
   Language extends LanguageName,
-  RequirementsByKey extends TranslationRequirementsByKey
+  FormatFnByKey extends ParsedFormatFnByKey
 >(
-  translationsByLanguage: TranslationModuleByLanguage<
-    Language,
-    RequirementsByKey
-  >,
-): TranslationFile<Language, RequirementsByKey> {
-  function getByLanguage(
-    language: Language,
-  ): TranslationModule<RequirementsByKey> {
+  translationsByLanguage: TranslationModuleByLanguage<Language, FormatFnByKey>,
+): TranslationFile<Language, FormatFnByKey> {
+  function getByLanguage(language: Language): TranslationModule<FormatFnByKey> {
     const translationModule = translationsByLanguage[language];
     if (!translationModule) {
       throw new Error(
@@ -32,14 +27,14 @@ export function createTranslationFile<
     getLoadedMessages(
       language: Language,
       locale?: string,
-    ): ParsedICUMessages<RequirementsByKey> | null {
+    ): ParsedICUMessages<FormatFnByKey> | null {
       const translationModule = getByLanguage(language);
       return translationModule.getValue(locale || language) || null;
     },
     getMessages(
       language: Language,
       locale?: string,
-    ): Promise<ParsedICUMessages<RequirementsByKey>> {
+    ): Promise<ParsedICUMessages<FormatFnByKey>> {
       const translationModule = getByLanguage(language);
       return translationModule.load().then(() => {
         const result = translationModule.getValue(locale || language);

@@ -10,7 +10,7 @@ Vocab helps you ship multiple languages without compromising the reliability of 
 
 - Loading translations dynamically
 
-  Translations are loaded dynamically, ensuring only the language being used is downloaded by the user. Translations are then loaded dynamically if the language changes, without the need to reload the page.
+  Vocab only loads the current user's language. If the language changes Vocab can load the new language behind the scenes without reloading the page.
 
 - Strongly typed with TypeScript
 

@@ -67,7 +67,7 @@ function extractParamTypes(
       params[element.value] = 'Date | number';
     } else if (isTagElement(element)) {
       params[element.value] = 'FormatXMLElementFn<T>';
-      imports.add(`import { FormatXMLElementFn } from 'intl-messageformat';`);
+      imports.add(`import { FormatXMLElementFn } from '@vocab/types';`);
 
       const [subParams, subImports] = extractParamTypes(element.children);
 
@@ -117,21 +117,19 @@ function serialiseTranslationRuntime(
   const translationsType: any = {};
 
   for (const [key, { params, message, hasTags }] of value.entries()) {
-    const translationKeyType: any = {};
+    let translationFunctionString = `() => ${message}`;
 
     if (Object.keys(params).length > 0) {
       const formatGeneric = hasTags ? '<T = string>' : '';
       const formatReturn = hasTags
         ? 'string | T | Array<string | T>'
         : 'string';
-      translationKeyType.format = `${formatGeneric}(values: ${serialiseObjectToType(
+      translationFunctionString = `${formatGeneric}(values: ${serialiseObjectToType(
         params,
       )}) => ${formatReturn}`;
-    } else {
-      translationKeyType.format = `() => ${message}`;
     }
 
-    translationsType[key] = translationKeyType;
+    translationsType[key] = translationFunctionString;
   }
 
   const content = Object.entries(loadedTranslation.languages)

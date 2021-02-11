@@ -1,7 +1,8 @@
 import {
   TranslationFile,
   LanguageName,
-  TranslationRequirementsByKey,
+  ParsedFormatFnByKey,
+  ParsedFormatFn,
 } from '@vocab/types';
 import React, {
   FunctionComponent,
@@ -53,28 +54,28 @@ export const useLanguage = (): TranslationsValue => {
 
 const SERVER_RENDERING = typeof window === 'undefined';
 
-type AnyFunction = (...args: any) => any;
 type FormatXMLElementReactNodeFn = (parts: ReactNode[]) => ReactNode;
 
 type MapToReactNodeFunction<Params extends Record<string, any>> = {
-  [key in keyof Params]: Params[key] extends AnyFunction
+  [key in keyof Params]: Params[key] extends ParsedFormatFn
     ? FormatXMLElementReactNodeFn
     : Params[key];
 };
 
-type TranslateFn<RequirementsByKey extends TranslationRequirementsByKey> = {
-  <TranslationKey extends keyof RequirementsByKey>(
+type TranslateFn<FormatFnByKey extends ParsedFormatFnByKey> = {
+  <TranslationKey extends keyof FormatFnByKey>(
     key: TranslationKey,
     params: MapToReactNodeFunction<
-      Parameters<RequirementsByKey[TranslationKey]['format']>[0]
+      Parameters<FormatFnByKey[TranslationKey]>[0]
     >,
-  ): ReturnType<RequirementsByKey[TranslationKey]['format']> extends string
+  ): ReturnType<FormatFnByKey[TranslationKey]> extends string
     ? string
     : ReactNode | string | Array<ReactNode | string>;
-  <TranslationKey extends keyof RequirementsByKey>(
-    key: Parameters<
-      RequirementsByKey[TranslationKey]['format']
-    >[0] extends Record<string, any>
+  <TranslationKey extends keyof FormatFnByKey>(
+    key: Parameters<FormatFnByKey[TranslationKey]>[0] extends Record<
+      string,
+      any
+    >
       ? never
       : TranslationKey,
   ): string;
@@ -82,12 +83,12 @@ type TranslateFn<RequirementsByKey extends TranslationRequirementsByKey> = {
 
 export function useTranslations<
   Language extends string,
-  RequirementsByKey extends TranslationRequirementsByKey
+  FormatFnByKey extends ParsedFormatFnByKey
 >(
-  translations: TranslationFile<Language, RequirementsByKey>,
+  translations: TranslationFile<Language, FormatFnByKey>,
 ): {
   ready: boolean;
-  t: TranslateFn<RequirementsByKey>;
+  t: TranslateFn<FormatFnByKey>;
 } {
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
@@ -106,18 +107,17 @@ export function useTranslations<
       forceRender();
     });
     return {
-      t: (() => ' ') as TranslateFn<TranslationRequirementsByKey>,
+      t: (() => ' ') as TranslateFn<ParsedFormatFnByKey>,
       ready: false,
     };
   }
 
-  const t: TranslateFn<RequirementsByKey> = (key: string, params?: any) => {
+  const t: TranslateFn<FormatFnByKey> = (key: string, params?: any) => {
     if (!translationsObject?.[key]) {
       return null;
     }
 
-    const formattedResult = translationsObject[key].format(params as any);
-    return formattedResult;
+    return translationsObject[key].format(params);
   };
 
   return {
