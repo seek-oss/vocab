@@ -1,5 +1,21 @@
 # @vocab/cli
 
+## 1.0.0
+
+### Major Changes
+
+- [`3031054`](https://github.com/seek-oss/vocab/commit/303105440851db6126f0606e1607745b27dd981c) [#51](https://github.com/seek-oss/vocab/pull/51) Thanks [@jahredhope](https://github.com/jahredhope)! - Release v1.0.0
+
+  Release Vocab as v1.0.0 to signify a stable API and support future [semver versioning](https://semver.org/) releases.
+
+  Vocab has seen a lot of iteration and changes since it was first published on 20 November 2020. We are now confident with the API and believe Vocab is ready for common use.
+
+### Patch Changes
+
+- Updated dependencies [[`0074382`](https://github.com/seek-oss/vocab/commit/007438273ef70f5d5ded45777933651ad8df36f6), [`3031054`](https://github.com/seek-oss/vocab/commit/303105440851db6126f0606e1607745b27dd981c)]:
+  - @vocab/core@1.0.0
+  - @vocab/phrase@1.0.0
+
 ## 0.0.16
 
 ### Patch Changes
