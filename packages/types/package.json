@@ -1,6 +1,6 @@
 {
   "name": "@vocab/types",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "main": "dist/vocab-types.cjs.js",
   "module": "dist/vocab-types.esm.js",
   "author": "SEEK",
