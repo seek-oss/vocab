@@ -9,15 +9,21 @@ function Content() {
   const common = useTranslations(commonTranslations);
   const client = useTranslations(clientTranslations);
   const message = `${common.t('hello')} ${common.t('world')}`;
+  const specialCharacterResult = client.t(
+    'specialCharacters - \'‘’“”"!@#$%^&*()_+\\/`~\\\\',
+  );
   const vocabPublishNode = client.t('vocabPublishDate', {
     publishDate: 1605847714000,
-    strong: (children) => <strong key="s1">{children[0]}</strong>,
+    strong: (children) => <strong key="s1">{children}</strong>,
   });
 
   return (
     <>
       <div id="message">{message}</div>
       <div id="publish-date">{vocabPublishNode}</div>
+      <div id="special-characters">
+        Special Characters: {specialCharacterResult}
+      </div>
     </>
   );
 }

@@ -87,6 +87,12 @@ describe('E2E', () => {
       await expect(message).toMatch('Bonjour monde');
     });
 
+    it('should allow special characters', async () => {
+      const message = await page.waitForSelector('#special-characters');
+
+      await expect(message).toMatch('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
+    });
+
     afterAll(() => {
       server.close();
     });

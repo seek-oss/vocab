@@ -112,9 +112,17 @@ export function useTranslations<
     };
   }
 
-  const t: TranslateFn<FormatFnByKey> = (key: string, params?: any) => {
+  const t = (key: string, params?: any) => {
     if (!translationsObject?.[key]) {
-      return null;
+      // eslint-disable-next-line no-console
+      console.error(
+        `Unable to find translation for key "${key}". Possible keys are ${Object.keys(
+          translationsObject,
+        )
+          .map((v) => `"${v}"`)
+          .join(', ')}`,
+      );
+      return '';
     }
 
     return translationsObject[key].format(params);
