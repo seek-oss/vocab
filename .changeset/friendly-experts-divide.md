@@ -4,7 +4,6 @@
 '@vocab/phrase': major
 '@vocab/react': major
 '@vocab/types': major
-'@vocab/unloader': major
 '@vocab/webpack': major
 ---
 
