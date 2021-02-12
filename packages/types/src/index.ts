@@ -1,57 +1,45 @@
-import { ReactNode } from 'react';
+export { FormatXMLElementFn } from 'intl-messageformat';
 
 export type LanguageName = string;
 
 export type TranslationKey = string;
 export type TranslationMessage = string;
 
-interface TranslationRequirements {
-  params?: Record<string, any>;
-  returnType: string | ReactNode;
-}
-export type TranslationRequirementsByKey = Record<
-  string,
-  TranslationRequirements
->;
+export type ParsedFormatFn = (parts: any) => any;
+export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
+
+export type ICUFormatResult<T = unknown> = string | T | (string | T);
 
 /**
  * ParsedICUMessage A strictly typed formatter from intl-messageformat
  */
-interface ParsedICUMessage<Requirements extends TranslationRequirements> {
-  format: Requirements['params'] extends Record<string, any>
-    ? (params: Requirements['params']) => Requirements['returnType']
-    : () => Requirements['returnType'];
+interface ParsedICUMessage<FormatFn extends ParsedFormatFn> {
+  format: FormatFn;
 }
 
-export type ParsedICUMessages<
-  RequirementsByKey extends TranslationRequirementsByKey
-> = {
-  [key in keyof RequirementsByKey]: ParsedICUMessage<RequirementsByKey[key]>;
+export type ParsedICUMessages<FormatFnByKey extends ParsedFormatFnByKey> = {
+  [key in keyof FormatFnByKey]: ParsedICUMessage<FormatFnByKey[key]>;
 };
 
 /**
  * TranslationModule is a wrapper around a potentially asynchronously loaded set of ParsedICUMessages
  */
-export type TranslationModule<
-  RequirementsByKey extends TranslationRequirementsByKey
-> = {
-  getValue: (
-    locale: string,
-  ) => ParsedICUMessages<RequirementsByKey> | undefined;
+export type TranslationModule<FormatFnByKey extends ParsedFormatFnByKey> = {
+  getValue: (locale: string) => ParsedICUMessages<FormatFnByKey> | undefined;
   load: () => Promise<void>;
 };
 
 export type TranslationModuleByLanguage<
   Language extends LanguageName,
-  RequirementsByKey extends TranslationRequirementsByKey
-> = Record<Language, TranslationModule<RequirementsByKey>>;
+  FormatFnByKey extends ParsedFormatFnByKey
+> = Record<Language, TranslationModule<FormatFnByKey>>;
 
 /**
  * TranslationFile contains a record of TranslationModules per language, exposing a set of methods to load and return the module by language
  */
 export type TranslationFile<
   Language extends LanguageName,
-  RequirementsByKey extends TranslationRequirementsByKey
+  FormatFnByKey extends ParsedFormatFnByKey
 > = {
   /**
    *  Retrieve messages. If not loaded, will attempt to load messages and resolve once complete.
@@ -59,14 +47,14 @@ export type TranslationFile<
   getMessages: (
     language: Language,
     locale?: string,
-  ) => Promise<ParsedICUMessages<RequirementsByKey>>;
+  ) => Promise<ParsedICUMessages<FormatFnByKey>>;
   /**
    *  Retrieve already loaded messages. Will return null if no messages have not been loaded.
    */
   getLoadedMessages: (
     language: Language,
     locale?: string,
-  ) => ParsedICUMessages<RequirementsByKey> | null;
+  ) => ParsedICUMessages<FormatFnByKey> | null;
   /**
    *  Load messages for the given language. Resolving once complete.
    */

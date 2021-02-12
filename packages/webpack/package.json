@@ -16,11 +16,11 @@
   "dependencies": {
     "@vocab/core": "^0.0.11",
     "@vocab/types": "^0.0.9",
-    "@vocab/unloader": "^0.0.1",
     "chalk": "^4.1.0",
     "debug": "^4.3.1",
     "json-loader": "^0.5.7",
-    "loader-utils": "^2.0.0"
+    "loader-utils": "^2.0.0",
+    "virtual-resource-loader": "^1.0.0"
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.1"
