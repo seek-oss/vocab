@@ -1,5 +1,13 @@
 # @vocab/react
 
+## 1.0.1
+
+### Patch Changes
+
+- [`c9a38dd`](https://github.com/seek-oss/vocab/commit/c9a38dd15e2c2a47fc4d5eb2348fdd08a6982768) [#54](https://github.com/seek-oss/vocab/pull/54) Thanks [@jahredhope](https://github.com/jahredhope)! - Allow special characters within translation keys and messages
+
+* [`c9a38dd`](https://github.com/seek-oss/vocab/commit/c9a38dd15e2c2a47fc4d5eb2348fdd08a6982768) [#54](https://github.com/seek-oss/vocab/pull/54) Thanks [@jahredhope](https://github.com/jahredhope)! - Add a warning when accessing a key that doesn't exist
+
 ## 1.0.0
 
 ### Major Changes
