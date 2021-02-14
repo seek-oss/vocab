@@ -1,4 +1,7 @@
 {
+  "specialCharacters - '‘’“”\"!@#$%^&*()_+\\/`~\\\\": {
+    "message": "‘’“”'\"!@#$%^&*()_+\\/`~\\\\"
+  },
   "vocabPublishDate": {
     "message": "Vocab a été publié le {publishDate, date, medium}"
   }

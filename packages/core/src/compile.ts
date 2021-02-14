@@ -40,6 +40,10 @@ interface TranslationTypeInfo {
   hasTags: boolean;
 }
 
+const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
+
+const encodeBackslash = (v: string) => v.replace(/\\/g, '\\\\');
+
 function extractHasTags(ast: MessageFormatElement[]): boolean {
   return ast.some((element) => {
     if (isSelectElement(element)) {
@@ -97,9 +101,11 @@ function serialiseObjectToType(v: any) {
 
   for (const [key, value] of Object.entries(v)) {
     if (value && typeof value === 'object') {
-      result += `'${key}': ${serialiseObjectToType(value)},`;
+      result += `'${encodeWithinSingleQuotes(key)}': ${serialiseObjectToType(
+        value,
+      )},`;
     } else {
-      result += `'${key}': ${value},`;
+      result += `'${encodeWithinSingleQuotes(key)}': ${value},`;
     }
   }
 
@@ -129,13 +135,15 @@ function serialiseTranslationRuntime(
       )}) => ${formatReturn}`;
     }
 
-    translationsType[key] = translationFunctionString;
+    translationsType[encodeBackslash(key)] = translationFunctionString;
   }
 
   const content = Object.entries(loadedTranslation.languages)
     .map(
       ([languageName, translations]) =>
-        `"${languageName}": createLanguage(${JSON.stringify(
+        `'${encodeWithinSingleQuotes(
+          languageName,
+        )}': createLanguage(${JSON.stringify(
           getTranslationMessages(translations),
         )})`,
     )
@@ -167,7 +175,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
 
   for (const key of loadedTranslation.keys) {
     let params: ICUParams = {};
-    const messages = [];
+    const messages = new Set();
     let hasTags = false;
 
     for (const translatedLanguage of Object.values(loadedLanguages)) {
@@ -183,7 +191,9 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
           ...params,
           ...parsedParams,
         };
-        messages.push(`'${translatedLanguage[key].message}'`);
+        messages.add(
+          `'${encodeWithinSingleQuotes(translatedLanguage[key].message)}'`,
+        );
       }
     }
 
@@ -192,7 +202,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
     translationTypes.set(key, {
       params,
       hasTags,
-      message: messages.join(' | '),
+      message: Array.from(messages).join(' | '),
       returnType,
     });
   }

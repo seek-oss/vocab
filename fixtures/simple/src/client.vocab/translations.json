@@ -1,5 +1,8 @@
 {
+  "specialCharacters - '‘’“”\"!@#$%^&*()_+\\/`~\\\\": {
+    "message": "‘’“”'\"!@#$%^&*()_+\\/`~\\\\"
+  },
   "vocabPublishDate": {
-    "message": "<strong>Vocab</strong> was published on <strong>{publishDate, date, small}</strong>"
+    "message": "<strong>Vocab</strong> was published on {publishDate, date, small}"
   }
 }
