@@ -23,6 +23,8 @@ interface LoaderContext {
   async: () => (err: unknown, result?: string) => void;
 }
 
+const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
+
 function createIdentifier(
   lang: string,
   resourcePath: string,
@@ -52,7 +54,9 @@ const renderLanguageLoaderAsync = (
 ) => (lang: string) => {
   const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
-  return `${lang}: createLanguage(require.resolveWeak('${identifier}'), () => import(
+  return `'${encodeWithinSingleQuotes(
+    lang,
+  )}': createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ))`;
