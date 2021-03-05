@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.0.1
+
+### Patch Changes
+
+- [`aeee7fa`](https://github.com/seek-oss/vocab/commit/aeee7fa4081b0d732d271ce39d5865c51160f546) [#57](https://github.com/seek-oss/vocab/pull/57) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Fix encoding when languages have special characters
+
 ## 1.0.0
 
 ### Major Changes
