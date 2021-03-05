@@ -2,4 +2,4 @@
 '@vocab/webpack': patch
 ---
 
-Fix encoding when languges have special characters
+Fix encoding when languages have special characters
