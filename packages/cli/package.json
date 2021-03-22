@@ -13,7 +13,7 @@
     "@vocab/core": "^1.0.0",
     "@vocab/phrase": "^1.0.0",
     "env-ci": "^5.0.2",
-    "fast-glob": "^3.2.4",
+    "fast-glob": "^3.2.5",
     "form-data": "^3.0.0",
     "intl-messageformat-parser": "^6.0.16",
     "node-fetch": "^2.6.1",
