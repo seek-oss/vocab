@@ -172,7 +172,7 @@ Vocab will automatically parse these strings as ICU messages, identify the requi
 
 ```tsx
 t('my key with param', {name: 'Vocab'});
-t('my key with component', {Link: children => (<a href="/foo">{children}</Link>)});
+t('my key with component', {Link: children => (<Link href="/foo">{children}</Link>)});
 ```
 
 ## Configuration
