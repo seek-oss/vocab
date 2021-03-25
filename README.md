@@ -194,7 +194,7 @@ module.exports = {
    * The root directory to compile and validate translations
    * Default: Current working directory
    */
-  projectRoot: ['./example/'];
+  projectRoot: './example/';
   /**
    * A custom suffix to name vocab translation directories
    * Default: '.vocab'
