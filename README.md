@@ -171,8 +171,10 @@ In the below example we use two messages, one that passes in a single parameter 
 Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure TypeScript knows the values must be passed in.
 
 ```tsx
-t('my key with param', {name: 'Vocab'});
-t('my key with component', {Link: children => (<a href="/foo">{children}</Link>)});
+t('my key with param', { name: 'Vocab' });
+t('my key with component', {
+  Link: (children) => <Link href="/foo">{children}</Link>
+});
 ```
 
 ## Configuration
