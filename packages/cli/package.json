@@ -15,7 +15,6 @@
     "env-ci": "^5.0.2",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",
-    "intl-messageformat-parser": "^6.0.16",
     "node-fetch": "^2.6.1",
     "prettier": "^2.1.2",
     "yargs": "^16.1.0"
