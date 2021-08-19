@@ -12,7 +12,7 @@ import {
   isTimeElement,
   MessageFormatElement,
   parse,
-} from 'intl-messageformat-parser';
+} from '@formatjs/icu-messageformat-parser';
 import prettier from 'prettier';
 import chokidar from 'chokidar';
 

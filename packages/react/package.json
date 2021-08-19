@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vocab/types": "^1.0.0",
-    "intl-messageformat": "^9.3.18"
+    "intl-messageformat": "^9.9.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",
