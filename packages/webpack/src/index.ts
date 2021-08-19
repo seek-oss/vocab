@@ -35,6 +35,7 @@ export class VocabWebpackPlugin {
       );
     }
     if (!compiler.options.module) {
+      // @ts-expect-error Support for older versions of webpack that may not have module defined at this stage
       compiler.options.module = { rules: [] };
     }
     if (!compiler.options.module.rules) {
