@@ -57,6 +57,7 @@ test.each(testCases)(
     expect(result[0]).toBe(valid);
 
     if (missingKeys) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(result[1]).toMatchObject(missingKeys);
     }
   },
