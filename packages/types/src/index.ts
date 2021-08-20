@@ -31,7 +31,7 @@ export type TranslationModule<FormatFnByKey extends ParsedFormatFnByKey> = {
 
 export type TranslationModuleByLanguage<
   Language extends LanguageName,
-  FormatFnByKey extends ParsedFormatFnByKey
+  FormatFnByKey extends ParsedFormatFnByKey,
 > = Record<Language, TranslationModule<FormatFnByKey>>;
 
 /**
@@ -39,7 +39,7 @@ export type TranslationModuleByLanguage<
  */
 export type TranslationFile<
   Language extends LanguageName,
-  FormatFnByKey extends ParsedFormatFnByKey
+  FormatFnByKey extends ParsedFormatFnByKey,
 > = {
   /**
    *  Retrieve messages. If not loaded, will attempt to load messages and resolve once complete.
@@ -98,13 +98,11 @@ export type TranslationsByKey<Key extends TranslationKey = string> = Record<
   Key,
   TranslationData
 >;
-export type TranslationMessagesByKey<
-  Key extends TranslationKey = string
-> = Record<Key, TranslationMessage>;
+export type TranslationMessagesByKey<Key extends TranslationKey = string> =
+  Record<Key, TranslationMessage>;
 
-export type TranslationsByLanguage<
-  Key extends TranslationKey = string
-> = Record<LanguageName, TranslationsByKey<Key>>;
+export type TranslationsByLanguage<Key extends TranslationKey = string> =
+  Record<LanguageName, TranslationsByKey<Key>>;
 
 export type LoadedTranslation<Key extends TranslationKey = string> = {
   namespace: string;

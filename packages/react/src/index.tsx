@@ -83,7 +83,7 @@ type TranslateFn<FormatFnByKey extends ParsedFormatFnByKey> = {
 
 export function useTranslations<
   Language extends string,
-  FormatFnByKey extends ParsedFormatFnByKey
+  FormatFnByKey extends ParsedFormatFnByKey,
 >(
   translations: TranslationFile<Language, FormatFnByKey>,
 ): {

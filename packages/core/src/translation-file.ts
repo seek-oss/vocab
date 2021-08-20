@@ -9,7 +9,7 @@ import {
 
 export function createTranslationFile<
   Language extends LanguageName,
-  FormatFnByKey extends ParsedFormatFnByKey
+  FormatFnByKey extends ParsedFormatFnByKey,
 >(
   translationsByLanguage: TranslationModuleByLanguage<Language, FormatFnByKey>,
 ): TranslationFile<Language, FormatFnByKey> {
