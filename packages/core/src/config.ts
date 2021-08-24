@@ -46,7 +46,7 @@ export function validateConfig(c: UserConfig) {
   if (isValid !== true) {
     throw new ValidationError(
       'InvalidStructure',
-      isValid
+      (Array.isArray(isValid) ? isValid : [])
         .map((v) => {
           if (v.type === 'objectStrict') {
             return `Invalid key(s) ${splitMap(
