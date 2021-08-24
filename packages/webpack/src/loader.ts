@@ -48,19 +48,18 @@ function createIdentifier(
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
 }
 
-const renderLanguageLoaderAsync = (
-  resourcePath: string,
-  loadedTranslation: LoadedTranslation,
-) => (lang: string) => {
-  const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
+const renderLanguageLoaderAsync =
+  (resourcePath: string, loadedTranslation: LoadedTranslation) =>
+  (lang: string) => {
+    const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
 
-  return `'${encodeWithinSingleQuotes(
-    lang,
-  )}': createLanguage(require.resolveWeak('${identifier}'), () => import(
+    return `'${encodeWithinSingleQuotes(
+      lang,
+    )}': createLanguage(require.resolveWeak('${identifier}'), () => import(
       /* webpackChunkName: "${getChunkName(lang)}" */
       '${identifier}'
     ))`;
-};
+  };
 
 export default async function vocabLoader(this: LoaderContext) {
   trace(`Using vocab loader for ${this.resourcePath}`);
@@ -70,7 +69,7 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  const config = (getOptions(this) as unknown) as UserConfig;
+  const config = getOptions(this) as unknown as UserConfig;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
 
