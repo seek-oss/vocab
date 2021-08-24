@@ -1,5 +1,14 @@
 # @vocab/react
 
+## 1.0.2
+
+### Patch Changes
+
+- [`3ec6dba`](https://github.com/seek-oss/vocab/commit/3ec6dbaad590299cc33e2d9d4a877576eb05853a) [#63](https://github.com/seek-oss/vocab/pull/63) Thanks [@jahredhope](https://github.com/jahredhope)! - Migrate to new @formatjs/icu-messageformat-parser as intl-messageformat-parser has been deprecated
+
+- Updated dependencies [[`3ec6dba`](https://github.com/seek-oss/vocab/commit/3ec6dbaad590299cc33e2d9d4a877576eb05853a)]:
+  - @vocab/types@1.0.1
+
 ## 1.0.1
 
 ### Patch Changes

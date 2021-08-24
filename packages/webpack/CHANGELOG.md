@@ -1,5 +1,15 @@
 # @vocab/webpack
 
+## 1.0.2
+
+### Patch Changes
+
+- [`304f404`](https://github.com/seek-oss/vocab/commit/304f404e812c4e7459e5d111612db69d42c6b376) [#67](https://github.com/seek-oss/vocab/pull/67) Thanks [@jahredhope](https://github.com/jahredhope)! - Provide additional information when Plugin is applied to incorrect target
+
+- Updated dependencies [[`3ec6dba`](https://github.com/seek-oss/vocab/commit/3ec6dbaad590299cc33e2d9d4a877576eb05853a)]:
+  - @vocab/core@1.0.2
+  - @vocab/types@1.0.1
+
 ## 1.0.1
 
 ### Patch Changes
