@@ -14,7 +14,7 @@ function Content() {
   );
   const vocabPublishNode = client.t('vocabPublishDate', {
     publishDate: 1605847714000,
-    strong: (children) => <strong key="s1">{children}</strong>,
+    strong: (children) => <strong>{children}</strong>,
   });
 
   return (
