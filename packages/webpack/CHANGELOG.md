@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.0.3
+
+### Patch Changes
+
+- [`3751301`](https://github.com/seek-oss/vocab/commit/37513013d869d6813c20d9ae9d53ac1fe2be2629) [#68](https://github.com/seek-oss/vocab/pull/68) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Remove compiler target warning
+
 ## 1.0.2
 
 ### Patch Changes
