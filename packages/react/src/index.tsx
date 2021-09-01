@@ -10,6 +10,8 @@ import React, {
   useContext,
   useMemo,
   useReducer,
+  isValidElement,
+  cloneElement,
 } from 'react';
 
 type Locale = string;
@@ -125,7 +127,23 @@ export function useTranslations<
       return '';
     }
 
-    return translationsObject[key].format(params);
+    const result = translationsObject[key].format(params);
+
+    if (Array.isArray(result)) {
+      for (let i = 0; i < result.length; i++) {
+        const item = result[i];
+        if (
+          typeof item === 'object' &&
+          item &&
+          !item.key &&
+          isValidElement(item)
+        ) {
+          result[i] = cloneElement(result[i], { key: `_vocab-${i}` });
+        }
+      }
+    }
+
+    return result;
   };
 
   return {
