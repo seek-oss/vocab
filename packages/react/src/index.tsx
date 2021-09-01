@@ -132,7 +132,12 @@ export function useTranslations<
     if (Array.isArray(result)) {
       for (let i = 0; i < result.length; i++) {
         const item = result[i];
-        if (typeof item === 'object' && !item.key && isValidElement(item)) {
+        if (
+          typeof item === 'object' &&
+          item &&
+          !item.key &&
+          isValidElement(item)
+        ) {
           result[i] = cloneElement(result[i], { key: `_vocab-${i}` });
         }
       }
