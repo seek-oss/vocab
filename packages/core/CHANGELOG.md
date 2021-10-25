@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.0.3
+
+### Patch Changes
+
+- [`78e874f`](https://github.com/seek-oss/vocab/commit/78e874f720ca34d771072c09fe55b57ff3158e02) [#71](https://github.com/seek-oss/vocab/pull/71) Thanks [@mattcompiles](https://github.com/mattcompiles)! - Only write compiled runtime files to disk if they have been changed
+
 ## 1.0.2
 
 ### Patch Changes
