@@ -219,7 +219,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   });
   const outputFilePath = getTSFileFromDevLanguageFile(filePath);
   trace(`Writing translation types to ${outputFilePath}`);
-  await fs.writeFile(outputFilePath, declaration);
+  await writeIfChanged(outputFilePath, declaration);
 }
 
 export function watch(config: UserConfig) {
@@ -309,5 +309,21 @@ export async function compile(
   if (shouldWatch) {
     trace('Listening for changes to files...');
     return watch(config);
+  }
+}
+
+async function writeIfChanged(filepath: string, contents: string) {
+  let hasChanged = true;
+
+  try {
+    const existingContents = await fs.readFile(filepath, { encoding: 'utf-8' });
+
+    hasChanged = existingContents !== contents;
+  } catch (e) {
+    // ignore error, likely a file doesn't exist error so we want to write anyway
+  }
+
+  if (hasChanged) {
+    await fs.writeFile(filepath, contents, { encoding: 'utf-8' });
   }
 }
