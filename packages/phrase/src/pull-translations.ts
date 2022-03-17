@@ -59,41 +59,44 @@ export async function pull(
     );
 
     for (const alternativeLanguage of alternativeLanguages) {
-      const altTranslations = {
-        ...loadedTranslation.languages[alternativeLanguage],
-      };
-      const phraseAltTranslations = allPhraseTranslations[alternativeLanguage];
+      if (alternativeLanguage in allPhraseTranslations) {
+        const altTranslations = {
+          ...loadedTranslation.languages[alternativeLanguage],
+        };
+        const phraseAltTranslations =
+          allPhraseTranslations[alternativeLanguage];
 
-      for (const key of localKeys) {
-        const phraseKey = getUniqueKey(key, loadedTranslation.namespace);
-        const phraseTranslationMessage =
-          phraseAltTranslations[phraseKey]?.message;
+        for (const key of localKeys) {
+          const phraseKey = getUniqueKey(key, loadedTranslation.namespace);
+          const phraseTranslationMessage =
+            phraseAltTranslations[phraseKey]?.message;
 
-        if (!phraseTranslationMessage) {
-          trace(
-            `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
-          );
-          continue;
+          if (!phraseTranslationMessage) {
+            trace(
+              `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
+            );
+            continue;
+          }
+
+          altTranslations[key] = {
+            ...altTranslations[key],
+            message: phraseTranslationMessage,
+          };
         }
 
-        altTranslations[key] = {
-          ...altTranslations[key],
-          message: phraseTranslationMessage,
-        };
+        const altTranslationFilePath = getAltLanguageFilePath(
+          loadedTranslation.filePath,
+          alternativeLanguage,
+        );
+
+        await mkdir(path.dirname(altTranslationFilePath), {
+          recursive: true,
+        });
+        await writeFile(
+          altTranslationFilePath,
+          `${JSON.stringify(altTranslations, null, 2)}\n`,
+        );
       }
-
-      const altTranslationFilePath = getAltLanguageFilePath(
-        loadedTranslation.filePath,
-        alternativeLanguage,
-      );
-
-      await mkdir(path.dirname(altTranslationFilePath), {
-        recursive: true,
-      });
-      await writeFile(
-        altTranslationFilePath,
-        `${JSON.stringify(altTranslations, null, 2)}\n`,
-      );
     }
   }
 }

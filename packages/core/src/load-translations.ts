@@ -57,7 +57,7 @@ function getLanguageFallbacks({
   return languageFallbackMap;
 }
 
-export function getLanguageHierarcy({
+function getLanguageHierarchy({
   languages,
 }: {
   languages: Array<LanguageTarget>;
@@ -164,7 +164,7 @@ function loadAltLanguageFile(
 ): TranslationsByKey {
   const result = {};
 
-  const languageHierarchy = getLanguageHierarcy({ languages }).get(
+  const languageHierarchy = getLanguageHierarchy({ languages }).get(
     languageName,
   );
 
@@ -183,7 +183,7 @@ function loadAltLanguageFile(
   }
 
   trace(
-    `Loading alt language file with precendence: ${fallbackLanguages
+    `Loading alt language file with precedence: ${fallbackLanguages
       .slice()
       .reverse()
       .join(' -> ')}`,
