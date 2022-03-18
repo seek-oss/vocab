@@ -1,6 +1,6 @@
 {
   "name": "@vocab/phrase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/vocab-phrase.cjs.js",
   "module": "dist/vocab-phrase.esm.js",
   "author": "SEEK",

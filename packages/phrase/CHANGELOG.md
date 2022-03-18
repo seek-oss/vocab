@@ -1,5 +1,11 @@
 # @vocab/phrase
 
+## 1.0.1
+
+### Patch Changes
+
+- [`20eec77`](https://github.com/seek-oss/vocab/commit/20eec770705d05048ad8b32575cb92720b887f5b) [#76](https://github.com/seek-oss/vocab/pull/76) Thanks [@askoufis](https://github.com/askoufis)! - `vocab pull` no longer errors when phrase returns no translations for a configured language
+
 ## 1.0.0
 
 ### Major Changes
