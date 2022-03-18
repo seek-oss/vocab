@@ -80,7 +80,6 @@ export async function callPhrase(
     options,
   )
     .then((result) => {
-      // console.log('Result:', result);
       if (Array.isArray(result)) {
         console.log('Result length:', result.length);
       }
