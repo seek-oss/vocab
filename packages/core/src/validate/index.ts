@@ -8,7 +8,7 @@ import { getAltLanguages } from '../utils';
 export function findMissingKeys(
   loadedTranslation: LoadedTranslation,
   devLanguageName: LanguageName,
-  altLangauges: Array<LanguageName>,
+  altLanguages: Array<LanguageName>,
 ) {
   const devLanguage = loadedTranslation.languages[devLanguageName];
 
@@ -24,7 +24,7 @@ export function findMissingKeys(
   const requiredKeys = Object.keys(devLanguage);
 
   if (requiredKeys.length > 0) {
-    for (const altLanguageName of altLangauges) {
+    for (const altLanguageName of altLanguages) {
       const altLanguage = loadedTranslation.languages[altLanguageName] ?? {};
 
       for (const key of requiredKeys) {
