@@ -23,13 +23,17 @@ export function getUniqueKey(key: string, namespace: string) {
   return `${key}.${namespace}`;
 }
 
-function mergeWithDevLanguage(
-  translation: TranslationsByKey,
-  devTranslation: TranslationsByKey,
-) {
+export function mergeWithDevLanguageTranslation({
+  translation,
+  devTranslation,
+}: {
+  translation: TranslationsByKey;
+  devTranslation: TranslationsByKey;
+}) {
   // Only use keys from the dev translation
   const keys = Object.keys(devTranslation);
   const newLanguage: TranslationsByKey = {};
+
   for (const key of keys) {
     if (translation[key]) {
       newLanguage[key] = {
@@ -38,6 +42,7 @@ function mergeWithDevLanguage(
       };
     }
   }
+
   return newLanguage;
 }
 
@@ -57,7 +62,7 @@ function getLanguageFallbacks({
   return languageFallbackMap;
 }
 
-function getLanguageHierarchy({
+export function getLanguageHierarchy({
   languages,
 }: {
   languages: Array<LanguageTarget>;
@@ -66,20 +71,51 @@ function getLanguageHierarchy({
   const fallbacks = getLanguageFallbacks({ languages });
 
   for (const lang of languages) {
-    const langHierachy = [];
-
+    const langHierarchy = [];
     let currLang = lang.extends;
 
     while (currLang) {
-      langHierachy.push(currLang);
+      langHierarchy.push(currLang);
 
       currLang = fallbacks.get(currLang);
     }
 
-    hierarchyMap.set(lang.name, langHierachy);
+    hierarchyMap.set(lang.name, langHierarchy);
   }
 
   return hierarchyMap;
+}
+
+export function getFallbackLanguageOrder({
+  languages,
+  languageName,
+  devLanguage,
+  fallbacks,
+}: {
+  languages: LanguageTarget[];
+  languageName: string;
+  devLanguage: string;
+  fallbacks: Fallback;
+}) {
+  const languageHierarchy = getLanguageHierarchy({ languages }).get(
+    languageName,
+  );
+
+  if (!languageHierarchy) {
+    throw new Error(`Missing language hierarchy for ${languageName}`);
+  }
+
+  const fallbackLanguageOrder: Array<string> = [languageName];
+
+  if (fallbacks !== 'none') {
+    fallbackLanguageOrder.unshift(...languageHierarchy.reverse());
+
+    if (fallbacks === 'all' && fallbackLanguageOrder[0] !== devLanguage) {
+      fallbackLanguageOrder.unshift(devLanguage);
+    }
+  }
+
+  return fallbackLanguageOrder;
 }
 
 function getNamespaceByFilePath(
@@ -148,7 +184,7 @@ function getTranslationsFromFile(
   return { $namespace, keys: validKeys };
 }
 
-function loadAltLanguageFile(
+export function loadAltLanguageFile(
   {
     filePath,
     languageName,
@@ -162,58 +198,56 @@ function loadAltLanguageFile(
   },
   { devLanguage, languages }: UserConfig,
 ): TranslationsByKey {
-  const result = {};
+  const altLanguageTranslation = {};
 
-  const languageHierarchy = getLanguageHierarchy({ languages }).get(
+  const fallbackLanguageOrder = getFallbackLanguageOrder({
+    languages,
     languageName,
-  );
-
-  if (!languageHierarchy) {
-    throw new Error(`Missing language hierarchy for ${languageName}`);
-  }
-
-  const fallbackLanguages: Array<string> = [languageName];
-
-  if (fallbacks !== 'none') {
-    fallbackLanguages.unshift(...languageHierarchy);
-
-    if (fallbacks === 'all' && fallbackLanguages[0] !== devLanguage) {
-      fallbackLanguages.unshift(devLanguage);
-    }
-  }
+    devLanguage,
+    fallbacks,
+  });
 
   trace(
-    `Loading alt language file with precedence: ${fallbackLanguages
+    `Loading alt language file with precedence: ${fallbackLanguageOrder
       .slice()
       .reverse()
       .join(' -> ')}`,
   );
 
-  for (const fallbackLang of fallbackLanguages) {
-    if (fallbackLang !== devLanguage) {
+  for (const fallbackLanguage of fallbackLanguageOrder) {
+    if (fallbackLanguage !== devLanguage) {
       try {
-        const altFilePath = getAltLanguageFilePath(filePath, fallbackLang);
+        const altFilePath = getAltLanguageFilePath(filePath, fallbackLanguage);
         delete require.cache[altFilePath];
 
         const translationFile = require(altFilePath);
-        const { keys } = getTranslationsFromFile(translationFile, {
-          filePath: altFilePath,
-          isAltLanguage: true,
-        });
-        Object.assign(result, mergeWithDevLanguage(keys, devTranslation));
+        const { keys: fallbackLanguageTranslation } = getTranslationsFromFile(
+          translationFile,
+          {
+            filePath: altFilePath,
+            isAltLanguage: true,
+          },
+        );
+        Object.assign(
+          altLanguageTranslation,
+          mergeWithDevLanguageTranslation({
+            translation: fallbackLanguageTranslation,
+            devTranslation,
+          }),
+        );
       } catch (e) {
         trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
-          fallbackLang,
+          fallbackLanguage,
         )}
         `);
       }
     } else {
-      Object.assign(result, devTranslation);
+      Object.assign(altLanguageTranslation, devTranslation);
     }
   }
 
-  return result;
+  return altLanguageTranslation;
 }
 
 export function loadTranslation(

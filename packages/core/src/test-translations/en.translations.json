@@ -1,0 +1,9 @@
+{
+  "Hello": { "message": "Hello" },
+  "Goodbye": {
+    "message": "Goodbye"
+  },
+  "Welcome": {
+    "message": "Welcome"
+  }
+}
