@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.0.4
+
+### Patch Changes
+
+- [`206c0fa`](https://github.com/seek-oss/vocab/commit/206c0fa36b05f23da593ebed801197c523477af6) [#78](https://github.com/seek-oss/vocab/pull/78) Thanks [@askoufis](https://github.com/askoufis)! - Fix incorrect language hierarchy when an extended language extends another language
+
 ## 1.0.3
 
 ### Patch Changes
