@@ -184,6 +184,10 @@ Configuration can either be passed into the Node API directly or be gathered fro
 **vocab.config.js**
 
 ```js
+function generator(message) {
+  return message + ' Generated'
+}
+
 module.exports = {
   devLanguage: 'en',
   languages: [
@@ -191,6 +195,13 @@ module.exports = {
     { name: 'en-AU', extends: 'en' },
     { name: 'en-US', extends: 'en' },
     { name: 'fr-FR' }
+  ],
+  /**
+   * An array of languages to generate based off translations for existing languages
+   * Default: []
+   */
+  generatedLanguages: [
+    {name: 'pseudo', extends: 'en', generator}
   ],
   /**
    * The root directory to compile and validate translations
@@ -208,6 +219,88 @@ module.exports = {
   ignore: ['**/ignored_directory/**']
 };
 ```
+
+## Generated languages
+
+Vocab support the creation of generated languages via the `generatedLanguages` config.
+
+Generated languages are created by running a `generator` function over every translation message in an existing translation.
+The `generator` function can be any function that accepts a string and returns a string.
+By default, a generated language will be based off the `devLanguage`, but this can be overridden by providing an `extends` value that references another language.
+
+**NB**: All generated language messages will be padded with the `[` and `]` characters to distinguish them from regular languages.
+
+**vocab.config.js**
+
+```js
+function generator(message) {
+  return message + ' Generated';
+}
+
+module.exports = {
+  devLanguage: 'en',
+  languages: [{ name: 'en' }, { name: 'fr' }],
+  generatedLanguages: [
+    {
+      name: 'generatedLanguage',
+      extends: 'en',
+      generator
+    }
+  ]
+};
+```
+
+Generated languages are consumed the same way as regular languages.
+
+**App.tsx**
+
+```tsx
+const App = () => (
+  <VocabProvider language="generatedLanguage">
+    ...
+  </VocabProvider>
+);
+```
+
+## Pseudo-localization
+
+The `@vocab/pseudo-localize` package exports low-level functions that can be used for pseudo-localization of translation messages.
+
+Pseudo-localization is a transformation that can be applied to a translation message.
+From the Netflix technology [blog post][blog post] that inspired this feature:
+
+> Here are the various elements of the transform:
+>
+> - _Start and end markers:_ All strings are encapsulated in [ ]. If a developer doesn’t see these characters they know the string has been clipped by an inflexible UI element.
+> - _Transformation of ASCII characters to extended character equivalents:_ Stresses the UI from a vertical line height perspective, tests font and encoding support, and weeds out strings that haven’t been externalized correctly (they will not have the Pseudo Localization applied to them).
+> - _Padding text:_ Simulates translation induced expansion. In our case we add “one two three four”…etc after each string, simulating 40% expansion. Note that we don’t apply expansion to areas of the UI where text length has already been limited by other systems prior to display on the UI, doing so would cause false positives ( e.g. synopsis text, titles, etc ).
+
+Vocab implements text padding in a different way than what is described above, choosing instead to extend vowels rather than add padding text, as described towards the end of [the blog post][blog post].
+
+Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` file.
+
+**vocab.config.js**
+
+```js
+const {
+  pseudoLocalize
+} = require('@vocab/pseudo-localize');
+
+module.exports = {
+  devLanguage: 'en',
+  languages: [{ name: 'en' }, { name: 'fr' }],
+  generatedLanguages: [
+    {
+      name: 'pseudo',
+      extends: 'en',
+      generator: pseudoLocalize
+    }
+  ]
+};
+```
+
+[blog post]: https://netflixtechblog.com/pseudo-localization-netflix-12fff76fbcbe
+[generated languages config]: #generated-languages
 
 ## Use without React
 
