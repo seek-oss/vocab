@@ -2,9 +2,11 @@ import {
   getFallbackLanguageOrder,
   getLanguageHierarchy,
   loadAltLanguageFile,
+  loadTranslation,
   mergeWithDevLanguageTranslation,
 } from './load-translations';
 import path from 'path';
+import { pseudoLocalize } from '@vocab/pseudo-localize';
 
 describe('mergeWithDevLanguage', () => {
   const key = 'Hello';
@@ -160,6 +162,55 @@ describe('loadAltLanguageFile', () => {
         Welcome: { message: 'Welcome in Thai-TH' },
         'Good morning': { message: 'Good morning in French' },
       });
+    });
+  });
+});
+
+describe('loadTranslation', () => {
+  describe('when a generated language config is provided', () => {
+    it('should generate a language', () => {
+      const filePath = path.join(
+        __dirname,
+        'test-translations/translations.json',
+      );
+      const fallbacks = 'all';
+      const userConfig = {
+        devLanguage: 'fr',
+        languages: [
+          { name: 'fr' },
+          { name: 'en' },
+          { name: 'th', extends: 'en' },
+          { name: 'th-TH', extends: 'th' },
+        ],
+        generatedLanguages: [
+          { name: 'pseudo', extends: 'en', generator: pseudoLocalize },
+        ],
+      };
+
+      const translations = loadTranslation(
+        {
+          filePath,
+          fallbacks,
+        },
+        userConfig,
+      );
+
+      expect(translations.languages.pseudo).toMatchInlineSnapshot(`
+        Object {
+          "Good morning": Object {
+            "message": "[Ǧööööööƌ m̂öööřกี้ìììกี้ģ ìììกี้ Ƒřẽẽẽกี้çḩ]",
+          },
+          "Goodbye": Object {
+            "message": "[Ǧööööƌßýýẽẽ]",
+          },
+          "Hello": Object {
+            "message": "[Ḩẽẽƚƚöö]",
+          },
+          "Welcome": Object {
+            "message": "[Ŵẽẽƚçööm̂ẽẽ]",
+          },
+        }
+      `);
     });
   });
 });

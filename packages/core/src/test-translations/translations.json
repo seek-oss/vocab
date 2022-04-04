@@ -1,0 +1,12 @@
+{
+  "Hello": { "message": "Hello in French" },
+  "Goodbye": {
+    "message": "Goodbye in French"
+  },
+  "Welcome": {
+    "message": "Welcome in French"
+  },
+  "Good morning": {
+    "message": "Good morning in French"
+  }
+}

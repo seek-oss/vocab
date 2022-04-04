@@ -18,6 +18,7 @@ import {
   getAltLanguages,
   getDevTranslationFileGlob,
 } from './utils';
+import { generateLanguageFromTranslations } from './generate-language';
 
 export function getUniqueKey(key: string, namespace: string) {
   return `${key}.${namespace}`;
@@ -163,19 +164,19 @@ function getTranslationsFromFile(
   for (const [translationKey, translation] of Object.entries(keys)) {
     if (typeof translation === 'string') {
       printValidationError(
-        `Found string for a translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+        `Found string for a translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
     if (!translation) {
       printValidationError(
-        `Found empty translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+        `Found empty translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
     if (!translation.message || typeof translation.message !== 'string') {
       printValidationError(
-        `No message found for translation "${translationKey}" in ${filePath}. Translation must be an object of the format {mesage: string}.`,
+        `No message found for translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
@@ -301,6 +302,17 @@ export function loadTranslation(
       },
       userConfig,
     );
+  }
+
+  for (const generatedLanguage of userConfig.generatedLanguages || []) {
+    const { name: generatedLanguageName, generator } = generatedLanguage;
+    const baseLanguage = generatedLanguage.extends || userConfig.devLanguage;
+    const baseTranslations = languageSet[baseLanguage];
+
+    languageSet[generatedLanguageName] = generateLanguageFromTranslations({
+      baseTranslations,
+      generator,
+    });
   }
 
   return {
