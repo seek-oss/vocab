@@ -23,6 +23,18 @@ const schema = {
       },
     },
   },
+  generatedLanguages: {
+    type: 'array',
+    items: {
+      type: 'object',
+      props: {
+        name: { type: 'string' },
+        extends: { type: 'string', optional: true },
+        generator: { type: 'function' },
+      },
+    },
+    optional: true,
+  },
   translationsDirectorySuffix: { type: 'string', optional: true },
   projectRoot: { type: 'string', optional: true },
   ignore: {
@@ -63,12 +75,13 @@ export function validateConfig(c: UserConfig) {
     );
   }
 
-  // Dev Language should exist in languages
   const languageStrings = c.languages.map((v) => v.name);
+
+  // Dev Language should exist in languages
   if (!languageStrings.includes(c.devLanguage)) {
     throw new ValidationError(
       'InvalidDevLanguage',
-      `InvalidDevLanguage: The dev language "${chalk.bold.cyan(
+      `The dev language "${chalk.bold.cyan(
         c.devLanguage,
       )}" was not found in languages ${languageStrings.join(', ')}.`,
     );
@@ -99,7 +112,47 @@ export function validateConfig(c: UserConfig) {
       );
     }
   }
+
+  const foundGeneratedLanguages: string[] = [];
+  for (const generatedLang of c.generatedLanguages || []) {
+    // Generated languages must only exist once
+    if (foundGeneratedLanguages.includes(generatedLang.name)) {
+      throw new ValidationError(
+        'DuplicateGeneratedLanguage',
+        `The generated language "${chalk.bold.cyan(
+          generatedLang.name,
+        )}" was defined multiple times.`,
+      );
+    }
+    foundGeneratedLanguages.push(generatedLang.name);
+
+    if (languageStrings.includes(generatedLang.name)) {
+      throw new ValidationError(
+        'InvalidGeneratedLanguage',
+        `The generated language "${chalk.bold.cyan(
+          generatedLang.name,
+        )}" is already defined as a language.`,
+      );
+    }
+
+    // Any extends must be in languages
+    if (
+      generatedLang.extends &&
+      !languageStrings.includes(generatedLang.extends)
+    ) {
+      throw new ValidationError(
+        'InvalidExtends',
+        `The generated language "${chalk.bold.cyan(
+          generatedLang.name,
+        )}"'s extends of ${chalk.bold.cyan(
+          generatedLang.extends,
+        )} was not found in languages ${languageStrings.join(', ')}.`,
+      );
+    }
+  }
+
   trace('Configuration file is valid');
+
   return true;
 }
 
