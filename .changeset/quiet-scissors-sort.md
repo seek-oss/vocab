@@ -10,6 +10,8 @@ Generated languages are created by running a `generator` function over every tra
 The `generator` function can be any function that accepts a string and returns a string.
 By default, a generated language's messages will be based off the `devLanguage`'s messages, but this can be overridden by providing an `extends` value that references another language.
 
+**NB**: All generated language messages will be padded with the `[` and `]` characters to distinguish them from regular languages.
+
 **vocab.config.js**
 
 ```js
