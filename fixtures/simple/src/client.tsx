@@ -37,12 +37,18 @@ function App({ children }: { children: ReactNode }) {
   return (
     <VocabProvider language={lang} locale={theLocale}>
       {children}
-      <button
-        id="toggle-language"
-        onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}
+      <label htmlFor="languages">Language:</label>
+      <select
+        name="languages"
+        id="language-select"
+        onChange={(event) => {
+          setLang(event.currentTarget.value);
+        }}
       >
-        Toggle language: {lang}
-      </button>
+        <option value="en">en</option>
+        <option value="fr">fr</option>
+        <option value="pseudo">pseudo</option>
+      </select>
       {lang === 'en' ? (
         <button
           id="toggle-locale"

@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
 import { render } from 'react-dom';
 
-import { getSyncMessage, getAsyncMessage, preloadLanguage } from './utils';
+import {
+  getSyncMessage,
+  getAsyncMessage,
+  preloadLanguage,
+  LanguageName,
+} from './utils';
 
 function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [asyncMessage, setAsyncMessage] = useState('');
-  const [language, setLang] = useState<'en' | 'fr'>('en');
+  const [language, setLang] = useState<LanguageName>('en');
 
   preloadLanguage(language);
 
   return (
     <div>
-      <button
-        id="toggle-language"
-        onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}
+      <label htmlFor="languages">Language:</label>
+      <select
+        name="languages"
+        id="language-select"
+        onChange={(event) => {
+          setLang(event.currentTarget.value as LanguageName);
+        }}
       >
-        Toggle language: {language}
-      </button>
+        <option value="en">en</option>
+        <option value="fr">fr</option>
+        <option value="pseudo">pseudo</option>
+      </select>
 
       <button id="show-message" onClick={() => setShowMessage(true)}>
         Show Message
