@@ -16,6 +16,7 @@ import { getChunkName } from './chunk-name';
 import { trace as _trace } from './logger';
 
 const trace = _trace.extend('loader');
+
 interface LoaderContext {
   addDependency: (filePath: string) => void;
   target: string;
@@ -30,6 +31,7 @@ function createIdentifier(
   resourcePath: string,
   loadedTranslation: LoadedTranslation,
 ) {
+  trace('Creating identifier for language ', lang);
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
@@ -96,6 +98,11 @@ export default async function vocabLoader(this: LoaderContext) {
           ${renderLanguageLoader(config.devLanguage)},
           ${getAltLanguages(config)
             .map((altLanguage) => renderLanguageLoader(altLanguage))
+            .join(',')},
+          ${config.generatedLanguages
+            ?.map((generatedLanguage) =>
+              renderLanguageLoader(generatedLanguage.name),
+            )
             .join(',')}
       });
     `;
