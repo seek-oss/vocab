@@ -51,6 +51,7 @@ export const useLanguage = (): TranslationsValue => {
       'Attempted to access translation without language set. Did you forget to pass language to VocabProvider?',
     );
   }
+
   return context;
 };
 
@@ -94,6 +95,7 @@ export function useTranslations<
 } {
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
+
   const translationsObject = translations.getLoadedMessages(
     language as any,
     locale || language,
@@ -138,7 +140,7 @@ export function useTranslations<
           !item.key &&
           isValidElement(item)
         ) {
-          result[i] = cloneElement(result[i], { key: `_vocab-${i}` });
+          result[i] = cloneElement(item, { key: `_vocab-${i}` });
         }
       }
     }
