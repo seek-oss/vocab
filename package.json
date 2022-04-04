@@ -12,7 +12,9 @@
     "url": "git+https://github.com/seek-oss/vocab.git"
   },
   "scripts": {
-    "start": "yarn dev && yarn compile-fixtures && yarn start-fixture fixture-simple",
+    "start.direct": "yarn dev && manypkg run fixture-direct compile && yarn start-fixture fixture-direct",
+    "start.server": "yarn dev && manypkg run fixture-server compile && yarn start-fixture fixture-server",
+    "start.simple": "yarn dev && manypkg run fixture-simple compile && yarn start-fixture fixture-simple",
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",
