@@ -1,1 +1,6 @@
-export * from './pseudo-localize';
+export {
+  extendVowels,
+  padString,
+  pseudoLocalize,
+  substituteCharacters,
+} from './pseudo-localize';

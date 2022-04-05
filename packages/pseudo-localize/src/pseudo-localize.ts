@@ -9,6 +9,9 @@ const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
 export const pseudoLocalize = (str: string): string =>
   substituteCharacters(extendVowels(str));
 
+export const padString = (str: string): string =>
+  `[${str}]`
+
 export const extendVowels = (str: string): string => {
   const stringLength = [...str.normalize()].length;
 
