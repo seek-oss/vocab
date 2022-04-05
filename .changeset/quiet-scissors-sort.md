@@ -1,4 +1,5 @@
 ---
+'@vocab/cli': minor
 '@vocab/core': minor
 '@vocab/types': minor
 '@vocab/webpack': minor
