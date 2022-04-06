@@ -1,6 +1,6 @@
 {
   "name": "@vocab/pseudo-localize",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/vocab-pseudo-localize.cjs.js",
   "module": "dist/vocab-pseudo-localize.esm.js",
   "author": "SEEK",
