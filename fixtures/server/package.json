@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "compile": "vocab compile",
-    "start": "webpack serve"
+    "start": "vocab compile --watch & webpack serve"
   },
   "dependencies": {
     "@loadable/babel-plugin": "^5.13.2",
