@@ -1,6 +1,6 @@
 {
   "name": "@vocab/webpack",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "author": "SEEK",
@@ -14,8 +14,8 @@
     ]
   },
   "dependencies": {
-    "@vocab/core": "^1.0.2",
-    "@vocab/types": "^1.0.1",
+    "@vocab/core": "^1.1.0",
+    "@vocab/types": "^1.1.0",
     "chalk": "^4.1.0",
     "debug": "^4.3.1",
     "json-loader": "^0.5.7",

@@ -1,5 +1,20 @@
 # @vocab/webpack
 
+## 1.1.0
+
+### Minor Changes
+
+- [`87333d7`](https://github.com/seek-oss/vocab/commit/87333d79c4a883b07d7d8f2c272b16e2243c49bd) [#80](https://github.com/seek-oss/vocab/pull/80) Thanks [@askoufis](https://github.com/askoufis)! - Enable the creation of generated languages via the `generatedLanguages` config.
+  See [the docs] for more information and examples.
+
+  [the docs]: https://github.com/seek-oss/vocab#generated-languages
+
+### Patch Changes
+
+- Updated dependencies [[`87333d7`](https://github.com/seek-oss/vocab/commit/87333d79c4a883b07d7d8f2c272b16e2243c49bd)]:
+  - @vocab/core@1.1.0
+  - @vocab/types@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes
