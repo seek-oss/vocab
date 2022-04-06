@@ -298,8 +298,9 @@ The `@vocab/pseudo-localize` package exports low-level functions that can be use
 
 ```ts
 import {
-  pseudoLocalize,
   extendVowels,
+  padString,
+  pseudoLocalize,
   substituteCharacters
 } from '@vocab/pseudo-localize';
 
@@ -332,14 +333,12 @@ functionality.
 ### Generating a pseudo-localized language using Vocab
 
 Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` file.
+`@vocab/pseudo-localize` exports a `generator` that can be used directly in your config.
 
 **vocab.config.js**
 
 ```js
-const {
-  pseudoLocalize,
-  padString
-} = require('@vocab/pseudo-localize');
+const { generator } = require('@vocab/pseudo-localize');
 
 module.exports = {
   devLanguage: 'en',
@@ -348,10 +347,7 @@ module.exports = {
     {
       name: 'pseudo',
       extends: 'en',
-      generator: {
-        transformElement: pseudoLocalize,
-        transformMessage: padString
-      }
+      generator
     }
   ]
 };

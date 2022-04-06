@@ -57,3 +57,8 @@ export const substituteCharacters = (str: string): string =>
       return char;
     })
     .join('');
+
+export const generator = {
+  transformElement: pseudoLocalize,
+  transformMessage: padString,
+};

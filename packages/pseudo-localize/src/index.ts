@@ -3,4 +3,5 @@ export {
   padString,
   pseudoLocalize,
   substituteCharacters,
+  generator,
 } from './pseudo-localize';

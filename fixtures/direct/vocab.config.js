@@ -1,4 +1,4 @@
-const { pseudoLocalize, padString } = require('@vocab/pseudo-localize');
+const { generator } = require('@vocab/pseudo-localize');
 
 module.exports = {
   devLanguage: 'en',
@@ -7,10 +7,7 @@ module.exports = {
     {
       name: 'pseudo',
       extends: 'en',
-      generator: {
-        transformElement: pseudoLocalize,
-        transformMessage: padString,
-      },
+      generator,
     },
   ],
 };
