@@ -30,7 +30,13 @@ const schema = {
       props: {
         name: { type: 'string' },
         extends: { type: 'string', optional: true },
-        generator: { type: 'function' },
+        generator: {
+          type: 'object',
+          props: {
+            transformElement: { type: 'function', optional: true },
+            transformMessage: { type: 'function', optional: true },
+          },
+        },
       },
     },
     optional: true,
@@ -126,6 +132,7 @@ export function validateConfig(c: UserConfig) {
     }
     foundGeneratedLanguages.push(generatedLang.name);
 
+    // Generated language names must not conflict with language names
     if (languageStrings.includes(generatedLang.name)) {
       throw new ValidationError(
         'InvalidGeneratedLanguage',

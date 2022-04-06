@@ -6,7 +6,6 @@ import {
   mergeWithDevLanguageTranslation,
 } from './load-translations';
 import path from 'path';
-import { pseudoLocalize } from '@vocab/pseudo-localize';
 
 describe('mergeWithDevLanguage', () => {
   const key = 'Hello';
@@ -169,6 +168,10 @@ describe('loadAltLanguageFile', () => {
 describe('loadTranslation', () => {
   describe('when a generated language config is provided', () => {
     it('should generate a language', () => {
+      const generator = {
+        transformElement: (element: string) => element.toUpperCase(),
+        transformMessage: (message: string) => `[${message}]`,
+      };
       const filePath = path.join(
         __dirname,
         'test-translations/translations.json',
@@ -183,7 +186,7 @@ describe('loadTranslation', () => {
           { name: 'th-TH', extends: 'th' },
         ],
         generatedLanguages: [
-          { name: 'pseudo', extends: 'en', generator: pseudoLocalize },
+          { name: 'capital-english', extends: 'en', generator },
         ],
       };
 
@@ -195,19 +198,19 @@ describe('loadTranslation', () => {
         userConfig,
       );
 
-      expect(translations.languages.pseudo).toMatchInlineSnapshot(`
+      expect(translations.languages['capital-english']).toMatchInlineSnapshot(`
         Object {
           "Good morning": Object {
-            "message": "[Ǧööööööƌ m̂öööřกี้ìììกี้ģ ìììกี้ Ƒřẽẽẽกี้çḩ]",
+            "message": "[GOOD MORNING IN FRENCH]",
           },
           "Goodbye": Object {
-            "message": "[Ǧööööƌßýýẽẽ]",
+            "message": "[GOODBYE]",
           },
           "Hello": Object {
-            "message": "[Ḩẽẽƚƚöö]",
+            "message": "[HELLO]",
           },
           "Welcome": Object {
-            "message": "[Ŵẽẽƚçööm̂ẽẽ]",
+            "message": "[WELCOME]",
           },
         }
       `);

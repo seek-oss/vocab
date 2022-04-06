@@ -184,8 +184,12 @@ Configuration can either be passed into the Node API directly or be gathered fro
 **vocab.config.js**
 
 ```js
-function generator(message) {
-  return message + ' Generated'
+function capitalize(element) {
+  return element.toUpperCase();
+}
+
+function pad(message) {
+  return '[' + message + ']';
 }
 
 module.exports = {
@@ -201,13 +205,20 @@ module.exports = {
    * Default: []
    */
   generatedLanguages: [
-    {name: 'pseudo', extends: 'en', generator}
+    {
+      name: 'generatedLangauge',
+      extends: 'en',
+      generator: {
+        transformElement: capitalize,
+        transformMessage: pad
+      }
+    }
   ],
   /**
    * The root directory to compile and validate translations
    * Default: Current working directory
    */
-  projectRoot: './example/';
+  projectRoot: './example/',
   /**
    * A custom suffix to name vocab translation directories
    * Default: '.vocab'
@@ -222,19 +233,31 @@ module.exports = {
 
 ## Generated languages
 
-Vocab support the creation of generated languages via the `generatedLanguages` config.
+Vocab supports the creation of generated languages via the `generatedLanguages` config.
 
-Generated languages are created by running a `generator` function over every translation message in an existing translation.
-The `generator` function can be any function that accepts a string and returns a string.
-By default, a generated language will be based off the `devLanguage`, but this can be overridden by providing an `extends` value that references another language.
+Generated languages are created by running a message `generator` over every translation message in an existing translation.
+A `generator` may contain a `transformElement` function, a `transformMessage` function, or both.
+Both of these functions accept a single string parameter and return a string.
 
-**NB**: All generated language messages will be padded with the `[` and `]` characters to distinguish them from regular languages.
+`transformElement` is applied to string literal values contained within `MessageFormatElement`s.
+A `MessageFormatElement` is an object representing a node in the AST of a compiled translation message.
+Simply put, any text that would end up being translated by a translator, i.e. anything that is not part of the [ICU Message syntax], will be passed to `transformElement`.
+An example of a use case for this function would be adding [diacritics] to every letter in order to stress your UI from a vertical line-height perspective.
+
+`transformMessage` receives the entire translation message _after_ `transformElement` has been applied to its individual elements.
+An example of a use case for this function would be adding padding text to the start/end of your messages in order to easily identify which text in your app has not been extracted into a `translations.json` file.
+
+By default, a generated language's messages will be based off the `devLanguage`'s messages, but this can be overridden by providing an `extends` value that references another language.
 
 **vocab.config.js**
 
 ```js
-function generator(message) {
-  return message + ' Generated';
+function capitalize(message) {
+  return message.toUpperCase();
+}
+
+function pad(message) {
+  return '[' + message + ']';
 }
 
 module.exports = {
@@ -244,13 +267,17 @@ module.exports = {
     {
       name: 'generatedLanguage',
       extends: 'en',
-      generator
+      generator: {
+        transformElement: capitalize,
+        transformMessage: pad
+      }
     }
   ]
 };
 ```
 
 Generated languages are consumed the same way as regular languages.
+Any Vocab API that accepts a `language` parameter will work with a generated language as well as a regular language.
 
 **App.tsx**
 
@@ -262,20 +289,47 @@ const App = () => (
 );
 ```
 
+[icu message syntax]: https://formatjs.io/docs/intl-messageformat/#message-syntax
+[diacritics]: https://en.wikipedia.org/wiki/Diacritic
+
 ## Pseudo-localization
 
 The `@vocab/pseudo-localize` package exports low-level functions that can be used for pseudo-localization of translation messages.
 
+```ts
+import {
+  pseudoLocalize,
+  extendVowels,
+  substituteCharacters
+} from '@vocab/pseudo-localize';
+
+const message = 'Hello';
+
+// [Hello]
+const paddedMessage = padString(message);
+
+// Ḩẽƚƚö
+const substitutedMessage = substituteCharacters(message);
+
+// Heelloo
+const extendedMessage = extendVowels(message);
+
+// Extend the message and then substitute characters
+// Ḩẽẽƚƚöö
+const pseudoLocalizedMessage = pseudoLocalize(message);
+```
+
 Pseudo-localization is a transformation that can be applied to a translation message.
-From the Netflix technology [blog post][blog post] that inspired this feature:
+Vocab's implementation of this transformation contains the following elements:
 
-> Here are the various elements of the transform:
->
-> - _Start and end markers:_ All strings are encapsulated in [ ]. If a developer doesn’t see these characters they know the string has been clipped by an inflexible UI element.
-> - _Transformation of ASCII characters to extended character equivalents:_ Stresses the UI from a vertical line height perspective, tests font and encoding support, and weeds out strings that haven’t been externalized correctly (they will not have the Pseudo Localization applied to them).
-> - _Padding text:_ Simulates translation induced expansion. In our case we add “one two three four”…etc after each string, simulating 40% expansion. Note that we don’t apply expansion to areas of the UI where text length has already been limited by other systems prior to display on the UI, doing so would cause false positives ( e.g. synopsis text, titles, etc ).
+- _Start and end markers (`padString`):_ All strings are encapsulated in `[` and `]`. If a developer doesn’t see these characters they know the string has been clipped by an inflexible UI element.
+- _Transformation of ASCII characters to extended character equivalents (`substituteCharacters`):_ Stresses the UI from a vertical line-height perspective, tests font and encoding support, and weeds out strings that haven’t been externalized correctly (they will not have the pseudo-localization applied to them).
+- _Padding text (`extendVowels`):_ Simulates translation-induced expansion. Vocab's implementation of this involves repeating vowels (and `y`) to simulate a 40% expansion in the message's length.
 
-Vocab implements text padding in a different way than what is described above, choosing instead to extend vowels rather than add padding text, as described towards the end of [the blog post][blog post].
+This Netflix technology [blog post][blog post] inspired Vocab's implementation of this
+functionality.
+
+### Generating a pseudo-localized language using Vocab
 
 Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` file.
 
@@ -283,7 +337,8 @@ Vocab can generate a pseudo-localized language via the [`generatedLanguages` con
 
 ```js
 const {
-  pseudoLocalize
+  pseudoLocalize,
+  padString
 } = require('@vocab/pseudo-localize');
 
 module.exports = {
@@ -293,7 +348,10 @@ module.exports = {
     {
       name: 'pseudo',
       extends: 'en',
-      generator: pseudoLocalize
+      generator: {
+        transformElement: pseudoLocalize,
+        transformMessage: padString
+      }
     }
   ]
 };

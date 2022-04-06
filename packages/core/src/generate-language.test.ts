@@ -1,7 +1,11 @@
-import { pseudoLocalize } from '@vocab/pseudo-localize';
 import { generateLanguageFromTranslations } from './generate-language';
 
 describe('generateLanguageFromTranslations', () => {
+  const generator = {
+    transformElement: (element: string) => element.toUpperCase(),
+    transformMessage: (message: string) => `[${message}]`,
+  };
+
   it('should generate a new language by applying the message generator to the base translations', () => {
     const baseTranslations = {
       Hello: { message: 'Hello' },
@@ -37,36 +41,36 @@ describe('generateLanguageFromTranslations', () => {
     expect(
       generateLanguageFromTranslations({
         baseTranslations,
-        generator: pseudoLocalize,
+        generator,
       }),
     ).toMatchInlineSnapshot(`
       Object {
         "Hello": Object {
-          "message": "[Ḩẽẽƚƚöö]",
+          "message": "[HELLO]",
         },
         "I can see it in your eyes": Object {
-          "message": "[Ï çăăăกี้ šẽẽẽẽẽẽ ìììṯ ìììกี้ ýýýöööǚǚǚř {numberOfEyes,plural,one{ẽẽýýẽẽ} other{ẽẽýýẽẽš}}]",
+          "message": "[I CAN SEE IT IN YOUR {numberOfEyes,plural,one{EYE} other{EYES}}]",
         },
         "I can see it in your facialExpression": Object {
-          "message": "[Ï çăăăกี้ šẽẽẽẽẽẽ ìììṯ ìììกี้ ýýýöööǚǚǚř {facialExpression,select,smile{šm̂ììƚẽẽ} frown{ƒřöööŵกี้} other{šm̂ììƚẽẽ}}]",
+          "message": "[I CAN SEE IT IN YOUR {facialExpression,select,smile{SMILE} frown{FROWN} other{SMILE}}]",
         },
         "I have numberOfCats cats": Object {
-          "message": "[Ï ḩăăăṽẽẽẽ {numberOfCats, number} çăăăṯš]",
+          "message": "[I HAVE {numberOfCats, number} CATS]",
         },
         "Is it name you're looking for": Object {
-          "message": "[Ïš ììììṯ {name} ýýööǚǚ'řẽẽ ƚööööķììกี้ģ ƒööř]",
+          "message": "[IS IT {name} YOU'RE LOOKING FOR]",
         },
         "It's my cat's nth birthday!": Object {
-          "message": "[Ïṯ'š m̂ýýýý çăăăăṯ'š {year,selectordinal,one{#šṯ} two{#กี้ƌ} few{#řƌ} other{#ṯḩ}} ßìììřṯḩƌăăăýýý!]",
+          "message": "[IT'S MY CAT'S {year,selectordinal,one{#ST} two{#ND} few{#RD} other{#TH}} BIRTHDAY!]",
         },
         "My cat's birthday is birthDate": Object {
-          "message": "[Ṃýýý çăăăṯ'š ßìììřṯḩƌăăăýýý ìììš {birthDate, date, medium}]",
+          "message": "[MY CAT'S BIRTHDAY IS {birthDate, date, medium}]",
         },
         "My cat's birthday party is at birthdayPartyTime": Object {
-          "message": "[Ṃýýý çăăăṯ'š ßìììřṯḩƌăăăýýý ìììš {birthdayPartyTime, time, short}]",
+          "message": "[MY CAT'S BIRTHDAY IS {birthdayPartyTime, time, short}]",
         },
         "Please arrive ON TIME!": Object {
-          "message": "[Ƥƚẽẽăăšẽẽ ăăřřììṽẽẽ <strong>ÖÑ ṮÏṂË!</strong>]",
+          "message": "[PLEASE ARRIVE <strong>ON TIME!</strong>]",
         },
       }
     `);

@@ -1,7 +1,10 @@
 import { validateConfig } from './config';
 
 describe('validateConfig', () => {
-  const generator = (message: string) => message;
+  const generator = {
+    transformMessage: (message: string) => message,
+    transformElement: (message: string) => message,
+  };
 
   it('should allow a valid config', () => {
     const config = { devLanguage: 'en', languages: [{ name: 'en' }] };

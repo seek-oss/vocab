@@ -68,7 +68,10 @@ export interface LanguageTarget {
   extends?: LanguageName;
 }
 
-export type MessageGenerator = (message: string) => string;
+export interface MessageGenerator {
+  transformElement?: (element: string) => string;
+  transformMessage?: (message: string) => string;
+}
 
 export interface GeneratedLanguageTarget {
   // The name or tag of a generated language

@@ -1,6 +1,5 @@
 import IntlMessageFormat from 'intl-messageformat';
 import {
-  createLiteralElement,
   MessageFormatElement,
   PluralOrSelectOption,
   TYPE,
@@ -8,74 +7,84 @@ import {
 import { printAST } from '@formatjs/icu-messageformat-parser/printer';
 import { MessageGenerator, TranslationsByKey } from '@vocab/types';
 
-const startPaddingLiteralElement = createLiteralElement('[');
-const endPaddingLiteralElement = createLiteralElement(']');
-
 export function generateLanguageFromTranslations({
   baseTranslations,
   generator,
 }: {
   baseTranslations: TranslationsByKey<string>;
   generator: MessageGenerator;
-}) {
+}): TranslationsByKey<string> {
+  if (!generator.transformElement && !generator.transformMessage) {
+    return baseTranslations;
+  }
+
+  const translationKeys = Object.keys(baseTranslations);
   const generatedTranslations: TranslationsByKey<string> = {};
 
-  for (const translationKey of Object.keys(baseTranslations)) {
+  for (const translationKey of translationKeys) {
     const translation = baseTranslations[translationKey];
-    const messageAst = new IntlMessageFormat(translation.message).getAst();
-    const pseudoLocalizedAst = [
-      startPaddingLiteralElement,
-      ...messageAst.map(generateMessageFormatElement(generator)),
-      endPaddingLiteralElement,
-    ];
+    let transformedMessage = translation.message;
+
+    if (generator.transformElement) {
+      const messageAst = new IntlMessageFormat(translation.message).getAst();
+      const transformedAst = messageAst.map(
+        transformMessageFormatElement(generator.transformElement),
+      );
+      transformedMessage = printAST(transformedAst);
+    }
+
+    if (generator.transformMessage) {
+      transformedMessage = generator.transformMessage(transformedMessage);
+    }
+
     generatedTranslations[translationKey] = {
-      message: printAST(pseudoLocalizedAst),
+      message: transformedMessage,
     };
   }
 
   return generatedTranslations;
 }
 
-function generateMessageFormatElement(
-  generator: (message: string) => string,
+function transformMessageFormatElement(
+  transformElement: (message: string) => string,
 ): (messageFormatElement: MessageFormatElement) => MessageFormatElement {
   return (messageFormatElement: MessageFormatElement) => {
-    const pseudoLocalizedMessageFormatElement = { ...messageFormatElement };
+    const transformedMessageFormatElement = { ...messageFormatElement };
 
-    switch (pseudoLocalizedMessageFormatElement.type) {
+    switch (transformedMessageFormatElement.type) {
       case TYPE.literal:
-        const pseudoLocalizedValue = generator(
-          pseudoLocalizedMessageFormatElement.value,
+        const transformedValue = transformElement(
+          transformedMessageFormatElement.value,
         );
-        pseudoLocalizedMessageFormatElement.value = pseudoLocalizedValue;
+        transformedMessageFormatElement.value = transformedValue;
         break;
 
       case TYPE.select:
       case TYPE.plural:
-        const pseudoLocalizedOptions: Record<string, PluralOrSelectOption> = {
-          ...pseudoLocalizedMessageFormatElement.options,
+        const transformedOptions: Record<string, PluralOrSelectOption> = {
+          ...transformedMessageFormatElement.options,
         };
 
-        for (const key of Object.keys(pseudoLocalizedOptions)) {
-          pseudoLocalizedOptions[key].value = pseudoLocalizedOptions[
-            key
-          ].value.map(generateMessageFormatElement(generator));
+        for (const key of Object.keys(transformedOptions)) {
+          transformedOptions[key].value = transformedOptions[key].value.map(
+            transformMessageFormatElement(transformElement),
+          );
         }
 
         break;
 
       case TYPE.tag:
-        const pseudoLocalizedChildren =
-          pseudoLocalizedMessageFormatElement.children.map(
-            generateMessageFormatElement(generator),
+        const transformedChildren =
+          transformedMessageFormatElement.children.map(
+            transformMessageFormatElement(transformElement),
           );
-        pseudoLocalizedMessageFormatElement.children = pseudoLocalizedChildren;
+        transformedMessageFormatElement.children = transformedChildren;
         break;
 
       default:
         break;
     }
 
-    return pseudoLocalizedMessageFormatElement;
+    return transformedMessageFormatElement;
   };
 }

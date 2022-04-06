@@ -6,29 +6,6 @@
 ---
 
 Enable the creation of generated languages via the `generatedLanguages` config.
+See [the docs] for more information and examples.
 
-Generated languages are created by running a `generator` function over every translation message in an existing translation.
-The `generator` function can be any function that accepts a string and returns a string.
-By default, a generated language's messages will be based off the `devLanguage`'s messages, but this can be overridden by providing an `extends` value that references another language.
-
-**NB**: All generated language messages will be padded with the `[` and `]` characters to distinguish them from regular languages.
-
-**vocab.config.js**
-
-```js
-function generator(message) {
-  return message + ' Generated';
-}
-
-module.exports = {
-  devLanguage: 'en',
-  languages: [{ name: 'en' }, { name: 'fr' }],
-  generatedLanguages: [
-    {
-      name: 'generatedLanguage',
-      extends: 'en',
-      generator
-    }
-  ]
-};
-```
+[the docs]: README.md/#generated-languages
