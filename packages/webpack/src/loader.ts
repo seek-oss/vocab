@@ -5,11 +5,7 @@ import {
   UserConfig,
   TranslationMessagesByKey,
 } from '@vocab/types';
-import {
-  getAltLanguages,
-  getDevLanguageFileFromTsFile,
-  loadTranslation,
-} from '@vocab/core';
+import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
 import { getOptions } from 'loader-utils';
 
 import { getChunkName } from './chunk-name';
@@ -91,19 +87,13 @@ export default async function vocabLoader(this: LoaderContext) {
     loadedTranslation,
   );
 
+  const loadedLanguages = Object.keys(loadedTranslation.languages);
+
   const result = `
       import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
       export default createTranslationFile({
-          ${renderLanguageLoader(config.devLanguage)},
-          ${getAltLanguages(config)
-            .map((altLanguage) => renderLanguageLoader(altLanguage))
-            .join(',')},
-          ${config.generatedLanguages
-            ?.map((generatedLanguage) =>
-              renderLanguageLoader(generatedLanguage.name),
-            )
-            .join(',')}
+          ${loadedLanguages.map((lang) => renderLanguageLoader(lang)).join(',')}
       });
     `;
   trace('Created translation file', result);
