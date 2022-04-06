@@ -49,7 +49,7 @@ export type TranslationFile<
     locale?: string,
   ) => Promise<ParsedICUMessages<FormatFnByKey>>;
   /**
-   *  Retrieve already loaded messages. Will return null if no messages have not been loaded.
+   *  Retrieve already loaded messages. Will return null if no messages have been loaded.
    */
   getLoadedMessages: (
     language: Language,
@@ -68,6 +68,20 @@ export interface LanguageTarget {
   extends?: LanguageName;
 }
 
+export interface MessageGenerator {
+  transformElement?: (element: string) => string;
+  transformMessage?: (message: string) => string;
+}
+
+export interface GeneratedLanguageTarget {
+  // The name or tag of a generated language
+  name: LanguageName;
+  // Language to generate translations from. Defaults to the dev language.
+  extends?: LanguageName;
+  // Function used to generate translations
+  generator: MessageGenerator;
+}
+
 export interface UserConfig {
   /**
    * The root directory to compile and validate translations
@@ -81,6 +95,10 @@ export interface UserConfig {
    * An array of languages to build for
    */
   languages: Array<LanguageTarget>;
+  /**
+   * An array of languages to generate from existing translations
+   */
+  generatedLanguages?: Array<GeneratedLanguageTarget>;
   /**
    * A custom suffix to name vocab translation directories
    */

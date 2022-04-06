@@ -13,6 +13,12 @@
       "translation-file.ts"
     ]
   },
+  "files": [
+    "dist",
+    "runtime",
+    "icu-handler",
+    "translation-file"
+  ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",
     "@vocab/types": "^1.0.1",

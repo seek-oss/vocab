@@ -26,6 +26,7 @@ describe('E2E', () => {
     afterAll(() => {
       server.close();
     });
+
     it('should return english when route is en', async () => {
       const { sourceHtml, clientRenderContent } = await getAppSnapshot(
         `${server.url}/en/`,
@@ -34,6 +35,7 @@ describe('E2E', () => {
       expect(sourceHtml).toContain('Hello world');
       expect(clientRenderContent).toContain('Hello world');
     });
+
     it('should return french when route is fr', async () => {
       const { sourceHtml, clientRenderContent } = await getAppSnapshot(
         `${server.url}/fr/`,
@@ -43,6 +45,7 @@ describe('E2E', () => {
       expect(clientRenderContent).toContain('Bonjour monde');
     });
   });
+
   describe('Simple with plugin', () => {
     let server: TestServer;
 
@@ -80,11 +83,19 @@ describe('E2E', () => {
     });
 
     it('should switch to french', async () => {
-      await page.click('#toggle-language');
+      await page.select('#language-select', 'fr');
 
       const message = await page.waitForSelector('#message');
 
       await expect(message).toMatch('Bonjour monde');
+    });
+
+    it('should switch to pseudo', async () => {
+      await page.select('#language-select', 'pseudo');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
     });
 
     it('should allow special characters', async () => {
@@ -127,11 +138,19 @@ describe('E2E', () => {
     });
 
     it('should switch to french', async () => {
-      await page.click('button');
+      await page.select('#language-select', 'fr');
 
       const message = await page.waitForSelector('#message');
 
       await expect(message).toMatch('Bonjour monde');
+    });
+
+    it('should switch to pseudo', async () => {
+      await page.select('#language-select', 'pseudo');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
     });
 
     afterAll(() => {
@@ -170,8 +189,9 @@ describe('E2E', () => {
       await expect(asyncMessage).toMatch('Hello Asynchronously');
       await expect(syncMessage).toMatch('*Vocab* was published on 11/20/2020');
     });
+
     it('should switch to french', async () => {
-      await page.click('#toggle-language');
+      await page.select('#language-select', 'fr');
 
       await page.click('#show-message');
       await page.click('#update-message');
@@ -181,6 +201,19 @@ describe('E2E', () => {
 
       await expect(syncMessage).toMatch('Bonjour Synchronously');
       await expect(asyncMessage).toMatch('Bonjour Asynchronously');
+    });
+
+    it('should switch to pseudo', async () => {
+      await page.select('#language-select', 'pseudo');
+
+      await page.click('#show-message');
+      await page.click('#update-message');
+
+      const syncMessage = await page.waitForSelector('#sync-message');
+      const asyncMessage = await page.waitForSelector('#async-message');
+
+      await expect(syncMessage).toMatch('[Ḩẽẽƚƚöö] Synchronously');
+      await expect(asyncMessage).toMatch('[Ḩẽẽƚƚöö] Asynchronously');
     });
 
     afterAll(() => {

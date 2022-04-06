@@ -22,7 +22,7 @@ app.use(
 );
 
 app.get('*', (req: Request, res: Response) => {
-  console.log('Recieved request', req.url);
+  console.log('Received request', req.url);
   const appPath = req.path;
   const language = appPath.startsWith('/en') ? 'en' : 'fr';
 

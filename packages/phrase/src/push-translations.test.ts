@@ -19,6 +19,15 @@ function runPhrase() {
     {
       devLanguage: 'en',
       languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
       projectRoot: path.resolve(__dirname, '..', '..', '..', 'fixtures/phrase'),
     },
   );
@@ -29,11 +38,13 @@ describe('push', () => {
     (pushTranslationsByLocale as jest.Mock).mockClear();
     (writeFile as jest.Mock).mockClear();
   });
+
   it('should resolve', async () => {
     await expect(runPhrase()).resolves.toBeUndefined();
 
     expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
   });
+
   it('should update keys', async () => {
     await expect(runPhrase()).resolves.toBeUndefined();
 
@@ -49,6 +60,7 @@ describe('push', () => {
       'en',
       'tester',
     );
+
     expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
       {
         'hello.mytranslations': {

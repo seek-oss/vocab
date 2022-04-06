@@ -1,6 +1,6 @@
 import translations from './.vocab';
 
-type LanguageName = 'fr' | 'en';
+export type LanguageName = 'fr' | 'en' | 'pseudo';
 
 export function preloadLanguage(language: LanguageName) {
   return translations.load(language);
