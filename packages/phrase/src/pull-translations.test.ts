@@ -2,7 +2,7 @@ import path from 'path';
 import { pull } from './pull-translations';
 import { pullAllTranslations } from './phrase-api';
 import { writeFile } from './file';
-import { LanguageTarget } from '@vocab/types';
+import { GeneratedLanguageTarget, LanguageTarget } from '@vocab/types';
 
 jest.mock('./file', () => ({
   writeFile: jest.fn(() => Promise.resolve),
@@ -14,7 +14,10 @@ jest.mock('./phrase-api', () => ({
   pullAllTranslations: jest.fn(() => Promise.resolve({ en: {}, fr: {} })),
 }));
 
-function runPhrase(options: { languages: LanguageTarget[] }) {
+function runPhrase(options: {
+  languages: LanguageTarget[];
+  generatedLanguages: GeneratedLanguageTarget[];
+}) {
   return pull(
     { branch: 'tester' },
     {
@@ -48,6 +51,15 @@ describe('pull translations', () => {
 
     const options = {
       languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
     };
 
     it('should resolve', async () => {
@@ -108,6 +120,15 @@ describe('pull translations', () => {
 
     const options = {
       languages: [{ name: 'en' }, { name: 'fr' }, { name: 'ja' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
     };
 
     it('should resolve', async () => {
