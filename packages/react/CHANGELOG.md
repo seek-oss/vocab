@@ -1,5 +1,11 @@
 # @vocab/react
 
+## 1.1.1
+
+### Patch Changes
+
+- [`e9c7067`](https://github.com/seek-oss/vocab/commit/e9c7067b31215a176e70ac1e73f2c878107f328f) [#83](https://github.com/seek-oss/vocab/pull/83) Thanks [@michaeltaranto](https://github.com/michaeltaranto)! - Add React 18 support
+
 ## 1.1.0
 
 ### Minor Changes
