@@ -1,5 +1,5 @@
 import React from 'react';
-import { hydrate } from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 import { loadableReady } from '@loadable/component';
 
 import { App } from './App';
@@ -12,5 +12,5 @@ declare global {
 
 loadableReady(() => {
   const root = document.getElementById('main');
-  hydrate(<App initialLanguage={window.INITIAL_LANGUAGE} />, root);
+  hydrateRoot(root!, <App initialLanguage={window.INITIAL_LANGUAGE} />);
 });
