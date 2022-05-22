@@ -5,7 +5,6 @@ import {
   ParsedFormatFn,
 } from '@vocab/types';
 import React, {
-  FunctionComponent,
   ReactNode,
   useContext,
   useMemo,
@@ -25,11 +24,14 @@ const TranslationsContext = React.createContext<TranslationsValue | undefined>(
   undefined,
 );
 
-export const VocabProvider: FunctionComponent<TranslationsValue> = ({
+interface VocabProviderProps extends TranslationsValue {
+  children: ReactNode;
+}
+export const VocabProvider = ({
   children,
   language,
   locale,
-}) => {
+}: VocabProviderProps) => {
   const value = useMemo(() => ({ language, locale }), [language, locale]);
 
   return (
