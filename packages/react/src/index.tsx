@@ -11,6 +11,7 @@ import React, {
   useReducer,
   isValidElement,
   cloneElement,
+  useCallback,
 } from 'react';
 
 type Locale = string;
@@ -103,55 +104,64 @@ export function useTranslations<
     locale || language,
   );
 
+  let ready = true;
+
   if (!translationsObject) {
     if (SERVER_RENDERING) {
       throw new Error(
         `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
       );
     }
+
     translations.load(language as any).then(() => {
       forceRender();
     });
-    return {
-      t: (() => ' ') as TranslateFn<ParsedFormatFnByKey>,
-      ready: false,
-    };
+    ready = false;
   }
 
-  const t = (key: string, params?: any) => {
-    if (!translationsObject?.[key]) {
-      // eslint-disable-next-line no-console
-      console.error(
-        `Unable to find translation for key "${key}". Possible keys are ${Object.keys(
-          translationsObject,
-        )
-          .map((v) => `"${v}"`)
-          .join(', ')}`,
-      );
-      return '';
-    }
+  const t = useCallback(
+    (key: string, params?: any) => {
+      if (!translationsObject) {
+        return ' ';
+      }
 
-    const result = translationsObject[key].format(params);
+      const message = translationsObject?.[key];
 
-    if (Array.isArray(result)) {
-      for (let i = 0; i < result.length; i++) {
-        const item = result[i];
-        if (
-          typeof item === 'object' &&
-          item &&
-          !item.key &&
-          isValidElement(item)
-        ) {
-          result[i] = cloneElement(item, { key: `_vocab-${i}` });
+      if (!message) {
+        // eslint-disable-next-line no-console
+        console.error(
+          `Unable to find translation for key "${key}". Possible keys are ${Object.keys(
+            translationsObject,
+          )
+            .map((v) => `"${v}"`)
+            .join(', ')}`,
+        );
+        return '';
+      }
+
+      const result = message.format(params);
+
+      if (Array.isArray(result)) {
+        for (let i = 0; i < result.length; i++) {
+          const item = result[i];
+          if (
+            typeof item === 'object' &&
+            item &&
+            !item.key &&
+            isValidElement(item)
+          ) {
+            result[i] = cloneElement(item, { key: `_vocab-${i}` });
+          }
         }
       }
-    }
 
-    return result;
-  };
+      return result;
+    },
+    [translationsObject],
+  );
 
   return {
-    ready: true,
+    ready,
     t,
   };
 }
