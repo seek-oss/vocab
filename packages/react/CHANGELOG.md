@@ -1,5 +1,11 @@
 # @vocab/react
 
+## 1.1.2
+
+### Patch Changes
+
+- [`240d6ad`](https://github.com/seek-oss/vocab/commit/240d6ad7e0cf43fed92655a2f95fb463bd7b6644) [#85](https://github.com/seek-oss/vocab/pull/85) Thanks [@askoufis](https://github.com/askoufis)! - The `t` function returned from `useTranslations` is now memoized. `t` should now only change after the initial loading of translations, and when the language changes, making it more useful inside a hook's dependency array.
+
 ## 1.1.1
 
 ### Patch Changes
