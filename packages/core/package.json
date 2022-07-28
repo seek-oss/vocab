@@ -16,6 +16,10 @@
     "./runtime": {
       "module": "./runtime/dist/vocab-core-runtime.esm.js",
       "default": "./runtime/dist/vocab-core-runtime.cjs.js"
+    },
+    "./translation-file": {
+      "module": "./translation-file/dist/vocab-core-translation-file.esm.js",
+      "default": "./translation-file/dist/vocab-core-translation-file.cjs.js"
     }
   },
   "author": "SEEK",
