@@ -1,5 +1,13 @@
 # @vocab/core
 
+## 1.1.1
+
+### Patch Changes
+
+- [`09a698a`](https://github.com/seek-oss/vocab/commit/09a698af6aff86a851e4f829916b8f1f6beaca58) [#89](https://github.com/seek-oss/vocab/pull/89) Thanks [@mikebarkmin](https://github.com/mikebarkmin)! - Add exports to packages with multiple entry points. This fixes
+  `ERR_UNSUPPORTED_DIR_IMPORT` issues e.g. with NextJS or other setups, which
+  rely on the new node resolver when using ESM packages.
+
 ## 1.1.0
 
 ### Minor Changes
