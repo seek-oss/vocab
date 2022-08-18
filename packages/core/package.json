@@ -3,6 +3,25 @@
   "version": "1.1.0",
   "main": "dist/vocab-core.cjs.js",
   "module": "dist/vocab-core.esm.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "module": "./dist/vocab-core.esm.js",
+      "default": "./dist/vocab-core.cjs.js"
+    },
+    "./icu-handler": {
+      "module": "./icu-handler/dist/vocab-core-icu-handler.esm.js",
+      "default": "./icu-handler/dist/vocab-core-icu-handler.cjs.js"
+    },
+    "./runtime": {
+      "module": "./runtime/dist/vocab-core-runtime.esm.js",
+      "default": "./runtime/dist/vocab-core-runtime.cjs.js"
+    },
+    "./translation-file": {
+      "module": "./translation-file/dist/vocab-core-translation-file.esm.js",
+      "default": "./translation-file/dist/vocab-core-translation-file.cjs.js"
+    }
+  },
   "author": "SEEK",
   "license": "MIT",
   "preconstruct": {
