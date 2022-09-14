@@ -32,7 +32,7 @@ yargs(process.argv.slice(2))
     builder: () =>
       yargs.options({
         branch: branchDefinition,
-        deleteUnusedKeys: {
+        'delete-unused-keys': {
           type: 'boolean',
           describe: 'Whether or not to delete unused keys after pushing',
           default: false,

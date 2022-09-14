@@ -146,16 +146,20 @@ export async function deleteUnusedKeys(
   branch: string,
 ) {
   const query = `unmentioned_in_upload:${uploadId}`;
-  const result = await callPhrase<{ records_affected: number }>('keys', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
+  const { records_affected } = await callPhrase<{ records_affected: number }>(
+    'keys',
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ branch, locale_id: locale, q: query }),
     },
-    body: JSON.stringify({ branch, locale_id: locale, q: query }),
-  });
+  );
+
   log(
     'Successfully deleted',
-    result.records_affected,
+    records_affected,
     'unused keys from branch',
     branch,
   );
