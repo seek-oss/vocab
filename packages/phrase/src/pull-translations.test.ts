@@ -14,6 +14,8 @@ jest.mock('./phrase-api', () => ({
   pullAllTranslations: jest.fn(() => Promise.resolve({ en: {}, fr: {} })),
 }));
 
+const devLanguage = 'en';
+
 function runPhrase(options: {
   languages: LanguageTarget[];
   generatedLanguages: GeneratedLanguageTarget[];
@@ -22,7 +24,7 @@ function runPhrase(options: {
     { branch: 'tester' },
     {
       ...options,
-      devLanguage: 'en',
+      devLanguage,
       projectRoot: path.resolve(__dirname, '..', '..', '..', 'fixtures/phrase'),
     },
   );
@@ -33,21 +35,21 @@ describe('pull translations', () => {
     beforeEach(() => {
       (pullAllTranslations as jest.Mock).mockClear();
       (writeFile as jest.Mock).mockClear();
+      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+        Promise.resolve({
+          en: {
+            'hello.mytranslations': {
+              message: 'Hi there',
+            },
+          },
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
     });
-    (pullAllTranslations as jest.Mock).mockImplementation(() =>
-      Promise.resolve({
-        en: {
-          'hello.mytranslations': {
-            message: 'Hi there',
-          },
-        },
-        fr: {
-          'hello.mytranslations': {
-            message: 'merci',
-          },
-        },
-      }),
-    );
 
     const options = {
       languages: [{ name: 'en' }, { name: 'fr' }],
@@ -102,21 +104,21 @@ describe('pull translations', () => {
     beforeEach(() => {
       (pullAllTranslations as jest.Mock).mockClear();
       (writeFile as jest.Mock).mockClear();
+      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+        Promise.resolve({
+          en: {
+            'hello.mytranslations': {
+              message: 'Hi there',
+            },
+          },
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
     });
-    (pullAllTranslations as jest.Mock).mockImplementation(() =>
-      Promise.resolve({
-        en: {
-          'hello.mytranslations': {
-            message: 'Hi there',
-          },
-        },
-        fr: {
-          'hello.mytranslations': {
-            message: 'merci',
-          },
-        },
-      }),
-    );
 
     const options = {
       languages: [{ name: 'en' }, { name: 'fr' }, { name: 'ja' }],
@@ -164,6 +166,85 @@ describe('pull translations', () => {
         },
       ]
     `);
+    });
+  });
+
+  describe('when pulling translations and the project has not configured translations for the dev language', () => {
+    beforeEach(() => {
+      (pullAllTranslations as jest.Mock).mockClear();
+      (writeFile as jest.Mock).mockClear();
+      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+        Promise.resolve({
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
+    });
+
+    const options = {
+      languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
+    };
+
+    it('should throw an error', async () => {
+      await expect(runPhrase(options)).rejects.toThrowError(
+        new Error(
+          'Phrase did not return any translations for dev language "en".\nEnsure you have configured your Phrase project for your dev language, and have pushed your translations.',
+        ),
+      );
+
+      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('when pulling translations and there are no translations for the dev language', () => {
+    beforeEach(() => {
+      (pullAllTranslations as jest.Mock).mockClear();
+      (writeFile as jest.Mock).mockClear();
+      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+        Promise.resolve({
+          en: {},
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
+    });
+
+    const options = {
+      languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
+    };
+
+    it('should throw an error', async () => {
+      await expect(runPhrase(options)).rejects.toThrowError(
+        new Error(
+          'Phrase did not return any translations for dev language "en".\nEnsure you have configured your Phrase project for your dev language, and have pushed your translations.',
+        ),
+      );
+
+      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(0);
     });
   });
 });

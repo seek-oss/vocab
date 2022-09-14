@@ -30,6 +30,23 @@ export async function pull(
     } and ${alternativeLanguages.join(', ')}`,
   );
 
+  const phraseLanguages = Object.keys(allPhraseTranslations);
+  const phraseLanguagesWithTranslations = phraseLanguages.filter((language) => {
+    const phraseTranslationsForLanguage = allPhraseTranslations[language];
+    return Object.keys(phraseTranslationsForLanguage).length > 0;
+  });
+
+  trace(
+    `Found Phrase translations for languages ${phraseLanguagesWithTranslations.join(
+      ', ',
+    )}`,
+  );
+  if (!phraseLanguagesWithTranslations.includes(config.devLanguage)) {
+    throw new Error(
+      `Phrase did not return any translations for dev language "${config.devLanguage}".\nEnsure you have configured your Phrase project for your dev language, and have pushed your translations.`,
+    );
+  }
+
   const allVocabTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false },
     config,
