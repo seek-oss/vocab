@@ -200,47 +200,7 @@ describe('pull translations', () => {
     it('should throw an error', async () => {
       await expect(runPhrase(options)).rejects.toThrowError(
         new Error(
-          'Phrase did not return any translations for dev language "en".\nEnsure you have configured your Phrase project for your dev language, and have pushed your translations.',
-        ),
-      );
-
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe('when pulling translations and there are no translations for the dev language', () => {
-    beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
-        Promise.resolve({
-          en: {},
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
-          },
-        }),
-      );
-    });
-
-    const options = {
-      languages: [{ name: 'en' }, { name: 'fr' }],
-      generatedLanguages: [
-        {
-          name: 'generatedLanguage',
-          extends: 'en',
-          generator: {
-            transformMessage: (message: string) => `[${message}]`,
-          },
-        },
-      ],
-    };
-
-    it('should throw an error', async () => {
-      await expect(runPhrase(options)).rejects.toThrowError(
-        new Error(
-          'Phrase did not return any translations for dev language "en".\nEnsure you have configured your Phrase project for your dev language, and have pushed your translations.',
+          'Phrase did not return any translations for dev language "en".\nEnsure you have configured your Phrase project for your dev language.',
         ),
       );
 
