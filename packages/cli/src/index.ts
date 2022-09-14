@@ -29,7 +29,15 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'push',
-    builder: () => yargs.options({ branch: branchDefinition }),
+    builder: () =>
+      yargs.options({
+        branch: branchDefinition,
+        deleteUnusedKeys: {
+          type: 'boolean',
+          describe: 'Whether or not to delete unused keys after pushing',
+          default: false,
+        },
+      }),
     handler: async (options) => {
       await push(options, config!);
     },

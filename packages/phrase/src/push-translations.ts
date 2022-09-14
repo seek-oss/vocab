@@ -1,18 +1,26 @@
 import { TranslationsByLanguage } from './../../types/src/index';
 
-import { ensureBranch, pushTranslationsByLocale } from './phrase-api';
+import {
+  ensureBranch,
+  pushTranslationsByLocale,
+  deleteUnusedKeys as phraseDeleteUnusedKeys,
+} from './phrase-api';
 import { trace } from './logger';
 import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 import { UserConfig } from '@vocab/types';
 
 interface PushOptions {
   branch: string;
+  deleteUnusedKeys?: boolean;
 }
 
 /**
  * Uploading to the Phrase API for each language. Adding a unique namespace to each key using file path they key came from
  */
-export async function push({ branch }: PushOptions, config: UserConfig) {
+export async function push(
+  { branch, deleteUnusedKeys }: PushOptions,
+  config: UserConfig,
+) {
   const allLanguageTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false },
     config,
@@ -45,11 +53,15 @@ export async function push({ branch }: PushOptions, config: UserConfig) {
 
   for (const language of allLanguages) {
     if (phraseTranslations[language]) {
-      await pushTranslationsByLocale(
+      const { uploadId } = await pushTranslationsByLocale(
         phraseTranslations[language],
         language,
         branch,
       );
+
+      if (deleteUnusedKeys) {
+        await phraseDeleteUnusedKeys(uploadId, language, branch);
+      }
     }
   }
 }

@@ -66,10 +66,10 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   });
 }
 
-export async function callPhrase(
+export async function callPhrase<T = any>(
   relativePath: string,
   options: Parameters<typeof fetch>[1] = {},
-) {
+): Promise<T> {
   const projectId = process.env.PHRASE_PROJECT_ID;
 
   if (!projectId) {
@@ -94,11 +94,13 @@ export async function callPhrase(
 export async function pullAllTranslations(
   branch: string,
 ): Promise<TranslationsByLanguage> {
-  const phraseResult: Array<{
-    key: { name: string };
-    locale: { code: string };
-    content: string;
-  }> = await callPhrase(`translations?branch=${branch}&per_page=100`);
+  const phraseResult = await callPhrase<
+    Array<{
+      key: { name: string };
+      locale: { code: string };
+      content: string;
+    }>
+  >(`translations?branch=${branch}&per_page=100`);
   const translations: TranslationsByLanguage = {};
   for (const r of phraseResult) {
     if (!translations[r.locale.code]) {
@@ -128,11 +130,35 @@ export async function pushTranslationsByLocale(
 
   trace('Starting to upload:', locale);
 
-  await callPhrase(`uploads`, {
+  const { id } = await callPhrase<{ id: string }>(`uploads`, {
     method: 'POST',
     body: formData,
   });
+  log('Upload ID:', id, '\n');
   log('Successfully Uploaded:', locale, '\n');
+
+  return { uploadId: id };
+}
+
+export async function deleteUnusedKeys(
+  uploadId: string,
+  locale: string,
+  branch: string,
+) {
+  const query = `unmentioned_in_upload:${uploadId}`;
+  const result = await callPhrase<{ records_affected: number }>('keys', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ branch, locale_id: locale, q: query }),
+  });
+  log(
+    'Successfully deleted',
+    result.records_affected,
+    'unused keys from branch',
+    branch,
+  );
 }
 
 export async function ensureBranch(branch: string) {

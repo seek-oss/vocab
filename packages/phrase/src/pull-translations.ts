@@ -14,6 +14,7 @@ import { trace } from './logger';
 
 interface PullOptions {
   branch?: string;
+  deleteUnusedKeys?: boolean;
 }
 
 export async function pull(
