@@ -31,10 +31,10 @@ export async function pull(
   );
 
   const phraseLanguages = Object.keys(allPhraseTranslations);
-
   trace(
     `Found Phrase translations for languages ${phraseLanguages.join(', ')}`,
   );
+
   if (!phraseLanguages.includes(config.devLanguage)) {
     throw new Error(
       `Phrase did not return any translations for dev language "${config.devLanguage}".\nEnsure you have configured your Phrase project for your dev language.`,
