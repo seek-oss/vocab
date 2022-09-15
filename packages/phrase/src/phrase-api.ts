@@ -31,14 +31,14 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
         'X-Rate-Limit-Reset',
       )} seconds remaining})`,
     );
-    console.log('\nLink:', response.headers.get('Link'), '\n');
+    trace('\nLink:', response.headers.get('Link'), '\n');
     // Print All Headers:
     // console.log(Array.from(r.headers.entries()));
 
     try {
       const result = await response.json();
 
-      console.log(`Internal Result (Length: ${result.length})\n`);
+      trace(`Internal Result (Length: ${result.length})\n`);
 
       if (
         (!options.method || options.method === 'GET') &&
@@ -48,10 +48,10 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
           response.headers.get('Link')?.match(/<([^>]*)>; rel=next/) ?? [];
 
         if (!nextPageUrl) {
-          throw new Error('Cant parse next page URL');
+          throw new Error("Can't parse next page URL");
         }
 
-        console.log('Results recieved with next page: ', nextPageUrl);
+        console.log('Results received with next page: ', nextPageUrl);
 
         const nextPageResult = (await _callPhrase(nextPageUrl, options)) as any;
 
@@ -101,13 +101,16 @@ export async function pullAllTranslations(
       content: string;
     }>
   >(`translations?branch=${branch}&per_page=100`);
+
   const translations: TranslationsByLanguage = {};
+
   for (const r of phraseResult) {
     if (!translations[r.locale.code]) {
       translations[r.locale.code] = {};
     }
     translations[r.locale.code][r.key.name] = { message: r.content };
   }
+
   return translations;
 }
 
@@ -128,7 +131,7 @@ export async function pushTranslationsByLocale(
   formData.append('branch', branch);
   formData.append('update_translations', 'true');
 
-  trace('Starting to upload:', locale);
+  log('Starting to upload:', locale, '\n');
 
   const { id } = await callPhrase<{ id: string }>(`uploads`, {
     method: 'POST',
@@ -173,5 +176,6 @@ export async function ensureBranch(branch: string) {
     },
     body: JSON.stringify({ name: branch }),
   });
-  trace('Created branch:', branch);
+
+  log('Created branch:', branch);
 }
