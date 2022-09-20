@@ -10,7 +10,7 @@
   "dependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "@vocab/cli": "^1.1.0",
+    "@vocab/cli": "^1.2.0",
     "@vocab/pseudo-localize": "^1.0.0",
     "@vocab/react": "^1.1.2",
     "babel-loader": "^8.2.1",
