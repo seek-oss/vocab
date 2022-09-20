@@ -31,6 +31,17 @@ export async function pull(
     } and ${alternativeLanguages.join(', ')}`,
   );
 
+  const phraseLanguages = Object.keys(allPhraseTranslations);
+  trace(
+    `Found Phrase translations for languages ${phraseLanguages.join(', ')}`,
+  );
+
+  if (!phraseLanguages.includes(config.devLanguage)) {
+    throw new Error(
+      `Phrase did not return any translations for the configured development language "${config.devLanguage}".\nPlease ensure this language is present in your Phrase project's configuration.`,
+    );
+  }
+
   const allVocabTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false },
     config,
