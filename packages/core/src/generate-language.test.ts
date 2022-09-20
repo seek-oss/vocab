@@ -44,32 +44,32 @@ describe('generateLanguageFromTranslations', () => {
         generator,
       }),
     ).toMatchInlineSnapshot(`
-      Object {
-        "Hello": Object {
+      {
+        "Hello": {
           "message": "[HELLO]",
         },
-        "I can see it in your eyes": Object {
+        "I can see it in your eyes": {
           "message": "[I CAN SEE IT IN YOUR {numberOfEyes,plural,one{EYE} other{EYES}}]",
         },
-        "I can see it in your facialExpression": Object {
+        "I can see it in your facialExpression": {
           "message": "[I CAN SEE IT IN YOUR {facialExpression,select,smile{SMILE} frown{FROWN} other{SMILE}}]",
         },
-        "I have numberOfCats cats": Object {
+        "I have numberOfCats cats": {
           "message": "[I HAVE {numberOfCats, number} CATS]",
         },
-        "Is it name you're looking for": Object {
+        "Is it name you're looking for": {
           "message": "[IS IT {name} YOU'RE LOOKING FOR]",
         },
-        "It's my cat's nth birthday!": Object {
+        "It's my cat's nth birthday!": {
           "message": "[IT'S MY CAT'S {year,selectordinal,one{#ST} two{#ND} few{#RD} other{#TH}} BIRTHDAY!]",
         },
-        "My cat's birthday is birthDate": Object {
+        "My cat's birthday is birthDate": {
           "message": "[MY CAT'S BIRTHDAY IS {birthDate, date, medium}]",
         },
-        "My cat's birthday party is at birthdayPartyTime": Object {
+        "My cat's birthday party is at birthdayPartyTime": {
           "message": "[MY CAT'S BIRTHDAY IS {birthdayPartyTime, time, short}]",
         },
-        "Please arrive ON TIME!": Object {
+        "Please arrive ON TIME!": {
           "message": "[PLEASE ARRIVE <strong>ON TIME!</strong>]",
         },
       }

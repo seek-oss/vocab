@@ -33,9 +33,9 @@ function runPhrase(options: {
 describe('pull translations', () => {
   describe('when pulling translations for languages that already have translations', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -67,44 +67,46 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
       expect(
-        (writeFile as jest.Mock).mock.calls.map(
-          ([_filePath, contents]: [string, string]) => JSON.parse(contents),
-        ),
+        jest
+          .mocked(writeFile)
+          .mock.calls.map(([_filePath, contents]) =>
+            JSON.parse(contents as string),
+          ),
       ).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "hello": Object {
-            "message": "Hi there",
+        [
+          {
+            "hello": {
+              "message": "Hi there",
+            },
+            "world": {
+              "message": "world",
+            },
           },
-          "world": Object {
-            "message": "world",
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "world": {
+              "message": "monde",
+            },
           },
-        },
-        Object {
-          "hello": Object {
-            "message": "merci",
-          },
-          "world": Object {
-            "message": "monde",
-          },
-        },
-      ]
-    `);
+        ]
+      `);
     });
   });
 
   describe('when pulling translations and some languages do not have any translations', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -136,44 +138,46 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
       expect(
-        (writeFile as jest.Mock).mock.calls.map(
-          ([_filePath, contents]: [string, string]) => JSON.parse(contents),
-        ),
+        jest
+          .mocked(writeFile)
+          .mock.calls.map(([_filePath, contents]) =>
+            JSON.parse(contents as string),
+          ),
       ).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "hello": Object {
-            "message": "Hi there",
+        [
+          {
+            "hello": {
+              "message": "Hi there",
+            },
+            "world": {
+              "message": "world",
+            },
           },
-          "world": Object {
-            "message": "world",
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "world": {
+              "message": "monde",
+            },
           },
-        },
-        Object {
-          "hello": Object {
-            "message": "merci",
-          },
-          "world": Object {
-            "message": "monde",
-          },
-        },
-      ]
-    `);
+        ]
+      `);
     });
   });
 
   describe('when pulling translations and the project has not configured translations for the dev language', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           fr: {
             'hello.mytranslations': {
@@ -198,13 +202,13 @@ describe('pull translations', () => {
     };
 
     it('should throw an error', async () => {
-      await expect(runPhrase(options)).rejects.toThrowError(
+      await expect(runPhrase(options)).rejects.toThrow(
         new Error(
           `Phrase did not return any translations for the configured development language "en".\nPlease ensure this language is present in your Phrase project's configuration.`,
         ),
       );
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(0);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(0);
     });
   });
 });

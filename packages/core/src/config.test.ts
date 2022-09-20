@@ -13,7 +13,7 @@ describe('validateConfig', () => {
 
   it('should throw an error on no config', () => {
     // @ts-expect-error For Science!!!
-    expect(() => validateConfig({})).toThrowError(
+    expect(() => validateConfig({})).toThrow(
       expect.objectContaining({ code: 'InvalidStructure' }),
     );
   });
@@ -21,7 +21,7 @@ describe('validateConfig', () => {
   it("should throw an error when the devLanguage isn't defined in languages", () => {
     expect(() =>
       validateConfig({ devLanguage: 'en', languages: [{ name: 'th' }] }),
-    ).toThrowError(expect.objectContaining({ code: 'InvalidDevLanguage' }));
+    ).toThrow(expect.objectContaining({ code: 'InvalidDevLanguage' }));
   });
 
   it('should throw an error when a generated language name conflicts with a real language name', () => {
@@ -31,9 +31,7 @@ describe('validateConfig', () => {
         languages: [{ name: 'en' }],
         generatedLanguages: [{ name: 'en', generator }],
       }),
-    ).toThrowError(
-      expect.objectContaining({ code: 'InvalidGeneratedLanguage' }),
-    );
+    ).toThrow(expect.objectContaining({ code: 'InvalidGeneratedLanguage' }));
   });
 
   it("should throw an error when a generated language extends a language that doesn't exist", () => {
@@ -43,7 +41,7 @@ describe('validateConfig', () => {
         languages: [{ name: 'en' }],
         generatedLanguages: [{ name: 'pseudo', extends: 'fr', generator }],
       }),
-    ).toThrowError(expect.objectContaining({ code: 'InvalidExtends' }));
+    ).toThrow(expect.objectContaining({ code: 'InvalidExtends' }));
   });
 
   it('should throw an error when there are duplicate languages', () => {
@@ -52,7 +50,7 @@ describe('validateConfig', () => {
         devLanguage: 'en',
         languages: [{ name: 'en' }, { name: 'en' }],
       }),
-    ).toThrowError(expect.objectContaining({ code: 'DuplicateLanguage' }));
+    ).toThrow(expect.objectContaining({ code: 'DuplicateLanguage' }));
   });
 
   it('should throw an error when there are duplicate generated languages', () => {
@@ -65,9 +63,7 @@ describe('validateConfig', () => {
           { name: 'pseudo', generator },
         ],
       }),
-    ).toThrowError(
-      expect.objectContaining({ code: 'DuplicateGeneratedLanguage' }),
-    );
+    ).toThrow(expect.objectContaining({ code: 'DuplicateGeneratedLanguage' }));
   });
 
   it('should throw an error when a language extends a missing language', () => {
@@ -76,7 +72,7 @@ describe('validateConfig', () => {
         devLanguage: 'en',
         languages: [{ name: 'en' }, { name: 'en-US', extends: 'en-AU' }],
       }),
-    ).toThrowError(expect.objectContaining({ code: 'InvalidExtends' }));
+    ).toThrow(expect.objectContaining({ code: 'InvalidExtends' }));
   });
 
   it('should throw an error when a generated language extends a missing language', () => {
@@ -86,6 +82,6 @@ describe('validateConfig', () => {
         languages: [{ name: 'en' }],
         generatedLanguages: [{ name: 'pseudo', extends: 'en-US', generator }],
       }),
-    ).toThrowError(expect.objectContaining({ code: 'InvalidExtends' }));
+    ).toThrow(expect.objectContaining({ code: 'InvalidExtends' }));
   });
 });
