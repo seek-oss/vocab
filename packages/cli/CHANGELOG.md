@@ -1,5 +1,22 @@
 # @vocab/cli
 
+## 1.2.0
+
+### Minor Changes
+
+- [`66ed22c`](https://github.com/seek-oss/vocab/commit/66ed22cac6f89018d5fd69fd6f6408e090e1a382) [#93](https://github.com/seek-oss/vocab/pull/93) Thanks [@askoufis](https://github.com/askoufis)! - Add an optional `delete-unused-keys` flag to the `push` command. If set to `true`, unused keys will be deleted from Phrase after translations are pushed.
+
+  **EXAMPLE USAGE**:
+
+  ```bash
+  vocab push --delete-unused-keys
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`66ed22c`](https://github.com/seek-oss/vocab/commit/66ed22cac6f89018d5fd69fd6f6408e090e1a382), [`159d559`](https://github.com/seek-oss/vocab/commit/159d559c87c66c3e91c707fb45a1f67ebec07b4d)]:
+  - @vocab/phrase@1.1.0
+
 ## 1.1.0
 
 ### Minor Changes

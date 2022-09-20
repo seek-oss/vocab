@@ -1,5 +1,28 @@
 # @vocab/phrase
 
+## 1.1.0
+
+### Minor Changes
+
+- [`66ed22c`](https://github.com/seek-oss/vocab/commit/66ed22cac6f89018d5fd69fd6f6408e090e1a382) [#93](https://github.com/seek-oss/vocab/pull/93) Thanks [@askoufis](https://github.com/askoufis)! - Add an optional `deleteUnusedKeys` flag to the `push` function. If set to `true`, unused keys will be deleted from Phrase after translations are pushed.
+
+  **EXAMPLE USAGE**:
+
+  ```js
+  import { push } from '@vocab/phrase';
+
+  const vocabConfig = {
+    devLanguage: 'en',
+    language: ['en', 'fr'],
+  };
+
+  await push({ branch: 'myBranch', deleteUnusedKeys: true }, vocabConfig);
+  ```
+
+### Patch Changes
+
+- [`159d559`](https://github.com/seek-oss/vocab/commit/159d559c87c66c3e91c707fb45a1f67ebec07b4d) [#91](https://github.com/seek-oss/vocab/pull/91) Thanks [@askoufis](https://github.com/askoufis)! - Improve error message when Phrase doesn't return any translations for the dev language
+
 ## 1.0.1
 
 ### Patch Changes

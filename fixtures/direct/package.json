@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@types/react": "^18.0.9",
-    "@vocab/cli": "^1.1.0",
+    "@vocab/cli": "^1.2.0",
     "@vocab/pseudo-localize": "^1.0.0",
     "babel-loader": "^8.2.1",
     "html-webpack-plugin": "^4.5.0",
