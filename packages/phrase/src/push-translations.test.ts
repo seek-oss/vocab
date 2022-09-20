@@ -1,6 +1,6 @@
 import path from 'path';
 import { push } from './push-translations';
-import { pushTranslationsByLocale } from './phrase-api';
+import { pushTranslationsByLocale, deleteUnusedKeys } from './phrase-api';
 import { writeFile } from './file';
 
 jest.mock('./file', () => ({
@@ -11,11 +11,14 @@ jest.mock('./file', () => ({
 jest.mock('./phrase-api', () => ({
   ensureBranch: jest.fn(() => Promise.resolve()),
   pushTranslationsByLocale: jest.fn(() => Promise.resolve({ en: {}, fr: {} })),
+  deleteUnusedKeys: jest.fn(() => Promise.resolve()),
 }));
 
-function runPhrase() {
+const uploadId = '1234';
+
+function runPhrase(config: { deleteUnusedKeys: boolean }) {
   return push(
-    { branch: 'tester' },
+    { branch: 'tester', deleteUnusedKeys: config.deleteUnusedKeys },
     {
       devLanguage: 'en',
       languages: [{ name: 'en' }, { name: 'fr' }],
@@ -34,44 +37,132 @@ function runPhrase() {
 }
 
 describe('push', () => {
-  beforeEach(() => {
-    (pushTranslationsByLocale as jest.Mock).mockClear();
-    (writeFile as jest.Mock).mockClear();
+  describe('when deleteUnusedKeys is false', () => {
+    const config = { deleteUnusedKeys: false };
+
+    beforeEach(() => {
+      (pushTranslationsByLocale as jest.Mock).mockClear();
+      (writeFile as jest.Mock).mockClear();
+      (deleteUnusedKeys as jest.Mock).mockClear();
+
+      (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
+        Promise.resolve({ uploadId }),
+      );
+    });
+
+    it('should resolve', async () => {
+      await expect(runPhrase(config)).resolves.toBeUndefined();
+
+      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
+    });
+
+    it('should update keys', async () => {
+      await expect(runPhrase(config)).resolves.toBeUndefined();
+
+      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+        {
+          'hello.mytranslations': {
+            message: 'Hello',
+          },
+          'world.mytranslations': {
+            message: 'world',
+          },
+        },
+        'en',
+        'tester',
+      );
+
+      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+        {
+          'hello.mytranslations': {
+            message: 'Bonjour',
+          },
+          'world.mytranslations': {
+            message: 'monde',
+          },
+        },
+        'fr',
+        'tester',
+      );
+    });
+
+    it('should not delete unused keys', () => {
+      expect(deleteUnusedKeys).not.toHaveBeenCalled();
+    });
   });
 
-  it('should resolve', async () => {
-    await expect(runPhrase()).resolves.toBeUndefined();
+  describe('when deleteUnusedKeys is true', () => {
+    const config = { deleteUnusedKeys: true };
 
-    expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
-  });
+    beforeEach(() => {
+      (pushTranslationsByLocale as jest.Mock).mockClear();
+      (writeFile as jest.Mock).mockClear();
+      (deleteUnusedKeys as jest.Mock).mockClear();
+    });
 
-  it('should update keys', async () => {
-    await expect(runPhrase()).resolves.toBeUndefined();
+    describe('and the upload succeeds', () => {
+      beforeEach(() => {
+        (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
+          Promise.resolve({ uploadId }),
+        );
+      });
 
-    expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
-      {
-        'hello.mytranslations': {
-          message: 'Hello',
-        },
-        'world.mytranslations': {
-          message: 'world',
-        },
-      },
-      'en',
-      'tester',
-    );
+      it('should resolve', async () => {
+        await expect(runPhrase(config)).resolves.toBeUndefined();
 
-    expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
-      {
-        'hello.mytranslations': {
-          message: 'Bonjour',
-        },
-        'world.mytranslations': {
-          message: 'monde',
-        },
-      },
-      'fr',
-      'tester',
-    );
+        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
+      });
+
+      it('should update keys', async () => {
+        await expect(runPhrase(config)).resolves.toBeUndefined();
+
+        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+          {
+            'hello.mytranslations': {
+              message: 'Hello',
+            },
+            'world.mytranslations': {
+              message: 'world',
+            },
+          },
+          'en',
+          'tester',
+        );
+
+        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+          {
+            'hello.mytranslations': {
+              message: 'Bonjour',
+            },
+            'world.mytranslations': {
+              message: 'monde',
+            },
+          },
+          'fr',
+          'tester',
+        );
+      });
+
+      it('should delete unused keys', async () => {
+        await expect(runPhrase(config)).resolves.toBeUndefined();
+
+        expect(deleteUnusedKeys).toHaveBeenCalledWith(uploadId, 'en', 'tester');
+        expect(deleteUnusedKeys).toHaveBeenCalledWith(uploadId, 'fr', 'tester');
+      });
+    });
+
+    describe('and the upload fails', () => {
+      beforeEach(() => {
+        (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
+          Promise.reject('Upload failed'),
+        );
+      });
+
+      it('should not delete unused keys', async () => {
+        await expect(runPhrase(config)).rejects.toBe('Upload failed');
+
+        expect(deleteUnusedKeys).not.toHaveBeenCalled();
+      });
+    });
   });
 });

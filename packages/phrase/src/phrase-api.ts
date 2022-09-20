@@ -31,14 +31,14 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
         'X-Rate-Limit-Reset',
       )} seconds remaining})`,
     );
-    console.log('\nLink:', response.headers.get('Link'), '\n');
+    trace('\nLink:', response.headers.get('Link'), '\n');
     // Print All Headers:
     // console.log(Array.from(r.headers.entries()));
 
     try {
       const result = await response.json();
 
-      console.log(`Internal Result (Length: ${result.length})\n`);
+      trace(`Internal Result (Length: ${result.length})\n`);
 
       if (
         (!options.method || options.method === 'GET') &&
@@ -48,10 +48,10 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
           response.headers.get('Link')?.match(/<([^>]*)>; rel=next/) ?? [];
 
         if (!nextPageUrl) {
-          throw new Error('Cant parse next page URL');
+          throw new Error("Can't parse next page URL");
         }
 
-        console.log('Results recieved with next page: ', nextPageUrl);
+        console.log('Results received with next page: ', nextPageUrl);
 
         const nextPageResult = (await _callPhrase(nextPageUrl, options)) as any;
 
@@ -66,10 +66,10 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   });
 }
 
-export async function callPhrase(
+export async function callPhrase<T = any>(
   relativePath: string,
   options: Parameters<typeof fetch>[1] = {},
-) {
+): Promise<T> {
   const projectId = process.env.PHRASE_PROJECT_ID;
 
   if (!projectId) {
@@ -94,18 +94,23 @@ export async function callPhrase(
 export async function pullAllTranslations(
   branch: string,
 ): Promise<TranslationsByLanguage> {
-  const phraseResult: Array<{
-    key: { name: string };
-    locale: { code: string };
-    content: string;
-  }> = await callPhrase(`translations?branch=${branch}&per_page=100`);
+  const phraseResult = await callPhrase<
+    Array<{
+      key: { name: string };
+      locale: { code: string };
+      content: string;
+    }>
+  >(`translations?branch=${branch}&per_page=100`);
+
   const translations: TranslationsByLanguage = {};
+
   for (const r of phraseResult) {
     if (!translations[r.locale.code]) {
       translations[r.locale.code] = {};
     }
     translations[r.locale.code][r.key.name] = { message: r.content };
   }
+
   return translations;
 }
 
@@ -126,13 +131,41 @@ export async function pushTranslationsByLocale(
   formData.append('branch', branch);
   formData.append('update_translations', 'true');
 
-  trace('Starting to upload:', locale);
+  log('Starting to upload:', locale, '\n');
 
-  await callPhrase(`uploads`, {
+  const { id } = await callPhrase<{ id: string }>(`uploads`, {
     method: 'POST',
     body: formData,
   });
+  log('Upload ID:', id, '\n');
   log('Successfully Uploaded:', locale, '\n');
+
+  return { uploadId: id };
+}
+
+export async function deleteUnusedKeys(
+  uploadId: string,
+  locale: string,
+  branch: string,
+) {
+  const query = `unmentioned_in_upload:${uploadId}`;
+  const { records_affected } = await callPhrase<{ records_affected: number }>(
+    'keys',
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ branch, locale_id: locale, q: query }),
+    },
+  );
+
+  log(
+    'Successfully deleted',
+    records_affected,
+    'unused keys from branch',
+    branch,
+  );
 }
 
 export async function ensureBranch(branch: string) {
@@ -143,5 +176,6 @@ export async function ensureBranch(branch: string) {
     },
     body: JSON.stringify({ name: branch }),
   });
-  trace('Created branch:', branch);
+
+  log('Created branch:', branch);
 }

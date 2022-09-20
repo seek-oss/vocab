@@ -432,6 +432,7 @@ Vocab can be used to synchronize your translations with translations from a remo
 
 ```bash
 $ vocab push --branch my-branch
+$ vocab push --branch my-branch --delete-unused-keys
 $ vocab pull --branch my-branch
 ```
 
