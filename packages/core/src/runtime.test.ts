@@ -133,7 +133,7 @@ describe('createTranslationFile', () => {
       // @ts-expect-error Incorrect params parameter
       const result = translationModule?.vocabPublishDate.format({});
       return result;
-    }).toThrowError(
+    }).toThrow(
       expect.objectContaining({
         message: expect.stringContaining('not provided'),
       }),
@@ -144,7 +144,7 @@ describe('createTranslationFile', () => {
         unrelated: 'message',
       });
       return result;
-    }).toThrowError(
+    }).toThrow(
       expect.objectContaining({
         message: expect.stringContaining('not provided'),
       }),

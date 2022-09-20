@@ -202,7 +202,7 @@ describe('pull translations', () => {
     };
 
     it('should throw an error', async () => {
-      await expect(runPhrase(options)).rejects.toThrowError(
+      await expect(runPhrase(options)).rejects.toThrow(
         new Error(
           `Phrase did not return any translations for the configured development language "en".\nPlease ensure this language is present in your Phrase project's configuration.`,
         ),
