@@ -37,7 +37,7 @@ export async function pull(
 
   if (!phraseLanguages.includes(config.devLanguage)) {
     throw new Error(
-      `Phrase did not return any translations for dev language "${config.devLanguage}".\nEnsure you have configured your Phrase project for your dev language.`,
+      `Phrase did not return any translations for the configured development language "${config.devLanguage}".\nPlease ensure this language is present in your Phrase project's configuration.`,
     );
   }
 
