@@ -78,25 +78,25 @@ describe('pull translations', () => {
           ([_filePath, contents]: [string, string]) => JSON.parse(contents),
         ),
       ).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "hello": Object {
-            "message": "Hi there",
+        [
+          {
+            "hello": {
+              "message": "Hi there",
+            },
+            "world": {
+              "message": "world",
+            },
           },
-          "world": Object {
-            "message": "world",
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "world": {
+              "message": "monde",
+            },
           },
-        },
-        Object {
-          "hello": Object {
-            "message": "merci",
-          },
-          "world": Object {
-            "message": "monde",
-          },
-        },
-      ]
-    `);
+        ]
+      `);
     });
   });
 
@@ -147,25 +147,25 @@ describe('pull translations', () => {
           ([_filePath, contents]: [string, string]) => JSON.parse(contents),
         ),
       ).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "hello": Object {
-            "message": "Hi there",
+        [
+          {
+            "hello": {
+              "message": "Hi there",
+            },
+            "world": {
+              "message": "world",
+            },
           },
-          "world": Object {
-            "message": "world",
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "world": {
+              "message": "monde",
+            },
           },
-        },
-        Object {
-          "hello": Object {
-            "message": "merci",
-          },
-          "world": Object {
-            "message": "monde",
-          },
-        },
-      ]
-    `);
+        ]
+      `);
     });
   });
 

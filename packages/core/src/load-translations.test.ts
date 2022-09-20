@@ -199,17 +199,17 @@ describe('loadTranslation', () => {
       );
 
       expect(translations.languages['capital-english']).toMatchInlineSnapshot(`
-        Object {
-          "Good morning": Object {
+        {
+          "Good morning": {
             "message": "[GOOD MORNING IN FRENCH]",
           },
-          "Goodbye": Object {
+          "Goodbye": {
             "message": "[GOODBYE]",
           },
-          "Hello": Object {
+          "Hello": {
             "message": "[HELLO]",
           },
-          "Welcome": Object {
+          "Welcome": {
             "message": "[WELCOME]",
           },
         }
