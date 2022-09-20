@@ -33,9 +33,9 @@ function runPhrase(options: {
 describe('pull translations', () => {
   describe('when pulling translations for languages that already have translations', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -67,16 +67,18 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
       expect(
-        (writeFile as jest.Mock).mock.calls.map(
-          ([_filePath, contents]: [string, string]) => JSON.parse(contents),
-        ),
+        jest
+          .mocked(writeFile)
+          .mock.calls.map(([_filePath, contents]) =>
+            JSON.parse(contents as string),
+          ),
       ).toMatchInlineSnapshot(`
         [
           {
@@ -102,9 +104,9 @@ describe('pull translations', () => {
 
   describe('when pulling translations and some languages do not have any translations', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -136,16 +138,18 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
       expect(
-        (writeFile as jest.Mock).mock.calls.map(
-          ([_filePath, contents]: [string, string]) => JSON.parse(contents),
-        ),
+        jest
+          .mocked(writeFile)
+          .mock.calls.map(([_filePath, contents]) =>
+            JSON.parse(contents as string),
+          ),
       ).toMatchInlineSnapshot(`
         [
           {
@@ -171,9 +175,9 @@ describe('pull translations', () => {
 
   describe('when pulling translations and the project has not configured translations for the dev language', () => {
     beforeEach(() => {
-      (pullAllTranslations as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (pullAllTranslations as jest.Mock).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
         Promise.resolve({
           fr: {
             'hello.mytranslations': {
@@ -204,7 +208,7 @@ describe('pull translations', () => {
         ),
       );
 
-      expect(writeFile as jest.Mock).toHaveBeenCalledTimes(0);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(0);
     });
   });
 });

@@ -41,25 +41,25 @@ describe('push', () => {
     const config = { deleteUnusedKeys: false };
 
     beforeEach(() => {
-      (pushTranslationsByLocale as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (deleteUnusedKeys as jest.Mock).mockClear();
+      jest.mocked(pushTranslationsByLocale).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(deleteUnusedKeys).mockClear();
 
-      (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
-        Promise.resolve({ uploadId }),
-      );
+      jest
+        .mocked(pushTranslationsByLocale)
+        .mockImplementation(() => Promise.resolve({ uploadId }));
     });
 
     it('should resolve', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledTimes(2);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledWith(
         {
           'hello.mytranslations': {
             message: 'Hello',
@@ -72,7 +72,7 @@ describe('push', () => {
         'tester',
       );
 
-      expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+      expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledWith(
         {
           'hello.mytranslations': {
             message: 'Bonjour',
@@ -95,28 +95,28 @@ describe('push', () => {
     const config = { deleteUnusedKeys: true };
 
     beforeEach(() => {
-      (pushTranslationsByLocale as jest.Mock).mockClear();
-      (writeFile as jest.Mock).mockClear();
-      (deleteUnusedKeys as jest.Mock).mockClear();
+      jest.mocked(pushTranslationsByLocale).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(deleteUnusedKeys).mockClear();
     });
 
     describe('and the upload succeeds', () => {
       beforeEach(() => {
-        (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
-          Promise.resolve({ uploadId }),
-        );
+        jest
+          .mocked(pushTranslationsByLocale)
+          .mockImplementation(() => Promise.resolve({ uploadId }));
       });
 
       it('should resolve', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledTimes(2);
+        expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledTimes(2);
       });
 
       it('should update keys', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+        expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledWith(
           {
             'hello.mytranslations': {
               message: 'Hello',
@@ -129,7 +129,7 @@ describe('push', () => {
           'tester',
         );
 
-        expect(pushTranslationsByLocale as jest.Mock).toHaveBeenCalledWith(
+        expect(jest.mocked(pushTranslationsByLocale)).toHaveBeenCalledWith(
           {
             'hello.mytranslations': {
               message: 'Bonjour',
@@ -153,9 +153,9 @@ describe('push', () => {
 
     describe('and the upload fails', () => {
       beforeEach(() => {
-        (pushTranslationsByLocale as jest.Mock).mockImplementation(() =>
-          Promise.reject('Upload failed'),
-        );
+        jest
+          .mocked(pushTranslationsByLocale)
+          .mockImplementation(() => Promise.reject('Upload failed'));
       });
 
       it('should not delete unused keys', async () => {
