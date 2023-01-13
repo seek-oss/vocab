@@ -1,5 +1,14 @@
 # @vocab/react
 
+## 1.1.3
+
+### Patch Changes
+
+- [`e5a066c`](https://github.com/seek-oss/vocab/commit/e5a066c8a7539a62a9c1c4d813aa87461ba43cdc) [#96](https://github.com/seek-oss/vocab/pull/96) Thanks [@askoufis](https://github.com/askoufis)! - Update `intl-messageformat` dependencies
+
+- Updated dependencies [[`e5a066c`](https://github.com/seek-oss/vocab/commit/e5a066c8a7539a62a9c1c4d813aa87461ba43cdc)]:
+  - @vocab/types@1.1.1
+
 ## 1.1.2
 
 ### Patch Changes
