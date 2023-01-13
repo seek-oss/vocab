@@ -6,6 +6,6 @@
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {
-    "intl-messageformat": "^9.9.0"
+    "intl-messageformat": "^10.0.0"
   }
 }
