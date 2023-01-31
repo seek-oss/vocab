@@ -6,6 +6,10 @@
   "bin": {
     "vocab": "bin.js"
   },
+  "files": [
+    "dist",
+    "bin.js"
+  ],
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {

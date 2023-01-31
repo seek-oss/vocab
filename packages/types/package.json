@@ -5,6 +5,9 @@
   "module": "dist/vocab-types.esm.js",
   "author": "SEEK",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "intl-messageformat": "^10.0.0"
   }

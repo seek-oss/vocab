@@ -4,5 +4,8 @@
   "main": "dist/vocab-pseudo-localize.cjs.js",
   "module": "dist/vocab-pseudo-localize.esm.js",
   "author": "SEEK",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "dist"
+  ]
 }

@@ -14,6 +14,9 @@
   "dependencies": {
     "loader-utils": "^2.0.0"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/loader-utils": "^2.0.1"
   }
