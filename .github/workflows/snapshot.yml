@@ -26,7 +26,7 @@ jobs:
       - name: Publish
         uses: seek-oss/changesets-snapshot@v0
         with:
-          pre-publish: yarn build && yarn copy-readme-to-packages
+          pre-publish: yarn build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEEK_OSS_CI_NPM_TOKEN }}
