@@ -32,6 +32,12 @@
       "chunk-name.ts"
     ]
   },
+  "files": [
+    "chunk-name",
+    "dist",
+    "loader",
+    "web"
+  ],
   "dependencies": {
     "@vocab/core": "^1.1.1",
     "@vocab/types": "^1.1.0",
