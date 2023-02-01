@@ -28,6 +28,7 @@
     "lint.tsc": "tsc",
     "release": "yarn build && yarn copy-readme-to-packages && changeset publish",
     "test": "jest",
+    "test:local": "PUPPETEER_EXPERIMENTAL_CHROMIUM_MAC_ARM=1 jest",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
     "start-fixture": "ts-node tests/start-fixture",
     "run-server-fixture": "ts-node tests/run-server-fixture",
@@ -52,9 +53,9 @@
     "@formatjs/intl-locale": "^2.4.13",
     "@manypkg/cli": "^0.16.1",
     "@preconstruct/cli": "^2.0.0",
-    "@types/expect-puppeteer": "^4.4.5",
+    "@types/expect-puppeteer": "^5.0.2",
     "@types/jest": "^29.0.3",
-    "@types/jest-environment-puppeteer": "^4.4.0",
+    "@types/jest-environment-puppeteer": "^5.0.3",
     "@types/puppeteer": "^5.4.0",
     "@types/wait-on": "^5.2.0",
     "@types/webpack-dev-server": "^3.11.1",
@@ -62,13 +63,17 @@
     "eslint-config-seek": "^10.0.0",
     "fast-glob": "^3.2.4",
     "jest": "^29.0.3",
-    "jest-puppeteer": "^4.4.0",
+    "jest-puppeteer": "^6.2.0",
     "prettier": "^2.1.2",
-    "puppeteer": "^5.5.0",
+    "puppeteer": "^16.0.0",
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.1.2",
     "wait-on": "^5.2.0",
     "webpack-dev-server": "^3.11.0"
+  },
+  "volta": {
+    "node": "16.19.0",
+    "yarn": "1.22.19"
   }
 }
