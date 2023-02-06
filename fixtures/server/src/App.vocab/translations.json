@@ -1,6 +1,10 @@
 {
+  "_meta": {
+    "tags": ["shared"]
+  },
   "hello": {
-    "message": "Hello"
+    "message": "Hello",
+    "tags": ["greeting"]
   },
   "world": {
     "message": "world"

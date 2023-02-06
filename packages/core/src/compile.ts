@@ -168,7 +168,7 @@ function serialiseTranslationRuntime(
 export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   const { languages: loadedLanguages, filePath } = loadedTranslation;
 
-  trace('Generating types for', loadedTranslation.filePath);
+  trace('Generating types for', filePath);
   const translationTypes = new Map<string, TranslationTypeInfo>();
 
   let imports = new Set<string>();
@@ -255,7 +255,7 @@ export function watch(config: UserConfig) {
 
     if (targetFile) {
       try {
-        const loadedTranslation = await loadTranslation(
+        const loadedTranslation = loadTranslation(
           { filePath: targetFile, fallbacks: 'all' },
           config,
         );

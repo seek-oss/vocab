@@ -1,9 +1,9 @@
-import FormData from 'form-data';
-import { TranslationsByKey } from './../../types/src/index';
 /* eslint-disable no-console */
+import FormData from 'form-data';
 import type { TranslationsByLanguage } from '@vocab/types';
 import fetch from 'node-fetch';
 import { log, trace } from './logger';
+import { translationsToCsv } from './csv';
 
 function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   const phraseApiToken = process.env.PHRASE_API_TOKEN;
@@ -114,40 +114,57 @@ export async function pullAllTranslations(
   return translations;
 }
 
-export async function pushTranslationsByLocale(
-  contents: TranslationsByKey,
-  locale: string,
-  branch: string,
+export async function pushTranslations(
+  translationsByLanguage: TranslationsByLanguage,
+  { devLanguage, branch }: { devLanguage: string; branch: string },
 ) {
   const formData = new FormData();
-  const fileContents = Buffer.from(JSON.stringify(contents));
+  const { csvString, localeMapping, keyIndex, commentIndex, tagColumn } =
+    translationsToCsv(translationsByLanguage, devLanguage);
+  const fileContents = Buffer.from(csvString);
   formData.append('file', fileContents, {
-    contentType: 'application/json',
-    filename: `${locale}.json`,
+    contentType: 'text/csv',
+    filename: `translations.csv`,
   });
 
-  formData.append('file_format', 'json');
-  formData.append('locale_id', locale);
+  formData.append('file_format', 'csv');
   formData.append('branch', branch);
   formData.append('update_translations', 'true');
 
-  log('Starting to upload:', locale, '\n');
+  for (const [locale, index] of Object.entries(localeMapping)) {
+    formData.append(`locale_mapping[${locale}]`, index);
+  }
 
-  const { id } = await callPhrase<{ id: string }>(`uploads`, {
+  formData.append('format_options[key_index]', keyIndex);
+  formData.append('format_options[comment_index]', commentIndex);
+  formData.append('format_options[tag_column]', tagColumn);
+  formData.append('format_options[enable_pluralization]', 'false');
+
+  log('Uploading translations');
+
+  const res = await callPhrase<{ id?: string }>(`uploads`, {
     method: 'POST',
     body: formData,
   });
-  log('Upload ID:', id, '\n');
-  log('Successfully Uploaded:', locale, '\n');
 
-  return { uploadId: id };
+  trace('Upload result:\n', res);
+
+  // TODO: Figure out error handling
+  const { id } = res;
+  if (id) {
+    log('Upload ID:', id, '\n');
+    log('Successfully Uploaded\n');
+  } else {
+    log('Error uploading');
+    throw new Error('Error uploading');
+  }
+
+  return {
+    uploadId: id,
+  };
 }
 
-export async function deleteUnusedKeys(
-  uploadId: string,
-  locale: string,
-  branch: string,
-) {
+export async function deleteUnusedKeys(uploadId: string, branch: string) {
   const query = `unmentioned_in_upload:${uploadId}`;
   const { records_affected } = await callPhrase<{ records_affected: number }>(
     'keys',
@@ -156,7 +173,7 @@ export async function deleteUnusedKeys(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ branch, locale_id: locale, q: query }),
+      body: JSON.stringify({ branch, q: query }),
     },
   );
 

@@ -216,4 +216,136 @@ describe('loadTranslation', () => {
       `);
     });
   });
+
+  describe('tags', () => {
+    const filePath = path.join(
+      __dirname,
+      'test-translations/translations.json',
+    );
+
+    const userConfig = {
+      devLanguage: 'fr',
+      languages: [{ name: 'fr' }, { name: 'en' }],
+    };
+
+    describe('when withTags is true', () => {
+      it('should load translations with tags, ignoring tags in languages that are not the dev language', () => {
+        const translations = loadTranslation(
+          { filePath, fallbacks: 'all', withTags: true },
+          userConfig,
+        );
+
+        expect(translations.metadata).toMatchInlineSnapshot(`
+          {
+            "tags": [
+              "shared tag 1",
+              "shared tag 2",
+            ],
+          }
+        `);
+
+        expect(translations.languages.fr).toMatchInlineSnapshot(`
+          {
+            "Good morning": {
+              "message": "Good morning in French",
+              "tags": [
+                "tag 2",
+                "tag 3",
+              ],
+            },
+            "Goodbye": {
+              "message": "Goodbye in French",
+              "tags": undefined,
+            },
+            "Hello": {
+              "message": "Hello in French",
+              "tags": undefined,
+            },
+            "Welcome": {
+              "message": "Welcome in French",
+              "tags": [
+                "tag 1",
+                "tag 2",
+              ],
+            },
+          }
+        `);
+        expect(translations.languages.en).toMatchInlineSnapshot(`
+          {
+            "Good morning": {
+              "message": "Good morning in French",
+            },
+            "Goodbye": {
+              "description": undefined,
+              "message": "Goodbye",
+            },
+            "Hello": {
+              "description": undefined,
+              "message": "Hello",
+            },
+            "Welcome": {
+              "description": undefined,
+              "message": "Welcome",
+            },
+          }
+        `);
+      });
+    });
+
+    describe('when withTags is false', () => {
+      it('should load translations without tags', () => {
+        const translations = loadTranslation(
+          { filePath, fallbacks: 'all', withTags: false },
+          userConfig,
+        );
+
+        expect(translations.metadata).toMatchInlineSnapshot(`
+          {
+            "tags": undefined,
+          }
+        `);
+
+        expect(translations.languages.fr).toMatchInlineSnapshot(`
+          {
+            "Good morning": {
+              "message": "Good morning in French",
+              "tags": undefined,
+            },
+            "Goodbye": {
+              "message": "Goodbye in French",
+              "tags": undefined,
+            },
+            "Hello": {
+              "message": "Hello in French",
+              "tags": undefined,
+            },
+            "Welcome": {
+              "message": "Welcome in French",
+              "tags": undefined,
+            },
+          }
+        `);
+        expect(translations.languages.en).toMatchInlineSnapshot(`
+          {
+            "Good morning": {
+              "message": "Good morning in French",
+              "tags": undefined,
+            },
+            "Goodbye": {
+              "description": undefined,
+              "message": "Goodbye",
+            },
+            "Hello": {
+              "description": undefined,
+              "message": "Hello",
+            },
+            "Welcome": {
+              "description": undefined,
+              "message": "Welcome",
+            },
+          }
+        `);
+      });
+    });
+  });
 });

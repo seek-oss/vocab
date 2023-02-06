@@ -108,17 +108,39 @@ export interface UserConfig {
    */
   ignore?: Array<string>;
 }
+
+// TODO: Is this the correct type for tags? Do we do key:value, or comma separated string?
+// Of note is the fact that phrase doesn't like colon characters in tag names, so the natural
+// representation of a key value tag isn't valid, it gets normalized to `key_value`
+export type Tags = Array<string>;
+
+export interface TranslationFileMetadata {
+  tags?: Tags;
+}
+
 export interface TranslationData {
   message: TranslationMessage;
   description?: string;
+  tags?: Tags;
 }
+
 export type TranslationsByKey<Key extends TranslationKey = string> = Record<
   Key,
   TranslationData
 >;
+
+// TODO: Do we expose this const from the types package? It would be useful IMO, would avoid hardcoding
+// `_meta` in code
+const translationFileMatadataField = '_meta';
+
+export type TranslationFileContents = TranslationsByKey &
+  Partial<Record<typeof translationFileMatadataField, TranslationFileMetadata>>;
+
 export type TranslationMessagesByKey<Key extends TranslationKey = string> =
   Record<Key, TranslationMessage>;
 
+// TODO: This could be generic over the tags type
+// TODO: Phrase integration is the only place that uses this type
 export type TranslationsByLanguage<Key extends TranslationKey = string> =
   Record<LanguageName, TranslationsByKey<Key>>;
 
@@ -128,4 +150,5 @@ export type LoadedTranslation<Key extends TranslationKey = string> = {
   filePath: string;
   relativePath: string;
   languages: TranslationsByLanguage<Key>;
+  metadata: TranslationFileMetadata;
 };

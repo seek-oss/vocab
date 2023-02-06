@@ -82,8 +82,21 @@ describe('pull translations', () => {
       ).toMatchInlineSnapshot(`
         [
           {
+            "_meta": {
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
             "hello": {
               "message": "Hi there",
+              "tags": [
+                "only for this key",
+                "greeting",
+              ],
             },
             "world": {
               "message": "world",
@@ -153,8 +166,21 @@ describe('pull translations', () => {
       ).toMatchInlineSnapshot(`
         [
           {
+            "_meta": {
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
             "hello": {
               "message": "Hi there",
+              "tags": [
+                "only for this key",
+                "greeting",
+              ],
             },
             "world": {
               "message": "world",
