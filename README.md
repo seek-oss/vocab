@@ -426,9 +426,9 @@ $ vocab compile --watch
 
 Vocab can be used to synchronize your translations with translations from a remote translation platform.
 
-| Platform | Environment Variables              |
-| -------- | ---------------------------------- |
-| [Phrase] | PHRASE_PROJECT_ID, PHRASE_APITOKEN |
+| Platform | Environment Variables               |
+| -------- | ----------------------------------- |
+| [Phrase] | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
 
 ```bash
 $ vocab push --branch my-branch
@@ -504,7 +504,7 @@ Tags on keys in other languages will be ignored.
 
 ### Problem: Passed locale is being ignored or using en-US instead
 
-When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intlinternationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
+When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intl_internationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
 See Node's documentation on [Options for building Node.js](https://nodejs.org/api/intl.html#intl_options_for_building_node_js) for information on ensuring Node has the locales you need.
 
 ### License
