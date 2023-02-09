@@ -142,25 +142,32 @@ export async function pushTranslations(
 
   log('Uploading translations');
 
-  const res = await callPhrase<{ id?: string }>(`uploads`, {
+  const result = await callPhrase<
+    | {
+        id: string;
+      }
+    | {
+        message: string;
+        errors: Array<unknown>;
+      }
+  >(`uploads`, {
     method: 'POST',
     body: formData,
   });
 
-  trace('Upload result:\n', res);
+  trace('Upload result:\n', result);
 
-  // TODO: Figure out error handling
-  const { id } = res;
-  if (id) {
-    log('Upload ID:', id, '\n');
+  if ('id' in result) {
+    log('Upload ID:', result.id, '\n');
     log('Successfully Uploaded\n');
   } else {
-    log('Error uploading');
+    log(`Error uploading: ${result?.message}\n`);
+    log('Response:', result);
     throw new Error('Error uploading');
   }
 
   return {
-    uploadId: id,
+    uploadId: result.id,
   };
 }
 
