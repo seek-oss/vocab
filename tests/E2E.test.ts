@@ -4,6 +4,7 @@ import {
   startFixture,
   runServerFixture,
   TestServer,
+  getLanguageChunk,
 } from './helpers';
 
 describe('E2E', () => {
@@ -102,6 +103,24 @@ describe('E2E', () => {
       const message = await page.waitForSelector('#special-characters');
 
       await expect(message).toMatch('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
+    });
+
+    it('should return the expected en chunk', async () => {
+      expect(
+        await getLanguageChunk({ serverUrl: server.url, language: 'en' }),
+      ).toMatchSnapshot();
+    });
+
+    it('should return the expected fr chunk', async () => {
+      expect(
+        await getLanguageChunk({ serverUrl: server.url, language: 'fr' }),
+      ).toMatchSnapshot();
+    });
+
+    it('should return the expected pseudo chunk', async () => {
+      expect(
+        await getLanguageChunk({ serverUrl: server.url, language: 'pseudo' }),
+      ).toMatchSnapshot();
     });
 
     afterAll(() => {

@@ -95,3 +95,16 @@ export const getAppSnapshot = async (
 
   return { sourceHtml, clientRenderContent };
 };
+
+export const getLanguageChunk = async ({
+  serverUrl,
+  language,
+}: {
+  serverUrl: string;
+  language: string;
+}) => {
+  const response = await page.goto(`${serverUrl}/${language}-translations.js`);
+  const source = await response?.text();
+
+  return source;
+};

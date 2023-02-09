@@ -66,7 +66,10 @@ export async function pull(
       };
     }
 
-    defaultValues._meta = loadedTranslation.metadata;
+    // Only write a `_meta` field if necessary
+    if (Object.keys(loadedTranslation.metadata).length > 0) {
+      defaultValues._meta = loadedTranslation.metadata;
+    }
 
     await writeFile(
       loadedTranslation.filePath,
