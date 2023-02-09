@@ -422,25 +422,89 @@ Or to re-run the compiler when files change use:
 $ vocab compile --watch
 ```
 
-## External translation tooling
+## External Translation Tooling
 
 Vocab can be used to synchronize your translations with translations from a remote translation platform.
 
-| Platform                                     | Environment Variables               |
-| -------------------------------------------- | ----------------------------------- |
-| [Phrase](https://developers.phrase.com/api/) | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
+| Platform | Environment Variables              |
+| -------- | ---------------------------------- |
+| [Phrase] | PHRASE_PROJECT_ID, PHRASE_APITOKEN |
 
 ```bash
 $ vocab push --branch my-branch
-$ vocab push --branch my-branch --delete-unused-keys
 $ vocab pull --branch my-branch
 ```
+
+### [Phrase] Platform Features
+
+#### Delete Unused keys
+
+When uploading translations, Phrase identifies keys that exist in the Phrase project, but were not
+referenced in the upload. These keys can be deleted from Phrase by providing the
+`---delete-unused-keys` flag to `vocab push`. E.g.
+
+```sh
+$ vocab push --branch my-branch --delete-unused-keys
+```
+
+**NOTE**: Please ensure your default branch is protected and that you perform this operation on a
+separate branch to your default branch.
+
+[phrase]: https://developers.phrase.com/api/
+
+#### [Tags]
+
+`vocab push` supports uploading [tags] to Phrase.
+
+Tags can be added to an individual key via the `tags` property:
+
+```jsonc
+// translations.json
+{
+  "Hello": {
+    "message": "Hello",
+    "tags": ["greeting", "home_page"]
+  },
+  "Goodbye": {
+    "message": "Goodbye",
+    "tags": ["home_page"]
+  }
+}
+```
+
+Tags can also be added under a top-level `_meta` field. This will result in the tags applying to all
+keys specified in the file:
+
+```jsonc
+// translations.json
+{
+  "_meta": {
+    "tags": ["home_page"]
+  },
+  "Hello": {
+    "message": "Hello",
+    "tags": ["greeting"]
+  },
+  "Goodbye": {
+    "message": "Goodbye"
+  }
+}
+```
+
+In the above example, both the `Hello` and `Goodbye` keys would have the `home_page` tag attached to
+them, but only the `Hello` key would have the `usage_greeting` tag attached to it.
+
+**NOTE**: Only tags specified on keys in your [`devLanguage`][configuration] will be uploaded.
+Tags on keys in other languages will be ignored.
+
+[tags]: https://support.phrase.com/hc/en-us/articles/5822598372252-Tags-Strings-
+[configuration]: #Configuration
 
 ## Troubleshooting
 
 ### Problem: Passed locale is being ignored or using en-US instead
 
-When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intl_internationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
+When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intlinternationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
 See Node's documentation on [Options for building Node.js](https://nodejs.org/api/intl.html#intl_options_for_building_node_js) for information on ensuring Node has the locales you need.
 
 ### License

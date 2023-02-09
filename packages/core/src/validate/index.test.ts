@@ -17,7 +17,9 @@ const testCases: Array<TestCase> = [
       keys: ['key1', 'key2'],
       relativePath: 'some-file.json',
       languages: {
-        en: { key1: { message: 'Hi' } },
+        en: {
+          key1: { message: 'Hi', tags: ['greeting'] },
+        },
         th: { key1: { message: 'Bye' } },
       },
       metadata: { tags: ['foo', 'bar'] },
