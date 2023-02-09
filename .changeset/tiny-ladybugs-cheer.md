@@ -1,10 +1,10 @@
 ---
 '@vocab/phrase': minor
+'@vocab/cli': minor
 ---
 
 Support uploading tags to Phrase
 
-The `push` API now supports uploading [tags] to Phrase.
 Tags can be added to an individual key via the `tags` property:
 
 ```jsonc
