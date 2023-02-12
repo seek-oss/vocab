@@ -447,9 +447,6 @@ referenced in the upload. These keys can be deleted from Phrase by providing the
 $ vocab push --branch my-branch --delete-unused-keys
 ```
 
-**NOTE**: Please ensure your default branch is protected and that you perform this operation on a
-separate branch to your default branch.
-
 [phrase]: https://developers.phrase.com/api/
 
 #### [Tags]
