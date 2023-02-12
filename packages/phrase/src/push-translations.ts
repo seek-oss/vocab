@@ -1,7 +1,4 @@
-import {
-  TranslationData,
-  TranslationsByLanguage,
-} from './../../types/src/index';
+import type { TranslationData, TranslationsByLanguage } from '@vocab/types';
 
 import {
   ensureBranch,
