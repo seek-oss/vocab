@@ -1,5 +1,6 @@
 import { stringify } from 'csv-stringify/sync';
 import type { TranslationsByLanguage } from '@vocab/types';
+import assert from 'node:assert';
 
 export function translationsToCsv(
   translations: TranslationsByLanguage,
@@ -7,6 +8,12 @@ export function translationsToCsv(
 ) {
   const languages = Object.keys(translations);
   const altLanguages = languages.filter((language) => language !== devLanguage);
+  // Ensure languages are ordered for locale mapping
+  const orderedLanguages = [devLanguage, ...altLanguages];
+  assert(
+    languages.length === orderedLanguages.length,
+    'Unexpected number of orderered languages',
+  );
 
   const devLanguageTranslations = translations[devLanguage];
 
@@ -25,8 +32,6 @@ export function translationsToCsv(
     },
   );
 
-  // Not spreading `languages` to ensure correct ordering of dev language first
-  // then alt languages
   const csvString = stringify(csv, {
     delimiter: ',',
     header: false,
@@ -34,9 +39,9 @@ export function translationsToCsv(
 
   // Column indices start at 1
   const localeMapping = Object.fromEntries(
-    languages.map((language, index) => [language, index + 1]),
+    orderedLanguages.map((language, index) => [language, index + 1]),
   );
-  const keyIndex = languages.length + 1;
+  const keyIndex = orderedLanguages.length + 1;
   const commentIndex = keyIndex + 1;
   const tagColumn = commentIndex + 1;
 
