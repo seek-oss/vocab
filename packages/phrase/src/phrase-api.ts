@@ -124,7 +124,7 @@ export async function pushTranslations(
   const fileContents = Buffer.from(csvString);
   formData.append('file', fileContents, {
     contentType: 'text/csv',
-    filename: `translations.csv`,
+    filename: 'translations.csv',
   });
 
   formData.append('file_format', 'csv');
@@ -150,6 +150,7 @@ export async function pushTranslations(
         message: string;
         errors: Array<unknown>;
       }
+    | undefined
   >(`uploads`, {
     method: 'POST',
     body: formData,
@@ -157,7 +158,7 @@ export async function pushTranslations(
 
   trace('Upload result:\n', result);
 
-  if ('id' in result) {
+  if (result && 'id' in result) {
     log('Upload ID:', result.id, '\n');
     log('Successfully Uploaded\n');
   } else {
