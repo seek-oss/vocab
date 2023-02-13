@@ -1,13 +1,13 @@
 {
   "name": "@vocab/phrase",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "dist/vocab-phrase.cjs.js",
   "module": "dist/vocab-phrase.esm.js",
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {
-    "@vocab/core": "^1.0.0",
-    "@vocab/types": "^1.0.0",
+    "@vocab/core": "^1.2.0",
+    "@vocab/types": "^1.1.2",
     "chalk": "^4.1.0",
     "csv-stringify": "^6.2.3",
     "debug": "^4.3.1",

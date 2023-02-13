@@ -1,5 +1,16 @@
 # @vocab/webpack
 
+## 1.1.2
+
+### Patch Changes
+
+- [`fc74024`](https://github.com/seek-oss/vocab/commit/fc74024a375b442f77d0e32aeb4a188a0315a52f) [#99](https://github.com/seek-oss/vocab/pull/99) Thanks [@askoufis](https://github.com/askoufis)! - Exclude source files from package build
+
+- Updated dependencies [[`30d643d`](https://github.com/seek-oss/vocab/commit/30d643d4f1e7034a862b10c9764fa9bb31251b80), [`fc74024`](https://github.com/seek-oss/vocab/commit/fc74024a375b442f77d0e32aeb4a188a0315a52f)]:
+  - @vocab/core@1.2.0
+  - @vocab/types@1.1.2
+  - virtual-resource-loader@1.0.1
+
 ## 1.1.1
 
 ### Patch Changes
