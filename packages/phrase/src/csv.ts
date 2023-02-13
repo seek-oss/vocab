@@ -1,6 +1,5 @@
 import { stringify } from 'csv-stringify/sync';
 import type { TranslationsByLanguage } from '@vocab/types';
-import assert from 'node:assert';
 
 export function translationsToCsv(
   translations: TranslationsByLanguage,
@@ -10,10 +9,6 @@ export function translationsToCsv(
   const altLanguages = languages.filter((language) => language !== devLanguage);
   // Ensure languages are ordered for locale mapping
   const orderedLanguages = [devLanguage, ...altLanguages];
-  assert(
-    languages.length === orderedLanguages.length,
-    'Unexpected number of orderered languages',
-  );
 
   const devLanguageTranslations = translations[devLanguage];
 
