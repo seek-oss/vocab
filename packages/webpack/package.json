@@ -1,6 +1,6 @@
 {
   "name": "@vocab/webpack",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "exports": {
@@ -39,13 +39,13 @@
     "web"
   ],
   "dependencies": {
-    "@vocab/core": "^1.1.1",
-    "@vocab/types": "^1.1.0",
+    "@vocab/core": "^1.2.0",
+    "@vocab/types": "^1.1.2",
     "chalk": "^4.1.0",
     "debug": "^4.3.1",
     "json-loader": "^0.5.7",
     "loader-utils": "^2.0.0",
-    "virtual-resource-loader": "^1.0.0"
+    "virtual-resource-loader": "^1.0.1"
   },
   "devDependencies": {
     "@types/loader-utils": "^2.0.1"

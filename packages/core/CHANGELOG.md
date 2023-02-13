@@ -1,5 +1,47 @@
 # @vocab/core
 
+## 1.2.0
+
+### Minor Changes
+
+- [`30d643d`](https://github.com/seek-oss/vocab/commit/30d643d4f1e7034a862b10c9764fa9bb31251b80) [#101](https://github.com/seek-oss/vocab/pull/101) Thanks [@askoufis](https://github.com/askoufis)! - `loadTranslation`, `loadAllTranslations`: Support loading translations with or without tags
+
+  [Tags] can be conditionally loaded alongside translations by specifying the appropriate `withTags` value.
+  By default, tags will not be loaded. Tags will also never be loaded for non-dev languages.
+
+  **EXAMPLE USAGE**:
+
+  ```tsx
+  import type { UserConfig } from '@vocab/types';
+  import { loadTranslation, loadAllTranslations } from '@vocab/core';
+
+  const userConfig: UserConfig = {
+    devLanguage: 'en',
+    languages: [{ name: 'en' }, { name: 'th' }],
+  };
+
+  const translations = loadTranslation(
+    {
+      filePath: '/path/to/translations.json',
+      fallbacks: 'valid',
+      withTags: true,
+    },
+    userConfig,
+  );
+
+  const allTranslations = loadAllTranslations(
+    { fallbacks: 'valid', includeNodeModules: false, withTags: true },
+    userConfig,
+  );
+  ```
+
+  [tags]: https://github.com/seek-oss/vocab#tags
+
+### Patch Changes
+
+- Updated dependencies [[`fc74024`](https://github.com/seek-oss/vocab/commit/fc74024a375b442f77d0e32aeb4a188a0315a52f)]:
+  - @vocab/types@1.1.2
+
 ## 1.1.2
 
 ### Patch Changes
