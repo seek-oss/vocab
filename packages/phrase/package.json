@@ -9,14 +9,15 @@
     "@vocab/core": "^1.0.0",
     "@vocab/types": "^1.0.0",
     "chalk": "^4.1.0",
+    "csv-stringify": "^6.2.3",
     "debug": "^4.3.1",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1"
   },
-  "files": [
-    "dist"
-  ],
   "devDependencies": {
     "@types/node-fetch": "^2.5.7"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

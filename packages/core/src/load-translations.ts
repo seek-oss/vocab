@@ -1,12 +1,14 @@
 import path from 'path';
 
 import glob from 'fast-glob';
-import {
+import type {
   TranslationsByKey,
   UserConfig,
   LoadedTranslation,
   LanguageTarget,
   LanguageName,
+  TranslationFileMetadata,
+  TranslationFileContents,
 } from '@vocab/types';
 import chalk from 'chalk';
 
@@ -141,48 +143,81 @@ function printValidationError(...params: unknown[]) {
 }
 
 function getTranslationsFromFile(
-  translations: unknown,
-  { isAltLanguage, filePath }: { isAltLanguage: boolean; filePath: string },
-): { $namespace: unknown; keys: TranslationsByKey } {
-  if (!translations || typeof translations !== 'object') {
+  translationFileContents: unknown,
+  {
+    isAltLanguage,
+    filePath,
+    withTags,
+  }: { isAltLanguage: boolean; filePath: string; withTags?: boolean },
+): {
+  $namespace: unknown;
+  keys: TranslationsByKey;
+  metadata: TranslationFileMetadata;
+} {
+  if (!translationFileContents || typeof translationFileContents !== 'object') {
     throw new Error(
-      `Unable to read translation file ${filePath}. Translations must be an object`,
+      `Unable to read translation file ${filePath}. Translations must be an object.`,
     );
   }
-  const { $namespace, ...keys } = translations as TranslationsByKey;
+
+  const { $namespace, _meta, ...keys } =
+    translationFileContents as TranslationFileContents;
+
   if (isAltLanguage && $namespace) {
     printValidationError(
       `Found $namespace in alt language file in ${filePath}. $namespace is only used in the dev language and will be ignored.`,
     );
   }
+
   if (!isAltLanguage && $namespace && typeof $namespace !== 'string') {
     printValidationError(
       `Found non-string $namespace in language file in ${filePath}. $namespace must be a string.`,
     );
   }
+
+  if (isAltLanguage && _meta?.tags) {
+    printValidationError(
+      `Found _meta.tags in alt language file in ${filePath}. _meta.tags is only used in the dev language and will be ignored.`,
+    );
+  }
+
+  // Never return tags if we're fetching translations for an alt language
+  const includeTags = !isAltLanguage && withTags;
   const validKeys: TranslationsByKey = {};
-  for (const [translationKey, translation] of Object.entries(keys)) {
+
+  for (const [translationKey, { tags, ...translation }] of Object.entries(
+    keys,
+  )) {
     if (typeof translation === 'string') {
       printValidationError(
         `Found string for a translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
+
     if (!translation) {
       printValidationError(
         `Found empty translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
+
     if (!translation.message || typeof translation.message !== 'string') {
       printValidationError(
         `No message found for translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
       );
       continue;
     }
-    validKeys[translationKey] = translation;
+
+    validKeys[translationKey] = {
+      ...translation,
+      tags: includeTags ? tags : undefined,
+    };
   }
-  return { $namespace, keys: validKeys };
+
+  const metadata = { tags: includeTags ? _meta?.tags : undefined };
+
+  return { $namespace, keys: validKeys, metadata };
 }
 
 export function loadAltLanguageFile(
@@ -251,13 +286,21 @@ export function loadAltLanguageFile(
   return altLanguageTranslation;
 }
 
+function stripTagsFromTranslations(translations: TranslationsByKey) {
+  return Object.fromEntries(
+    Object.entries(translations).map(([key, { tags, ...rest }]) => [key, rest]),
+  );
+}
+
 export function loadTranslation(
   {
     filePath,
     fallbacks,
+    withTags,
   }: {
     filePath: string;
     fallbacks: Fallback;
+    withTags?: boolean;
   },
   userConfig: UserConfig,
 ): LoadedTranslation {
@@ -276,13 +319,15 @@ export function loadTranslation(
     userConfig.projectRoot || process.cwd(),
     filePath,
   );
-  const { $namespace, keys: devTranslation } = getTranslationsFromFile(
-    translationContent,
-    {
-      filePath,
-      isAltLanguage: false,
-    },
-  );
+  const {
+    $namespace,
+    keys: devTranslation,
+    metadata,
+  } = getTranslationsFromFile(translationContent, {
+    filePath,
+    isAltLanguage: false,
+    withTags,
+  });
   const namespace: string =
     typeof $namespace === 'string'
       ? $namespace
@@ -291,13 +336,17 @@ export function loadTranslation(
   trace(`Found file ${filePath}. Using namespace ${namespace}`);
 
   languageSet[userConfig.devLanguage] = devTranslation;
+
+  const devTranslationNoTags = withTags
+    ? stripTagsFromTranslations(devTranslation)
+    : devTranslation;
   const altLanguages = getAltLanguages(userConfig);
   for (const languageName of altLanguages) {
     languageSet[languageName] = loadAltLanguageFile(
       {
         filePath,
         languageName,
-        devTranslation,
+        devTranslation: devTranslationNoTags,
         fallbacks,
       },
       userConfig,
@@ -321,6 +370,7 @@ export function loadTranslation(
     namespace,
     relativePath,
     languages: languageSet,
+    metadata,
   };
 }
 
@@ -328,7 +378,8 @@ export async function loadAllTranslations(
   {
     fallbacks,
     includeNodeModules,
-  }: { fallbacks: Fallback; includeNodeModules: boolean },
+    withTags,
+  }: { fallbacks: Fallback; includeNodeModules: boolean; withTags?: boolean },
   config: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
   const { projectRoot, ignore = [] } = config;
@@ -343,10 +394,12 @@ export async function loadAllTranslations(
 
   const result = await Promise.all(
     translationFiles.map((filePath) =>
-      loadTranslation({ filePath, fallbacks }, config),
+      loadTranslation({ filePath, fallbacks, withTags }, config),
     ),
   );
-  const keys = new Set();
+
+  const keys = new Set<string>();
+
   for (const loadedTranslation of result) {
     for (const key of loadedTranslation.keys) {
       const uniqueKey = getUniqueKey(key, loadedTranslation.namespace);

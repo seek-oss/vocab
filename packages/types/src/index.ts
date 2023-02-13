@@ -108,14 +108,28 @@ export interface UserConfig {
    */
   ignore?: Array<string>;
 }
+
+export type Tags = Array<string>;
+
+export interface TranslationFileMetadata {
+  tags?: Tags;
+}
+
 export interface TranslationData {
   message: TranslationMessage;
   description?: string;
+  tags?: Tags;
 }
+
 export type TranslationsByKey<Key extends TranslationKey = string> = Record<
   Key,
   TranslationData
 >;
+
+export type TranslationFileContents = TranslationsByKey & {
+  _meta?: TranslationFileMetadata;
+};
+
 export type TranslationMessagesByKey<Key extends TranslationKey = string> =
   Record<Key, TranslationMessage>;
 
@@ -128,4 +142,5 @@ export type LoadedTranslation<Key extends TranslationKey = string> = {
   filePath: string;
   relativePath: string;
   languages: TranslationsByLanguage<Key>;
+  metadata: TranslationFileMetadata;
 };

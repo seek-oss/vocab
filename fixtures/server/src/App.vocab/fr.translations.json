@@ -1,6 +1,10 @@
 {
+  "_meta": {
+    "tags": ["ignore"]
+  },
   "hello": {
-    "message": "Bonjour"
+    "message": "Bonjour",
+    "tags": ["also ignored"]
   },
   "world": {
     "message": "monde"

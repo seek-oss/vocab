@@ -7,7 +7,7 @@ import {
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
-import type { UserConfig } from '@vocab/types';
+import type { TranslationFileContents, UserConfig } from '@vocab/types';
 
 import { pullAllTranslations, ensureBranch } from './phrase-api';
 import { trace } from './logger';
@@ -43,7 +43,7 @@ export async function pull(
   }
 
   const allVocabTranslations = await loadAllTranslations(
-    { fallbacks: 'none', includeNodeModules: false },
+    { fallbacks: 'none', includeNodeModules: false, withTags: true },
     config,
   );
 
@@ -54,7 +54,7 @@ export async function pull(
       throw new Error('No dev language translations loaded');
     }
 
-    const defaultValues = { ...devTranslations };
+    const defaultValues: TranslationFileContents = { ...devTranslations };
     const localKeys = Object.keys(defaultValues);
 
     for (const key of localKeys) {
@@ -65,6 +65,12 @@ export async function pull(
         ],
       };
     }
+
+    // Only write a `_meta` field if necessary
+    if (Object.keys(loadedTranslation.metadata).length > 0) {
+      defaultValues._meta = loadedTranslation.metadata;
+    }
+
     await writeFile(
       loadedTranslation.filePath,
       `${JSON.stringify(defaultValues, null, 2)}\n`,
