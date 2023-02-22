@@ -58,13 +58,18 @@ export const startFixture = (
     const compiler = webpack(config);
 
     const port = portCounter++;
-    const server = new WDS(compiler);
+    const server = new WDS({ port }, compiler);
 
     compiler.hooks.done.tap('vocab-test-helper', () => {
-      resolve({ url: `http://localhost:${port}`, close: () => server.close() });
+      resolve({
+        url: `http://localhost:${port}`,
+        close: () => server.stopCallback(),
+      });
     });
 
-    server.listen(port);
+    server.startCallback(() => {
+      console.log(`Running fixture ${fixtureName}`);
+    });
   });
 
 export const getAppSnapshot = async (
