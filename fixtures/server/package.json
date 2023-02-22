@@ -1,5 +1,5 @@
 {
-  "name": "fixture-server",
+  "name": "@fixtures/server",
   "version": "1.0.0",
   "author": "SEEK",
   "private": true,

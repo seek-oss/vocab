@@ -1,7 +1,7 @@
 #!/usr/bin/env ts-node
-import { runServerFixture } from './helpers';
+import { FixtureName, runServerFixture } from './helpers';
 
-const fixtureName = process.argv[2];
+const fixtureName = process.argv[2] as FixtureName;
 
 runServerFixture(fixtureName).then((server: any) => {
   // eslint-disable-next-line no-console

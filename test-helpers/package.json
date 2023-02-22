@@ -1,0 +1,19 @@
+{
+  "name": "@vocab-private/test-helpers",
+  "private": true,
+  "version": "1.0.0",
+  "author": "SEEK",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@fixtures/direct": "*",
+    "@fixtures/phrase": "*",
+    "@fixtures/server": "*",
+    "@fixtures/simple": "*",
+    "@types/wait-on": "^5.2.0",
+    "@types/webpack-dev-server": "^3.11.1",
+    "wait-on": "^5.2.0",
+    "webpack": "^5.11.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}

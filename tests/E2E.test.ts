@@ -5,7 +5,7 @@ import {
   runServerFixture,
   TestServer,
   getLanguageChunk,
-} from './helpers';
+} from '@vocab-private/test-helpers';
 
 describe('E2E', () => {
   describe('Server with initial render', () => {
@@ -13,7 +13,7 @@ describe('E2E', () => {
 
     beforeAll(async () => {
       const config = resolveConfigSync(
-        require.resolve('fixture-server/vocab.config.js'),
+        require.resolve('@fixtures/server/vocab.config.js'),
       );
 
       if (!config) {
@@ -21,7 +21,7 @@ describe('E2E', () => {
       }
 
       await compile({}, config);
-      server = await runServerFixture('fixture-server');
+      server = await runServerFixture('server');
     });
 
     afterAll(() => {
@@ -52,7 +52,7 @@ describe('E2E', () => {
 
     beforeAll(async () => {
       const config = resolveConfigSync(
-        require.resolve('fixture-simple/vocab.config.js'),
+        require.resolve('@fixtures/simple/vocab.config.js'),
       );
 
       if (!config) {
@@ -60,7 +60,7 @@ describe('E2E', () => {
       }
 
       await compile({}, config);
-      server = await startFixture('fixture-simple');
+      server = await startFixture('simple');
     });
 
     beforeEach(async () => {
@@ -133,7 +133,7 @@ describe('E2E', () => {
 
     beforeAll(async () => {
       const config = resolveConfigSync(
-        require.resolve('fixture-simple/vocab.config.js'),
+        require.resolve('@fixtures/simple/vocab.config.js'),
       );
 
       if (!config) {
@@ -141,7 +141,7 @@ describe('E2E', () => {
       }
 
       await compile({}, config);
-      server = await startFixture('fixture-simple', {
+      server = await startFixture('simple', {
         disableVocabPlugin: true,
       });
     });
@@ -182,7 +182,7 @@ describe('E2E', () => {
 
     beforeAll(async () => {
       const config = resolveConfigSync(
-        require.resolve('fixture-direct/vocab.config.js'),
+        require.resolve('@fixtures/direct/vocab.config.js'),
       );
 
       if (!config) {
@@ -190,7 +190,7 @@ describe('E2E', () => {
       }
 
       await compile({}, config);
-      server = await startFixture('fixture-direct');
+      server = await startFixture('direct');
     });
 
     beforeEach(async () => {
