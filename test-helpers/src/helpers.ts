@@ -18,16 +18,20 @@ export interface TestServer {
 
 let portCounter = 10001;
 
-export const runServerFixture = (fixtureName: string): Promise<TestServer> =>
+export type FixtureName = 'direct' | 'phrase' | 'server' | 'simple';
+
+export const runServerFixture = (
+  fixtureName: FixtureName,
+): Promise<TestServer> =>
   new Promise((resolve) => {
     const port = portCounter++;
-    const getConfig = require(`${fixtureName}/webpack.config.js`);
+    const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig();
     const compiler = webpack(config);
 
     compiler.hooks.done.tap('vocab-test-helper', async () => {
       const cwd = path.dirname(
-        require.resolve(`${fixtureName}/vocab.config.js`),
+        require.resolve(`@fixtures/${fixtureName}/vocab.config.js`),
       );
       const childProcess = spawn('node', ['./dist-server/server.js'], {
         env: { ...process.env, SERVER_PORT: port.toString() },
@@ -49,11 +53,11 @@ export const runServerFixture = (fixtureName: string): Promise<TestServer> =>
   });
 
 export const startFixture = (
-  fixtureName: string,
+  fixtureName: FixtureName,
   options: Options = {},
 ): Promise<TestServer> =>
   new Promise(async (resolve) => {
-    const getConfig = require(`${fixtureName}/webpack.config.js`);
+    const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig(options);
     const compiler = webpack(config);
 

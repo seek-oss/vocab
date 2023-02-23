@@ -12,13 +12,13 @@
     "url": "git+https://github.com/seek-oss/vocab.git"
   },
   "scripts": {
-    "start.direct": "yarn dev && manypkg run fixture-direct compile && yarn start-fixture fixture-direct",
-    "start.server": "yarn dev && manypkg run fixture-server compile && yarn start-fixture fixture-server",
-    "start.simple": "yarn dev && manypkg run fixture-simple compile && yarn start-fixture fixture-simple",
+    "start.direct": "yarn dev && manypkg run @fixtures/direct compile && yarn start-fixture direct",
+    "start.server": "yarn dev && manypkg run @fixtures/server compile && yarn start-fixture server",
+    "start.simple": "yarn dev && manypkg run @fixtures/simple compile && yarn start-fixture simple",
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",
-    "format": "yarn format.manypkg &&  yarn format.prettier",
+    "format": "yarn format.manypkg && yarn format.prettier",
     "format.manypkg": "manypkg fix",
     "format.prettier": "prettier --write .",
     "lint": "yarn lint.eslint && yarn lint.manypkg && yarn lint.prettier && yarn lint.tsc",
@@ -30,13 +30,14 @@
     "test": "jest",
     "test:local": "PUPPETEER_EXPERIMENTAL_CHROMIUM_MAC_ARM=1 jest",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
-    "start-fixture": "ts-node tests/start-fixture",
-    "run-server-fixture": "ts-node tests/run-server-fixture",
-    "compile-fixtures": "manypkg run fixture-direct compile && manypkg run fixture-simple compile && manypkg run fixture-server compile"
+    "start-fixture": "ts-node test-helpers/src/start-fixture",
+    "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
+    "compile-fixtures": "manypkg run @fixtures/direct compile && manypkg run @fixtures/simple compile && manypkg run @fixtures/server compile"
   },
   "workspaces": [
     "packages/*",
-    "fixtures/*"
+    "fixtures/*",
+    "test-helpers"
   ],
   "preconstruct": {
     "packages": [

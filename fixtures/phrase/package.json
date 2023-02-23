@@ -1,5 +1,5 @@
 {
-  "name": "fixture-phrase",
+  "name": "@fixtures/phrase",
   "description": "A playground reading and writing files for Phrase tests",
   "version": "1.0.0",
   "author": "SEEK",

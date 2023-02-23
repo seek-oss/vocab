@@ -1,0 +1,12 @@
+{
+  "name": "@vocab-private/tests",
+  "private": true,
+  "version": "1.0.0",
+  "author": "SEEK",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@vocab-private": "*",
+    "@vocab/core": "^1.2.0"
+  }
+}
