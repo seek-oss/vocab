@@ -76,6 +76,7 @@
     "webpack": "^5.11.0",
     "webpack-dev-server": "^4.11.1"
   },
+  "packageManager": "pnpm@7.28.0",
   "volta": {
     "node": "16.19.0",
     "yarn": "1.22.19"

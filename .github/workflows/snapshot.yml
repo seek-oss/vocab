@@ -14,19 +14,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          cache: yarn
+          cache: pnpm
           node-version-file: package.json
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Publish
         uses: seek-oss/changesets-snapshot@v0
         with:
-          pre-publish: yarn build
+          pre-publish: pnpm build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEEK_OSS_CI_NPM_TOKEN }}

@@ -12,25 +12,29 @@ jobs:
       CI: true
     steps:
       - name: Check out repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          cache: yarn
+          cache: pnpm
           node-version-file: package.json
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: pnpm build
 
       - name: Compile fixtures
-        run: yarn compile-fixtures
+        run: pnpm compile-fixtures
 
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
 
       - name: Test
-        run: yarn test
+        run: pnpm test
