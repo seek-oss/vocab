@@ -67,6 +67,9 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
+  // @ts-expect-error We define our own loader context type, getOptions expects
+  // webpack's LoaderContext type, but it's missing the target field
+  // https://github.com/webpack/webpack/issues/16753
   const config = getOptions(this) as unknown as UserConfig;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
