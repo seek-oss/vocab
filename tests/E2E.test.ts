@@ -1,4 +1,3 @@
-import { compile, resolveConfigSync } from '@vocab/core';
 import {
   getAppSnapshot,
   startFixture,
@@ -12,15 +11,6 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      const config = resolveConfigSync(
-        require.resolve('@fixtures/server/vocab.config.js'),
-      );
-
-      if (!config) {
-        throw new Error(`Can't resolve "fixture-server" vocab config`);
-      }
-
-      await compile({}, config);
       server = await runServerFixture('server');
     });
 
@@ -51,15 +41,6 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      const config = resolveConfigSync(
-        require.resolve('@fixtures/simple/vocab.config.js'),
-      );
-
-      if (!config) {
-        throw new Error(`Can't resolve "fixture-simple" vocab config`);
-      }
-
-      await compile({}, config);
       server = await startFixture('simple');
     });
 
@@ -132,15 +113,6 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      const config = resolveConfigSync(
-        require.resolve('@fixtures/simple/vocab.config.js'),
-      );
-
-      if (!config) {
-        throw new Error(`Can't resolve "fixture-simple" vocab config`);
-      }
-
-      await compile({}, config);
       server = await startFixture('simple', {
         disableVocabPlugin: true,
       });
@@ -181,15 +153,6 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      const config = resolveConfigSync(
-        require.resolve('@fixtures/direct/vocab.config.js'),
-      );
-
-      if (!config) {
-        throw new Error(`Can't resolve "fixture-direct" vocab config`);
-      }
-
-      await compile({}, config);
       server = await startFixture('direct');
     });
 

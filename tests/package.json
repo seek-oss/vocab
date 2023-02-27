@@ -10,7 +10,6 @@
     "@fixtures/phrase": "*",
     "@fixtures/server": "*",
     "@fixtures/simple": "*",
-    "@vocab-private/test-helpers": "*",
-    "@vocab/core": "*"
+    "@vocab-private/test-helpers": "*"
   }
 }

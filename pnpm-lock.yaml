@@ -326,6 +326,7 @@ importers:
       '@fixtures/simple': '*'
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
+      '@vocab/core': '*'
       wait-on: ^5.2.0
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
@@ -336,6 +337,7 @@ importers:
       '@fixtures/simple': link:../fixtures/simple
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
+      '@vocab/core': link:../packages/core
       wait-on: 5.3.0
       webpack: 5.75.0
       webpack-dev-server: 4.11.1_webpack@5.75.0
@@ -347,14 +349,12 @@ importers:
       '@fixtures/server': '*'
       '@fixtures/simple': '*'
       '@vocab-private/test-helpers': '*'
-      '@vocab/core': '*'
     devDependencies:
       '@fixtures/direct': link:../fixtures/direct
       '@fixtures/phrase': link:../fixtures/phrase
       '@fixtures/server': link:../fixtures/server
       '@fixtures/simple': link:../fixtures/simple
       '@vocab-private/test-helpers': link:../test-helpers
-      '@vocab/core': link:../packages/core
 
 packages:
 
@@ -3567,7 +3567,7 @@ packages:
       '@babel/core': 7.21.0
       find-cache-dir: 3.3.2
       schema-utils: 4.0.0
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@5.0.1
     dev: false
 
   /babel-plugin-istanbul/6.1.1:
@@ -8465,7 +8465,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@5.0.1
 
   /terser/5.16.5:
     resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}
