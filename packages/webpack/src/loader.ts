@@ -20,8 +20,7 @@ interface LoaderContext {
   async: () => (err: unknown, result?: string) => void;
 }
 
-// Workaround to avoid consumers of the loader/webpack plugin having to add
-// virtual-resource-loader as a dependency when not it is not hoisted
+// Resolve virtual-resource-loader dependency from current package
 const virtualResourceLoader = require.resolve('virtual-resource-loader');
 
 const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
