@@ -305,7 +305,6 @@ importers:
       '@vocab/types': ^1.1.2
       chalk: ^4.1.0
       debug: ^4.3.1
-      json-loader: ^0.5.7
       loader-utils: ^2.0.0
       virtual-resource-loader: ^1.0.1
     dependencies:
@@ -313,7 +312,6 @@ importers:
       '@vocab/types': link:../types
       chalk: 4.1.2
       debug: 4.3.4
-      json-loader: 0.5.7
       loader-utils: 2.0.4
       virtual-resource-loader: link:../virtual-resource-loader
     devDependencies:
@@ -3569,7 +3567,7 @@ packages:
       '@babel/core': 7.21.0
       find-cache-dir: 3.3.2
       schema-utils: 4.0.0
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
     dev: false
 
   /babel-plugin-istanbul/6.1.1:
@@ -6665,10 +6663,6 @@ packages:
     resolution: {integrity: sha512-CuUqjv0FUZIdXkHPI8MezCnFCdaTAacej1TZYulLoAg1h/PhwkdXFN4V/gzY4g+fMBCOV2xF+rp7t2XD2ns/NQ==}
     dev: false
 
-  /json-loader/0.5.7:
-    resolution: {integrity: sha512-QLPs8Dj7lnf3e3QYS1zkCo+4ZwqOiF9d/nZnYozTISxXWCfNs9yuky5rJw4/W34s7POaNlbZmQGaB5NiXCbP4w==}
-    dev: false
-
   /json-parse-even-better-errors/2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
 
@@ -8471,7 +8465,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
 
   /terser/5.16.5:
     resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}

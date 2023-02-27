@@ -20,6 +20,10 @@ interface LoaderContext {
   async: () => (err: unknown, result?: string) => void;
 }
 
+// Workaround to avoid consumers of the loader/webpack plugin having to add
+// virtual-resource-loader as a dependency when not it is not hoisted
+const virtualResourceLoader = require.resolve('virtual-resource-loader');
+
 const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
 
 function createIdentifier(
@@ -27,7 +31,7 @@ function createIdentifier(
   resourcePath: string,
   loadedTranslation: LoadedTranslation,
 ) {
-  trace('Creating identifier for language ', lang);
+  trace('Creating identifier for language', lang);
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
@@ -40,10 +44,10 @@ function createIdentifier(
     'base64',
   );
 
-  const unloader = `virtual-resource-loader?source=${base64}`;
+  const unloader = `${virtualResourceLoader}?source=${base64}`;
   const fileIdent = path.basename(resourcePath, 'translations.json');
 
-  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
+  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
 }
 
 const renderLanguageLoaderAsync =
