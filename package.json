@@ -34,12 +34,6 @@
     "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
     "compile-fixtures": "pnpm --filter @fixtures/* compile"
   },
-  "workspaces": [
-    "packages/*",
-    "fixtures/*",
-    "test-helpers",
-    "tests"
-  ],
   "preconstruct": {
     "packages": [
       "packages/*"
