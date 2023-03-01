@@ -20,6 +20,9 @@ interface LoaderContext {
   async: () => (err: unknown, result?: string) => void;
 }
 
+// Resolve virtual-resource-loader dependency from current package
+const virtualResourceLoader = require.resolve('virtual-resource-loader');
+
 const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
 
 function createIdentifier(
@@ -27,7 +30,7 @@ function createIdentifier(
   resourcePath: string,
   loadedTranslation: LoadedTranslation,
 ) {
-  trace('Creating identifier for language ', lang);
+  trace('Creating identifier for language', lang);
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
@@ -40,10 +43,10 @@ function createIdentifier(
     'base64',
   );
 
-  const unloader = `virtual-resource-loader?source=${base64}`;
+  const unloader = `${virtualResourceLoader}?source=${base64}`;
   const fileIdent = path.basename(resourcePath, 'translations.json');
 
-  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!json-loader!`;
+  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
 }
 
 const renderLanguageLoaderAsync =
@@ -67,6 +70,9 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
+  // @ts-expect-error We define our own loader context type, getOptions expects
+  // webpack's LoaderContext type, but it's missing the target field
+  // https://github.com/webpack/webpack/issues/16753
   const config = getOptions(this) as unknown as UserConfig;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);

@@ -10,9 +10,9 @@ node_modules*/
 **/*.vocab/index.ts
 
 .DS_Store
-.npmrc
 *.tgz
 *.tsbuildinfo
 npm-debug.log
 package-lock.json
 yarn-error.log
+yarn.lock

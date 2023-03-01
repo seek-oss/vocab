@@ -7,6 +7,8 @@ import waitOn from 'wait-on';
 
 import { spawn } from 'child_process';
 
+import { compile, resolveConfigSync } from '@vocab/core';
+
 interface Options {
   disableVocabPlugin?: boolean;
 }
@@ -20,10 +22,24 @@ let portCounter = 10001;
 
 export type FixtureName = 'direct' | 'phrase' | 'server' | 'simple';
 
+export const compileFixtureTranslations = async (fixtureName: FixtureName) => {
+  const config = resolveConfigSync(
+    require.resolve(`@fixtures/${fixtureName}/vocab.config.js`),
+  );
+
+  if (!config) {
+    throw new Error(`Can't resolve "@fixtures/${fixtureName}" vocab config`);
+  }
+
+  await compile({ watch: false }, config);
+};
+
 export const runServerFixture = (
   fixtureName: FixtureName,
 ): Promise<TestServer> =>
-  new Promise((resolve) => {
+  new Promise(async (resolve) => {
+    await compileFixtureTranslations(fixtureName);
+
     const port = portCounter++;
     const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig();
@@ -57,6 +73,8 @@ export const startFixture = (
   options: Options = {},
 ): Promise<TestServer> =>
   new Promise(async (resolve) => {
+    await compileFixtureTranslations(fixtureName);
+
     const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig(options);
     const compiler = webpack(config);

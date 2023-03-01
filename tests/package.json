@@ -6,7 +6,6 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@vocab-private": "*",
-    "@vocab/core": "^1.2.0"
+    "@vocab-private/test-helpers": "*"
   }
 }
