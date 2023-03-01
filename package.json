@@ -27,6 +27,7 @@
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc",
     "release": "pnpm build && pnpm copy-readme-to-packages && changeset publish",
+    "version": "changeset version && pnpm install --lockfile-only",
     "test": "jest",
     "test:local": "PUPPETEER_EXPERIMENTAL_CHROMIUM_MAC_ARM=1 jest",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
