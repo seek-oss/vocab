@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Puppeteer
+        uses: actions/cache@v3
+        with:
+          path: .cache
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+
       - name: Build
         run: pnpm build
 
