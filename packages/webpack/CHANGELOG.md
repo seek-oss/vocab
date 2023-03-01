@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.1.3
+
+### Patch Changes
+
+- [`c3c5a05`](https://github.com/seek-oss/vocab/commit/c3c5a056159ff57fca7c9d47c9565785c42490bf) [#104](https://github.com/seek-oss/vocab/pull/104) Thanks [@askoufis](https://github.com/askoufis)! - Remove dependency on `json-loader`, resolve `virtual-resource-loader` before using it in the vocab loader
+
 ## 1.1.2
 
 ### Patch Changes
