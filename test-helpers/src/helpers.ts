@@ -20,7 +20,12 @@ export interface TestServer {
 
 let portCounter = 10001;
 
-export type FixtureName = 'direct' | 'phrase' | 'server' | 'simple';
+export type FixtureName =
+  | 'direct'
+  | 'phrase'
+  | 'server'
+  | 'simple'
+  | 'translation-types';
 
 export const compileFixtureTranslations = async (fixtureName: FixtureName) => {
   const config = resolveConfigSync(
