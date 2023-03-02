@@ -1,0 +1,29 @@
+{
+  "Simple": {
+    "message": "Simple"
+  },
+  "Param": {
+    "message": "Welcome {candidateName}!"
+  },
+  "Tag": {
+    "message": "Foo bar <Bold>baz</Bold>"
+  },
+  "Number": {
+    "message": "I have {numCats, number} cats"
+  },
+  "Date": {
+    "message": "Sale begins {start, date, medium}"
+  },
+  "Time": {
+    "message": "Coupon expires at {expires, time, short}"
+  },
+  "Nested tags": {
+    "message": "The quick <Bold>brown <Italic>fox</Italic></Bold>"
+  },
+  "Plural with nested params": {
+    "message": "{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}"
+  },
+  "Select with nested params": {
+    "message": "{foo, select, a {{bar} a} b {{baz} b} other {c}}"
+  }
+}

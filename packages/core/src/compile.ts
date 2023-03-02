@@ -67,6 +67,15 @@ function extractParamTypes(
       params[element.value] = 'number';
     } else if (isPluralElement(element)) {
       params[element.value] = 'number';
+
+      const children = Object.values(element.options).map((o) => o.value);
+
+      for (const child of children) {
+        const [subParams, subImports] = extractParamTypes(child);
+
+        imports = new Set([...imports, ...subImports]);
+        params = { ...params, ...subParams };
+      }
     } else if (isDateElement(element) || isTimeElement(element)) {
       params[element.value] = 'Date | number';
     } else if (isTagElement(element)) {
