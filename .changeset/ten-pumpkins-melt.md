@@ -14,8 +14,7 @@ ICU [plural type arguments] can contain arguments in their matches:
 }
 ```
 
-These were being parsed incorrectly, resulting in only the top-level plural argument being output
-in the compiled message type:
+These were being parsed incorrectly, resulting in only the top-level plural argument being output in the compiled message type:
 
 ```ts
 // Type error: `foo` and `bar` are not valid arguments
