@@ -11,6 +11,22 @@ export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
 export type ICUFormatResult<T = unknown> = string | T | (string | T);
 
 /**
+ * Equivalent to the `string` type, but tricks the language server into prodiving
+ * suggestions for string literals passed into the `Suggestions` generic parameter
+ *
+ * @example
+ * Accept any string, but suggest specific animals
+ * ```
+ * type AnyAnimal = StringWithSuggestions<"cat" | "dog">
+ * // Suggests cat and dog, but accepts any string
+ * const animal: AnyAnimal = ""
+ * ```
+ */
+export type StringWithSuggestions<Suggestions extends string> =
+  | Suggestions
+  | Omit<string, Suggestions>;
+
+/**
  * ParsedICUMessage A strictly typed formatter from intl-messageformat
  */
 interface ParsedICUMessage<FormatFn extends ParsedFormatFn> {
