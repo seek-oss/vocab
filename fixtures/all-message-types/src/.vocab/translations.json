@@ -20,6 +20,15 @@
   "Nested tags": {
     "message": "The quick <Bold>brown <Italic>fox</Italic></Bold>"
   },
+  "Select": {
+    "message": "{foo, select, a {a} b {b} other {c}}"
+  },
+  "Plural": {
+    "message": "{itemCount, plural, one {# item} other {# items}}"
+  },
+  "Select ordinal": {
+    "message": "It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!"
+  },
   "Plural with nested params": {
     "message": "{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}"
   },
