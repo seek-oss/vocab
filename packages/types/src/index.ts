@@ -17,9 +17,9 @@ export type ICUFormatResult<T = unknown> = string | T | (string | T);
  * @example
  * Accept any string, but suggest specific animals
  * ```
- * type AnyAnimal = StringWithSuggestions<"cat" | "dog">
+ * type AnyAnimal = StringWithSuggestions<"cat" | "dog">;
  * // Suggests cat and dog, but accepts any string
- * const animal: AnyAnimal = ""
+ * const animal: AnyAnimal = "";
  * ```
  */
 export type StringWithSuggestions<Suggestions extends string> =
