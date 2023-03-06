@@ -63,7 +63,7 @@ importers:
   fixtures/all-message-types:
     specifiers:
       '@vocab/cli': ^1.3.0
-      '@vocab/core': ^1.2.1
+      '@vocab/core': ^1.2.2
       '@vocab/types': ^1.1.2
     dependencies:
       '@vocab/cli': link:../../packages/cli
@@ -76,7 +76,7 @@ importers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
       '@vocab/cli': ^1.3.0
-      '@vocab/core': ^1.2.1
+      '@vocab/core': ^1.2.2
       '@vocab/pseudo-localize': ^1.0.1
       '@vocab/types': ^1.1.2
       '@vocab/webpack': ^1.1.3
@@ -122,7 +122,7 @@ importers:
       '@types/react-dom': ^18.0.4
       '@types/start-server-webpack-plugin': ^2.2.0
       '@vocab/cli': ^1.3.0
-      '@vocab/core': ^1.2.1
+      '@vocab/core': ^1.2.2
       '@vocab/pseudo-localize': ^1.0.1
       '@vocab/react': ^1.1.4
       '@vocab/types': ^1.1.2
@@ -165,7 +165,7 @@ importers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
       '@vocab/cli': ^1.3.0
-      '@vocab/core': ^1.2.1
+      '@vocab/core': ^1.2.2
       '@vocab/pseudo-localize': ^1.0.1
       '@vocab/react': ^1.1.4
       '@vocab/types': ^1.1.2
