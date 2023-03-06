@@ -1,6 +1,6 @@
 {
   "name": "@vocab/core",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "dist/vocab-core.cjs.js",
   "module": "dist/vocab-core.esm.js",
   "exports": {
@@ -40,7 +40,7 @@
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",
-    "@vocab/types": "^1.1.2",
+    "@vocab/types": "^1.2.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.4.3",
     "debug": "^4.3.1",

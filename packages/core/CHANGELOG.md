@@ -1,5 +1,24 @@
 # @vocab/core
 
+## 1.2.3
+
+### Patch Changes
+
+- [`fa1d81f`](https://github.com/seek-oss/vocab/commit/fa1d81fb716928a822985e2193bf98ebd422009f) [#121](https://github.com/seek-oss/vocab/pull/121) Thanks [@askoufis](https://github.com/askoufis)! - Add `StringWithSuggestions` utility type
+
+  This type is equivalent to the `string` type, but it tricks the language server into providing suggestions for string literals passed into the `Suggestions` generic parameter.
+
+  **EXAMPLE USAGE**:
+
+  ```ts
+  type AnyAnimal = StringWithSuggestions<'cat' | 'dog'>;
+  // Suggests cat and dog, but accepts any string
+  const animal: AnyAnimal = '';
+  ```
+
+- Updated dependencies [[`fa1d81f`](https://github.com/seek-oss/vocab/commit/fa1d81fb716928a822985e2193bf98ebd422009f)]:
+  - @vocab/types@1.2.0
+
 ## 1.2.2
 
 ### Patch Changes
