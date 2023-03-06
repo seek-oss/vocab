@@ -4,8 +4,7 @@
 
 Add `StringWithSuggestions` utility type
 
-This type is equivalent to the `string` type, but it tricks the language server into prodiving
-suggestions for string literals passed into the `Suggestions` generic parameter.
+This type is equivalent to the `string` type, but it tricks the language server into providing suggestions for string literals passed into the `Suggestions` generic parameter.
 
 **EXAMPLE USAGE**:
 
