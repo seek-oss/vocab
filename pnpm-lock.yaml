@@ -60,6 +60,16 @@ importers:
       typescript: 4.9.5
       webpack: 5.75.0
 
+  fixtures/all-message-types:
+    specifiers:
+      '@vocab/cli': ^1.3.0
+      '@vocab/core': ^1.2.1
+      '@vocab/types': ^1.1.2
+    dependencies:
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/types': link:../../packages/types
+
   fixtures/direct:
     specifiers:
       '@babel/core': ^7.12.0
@@ -183,16 +193,6 @@ importers:
       webpack: 5.75.0
       webpack-dev-server: 4.11.1_webpack@5.75.0
 
-  fixtures/translation-types:
-    specifiers:
-      '@vocab/cli': ^1.3.0
-      '@vocab/core': ^1.2.1
-      '@vocab/types': ^1.1.2
-    dependencies:
-      '@vocab/cli': link:../../packages/cli
-      '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
-
   packages/cli:
     specifiers:
       '@types/env-ci': ^3.1.0
@@ -239,7 +239,7 @@ importers:
       intl-messageformat: ^10.0.0
       prettier: ^2.1.2
     dependencies:
-      '@formatjs/icu-messageformat-parser': 2.1.14
+      '@formatjs/icu-messageformat-parser': 2.3.0
       '@vocab/types': link:../types
       chalk: 4.1.2
       chokidar: 3.5.3
@@ -247,7 +247,7 @@ importers:
       fast-glob: 3.2.12
       fastest-validator: 1.11.1
       find-up: 5.0.0
-      intl-messageformat: 10.2.5
+      intl-messageformat: 10.3.1
       prettier: 2.8.4
     devDependencies:
       '@types/debug': 4.1.7
@@ -287,7 +287,7 @@ importers:
       react: ^18.1.0
     dependencies:
       '@vocab/types': link:../types
-      intl-messageformat: 10.2.5
+      intl-messageformat: 10.3.1
     devDependencies:
       '@types/react': 18.0.9
       react: 18.1.0
@@ -296,7 +296,7 @@ importers:
     specifiers:
       intl-messageformat: ^10.0.0
     dependencies:
-      intl-messageformat: 10.2.5
+      intl-messageformat: 10.3.1
 
   packages/virtual-resource-loader:
     specifiers:
@@ -330,11 +330,11 @@ importers:
 
   test-helpers:
     specifiers:
+      '@fixtures/all-message-types': '*'
       '@fixtures/direct': '*'
       '@fixtures/phrase': '*'
       '@fixtures/server': '*'
       '@fixtures/simple': '*'
-      '@fixtures/translation-types': '*'
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
       '@vocab/core': '*'
@@ -342,11 +342,11 @@ importers:
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
     devDependencies:
+      '@fixtures/all-message-types': link:../fixtures/all-message-types
       '@fixtures/direct': link:../fixtures/direct
       '@fixtures/phrase': link:../fixtures/phrase
       '@fixtures/server': link:../fixtures/server
       '@fixtures/simple': link:../fixtures/simple
-      '@fixtures/translation-types': link:../fixtures/translation-types
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
       '@vocab/core': link:../packages/core
@@ -356,10 +356,10 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/translation-types': '*'
+      '@fixtures/all-message-types': '*'
       '@vocab-private/test-helpers': '*'
     devDependencies:
-      '@fixtures/translation-types': link:../fixtures/translation-types
+      '@fixtures/all-message-types': link:../fixtures/all-message-types
       '@vocab-private/test-helpers': link:../test-helpers
 
 packages:
@@ -1917,14 +1917,14 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@formatjs/fast-memoize/1.2.7:
-    resolution: {integrity: sha512-hPeM5LXUUjtCKPybWOUAWpv8lpja8Xz+uKprFPJcg5F2Rd+/bf1E0UUsLRpaAgOReAf5HMRtoIgv/UcyPICrTQ==}
+  /@formatjs/fast-memoize/1.2.8:
+    resolution: {integrity: sha512-PemNUObyoIZcqdQ1ixTPugzAzhEj7j6AHIyrq/qR6x5BFTvOQeXHYsVZUqBEFduAIscUaDfou+U+xTqOiunJ3Q==}
     dependencies:
       tslib: 2.5.0
     dev: false
 
-  /@formatjs/icu-messageformat-parser/2.1.14:
-    resolution: {integrity: sha512-0KqeVOb72losEhUW+59vhZGGd14s1f35uThfEMVKZHKLEObvJdFTiI3ZQwvTMUCzLEMxnS6mtnYPmG4mTvwd3Q==}
+  /@formatjs/icu-messageformat-parser/2.3.0:
+    resolution: {integrity: sha512-xqtlqYAbfJDF4b6e4O828LBNOWXrFcuYadqAbYORlDRwhyJ2bH+xpUBPldZbzRGUN2mxlZ4Ykhm7jvERtmI8NQ==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.14.3
       '@formatjs/icu-skeleton-parser': 1.3.18
@@ -5800,12 +5800,12 @@ packages:
     resolution: {integrity: sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==}
     engines: {node: '>=10.13.0'}
 
-  /intl-messageformat/10.2.5:
-    resolution: {integrity: sha512-AievYMN6WLLHwBeCTv4aRKG+w3ZNyZtkObwgsKk3Q7GNTq8zDRvDbJSBQkb2OPeVCcAKcIXvak9FF/bRNavoww==}
+  /intl-messageformat/10.3.1:
+    resolution: {integrity: sha512-mqHc6arhbogrdImIsEscdjWnJcg2bvg3MiyGXDsTSGmPbbM2KtRUe7oNgDUbkM3HMn4KbyOct2JyJScmwRgGSQ==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.14.3
-      '@formatjs/fast-memoize': 1.2.7
-      '@formatjs/icu-messageformat-parser': 2.1.14
+      '@formatjs/fast-memoize': 1.2.8
+      '@formatjs/icu-messageformat-parser': 2.3.0
       tslib: 2.5.0
     dev: false
 
