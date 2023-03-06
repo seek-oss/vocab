@@ -1,5 +1,6 @@
 ---
 '@vocab/types': minor
+'@vocab/core': patch
 ---
 
 Add `StringWithSuggestions` utility type
