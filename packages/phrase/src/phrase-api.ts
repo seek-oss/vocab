@@ -32,7 +32,7 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
         'X-Rate-Limit-Remaining',
       )} of ${response.headers.get(
         'X-Rate-Limit-Limit',
-      )} remaining. (${secondsUntilLimitReset} seconds remaining})`,
+      )} remaining. (${secondsUntilLimitReset} seconds remaining)`,
     );
 
     trace('\nLink:', response.headers.get('Link'), '\n');
