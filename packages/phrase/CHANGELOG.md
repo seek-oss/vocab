@@ -1,5 +1,11 @@
 # @vocab/phrase
 
+## 1.2.1
+
+### Patch Changes
+
+- [`b39462c`](https://github.com/seek-oss/vocab/commit/b39462c6782948de8620f365440fffa91ddb3eec) [#124](https://github.com/seek-oss/vocab/pull/124) Thanks [@jahredhope](https://github.com/jahredhope)! - Display the remaining seconds in the rate limit relative to now.
+
 ## 1.2.0
 
 ### Minor Changes
