@@ -22,15 +22,19 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
     },
   }).then(async (response) => {
     console.log(`${path}: ${response.status} - ${response.statusText}`);
+
+    const secondsUntilLimitReset = Math.ceil(
+      Number.parseFloat(response.headers.get('X-Rate-Limit-Reset') || '0') -
+        Date.now() / 1000,
+    );
     console.log(
       `Rate Limit: ${response.headers.get(
         'X-Rate-Limit-Remaining',
       )} of ${response.headers.get(
         'X-Rate-Limit-Limit',
-      )} remaining. (${response.headers.get(
-        'X-Rate-Limit-Reset',
-      )} seconds remaining})`,
+      )} remaining. (${secondsUntilLimitReset} seconds remaining})`,
     );
+
     trace('\nLink:', response.headers.get('Link'), '\n');
     // Print All Headers:
     // console.log(Array.from(r.headers.entries()));
