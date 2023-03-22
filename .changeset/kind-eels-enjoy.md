@@ -29,7 +29,7 @@ You can however use the parameter name directly if you want to:
 }
 ```
 
-In the above example, a bug in Vocab caused an incorrect type to be assigned to this parameter:
+In the above example, a bug in Vocab caused an incorrect type to be assigned to the `numCats` parameter:
 
 ```ts
 // Type Error: Type 'number' is not assignable to type 'string'
