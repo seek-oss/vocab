@@ -43,7 +43,7 @@ const translations = createTranslationFile<
       foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
     'Select with self-referential param': (values: {
-      foo: StringWithSuggestions<'0' | '1'>;
+      foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
   }
 >({
@@ -64,12 +64,12 @@ const translations = createTranslationFile<
     'Plural with nested params':
       '{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}',
     'Plural with self-referential param':
-      '{foo, plural, 0 {a} 1 {b} other {{foo} c}}',
+      '{foo, plural, zero {a} one {b} other {{foo} c}}',
     'Select with nested params':
       '{foo, select, a {{bar} a} b {{baz} b} other {c}}',
     'Select with pound element': '{foo, select, a {# a} b {# b} other {c}}',
     'Select with self-referential param':
-      '{foo, select, 0 {a} 1 {b} other {{foo} c}}',
+      '{foo, select, a {a} b {b} other {{foo} c}}',
   }),
 });
 
