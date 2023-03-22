@@ -29,14 +29,14 @@
   "Plural with self-referential param": {
     "message": "{foo, plural, zero {a} one {b} other {{foo} c}}"
   },
-  "Select": {
-    "message": "{foo, select, a {a} b {b} other {c}}"
-  },
   "Select ordinal": {
     "message": "It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!"
   },
   "Select ordinal with self-referential param": {
     "message": "It's my cat's {year, selectordinal, one {{year}st} two {{year}nd} few {{year}rd} other {{year}th}} birthday!"
+  },
+  "Select": {
+    "message": "{foo, select, a {a} b {b} other {c}}"
   },
   "Select with nested params": {
     "message": "{foo, select, a {{bar} a} b {{baz} b} other {c}}"
