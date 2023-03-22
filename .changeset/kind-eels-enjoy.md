@@ -13,7 +13,7 @@ For example:
 ```jsonc
 {
   "I have numCats cats": {
-    "message": "I have {numCats, plural, 1 {# cat} other {# cats}}"
+    "message": "I have {numCats, plural, one {# cat} other {# cats}}"
   }
 }
 ```
@@ -24,7 +24,7 @@ You can however use the parameter name directly if you want to:
 {
   "I have numCats cats": {
     // This message is equivalent to the message in the previous example
-    "message": "I have {numCats, plural, 1 {{numCats} cat} other {{numCats} cats}}"
+    "message": "I have {numCats, plural, one {{numCats} cat} other {{numCats} cats}}"
   }
 }
 ```
