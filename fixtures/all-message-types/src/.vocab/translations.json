@@ -23,16 +23,28 @@
   "Select": {
     "message": "{foo, select, a {a} b {b} other {c}}"
   },
-  "Plural": {
-    "message": "{itemCount, plural, one {# item} other {# items}}"
-  },
   "Select ordinal": {
     "message": "It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!"
+  },
+  "Select ordinal with self-referential param": {
+    "message": "It's my cat's {year, selectordinal, one {{year}st} two {{year}nd} few {{year}rd} other {{year}th}} birthday!"
+  },
+  "Plural": {
+    "message": "{itemCount, plural, one {# item} other {# items}}"
   },
   "Plural with nested params": {
     "message": "{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}"
   },
+  "Plural with self-referential param": {
+    "message": "{foo, plural, 0 {a} 1 {b} other {{foo} c}}"
+  },
   "Select with nested params": {
     "message": "{foo, select, a {{bar} a} b {{baz} b} other {c}}"
+  },
+  "Select with pound element": {
+    "message": "{foo, select, a {# a} b {# b} other {c}}"
+  },
+  "Select with self-referential param": {
+    "message": "{foo, select, 0 {a} 1 {b} other {{foo} c}}"
   }
 }
