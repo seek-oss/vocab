@@ -56,13 +56,18 @@ function extractHasTags(ast: MessageFormatElement[]): boolean {
 
 function extractParamTypes(
   ast: MessageFormatElement[],
+  currentParams: ICUParams,
 ): [params: ICUParams, vocabTypesImports: Set<string>] {
-  let params: ICUParams = {};
+  let params = { ...currentParams };
   let vocabTypesImports = new Set<string>();
 
   for (const element of ast) {
     if (isArgumentElement(element)) {
-      params[element.value] = 'string';
+      if (!(element.value in params)) {
+        // Preserve existing types for parameters that we've already parsed
+        // This applies to self-referential parameters, for example `{foo, plural, 1 {{foo} thing} other {{foo} things}}`
+        params[element.value] = 'string';
+      }
     } else if (isNumberElement(element)) {
       params[element.value] = 'number';
     } else if (isPluralElement(element)) {
@@ -71,10 +76,10 @@ function extractParamTypes(
       const children = Object.values(element.options).map((o) => o.value);
 
       for (const child of children) {
-        const [subParams, subImports] = extractParamTypes(child);
+        const [newParams, subImports] = extractParamTypes(child, params);
 
         vocabTypesImports = new Set([...vocabTypesImports, ...subImports]);
-        params = { ...params, ...subParams };
+        params = newParams;
       }
     } else if (isDateElement(element) || isTimeElement(element)) {
       params[element.value] = 'Date | number';
@@ -82,10 +87,13 @@ function extractParamTypes(
       params[element.value] = 'FormatXMLElementFn<T>';
       vocabTypesImports.add('FormatXMLElementFn');
 
-      const [subParams, subImports] = extractParamTypes(element.children);
+      const [newParams, subImports] = extractParamTypes(
+        element.children,
+        params,
+      );
 
       vocabTypesImports = new Set([...vocabTypesImports, ...subImports]);
-      params = { ...params, ...subParams };
+      params = newParams;
     } else if (isSelectElement(element)) {
       const options = Object.keys(element.options);
 
@@ -101,10 +109,10 @@ function extractParamTypes(
       const children = Object.values(element.options).map((o) => o.value);
 
       for (const child of children) {
-        const [subParams, subImports] = extractParamTypes(child);
+        const [newParams, subImports] = extractParamTypes(child, params);
 
         vocabTypesImports = new Set([...vocabTypesImports, ...subImports]);
-        params = { ...params, ...subParams };
+        params = newParams;
       }
     }
   }
@@ -208,13 +216,14 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
 
         hasTags = hasTags || extractHasTags(ast);
 
-        const [parsedParams, vocabTypesImports] = extractParamTypes(ast);
-        imports = new Set([...imports, ...vocabTypesImports]);
+        const [parsedParams, vocabTypesImports] = extractParamTypes(
+          ast,
+          params,
+        );
 
-        params = {
-          ...params,
-          ...parsedParams,
-        };
+        imports = new Set([...imports, ...vocabTypesImports]);
+        params = parsedParams;
+
         messages.add(
           `'${encodeWithinSingleQuotes(translatedLanguage[key].message)}'`,
         );

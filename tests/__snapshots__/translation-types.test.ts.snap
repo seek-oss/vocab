@@ -22,18 +22,28 @@ const translations = createTranslationFile<
       Bold: FormatXMLElementFn<T>;
       Italic: FormatXMLElementFn<T>;
     }) => string | T | Array<string | T>;
-    Select: (values: { foo: StringWithSuggestions<'a' | 'b'> }) => string;
     Plural: (values: { itemCount: number }) => string;
-    'Select ordinal': (values: { year: number }) => string;
     'Plural with nested params': (values: {
       numDogs: number;
       singularPrefix: string;
       pluralPrefix: string;
     }) => string;
+    'Plural with self-referential param': (values: { foo: number }) => string;
+    'Select ordinal': (values: { year: number }) => string;
+    'Select ordinal with self-referential param': (values: {
+      year: number;
+    }) => string;
+    Select: (values: { foo: StringWithSuggestions<'a' | 'b'> }) => string;
     'Select with nested params': (values: {
       foo: StringWithSuggestions<'a' | 'b'>;
       bar: string;
       baz: string;
+    }) => string;
+    'Select with pound element': (values: {
+      foo: StringWithSuggestions<'a' | 'b'>;
+    }) => string;
+    'Select with self-referential param': (values: {
+      foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
   }
 >({
@@ -45,14 +55,21 @@ const translations = createTranslationFile<
     Date: 'Sale begins {start, date, medium}',
     Time: 'Coupon expires at {expires, time, short}',
     'Nested tags': 'The quick <Bold>brown <Italic>fox</Italic></Bold>',
-    Select: '{foo, select, a {a} b {b} other {c}}',
     Plural: '{itemCount, plural, one {# item} other {# items}}',
-    'Select ordinal':
-      "It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!",
     'Plural with nested params':
       '{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}',
+    'Plural with self-referential param':
+      '{foo, plural, zero {a} one {b} other {{foo} c}}',
+    'Select ordinal':
+      "It's my cat's {year, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday!",
+    'Select ordinal with self-referential param':
+      "It's my cat's {year, selectordinal, one {{year}st} two {{year}nd} few {{year}rd} other {{year}th}} birthday!",
+    Select: '{foo, select, a {a} b {b} other {c}}',
     'Select with nested params':
       '{foo, select, a {{bar} a} b {{baz} b} other {c}}',
+    'Select with pound element': '{foo, select, a {# a} b {# b} other {c}}',
+    'Select with self-referential param':
+      '{foo, select, a {a} b {b} other {{foo} c}}',
   }),
 });
 
