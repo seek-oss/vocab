@@ -5,8 +5,8 @@
 Fix compiled type for self-referential parameters
 
 `plural`, `select` and `selectOrdinal` parameters can reference themselves in their own match clauses.
-In most cases it's recommended to use the special `#` token to reference the input parameter.
-Using the `#` token can enhanced readability in long messages, and it makes renaming a parameter much quicker, since you only need to change the parameter name in one place.
+In most cases, it's recommended to use the special `#` token to reference the input parameter.
+Using the `#` token can enhance readability in long messages, and it makes renaming a parameter much quicker, since you only need to change the parameter name in one place.
 
 For example:
 
