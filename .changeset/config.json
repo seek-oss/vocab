@@ -9,5 +9,8 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["@fixtures/*", "@vocab-private/*"]
+  "ignore": ["@fixtures/*", "@vocab-private/*"],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "updateInternalDependents": "always"
+  }
 }
