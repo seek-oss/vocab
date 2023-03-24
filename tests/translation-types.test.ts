@@ -6,7 +6,7 @@ describe('Translation types', () => {
     it('should generate types for translations', async () => {
       await compileFixtureTranslations('all-message-types');
       const compiledTranslations = require.resolve(
-        '@fixtures/all-message-types/src/.vocab/index.ts',
+        '@vocab-fixtures/all-message-types/src/.vocab/index.ts',
       );
 
       expect(
