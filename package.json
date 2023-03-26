@@ -33,7 +33,7 @@
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
     "start-fixture": "ts-node test-helpers/src/start-fixture",
     "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
-    "compile-fixtures": "pnpm --filter @@vocab-fixtures/* compile"
+    "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile"
   },
   "preconstruct": {
     "packages": [
