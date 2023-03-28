@@ -6,17 +6,14 @@ import {
   TranslationMessagesByKey,
 } from '@vocab/types';
 import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
-import { getOptions, stringifyRequest } from 'loader-utils';
 import type { LoaderContext as WebpackLoaderContext } from 'webpack';
 
 import { getChunkName } from './chunk-name';
 import { trace as _trace } from './logger';
 
-const trace = _trace.extend('loader');
+type LoaderContext = WebpackLoaderContext<UserConfig>;
 
-// loader-utils has its own version of LoaderContext which is incompatible with webpack's
-type LoaderContext = Parameters<typeof getOptions>[0] &
-  WebpackLoaderContext<any>;
+const trace = _trace.extend('loader');
 
 // Resolve virtual-resource-loader dependency from current package
 const virtualResourceLoader = require.resolve('virtual-resource-loader');
@@ -45,13 +42,19 @@ function createIdentifier(
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
 }
 
+// reimplement `stringifyRequest` from loader-utils 2.x
+// https://github.com/webpack/loader-utils/blob/master/CHANGELOG.md#300-2021-10-20
+function stringifyRequest(this: LoaderContext, request: string) {
+  return JSON.stringify(this.utils.contextify(this.context, request));
+}
+
 function renderLanguageLoaderAsync(
   this: LoaderContext,
   resourcePath: string,
   loadedTranslation: LoadedTranslation,
 ) {
   return (lang: string) => {
-    const identifier = stringifyRequest(
+    const identifier = stringifyRequest.call(
       this,
       createIdentifier(lang, resourcePath, loadedTranslation),
     );
@@ -73,7 +76,7 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  const config = getOptions(this) as unknown as UserConfig;
+  const config = this.getOptions();
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
 
@@ -98,12 +101,12 @@ export default async function vocabLoader(this: LoaderContext) {
   const loadedLanguages = Object.keys(loadedTranslation.languages);
 
   const result = `
-      import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
+    import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
-      export default createTranslationFile({
-          ${loadedLanguages.map((lang) => renderLanguageLoader(lang)).join(',')}
-      });
-    `;
+    export default createTranslationFile({
+      ${loadedLanguages.map((lang) => renderLanguageLoader(lang)).join(',')}
+    });
+  `;
   trace('Created translation file', result);
 
   callback(null, result);
