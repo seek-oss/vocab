@@ -6,24 +6,20 @@ import {
   TranslationMessagesByKey,
 } from '@vocab/types';
 import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
-import { getOptions } from 'loader-utils';
+import { getOptions, stringifyRequest } from 'loader-utils';
+import type { LoaderContext as WebpackLoaderContext } from 'webpack';
 
 import { getChunkName } from './chunk-name';
 import { trace as _trace } from './logger';
 
 const trace = _trace.extend('loader');
 
-interface LoaderContext {
-  addDependency: (filePath: string) => void;
-  target: string;
-  resourcePath: string;
-  async: () => (err: unknown, result?: string) => void;
-}
+// loader-utils has its own version of LoaderContext which is incompatible with webpack's
+type LoaderContext = Parameters<typeof getOptions>[0] &
+  WebpackLoaderContext<any>;
 
 // Resolve virtual-resource-loader dependency from current package
 const virtualResourceLoader = require.resolve('virtual-resource-loader');
-
-const encodeWithinSingleQuotes = (v: string) => v.replace(/'/g, "\\'");
 
 function createIdentifier(
   lang: string,
@@ -49,18 +45,25 @@ function createIdentifier(
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
 }
 
-const renderLanguageLoaderAsync =
-  (resourcePath: string, loadedTranslation: LoadedTranslation) =>
-  (lang: string) => {
-    const identifier = createIdentifier(lang, resourcePath, loadedTranslation);
+function renderLanguageLoaderAsync(
+  this: LoaderContext,
+  resourcePath: string,
+  loadedTranslation: LoadedTranslation,
+) {
+  return (lang: string) => {
+    const identifier = stringifyRequest(
+      this,
+      createIdentifier(lang, resourcePath, loadedTranslation),
+    );
 
-    return `'${encodeWithinSingleQuotes(
+    return `${JSON.stringify(
       lang,
-    )}': createLanguage(require.resolveWeak('${identifier}'), () => import(
-      /* webpackChunkName: "${getChunkName(lang)}" */
-      '${identifier}'
+    )}: createLanguage(require.resolveWeak(${identifier}), () => import(
+      /* webpackChunkName: ${JSON.stringify(getChunkName(lang))} */
+      ${identifier}
     ))`;
   };
+}
 
 export default async function vocabLoader(this: LoaderContext) {
   trace(`Using vocab loader for ${this.resourcePath}`);
@@ -70,9 +73,6 @@ export default async function vocabLoader(this: LoaderContext) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  // @ts-expect-error We define our own loader context type, getOptions expects
-  // webpack's LoaderContext type, but it's missing the target field
-  // https://github.com/webpack/webpack/issues/16753
   const config = getOptions(this) as unknown as UserConfig;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
@@ -88,7 +88,9 @@ export default async function vocabLoader(this: LoaderContext) {
     callback(new Error('Called Vocab Loader with non-web target'));
     return;
   }
-  const renderLanguageLoader = renderLanguageLoaderAsync(
+
+  const renderLanguageLoader = renderLanguageLoaderAsync.call(
+    this,
     devJsonFilePath,
     loadedTranslation,
   );
