@@ -6,11 +6,11 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@fixtures/translation-types": "*",
     "@fixtures/direct": "*",
     "@fixtures/phrase": "*",
     "@fixtures/server": "*",
     "@fixtures/simple": "*",
+    "@fixtures/translation-types": "*",
     "@types/wait-on": "^5.3.1",
     "@types/webpack-dev-server": "^3.11.6",
     "@vocab/core": "*",
