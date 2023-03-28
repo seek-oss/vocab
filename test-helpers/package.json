@@ -15,7 +15,7 @@
     "@types/webpack-dev-server": "^3.11.6",
     "@vocab/core": "*",
     "wait-on": "^5.2.0",
-    "webpack": "^5.11.0",
+    "webpack": "^5.27.0",
     "webpack-dev-server": "^4.11.1"
   }
 }
