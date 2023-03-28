@@ -59,12 +59,15 @@ function renderLanguageLoaderAsync(
       createIdentifier(lang, resourcePath, loadedTranslation),
     );
 
-    return `${JSON.stringify(
-      lang,
-    )}: createLanguage(require.resolveWeak(${identifier}), () => import(
-      /* webpackChunkName: ${JSON.stringify(getChunkName(lang))} */
-      ${identifier}
-    ))`;
+    return /* ts */ `
+      createLanguage(
+        require.resolveWeak(${identifier}),
+        () => import(
+          /* webpackChunkName: ${JSON.stringify(getChunkName(lang))} */
+          ${identifier}
+        )
+      )
+    `.trim();
   };
 }
 
@@ -100,11 +103,13 @@ export default async function vocabLoader(this: LoaderContext) {
 
   const loadedLanguages = Object.keys(loadedTranslation.languages);
 
-  const result = `
+  const result = /* ts */ `
     import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
     export default createTranslationFile({
-      ${loadedLanguages.map((lang) => renderLanguageLoader(lang)).join(',')}
+      ${loadedLanguages
+        .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
+        .join(',\n')}
     });
   `;
   trace('Created translation file', result);
