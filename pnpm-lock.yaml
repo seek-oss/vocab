@@ -60,16 +60,6 @@ importers:
       typescript: 4.9.5
       webpack: 5.75.0
 
-  fixtures/all-message-types:
-    specifiers:
-      '@vocab/cli': ^1.3.1
-      '@vocab/core': ^1.2.4
-      '@vocab/types': ^1.2.0
-    dependencies:
-      '@vocab/cli': link:../../packages/cli
-      '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
-
   fixtures/direct:
     specifiers:
       '@babel/core': ^7.12.0
@@ -192,6 +182,16 @@ importers:
       react-dom: 18.1.0_react@18.1.0
       webpack: 5.75.0
       webpack-dev-server: 4.11.1_webpack@5.75.0
+
+  fixtures/translation-types:
+    specifiers:
+      '@vocab/cli': ^1.3.1
+      '@vocab/core': ^1.2.4
+      '@vocab/types': ^1.2.0
+    dependencies:
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/types': link:../../packages/types
 
   packages/cli:
     specifiers:
@@ -330,11 +330,11 @@ importers:
 
   test-helpers:
     specifiers:
-      '@fixtures/all-message-types': '*'
       '@fixtures/direct': '*'
       '@fixtures/phrase': '*'
       '@fixtures/server': '*'
       '@fixtures/simple': '*'
+      '@fixtures/translation-types': '*'
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
       '@vocab/core': '*'
@@ -342,11 +342,11 @@ importers:
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
       '@fixtures/direct': link:../fixtures/direct
       '@fixtures/phrase': link:../fixtures/phrase
       '@fixtures/server': link:../fixtures/server
       '@fixtures/simple': link:../fixtures/simple
+      '@fixtures/translation-types': link:../fixtures/translation-types
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
       '@vocab/core': link:../packages/core
@@ -356,10 +356,10 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/all-message-types': '*'
+      '@fixtures/translation-types': '*'
       '@vocab-private/test-helpers': '*'
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
+      '@fixtures/translation-types': link:../fixtures/translation-types
       '@vocab-private/test-helpers': link:../test-helpers
 
 packages:

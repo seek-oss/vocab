@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@fixtures/all-message-types": "*",
+    "@fixtures/translation-types": "*",
     "@fixtures/direct": "*",
     "@fixtures/phrase": "*",
     "@fixtures/server": "*",
