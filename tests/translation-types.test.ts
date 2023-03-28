@@ -6,7 +6,7 @@ describe('Translation types', () => {
     it('should generate types for translations', async () => {
       await compileFixtureTranslations('translation-types');
       const compiledTranslations = require.resolve(
-        '@fixtures/translation-types/src/all-message-types/.vocab/index.ts',
+        '@vocab-fixtures/translation-types/src/all-message-types/.vocab/index.ts',
       );
 
       expect(
@@ -19,7 +19,7 @@ describe('Translation types', () => {
     it('should generate types for translations with no import from @vocab/types', async () => {
       await compileFixtureTranslations('translation-types');
       const compiledTranslations = require.resolve(
-        '@fixtures/translation-types/src/no-vocab-types-import/.vocab/index.ts',
+        '@vocab-fixtures/translation-types/src/no-vocab-types-import/.vocab/index.ts',
       );
 
       expect(

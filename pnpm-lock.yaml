@@ -330,25 +330,25 @@ importers:
 
   test-helpers:
     specifiers:
-      '@fixtures/direct': '*'
-      '@fixtures/phrase': '*'
-      '@fixtures/server': '*'
-      '@fixtures/simple': '*'
-      '@fixtures/translation-types': '*'
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
+      '@vocab-fixtures/direct': '*'
+      '@vocab-fixtures/phrase': '*'
+      '@vocab-fixtures/server': '*'
+      '@vocab-fixtures/simple': '*'
+      '@vocab-fixtures/translation-types': '*'
       '@vocab/core': '*'
       wait-on: ^5.2.0
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
     devDependencies:
-      '@fixtures/direct': link:../fixtures/direct
-      '@fixtures/phrase': link:../fixtures/phrase
-      '@fixtures/server': link:../fixtures/server
-      '@fixtures/simple': link:../fixtures/simple
-      '@fixtures/translation-types': link:../fixtures/translation-types
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
+      '@vocab-fixtures/direct': link:../fixtures/direct
+      '@vocab-fixtures/phrase': link:../fixtures/phrase
+      '@vocab-fixtures/server': link:../fixtures/server
+      '@vocab-fixtures/simple': link:../fixtures/simple
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab/core': link:../packages/core
       wait-on: 5.3.0
       webpack: 5.75.0
@@ -356,10 +356,10 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/translation-types': '*'
+      '@vocab-fixtures/translation-types': '*'
       '@vocab-private/test-helpers': '*'
     devDependencies:
-      '@fixtures/translation-types': link:../fixtures/translation-types
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab-private/test-helpers': link:../test-helpers
 
 packages:
