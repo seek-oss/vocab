@@ -325,7 +325,6 @@ importers:
   packages/webpack:
     specifiers:
       '@types/debug': ^4.1.5
-      '@types/loader-utils': ^2.0.1
       '@vocab/core': link:../core
       '@vocab/types': link:../types
       chalk: ^4.1.0
@@ -340,7 +339,6 @@ importers:
       virtual-resource-loader: link:../virtual-resource-loader
     devDependencies:
       '@types/debug': 4.1.7
-      '@types/loader-utils': 2.0.3
       webpack: 5.76.3
 
   test-helpers:
@@ -3588,7 +3586,7 @@ packages:
       '@babel/core': 7.21.0
       find-cache-dir: 3.3.2
       schema-utils: 4.0.0
-      webpack: 5.76.3_webpack-cli@5.0.1
+      webpack: 5.76.3
     dev: false
 
   /babel-loader/9.1.2_qoaxtqicpzj5p3ubthw53xafqm:
@@ -5642,7 +5640,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.76.3_webpack-cli@5.0.1
+      webpack: 5.76.3
     dev: false
 
   /htmlparser2/6.1.0:
@@ -8523,7 +8521,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.76.3_webpack-cli@5.0.1
+      webpack: 5.76.3
 
   /terser/5.16.5:
     resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}
