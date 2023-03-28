@@ -330,25 +330,25 @@ importers:
 
   test-helpers:
     specifiers:
-      '@fixtures/all-message-types': '*'
-      '@fixtures/direct': '*'
-      '@fixtures/phrase': '*'
-      '@fixtures/server': '*'
-      '@fixtures/simple': '*'
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
+      '@vocab-fixtures/all-message-types': '*'
+      '@vocab-fixtures/direct': '*'
+      '@vocab-fixtures/phrase': '*'
+      '@vocab-fixtures/server': '*'
+      '@vocab-fixtures/simple': '*'
       '@vocab/core': '*'
       wait-on: ^5.2.0
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
-      '@fixtures/direct': link:../fixtures/direct
-      '@fixtures/phrase': link:../fixtures/phrase
-      '@fixtures/server': link:../fixtures/server
-      '@fixtures/simple': link:../fixtures/simple
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
+      '@vocab-fixtures/all-message-types': link:../fixtures/all-message-types
+      '@vocab-fixtures/direct': link:../fixtures/direct
+      '@vocab-fixtures/phrase': link:../fixtures/phrase
+      '@vocab-fixtures/server': link:../fixtures/server
+      '@vocab-fixtures/simple': link:../fixtures/simple
       '@vocab/core': link:../packages/core
       wait-on: 5.3.0
       webpack: 5.75.0
@@ -356,10 +356,10 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/all-message-types': '*'
+      '@vocab-fixtures/all-message-types': '*'
       '@vocab-private/test-helpers': '*'
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
+      '@vocab-fixtures/all-message-types': link:../fixtures/all-message-types
       '@vocab-private/test-helpers': link:../test-helpers
 
 packages:

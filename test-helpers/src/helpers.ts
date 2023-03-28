@@ -29,11 +29,13 @@ export type FixtureName =
 
 export const compileFixtureTranslations = async (fixtureName: FixtureName) => {
   const config = resolveConfigSync(
-    require.resolve(`@fixtures/${fixtureName}/vocab.config.js`),
+    require.resolve(`@vocab-fixtures/${fixtureName}/vocab.config.js`),
   );
 
   if (!config) {
-    throw new Error(`Can't resolve "@fixtures/${fixtureName}" vocab config`);
+    throw new Error(
+      `Can't resolve "@vocab-fixtures/${fixtureName}" vocab config`,
+    );
   }
 
   await compile({ watch: false }, config);
@@ -46,13 +48,13 @@ export const runServerFixture = (
     await compileFixtureTranslations(fixtureName);
 
     const port = portCounter++;
-    const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
+    const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig();
     const compiler = webpack(config);
 
     compiler.hooks.done.tap('vocab-test-helper', async () => {
       const cwd = path.dirname(
-        require.resolve(`@fixtures/${fixtureName}/vocab.config.js`),
+        require.resolve(`@vocab-fixtures/${fixtureName}/vocab.config.js`),
       );
       const childProcess = spawn('node', ['./dist-server/server.js'], {
         env: { ...process.env, SERVER_PORT: port.toString() },
@@ -80,7 +82,7 @@ export const startFixture = (
   new Promise(async (resolve) => {
     await compileFixtureTranslations(fixtureName);
 
-    const getConfig = require(`@fixtures/${fixtureName}/webpack.config.js`);
+    const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig(options);
     const compiler = webpack(config);
 
