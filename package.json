@@ -71,6 +71,23 @@
     "webpack": "^5.11.0"
   },
   "packageManager": "pnpm@7.28.0",
+  "pnpm": {
+    "overrides": {
+      "@fixtures/all-message-types": "link:./fixtures/all-message-types",
+      "@fixtures/direct": "link:./fixtures/direct",
+      "@fixtures/phrase": "link:./fixtures/phrase",
+      "@fixtures/server": "link:./fixtures/server",
+      "@fixtures/simple": "link:./fixtures/simple",
+      "@vocab/cli": "link:./packages/cli",
+      "@vocab/core": "link:./packages/core",
+      "@vocab/phrase": "link:./packages/phrase",
+      "@vocab/pseudo-localize": "link:./packages/pseudo-localize",
+      "@vocab/react": "link:./packages/react",
+      "@vocab/types": "link:./packages/types",
+      "@vocab/virtual-resource-loader": "link:./packages/virtual-resource-loader",
+      "@vocab/webpack": "link:./packages/webpack"
+    }
+  },
   "volta": {
     "node": "16.19.0"
   }

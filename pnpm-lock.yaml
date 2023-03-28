@@ -1,5 +1,20 @@
 lockfileVersion: 5.4
 
+overrides:
+  '@fixtures/all-message-types': link:./fixtures/all-message-types
+  '@fixtures/direct': link:./fixtures/direct
+  '@fixtures/phrase': link:./fixtures/phrase
+  '@fixtures/server': link:./fixtures/server
+  '@fixtures/simple': link:./fixtures/simple
+  '@vocab/cli': link:./packages/cli
+  '@vocab/core': link:./packages/core
+  '@vocab/phrase': link:./packages/phrase
+  '@vocab/pseudo-localize': link:./packages/pseudo-localize
+  '@vocab/react': link:./packages/react
+  '@vocab/types': link:./packages/types
+  '@vocab/virtual-resource-loader': link:./packages/virtual-resource-loader
+  '@vocab/webpack': link:./packages/webpack
+
 importers:
 
   .:
@@ -62,9 +77,9 @@ importers:
 
   fixtures/all-message-types:
     specifiers:
-      '@vocab/cli': workspace:*
-      '@vocab/core': workspace:*
-      '@vocab/types': workspace:*
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/types': link:../../packages/types
     dependencies:
       '@vocab/cli': link:../../packages/cli
       '@vocab/core': link:../../packages/core
@@ -75,11 +90,11 @@ importers:
       '@babel/core': ^7.12.0
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
-      '@vocab/cli': workspace:*
-      '@vocab/core': workspace:*
-      '@vocab/pseudo-localize': workspace:*
-      '@vocab/types': workspace:*
-      '@vocab/webpack': workspace:*
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/pseudo-localize': link:../../packages/pseudo-localize
+      '@vocab/types': link:../../packages/types
+      '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       html-webpack-plugin: ^5.5.0
       react: ^18.1.0
@@ -121,12 +136,12 @@ importers:
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
       '@types/start-server-webpack-plugin': ^2.2.0
-      '@vocab/cli': workspace:*
-      '@vocab/core': workspace:*
-      '@vocab/pseudo-localize': workspace:*
-      '@vocab/react': workspace:*
-      '@vocab/types': workspace:*
-      '@vocab/webpack': workspace:*
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/pseudo-localize': link:../../packages/pseudo-localize
+      '@vocab/react': link:../../packages/react
+      '@vocab/types': link:../../packages/types
+      '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       express: ^4.17.1
       html-webpack-plugin: ^5.5.0
@@ -164,12 +179,12 @@ importers:
       '@babel/core': ^7.12.0
       '@types/react': ^18.0.9
       '@types/react-dom': ^18.0.4
-      '@vocab/cli': workspace:*
-      '@vocab/core': workspace:*
-      '@vocab/pseudo-localize': workspace:*
-      '@vocab/react': workspace:*
-      '@vocab/types': workspace:*
-      '@vocab/webpack': workspace:*
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/pseudo-localize': link:../../packages/pseudo-localize
+      '@vocab/react': link:../../packages/react
+      '@vocab/types': link:../../packages/types
+      '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       html-webpack-plugin: ^5.5.0
       react: ^18.1.0
@@ -199,9 +214,9 @@ importers:
       '@types/node-fetch': ^2.5.7
       '@types/prettier': ^2.1.5
       '@types/yargs': ^15.0.9
-      '@vocab/core': ^1.2.4
-      '@vocab/phrase': ^1.2.2
-      '@vocab/types': ^1.1.2
+      '@vocab/core': link:../core
+      '@vocab/phrase': link:../phrase
+      '@vocab/types': link:../types
       env-ci: ^5.0.2
       fast-glob: ^3.2.4
       form-data: ^3.0.0
@@ -229,7 +244,7 @@ importers:
       '@formatjs/icu-messageformat-parser': ^2.0.10
       '@types/debug': ^4.1.5
       '@types/prettier': ^2.1.5
-      '@vocab/types': ^1.2.0
+      '@vocab/types': link:../types
       chalk: ^4.1.0
       chokidar: ^3.4.3
       debug: ^4.3.1
@@ -257,8 +272,8 @@ importers:
     specifiers:
       '@types/debug': ^4.1.5
       '@types/node-fetch': ^2.5.7
-      '@vocab/core': ^1.2.4
-      '@vocab/types': ^1.1.2
+      '@vocab/core': link:../core
+      '@vocab/types': link:../types
       chalk: ^4.1.0
       csv-stringify: ^6.2.3
       debug: ^4.3.1
@@ -282,7 +297,7 @@ importers:
   packages/react:
     specifiers:
       '@types/react': ^18.0.9
-      '@vocab/types': ^1.1.2
+      '@vocab/types': link:../types
       intl-messageformat: ^10.0.0
       react: ^18.1.0
     dependencies:
@@ -311,8 +326,8 @@ importers:
     specifiers:
       '@types/debug': ^4.1.5
       '@types/loader-utils': ^2.0.1
-      '@vocab/core': ^1.2.4
-      '@vocab/types': ^1.1.2
+      '@vocab/core': link:../core
+      '@vocab/types': link:../types
       chalk: ^4.1.0
       debug: ^4.3.1
       loader-utils: ^2.0.0
@@ -330,14 +345,14 @@ importers:
 
   test-helpers:
     specifiers:
-      '@fixtures/all-message-types': workspace:*
-      '@fixtures/direct': workspace:*
-      '@fixtures/phrase': workspace:*
-      '@fixtures/server': workspace:*
-      '@fixtures/simple': workspace:*
+      '@fixtures/all-message-types': link:../fixtures/all-message-types
+      '@fixtures/direct': link:../fixtures/direct
+      '@fixtures/phrase': link:../fixtures/phrase
+      '@fixtures/server': link:../fixtures/server
+      '@fixtures/simple': link:../fixtures/simple
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
-      '@vocab/core': workspace:*
+      '@vocab/core': link:../packages/core
       wait-on: ^5.2.0
       webpack: ^5.11.0
       webpack-dev-server: ^4.11.1
@@ -356,7 +371,7 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/all-message-types': '*'
+      '@fixtures/all-message-types': link:../fixtures/all-message-types
       '@vocab-private/test-helpers': '*'
     devDependencies:
       '@fixtures/all-message-types': link:../fixtures/all-message-types
