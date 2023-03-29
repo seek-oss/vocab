@@ -7,8 +7,8 @@
     "compile": "vocab compile"
   },
   "dependencies": {
-    "@vocab/cli": "^1.3.2",
-    "@vocab/core": "^1.2.5",
-    "@vocab/types": "^1.2.0"
+    "@vocab/cli": "*",
+    "@vocab/core": "*",
+    "@vocab/types": "*"
   }
 }

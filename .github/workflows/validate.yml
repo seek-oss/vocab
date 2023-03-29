@@ -49,3 +49,45 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  validate-windows:
+    name: Test on Windows
+    runs-on: windows-latest
+    env:
+      CI: true
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: pnpm
+          node-version-file: package.json
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Puppeteer
+        id: puppeteer-cache
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/puppeteer
+          key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+
+      - name: Install Puppeteer
+        if: steps.puppeteer-cache.outputs.cache-hit != 'true'
+        run: node node_modules/puppeteer/install.js
+
+      - name: Build
+        run: pnpm build
+
+      - name: Compile fixtures
+        run: pnpm compile-fixtures
+
+      - name: Test
+        run: pnpm test E2E
