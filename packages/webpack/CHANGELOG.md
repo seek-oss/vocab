@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.1.6
+
+### Patch Changes
+
+- [`2bac4f2`](https://github.com/seek-oss/vocab/commit/2bac4f2747cb2aa6b41bdac6448753f321df6cf2) [#130](https://github.com/seek-oss/vocab/pull/130) Thanks [@mrm007](https://github.com/mrm007)! - Correctly resolve virtual resource loader path on Windows
+
 ## 1.1.5
 
 ### Patch Changes
