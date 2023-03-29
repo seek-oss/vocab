@@ -1,5 +1,13 @@
 # @vocab/core
 
+## 1.2.5
+
+### Patch Changes
+
+- [`ec98685`](https://github.com/seek-oss/vocab/commit/ec98685f9bc0f609a750137ca8a2793552dfabed) [#129](https://github.com/seek-oss/vocab/pull/129) Thanks [@askoufis](https://github.com/askoufis)! - Sort compiled translation imports
+
+- [`ec98685`](https://github.com/seek-oss/vocab/commit/ec98685f9bc0f609a750137ca8a2793552dfabed) [#129](https://github.com/seek-oss/vocab/pull/129) Thanks [@askoufis](https://github.com/askoufis)! - Fix a bug where an empty import could be generated in compiled translations
+
 ## 1.2.4
 
 ### Patch Changes
