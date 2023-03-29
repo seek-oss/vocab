@@ -1,11 +1,11 @@
 lockfileVersion: 5.4
 
 overrides:
-  '@fixtures/all-message-types': link:./fixtures/all-message-types
-  '@fixtures/direct': link:./fixtures/direct
-  '@fixtures/phrase': link:./fixtures/phrase
-  '@fixtures/server': link:./fixtures/server
-  '@fixtures/simple': link:./fixtures/simple
+  '@vocab-fixtures/direct': link:./fixtures/direct
+  '@vocab-fixtures/phrase': link:./fixtures/phrase
+  '@vocab-fixtures/server': link:./fixtures/server
+  '@vocab-fixtures/simple': link:./fixtures/simple
+  '@vocab-fixtures/translation-types': link:./fixtures/translation-types
   '@vocab/cli': link:./packages/cli
   '@vocab/core': link:./packages/core
   '@vocab/phrase': link:./packages/phrase
@@ -74,16 +74,6 @@ importers:
       ts-node-dev: 2.0.0_263kxb4upkllfszsccwxso4xq4
       typescript: 4.9.5
       webpack: 5.75.0
-
-  fixtures/all-message-types:
-    specifiers:
-      '@vocab/cli': link:../../packages/cli
-      '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
-    dependencies:
-      '@vocab/cli': link:../../packages/cli
-      '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
 
   fixtures/direct:
     specifiers:
@@ -207,6 +197,16 @@ importers:
       react-dom: 18.1.0_react@18.1.0
       webpack: 5.76.3
       webpack-dev-server: 4.11.1_webpack@5.76.3
+
+  fixtures/translation-types:
+    specifiers:
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/types': link:../../packages/types
+    dependencies:
+      '@vocab/cli': link:../../packages/cli
+      '@vocab/core': link:../../packages/core
+      '@vocab/types': link:../../packages/types
 
   packages/cli:
     specifiers:
@@ -343,25 +343,25 @@ importers:
 
   test-helpers:
     specifiers:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
-      '@fixtures/direct': link:../fixtures/direct
-      '@fixtures/phrase': link:../fixtures/phrase
-      '@fixtures/server': link:../fixtures/server
-      '@fixtures/simple': link:../fixtures/simple
       '@types/wait-on': ^5.3.1
       '@types/webpack-dev-server': ^3.11.6
+      '@vocab-fixtures/direct': link:../fixtures/direct
+      '@vocab-fixtures/phrase': link:../fixtures/phrase
+      '@vocab-fixtures/server': link:../fixtures/server
+      '@vocab-fixtures/simple': link:../fixtures/simple
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab/core': link:../packages/core
       wait-on: ^5.2.0
       webpack: ^5.27.0
       webpack-dev-server: ^4.11.1
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
-      '@fixtures/direct': link:../fixtures/direct
-      '@fixtures/phrase': link:../fixtures/phrase
-      '@fixtures/server': link:../fixtures/server
-      '@fixtures/simple': link:../fixtures/simple
       '@types/wait-on': 5.3.1
       '@types/webpack-dev-server': 3.11.6
+      '@vocab-fixtures/direct': link:../fixtures/direct
+      '@vocab-fixtures/phrase': link:../fixtures/phrase
+      '@vocab-fixtures/server': link:../fixtures/server
+      '@vocab-fixtures/simple': link:../fixtures/simple
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab/core': link:../packages/core
       wait-on: 5.3.0
       webpack: 5.76.3
@@ -369,10 +369,10 @@ importers:
 
   tests:
     specifiers:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab-private/test-helpers': '*'
     devDependencies:
-      '@fixtures/all-message-types': link:../fixtures/all-message-types
+      '@vocab-fixtures/translation-types': link:../fixtures/translation-types
       '@vocab-private/test-helpers': link:../test-helpers
 
 packages:
@@ -3586,7 +3586,7 @@ packages:
       '@babel/core': 7.21.0
       find-cache-dir: 3.3.2
       schema-utils: 4.0.0
-      webpack: 5.76.3
+      webpack: 5.76.3_webpack-cli@5.0.1
     dev: false
 
   /babel-loader/9.1.2_qoaxtqicpzj5p3ubthw53xafqm:
@@ -5640,7 +5640,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.76.3
+      webpack: 5.76.3_webpack-cli@5.0.1
     dev: false
 
   /htmlparser2/6.1.0:
@@ -8521,7 +8521,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.76.3
+      webpack: 5.76.3_webpack-cli@5.0.1
 
   /terser/5.16.5:
     resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}

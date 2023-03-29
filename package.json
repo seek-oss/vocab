@@ -1,5 +1,5 @@
 {
-  "name": "vocab-monorepo",
+  "name": "@vocab-private/monorepo",
   "description": "Vocab is an internationalisation framework for React",
   "bugs": {
     "url": "https://github.com/seek-oss/vocab/issues"
@@ -12,9 +12,9 @@
     "url": "git+https://github.com/seek-oss/vocab.git"
   },
   "scripts": {
-    "start:direct": "pnpm dev && pnpm --filter @fixtures/direct compile && pnpm start-fixture direct",
-    "start:server": "pnpm dev && pnpm --filter @fixtures/server compile && pnpm start-fixture server",
-    "start:simple": "pnpm dev && pnpm --filter @fixtures/simple compile && pnpm start-fixture simple",
+    "start:direct": "pnpm dev && pnpm --filter @vocab-fixtures/direct compile && pnpm start-fixture direct",
+    "start:server": "pnpm dev && pnpm --filter @vocab-fixtures/server compile && pnpm start-fixture server",
+    "start:simple": "pnpm dev && pnpm --filter @vocab-fixtures/simple compile && pnpm start-fixture simple",
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",
@@ -33,7 +33,7 @@
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
     "start-fixture": "ts-node test-helpers/src/start-fixture",
     "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
-    "compile-fixtures": "pnpm --filter @fixtures/* compile"
+    "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile"
   },
   "preconstruct": {
     "packages": [
@@ -73,11 +73,11 @@
   "packageManager": "pnpm@7.28.0",
   "pnpm": {
     "overrides": {
-      "@fixtures/all-message-types": "link:./fixtures/all-message-types",
-      "@fixtures/direct": "link:./fixtures/direct",
-      "@fixtures/phrase": "link:./fixtures/phrase",
-      "@fixtures/server": "link:./fixtures/server",
-      "@fixtures/simple": "link:./fixtures/simple",
+      "@vocab-fixtures/direct": "link:./fixtures/direct",
+      "@vocab-fixtures/phrase": "link:./fixtures/phrase",
+      "@vocab-fixtures/server": "link:./fixtures/server",
+      "@vocab-fixtures/simple": "link:./fixtures/simple",
+      "@vocab-fixtures/translation-types": "link:./fixtures/translation-types",
       "@vocab/cli": "link:./packages/cli",
       "@vocab/core": "link:./packages/core",
       "@vocab/phrase": "link:./packages/phrase",
