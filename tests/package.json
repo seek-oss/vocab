@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@vocab-fixtures/all-message-types": "*",
+    "@vocab-fixtures/translation-types": "*",
     "@vocab-private/test-helpers": "*"
   }
 }

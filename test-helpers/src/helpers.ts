@@ -25,7 +25,7 @@ export type FixtureName =
   | 'phrase'
   | 'server'
   | 'simple'
-  | 'all-message-types';
+  | 'translation-types';
 
 export const compileFixtureTranslations = async (fixtureName: FixtureName) => {
   const config = resolveConfigSync(

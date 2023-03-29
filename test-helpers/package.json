@@ -8,11 +8,11 @@
   "devDependencies": {
     "@types/wait-on": "^5.3.1",
     "@types/webpack-dev-server": "^3.11.6",
-    "@vocab-fixtures/all-message-types": "*",
     "@vocab-fixtures/direct": "*",
     "@vocab-fixtures/phrase": "*",
     "@vocab-fixtures/server": "*",
     "@vocab-fixtures/simple": "*",
+    "@vocab-fixtures/translation-types": "*",
     "@vocab/core": "*",
     "wait-on": "^5.2.0",
     "webpack": "^5.11.0",
