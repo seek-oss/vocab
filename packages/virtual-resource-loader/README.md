@@ -6,12 +6,13 @@
 
 ```ts
 // example-loader.js
-export default exampleLoader() {
+export default function exampleLoader() {
   const virtualModuleSourceCode = '...';
 
-  const base64Source = Buffer.from(JSON.stringify(virtualModuleSourceCode), 'utf-8').toString(
-    'base64',
-  );
+  const base64Source = Buffer.from(
+    JSON.stringify(virtualModuleSourceCode),
+    'utf-8'
+  ).toString('base64');
 
   const request = `./my-virtual-file!=!virtual-resource-loader?source=${base64Source}!${loader.resourcePath}`;
 
