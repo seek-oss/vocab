@@ -7,7 +7,7 @@ interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
 }
 
-export const compiledVocabFileFilter = /\.vocab[\\\/]index\.(?:ts|js|cjs|mjs)$/;
+export const compiledVocabFileFilter = /\.vocab[\\/]index\.(?:ts|js|cjs|mjs)$/;
 
 export class VocabWebpackPlugin {
   options: UserConfig;
