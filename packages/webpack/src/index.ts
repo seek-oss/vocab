@@ -7,6 +7,8 @@ interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
 }
 
+export const compiledVocabFileFilter = /\.vocab[\\\/]index\.(?:ts|js|cjs|mjs)$/;
+
 export class VocabWebpackPlugin {
   options: UserConfig;
 
@@ -36,7 +38,7 @@ export class VocabWebpackPlugin {
       compiler.options.module.rules = [];
     }
     compiler.options.module.rules.splice(0, 0, {
-      test: /\.vocab[\\\/]index\.ts$/,
+      test: compiledVocabFileFilter,
       loader: require.resolve('@vocab/webpack/loader'),
       options: this.options,
     });
