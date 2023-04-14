@@ -108,12 +108,12 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
   const result = /* ts */ `
     import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
-    const translation = createTranslationFile({
+    const translations = createTranslationFile({
       ${loadedLanguages
         .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
         .join(',\n')}
     });
-    export { translation as ${exportName} };
+    export { translations as ${exportName} };
   `;
   trace('Created translation file', result);
 

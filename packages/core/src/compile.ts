@@ -128,10 +128,7 @@ function serialiseObjectToType(v: any) {
   return `{ ${result} }`;
 }
 
-const serializeTypeImports = (
-  imports: Set<string> | Array<string>,
-  moduleName: string,
-) => {
+const serializeTypeImports = (imports: Set<string>, moduleName: string) => {
   const importNames = Array.from(imports);
   if (importNames.length === 0) {
     return '';
