@@ -5,7 +5,7 @@ import {
   UserConfig,
   TranslationMessagesByKey,
 } from '@vocab/types';
-import { findExportNames } from 'mlly';
+import { init as initModuleLexer, parse } from 'es-module-lexer';
 import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
 import type { LoaderContext as WebpackLoaderContext } from 'webpack';
 
@@ -72,6 +72,11 @@ function renderLanguageLoaderAsync(
   };
 }
 
+function findExportNames(source: string) {
+  const [, exports] = parse(source);
+  return exports;
+}
+
 export default async function vocabLoader(this: LoaderContext, source: string) {
   trace(`Using vocab loader for ${this.resourcePath}`);
   const callback = this.async();
@@ -80,6 +85,7 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
+  await initModuleLexer;
   const config = this.getOptions();
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
@@ -103,8 +109,8 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
   );
 
   const loadedLanguages = Object.keys(loadedTranslation.languages);
-
   const exportName = findExportNames(source)[0];
+
   const result = /* ts */ `
     import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
 
