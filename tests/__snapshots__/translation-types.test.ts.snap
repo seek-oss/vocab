@@ -19,7 +19,7 @@ exports[`Translation types all message types should generate types for translati
 // To make changes update translation.json files directly.
 
 import { createLanguage, createTranslationFile } from '@vocab/core/runtime';
-import { FormatXMLElementFn, StringWithSuggestions } from '@vocab/types';
+import type { FormatXMLElementFn, StringWithSuggestions } from '@vocab/types';
 
 const translations = createTranslationFile<
   'en',

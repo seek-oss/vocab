@@ -329,6 +329,7 @@ importers:
       '@vocab/types': link:../types
       chalk: ^4.1.0
       debug: ^4.3.1
+      es-module-lexer: ^0.9.3
       virtual-resource-loader: ^1.0.1
       webpack: ^5.37.0
     dependencies:
@@ -336,6 +337,7 @@ importers:
       '@vocab/types': link:../types
       chalk: 4.1.2
       debug: 4.3.4
+      es-module-lexer: 0.9.3
       virtual-resource-loader: link:../virtual-resource-loader
     devDependencies:
       '@types/debug': 4.1.7
