@@ -1,4 +1,4 @@
-export { FormatXMLElementFn } from 'intl-messageformat';
+export type { FormatXMLElementFn } from 'intl-messageformat';
 
 export type LanguageName = string;
 
@@ -7,8 +7,6 @@ export type TranslationMessage = string;
 
 export type ParsedFormatFn = (parts: any) => any;
 export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
-
-export type ICUFormatResult<T = unknown> = string | T | (string | T);
 
 /**
  * Equivalent to the `string` type, but tricks the language server into prodiving
