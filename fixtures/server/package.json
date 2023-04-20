@@ -24,7 +24,6 @@
     "@vocab/core": "*",
     "@vocab/pseudo-localize": "*",
     "@vocab/react": "*",
-    "@vocab/types": "*",
     "@vocab/webpack": "*",
     "babel-loader": "^9.1.2",
     "express": "^4.17.1",

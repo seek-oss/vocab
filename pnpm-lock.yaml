@@ -83,7 +83,6 @@ importers:
       '@vocab/cli': link:../../packages/cli
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       html-webpack-plugin: ^5.5.0
@@ -99,7 +98,6 @@ importers:
       '@vocab/cli': link:../../packages/cli
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: 9.1.2_4xnmuwebvb2aqltewj7ixrj3jy
       html-webpack-plugin: 5.5.0_webpack@5.76.3
@@ -130,7 +128,6 @@ importers:
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
       '@vocab/react': link:../../packages/react
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       express: ^4.17.1
@@ -155,7 +152,6 @@ importers:
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
       '@vocab/react': link:../../packages/react
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: 9.1.2_4xnmuwebvb2aqltewj7ixrj3jy
       express: 4.18.2
@@ -173,7 +169,6 @@ importers:
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
       '@vocab/react': link:../../packages/react
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: ^9.1.2
       html-webpack-plugin: ^5.5.0
@@ -189,7 +184,6 @@ importers:
       '@vocab/core': link:../../packages/core
       '@vocab/pseudo-localize': link:../../packages/pseudo-localize
       '@vocab/react': link:../../packages/react
-      '@vocab/types': link:../../packages/types
       '@vocab/webpack': link:../../packages/webpack
       babel-loader: 9.1.2_4xnmuwebvb2aqltewj7ixrj3jy
       html-webpack-plugin: 5.5.0_webpack@5.76.3
@@ -202,11 +196,9 @@ importers:
     specifiers:
       '@vocab/cli': link:../../packages/cli
       '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
     dependencies:
       '@vocab/cli': link:../../packages/cli
       '@vocab/core': link:../../packages/core
-      '@vocab/types': link:../../packages/types
 
   packages/cli:
     specifiers:
@@ -216,7 +208,6 @@ importers:
       '@types/yargs': ^15.0.9
       '@vocab/core': link:../core
       '@vocab/phrase': link:../phrase
-      '@vocab/types': link:../types
       env-ci: ^5.0.2
       fast-glob: ^3.2.4
       form-data: ^3.0.0
@@ -237,14 +228,12 @@ importers:
       '@types/node-fetch': 2.5.12
       '@types/prettier': 2.7.2
       '@types/yargs': 15.0.14
-      '@vocab/types': link:../types
 
   packages/core:
     specifiers:
       '@formatjs/icu-messageformat-parser': ^2.0.10
       '@types/debug': ^4.1.5
       '@types/prettier': ^2.1.5
-      '@vocab/types': link:../types
       chalk: ^4.1.0
       chokidar: ^3.4.3
       debug: ^4.3.1
@@ -255,7 +244,6 @@ importers:
       prettier: ^2.1.2
     dependencies:
       '@formatjs/icu-messageformat-parser': 2.3.0
-      '@vocab/types': link:../types
       chalk: 4.1.2
       chokidar: 3.5.3
       debug: 4.3.4
@@ -273,7 +261,6 @@ importers:
       '@types/debug': ^4.1.5
       '@types/node-fetch': ^2.5.7
       '@vocab/core': link:../core
-      '@vocab/types': link:../types
       chalk: ^4.1.0
       csv-stringify: ^6.2.3
       debug: ^4.3.1
@@ -281,7 +268,6 @@ importers:
       node-fetch: ^2.6.1
     dependencies:
       '@vocab/core': link:../core
-      '@vocab/types': link:../types
       chalk: 4.1.2
       csv-stringify: 6.2.3
       debug: 4.3.4
@@ -297,11 +283,11 @@ importers:
   packages/react:
     specifiers:
       '@types/react': ^18.0.9
-      '@vocab/types': link:../types
+      '@vocab/core': link:../core
       intl-messageformat: ^10.0.0
       react: ^18.1.0
     dependencies:
-      '@vocab/types': link:../types
+      '@vocab/core': link:../core
       intl-messageformat: 10.3.1
     devDependencies:
       '@types/react': 18.0.9
@@ -309,9 +295,9 @@ importers:
 
   packages/types:
     specifiers:
-      intl-messageformat: ^10.0.0
+      '@vocab/core': link:../core
     dependencies:
-      intl-messageformat: 10.3.1
+      '@vocab/core': link:../core
 
   packages/virtual-resource-loader:
     specifiers:
@@ -326,7 +312,6 @@ importers:
     specifiers:
       '@types/debug': ^4.1.5
       '@vocab/core': link:../core
-      '@vocab/types': link:../types
       chalk: ^4.1.0
       debug: ^4.3.1
       es-module-lexer: ^0.9.3
@@ -334,7 +319,6 @@ importers:
       webpack: ^5.37.0
     dependencies:
       '@vocab/core': link:../core
-      '@vocab/types': link:../types
       chalk: 4.1.2
       debug: 4.3.4
       es-module-lexer: 0.9.3
@@ -3588,7 +3572,7 @@ packages:
       '@babel/core': 7.21.0
       find-cache-dir: 3.3.2
       schema-utils: 4.0.0
-      webpack: 5.76.3
+      webpack: 5.76.3_webpack-cli@5.0.1
     dev: false
 
   /babel-plugin-istanbul/6.1.1:
@@ -8486,7 +8470,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.5
-      webpack: 5.76.3
+      webpack: 5.76.3_webpack-cli@5.0.1
 
   /terser/5.16.5:
     resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}

@@ -9,6 +9,6 @@
     "dist"
   ],
   "dependencies": {
-    "intl-messageformat": "^10.0.0"
+    "@vocab/core": "^1.2.5"
   }
 }

@@ -2,7 +2,7 @@ import path from 'path';
 import { pull } from './pull-translations';
 import { pullAllTranslations } from './phrase-api';
 import { writeFile } from './file';
-import { GeneratedLanguageTarget, LanguageTarget } from '@vocab/types';
+import type { GeneratedLanguageTarget, LanguageTarget } from '@vocab/core';
 
 jest.mock('./file', () => ({
   writeFile: jest.fn(() => Promise.resolve),

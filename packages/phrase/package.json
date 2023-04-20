@@ -7,7 +7,6 @@
   "license": "MIT",
   "dependencies": {
     "@vocab/core": "^1.2.5",
-    "@vocab/types": "^1.1.2",
     "chalk": "^4.1.0",
     "csv-stringify": "^6.2.3",
     "debug": "^4.3.1",

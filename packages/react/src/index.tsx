@@ -1,9 +1,9 @@
-import {
+import type {
   TranslationFile,
   LanguageName,
   ParsedFormatFnByKey,
   ParsedFormatFn,
-} from '@vocab/types';
+} from '@vocab/core';
 import React, {
   ReactNode,
   useContext,

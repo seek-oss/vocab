@@ -1,4 +1,4 @@
-import { UserConfig } from '@vocab/types';
+import type { UserConfig } from './types';
 import path from 'path';
 
 import chalk from 'chalk';

@@ -9,7 +9,7 @@ import type {
   LanguageName,
   TranslationFileMetadata,
   TranslationFileContents,
-} from '@vocab/types';
+} from './types';
 import chalk from 'chalk';
 
 import { trace } from './logger';

@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@vocab/cli": "*",
-    "@vocab/core": "*",
-    "@vocab/types": "*"
+    "@vocab/core": "*"
   }
 }

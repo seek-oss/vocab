@@ -7,7 +7,7 @@ import {
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
-import type { TranslationFileContents, UserConfig } from '@vocab/types';
+import type { TranslationFileContents, UserConfig } from '@vocab/core';
 
 import { pullAllTranslations, ensureBranch } from './phrase-api';
 import { trace } from './logger';

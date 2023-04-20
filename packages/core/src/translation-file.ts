@@ -1,11 +1,11 @@
-import {
+import type {
   TranslationModule,
   TranslationModuleByLanguage,
   ParsedICUMessages,
   LanguageName,
   ParsedFormatFnByKey,
   TranslationFile,
-} from '@vocab/types';
+} from './types';
 
 export function createTranslationFile<
   Language extends LanguageName,

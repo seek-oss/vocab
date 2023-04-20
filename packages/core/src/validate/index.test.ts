@@ -1,4 +1,4 @@
-import { LoadedTranslation, LanguageName } from '@vocab/types';
+import type { LoadedTranslation, LanguageName } from '../types';
 import { findMissingKeys } from './index';
 
 interface TestCase {

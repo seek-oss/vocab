@@ -1,4 +1,8 @@
-import type { TranslationData, TranslationsByLanguage } from '@vocab/types';
+import type {
+  TranslationData,
+  TranslationsByLanguage,
+  UserConfig,
+} from '@vocab/core';
 
 import {
   ensureBranch,
@@ -7,7 +11,6 @@ import {
 } from './phrase-api';
 import { trace } from './logger';
 import { loadAllTranslations, getUniqueKey } from '@vocab/core';
-import { UserConfig } from '@vocab/types';
 
 interface PushOptions {
   branch: string;

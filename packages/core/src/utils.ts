@@ -6,7 +6,7 @@ import type {
   TranslationsByKey,
   TranslationMessagesByKey,
   UserConfig,
-} from '@vocab/types';
+} from './types';
 import { trace } from './logger';
 
 export const defaultTranslationDirSuffix = '.vocab';
