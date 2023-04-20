@@ -1,3 +1,5 @@
+export type ICUFormatResult<T = unknown> = string | T | (string | T);
+
 export type {
   FormatXMLElementFn,
   LanguageName,
