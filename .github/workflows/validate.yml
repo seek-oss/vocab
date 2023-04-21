@@ -76,7 +76,7 @@ jobs:
         id: puppeteer-cache
         uses: actions/cache@v3
         with:
-          path: /home/runner/.cache/puppeteer
+          path: C:\Users\runneradmin\.cache\puppeteer
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
 
       - name: Install Puppeteer
