@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import FormData from 'form-data';
-import type { TranslationsByLanguage } from '@vocab/types';
+import type { TranslationsByLanguage } from '@vocab/core';
 import fetch from 'node-fetch';
 import { log, trace } from './logger';
 import { translationsToCsv } from './csv';

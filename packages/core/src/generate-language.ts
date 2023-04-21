@@ -5,7 +5,7 @@ import {
   TYPE,
 } from '@formatjs/icu-messageformat-parser';
 import { printAST } from '@formatjs/icu-messageformat-parser/printer';
-import { MessageGenerator, TranslationsByKey } from '@vocab/types';
+import type { MessageGenerator, TranslationsByKey } from './types';
 
 export function generateLanguageFromTranslations({
   baseTranslations,

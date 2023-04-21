@@ -1,4 +1,4 @@
-import { TranslationModule, TranslationMessagesByKey } from '@vocab/types';
+import type { TranslationModule, TranslationMessagesByKey } from './types';
 
 import { getParsedICUMessages } from './icu-handler';
 

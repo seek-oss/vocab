@@ -1,5 +1,5 @@
 import { resolveConfigSync, validateConfig } from '@vocab/core';
-import { UserConfig } from '@vocab/types';
+import type { UserConfig } from '@vocab/core';
 import type { Compiler } from 'webpack';
 import { trace } from './logger';
 

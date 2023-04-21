@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import type { UserConfig } from '@vocab/types';
+import type { UserConfig } from '@vocab/core';
 import { pull, push } from '@vocab/phrase';
 import { resolveConfig, compile, validate } from '@vocab/core';
 import yargs from 'yargs';

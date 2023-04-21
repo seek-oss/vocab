@@ -1,10 +1,10 @@
 import path from 'path';
 
-import {
+import type {
   LoadedTranslation,
   UserConfig,
   TranslationMessagesByKey,
-} from '@vocab/types';
+} from '@vocab/core';
 import { init as initModuleLexer, parse } from 'es-module-lexer';
 import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
 import type { LoaderContext as WebpackLoaderContext } from 'webpack';

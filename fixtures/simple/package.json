@@ -15,7 +15,6 @@
     "@vocab/core": "*",
     "@vocab/pseudo-localize": "*",
     "@vocab/react": "*",
-    "@vocab/types": "*",
     "@vocab/webpack": "*",
     "babel-loader": "^9.1.2",
     "html-webpack-plugin": "^5.5.0",

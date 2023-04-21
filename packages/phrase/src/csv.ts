@@ -1,5 +1,5 @@
 import { stringify } from 'csv-stringify/sync';
-import type { TranslationsByLanguage } from '@vocab/types';
+import type { TranslationsByLanguage } from '@vocab/core';
 
 export function translationsToCsv(
   translations: TranslationsByLanguage,

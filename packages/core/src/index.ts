@@ -11,4 +11,4 @@ export {
   loadAllTranslations,
   loadTranslation,
 } from './load-translations';
-export type { TranslationFile } from '@vocab/types';
+export * from './types';

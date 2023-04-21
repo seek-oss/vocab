@@ -1,4 +1,4 @@
-import { ParsedICUMessages, TranslationMessagesByKey } from '@vocab/types';
+import type { ParsedICUMessages, TranslationMessagesByKey } from './types';
 import IntlMessageFormat from 'intl-messageformat';
 
 type ICUMessagesByLocale = {

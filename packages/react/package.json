@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vocab/types": "^1.1.2",
+    "@vocab/core": "^1.2.5",
     "intl-messageformat": "^10.0.0"
   },
   "devDependencies": {
