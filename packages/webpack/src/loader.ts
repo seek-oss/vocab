@@ -5,7 +5,8 @@ import type {
   UserConfig,
   TranslationMessagesByKey,
 } from '@vocab/core';
-import { init as initModuleLexer, parse } from 'es-module-lexer';
+import * as cjsModuleLexer from 'cjs-module-lexer';
+import * as esModuleLexer from 'es-module-lexer';
 import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
 import type { LoaderContext as WebpackLoaderContext } from 'webpack';
 
@@ -72,8 +73,12 @@ function renderLanguageLoaderAsync(
   };
 }
 
-function findExportNames(source: string) {
-  const [, exports] = parse(source);
+function findExportNames(source: string, mode: 'cjs' | 'esm') {
+  if (mode === 'esm') {
+    const [, exports] = esModuleLexer.parse(source);
+    return exports;
+  }
+  const { exports } = cjsModuleLexer.parse(source);
   return exports;
 }
 
@@ -85,7 +90,9 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  await initModuleLexer;
+  // this is necessary for the Web Assembly boot
+  await esModuleLexer.init;
+
   const config = this.getOptions();
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
@@ -108,19 +115,39 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     loadedTranslation,
   );
 
-  const loadedLanguages = Object.keys(loadedTranslation.languages);
-  const exportName = findExportNames(source)[0];
-
-  const result = /* ts */ `
-    import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
-
+  const translations = /* ts */ `
     const translations = createTranslationFile({
-      ${loadedLanguages
+      ${Object.keys(loadedTranslation.languages)
         .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
         .join(',\n')}
-    });
-    export { translations as ${exportName} };
+      });
   `;
+  let result;
+
+  const esmExports = findExportNames(source, 'esm');
+  if (esmExports.length > 0) {
+    const exportName = esmExports[0];
+    trace(`Found ESM export '${exportName}' in ${this.resourcePath}`);
+
+    result = /* ts */ `
+      import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
+      ${translations}
+      export { translations as ${exportName} };
+    `;
+  } else {
+    // init needs to be called and waited upon
+    await cjsModuleLexer.init();
+
+    const exportName = findExportNames(source, 'cjs')[0];
+    trace(`Found CJS export '${exportName}' in ${this.resourcePath}`);
+
+    result = /* ts */ `
+      const { createLanguage, createTranslationFile } = require('@vocab/webpack/${target}');
+      ${translations}
+      exports.${exportName} = translations;
+    `;
+  }
+
   trace('Created translation file', result);
 
   callback(null, result);
