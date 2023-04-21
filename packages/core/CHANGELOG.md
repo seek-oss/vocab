@@ -1,5 +1,19 @@
 # @vocab/core
 
+## 1.3.0
+
+### Minor Changes
+
+- [`16853dd`](https://github.com/seek-oss/vocab/commit/16853dd68f62c66013fea287cc0dbeafaec46351) [#137](https://github.com/seek-oss/vocab/pull/137) Thanks [@mrm007](https://github.com/mrm007)! - Absorb types into `@vocab/core`
+
+  `@vocab/types` re-exports all types from `@vocab/core` and will be deprecated and removed in the near future.
+
+### Patch Changes
+
+- [`5822b5e`](https://github.com/seek-oss/vocab/commit/5822b5e820ab7bf29d283c1d1c0925eacb783c46) [#139](https://github.com/seek-oss/vocab/pull/139) Thanks [@mrm007](https://github.com/mrm007)! - Use the correct return types in the generated translations
+
+- [`ca27748`](https://github.com/seek-oss/vocab/commit/ca27748e044fde10617e8bf4358480706583c1ef) [#135](https://github.com/seek-oss/vocab/pull/135) Thanks [@mrm007](https://github.com/mrm007)! - Use `import type` syntax in the generated translation file
+
 ## 1.2.5
 
 ### Patch Changes

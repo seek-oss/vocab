@@ -1,5 +1,22 @@
 # @vocab/types
 
+## 1.3.0
+
+### Minor Changes
+
+- [`16853dd`](https://github.com/seek-oss/vocab/commit/16853dd68f62c66013fea287cc0dbeafaec46351) [#137](https://github.com/seek-oss/vocab/pull/137) Thanks [@mrm007](https://github.com/mrm007)! - Absorb types into `@vocab/core`
+
+  `@vocab/types` re-exports all types from `@vocab/core` and will be deprecated and removed in the near future.
+
+### Patch Changes
+
+- [`ff418be`](https://github.com/seek-oss/vocab/commit/ff418be8f5b805b4c6f8b3046992a46e7a4138e9) [#138](https://github.com/seek-oss/vocab/pull/138) Thanks [@mrm007](https://github.com/mrm007)! - Remove [unused] `ICUFormatResult` type
+
+  [unused]: https://github.com/search?q=+%2FICUFormatResult%2F&type=code
+
+- Updated dependencies [[`16853dd`](https://github.com/seek-oss/vocab/commit/16853dd68f62c66013fea287cc0dbeafaec46351), [`5822b5e`](https://github.com/seek-oss/vocab/commit/5822b5e820ab7bf29d283c1d1c0925eacb783c46), [`ca27748`](https://github.com/seek-oss/vocab/commit/ca27748e044fde10617e8bf4358480706583c1ef)]:
+  - @vocab/core@1.3.0
+
 ## 1.2.0
 
 ### Minor Changes
