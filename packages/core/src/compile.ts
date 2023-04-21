@@ -149,9 +149,10 @@ function serialiseTranslationRuntime(
 
     if (Object.keys(params).length > 0) {
       const formatGeneric = hasTags ? '<T = string>' : '';
-      const formatReturn = hasTags
-        ? 'string | T | Array<string | T>'
-        : 'string';
+      const formatReturn =
+        hasTags && imports.has('FormatXMLElementFn')
+          ? 'ReturnType<FormatXMLElementFn<T>>'
+          : 'string';
       translationFunctionString = `${formatGeneric}(values: ${serialiseObjectToType(
         params,
       )}) => ${formatReturn}`;

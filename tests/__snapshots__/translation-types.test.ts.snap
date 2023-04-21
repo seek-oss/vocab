@@ -28,14 +28,14 @@ const translations = createTranslationFile<
     Param: (values: { candidateName: string }) => string;
     Tag: <T = string>(values: {
       Bold: FormatXMLElementFn<T>;
-    }) => string | T | Array<string | T>;
+    }) => ReturnType<FormatXMLElementFn<T>>;
     Number: (values: { numCats: number }) => string;
     Date: (values: { start: Date | number }) => string;
     Time: (values: { expires: Date | number }) => string;
     'Nested tags': <T = string>(values: {
       Bold: FormatXMLElementFn<T>;
       Italic: FormatXMLElementFn<T>;
-    }) => string | T | Array<string | T>;
+    }) => ReturnType<FormatXMLElementFn<T>>;
     Plural: (values: { itemCount: number }) => string;
     'Plural with nested params': (values: {
       numDogs: number;
