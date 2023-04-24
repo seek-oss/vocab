@@ -2,4 +2,4 @@
 '@vocab/webpack': patch
 ---
 
-Resolve exports for CJS
+Generate virtual module code in the same format (ESM or CJS) as the translation file
