@@ -8,7 +8,7 @@ import {
 
 const describeWithTimeout = (title: string, fn: () => any) =>
   // eslint-disable-next-line jest/valid-describe-callback
-  describe.each([title])('%s', fn, process.env.CI != null ? 10000 : undefined);
+  describe.each([title])('%s', fn, 2000);
 
 describeWithTimeout('E2E', () => {
   describe('Server with initial render', () => {
