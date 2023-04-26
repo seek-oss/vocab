@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.2.1
+
+### Patch Changes
+
+- [`7c1adbc`](https://github.com/seek-oss/vocab/commit/7c1adbca046a3de08ed596f9c5fa6a2e46721bfa) [#141](https://github.com/seek-oss/vocab/pull/141) Thanks [@mrm007](https://github.com/mrm007)! - Generate virtual module code in the same format (ESM or CJS) as the translation file
+
 ## 1.2.0
 
 ### Minor Changes
