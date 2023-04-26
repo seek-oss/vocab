@@ -20,10 +20,11 @@ Vocab helps you ship multiple languages without compromising the reliability of 
 
 ### Step 1: Install Dependencies
 
-Vocab is a monorepo with different packages you can install depending on your usage, the below list will get you started using the cli, React and webpack integrations.
+Vocab is a monorepo with different packages you can install depending on your usage, the below list will get you started using the CLI and React integration.
 
 ```bash
-$ npm i --save @vocab/cli @vocab/react @vocab/webpack
+$ npm i --save-dev @vocab/cli
+$ npm i --save @vocab/core @vocab/react
 ```
 
 ### Step 2: Configure Vocab
@@ -116,6 +117,10 @@ Right now every language is loaded into your web application all the time, which
 
 This is done using the **VocabWebpackPlugin**. Applying this plugin to your client webpack configuration will replace all vocab files with a dynamic asynchronous chunks designed for the web.
 
+```bash
+$ npm i --save-dev @vocab/webpack
+```
+
 **webpack.config.js**
 
 ```js
@@ -206,7 +211,7 @@ module.exports = {
    */
   generatedLanguages: [
     {
-      name: 'generatedLangauge',
+      name: 'generatedLanguage',
       extends: 'en',
       generator: {
         transformElement: capitalize,
@@ -295,6 +300,10 @@ const App = () => (
 ## Pseudo-localization
 
 The `@vocab/pseudo-localize` package exports low-level functions that can be used for pseudo-localization of translation messages.
+
+```bash
+$ npm i --save-dev @vocab/pseudo-localize
+```
 
 ```ts
 import {
