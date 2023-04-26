@@ -90,7 +90,6 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-
   const config = this.getOptions();
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(this.resourcePath);
