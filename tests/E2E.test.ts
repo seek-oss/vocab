@@ -6,11 +6,7 @@ import {
   getLanguageChunk,
 } from '@vocab-private/test-helpers';
 
-const describeWithTimeout = (title: string, fn: () => any) =>
-  // eslint-disable-next-line jest/valid-describe-callback
-  describe.each([title])('%s', fn, 2000);
-
-describeWithTimeout('E2E', () => {
+describe('E2E', () => {
   describe('Server with initial render', () => {
     let server: TestServer;
 
