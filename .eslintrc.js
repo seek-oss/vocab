@@ -1,5 +1,9 @@
 module.exports = {
   extends: 'seek',
+  globals: {
+    // provided by jest-puppeteer
+    page: true,
+  },
   rules: {
     'no-process-exit': 'off',
     'no-var-requires': 'off',

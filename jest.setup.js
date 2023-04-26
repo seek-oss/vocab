@@ -1,3 +1,5 @@
 import 'expect-puppeteer';
 
-jest.setTimeout(20000);
+import jestConfig from './jest.config';
+
+page.setDefaultTimeout(jestConfig.testTimeout);
