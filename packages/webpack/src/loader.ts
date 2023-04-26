@@ -90,8 +90,6 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     throw new Error(`Webpack didn't provide an async callback`);
   }
 
-  // this is necessary for the Web Assembly boot
-  await esModuleLexer.init;
 
   const config = this.getOptions();
 
@@ -124,6 +122,8 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
   `;
   let result;
 
+  // this is necessary for the Web Assembly boot
+  await esModuleLexer.init;
   const esmExports = findExportNames(source, 'esm');
   if (esmExports.length > 0) {
     const exportName = esmExports[0];
