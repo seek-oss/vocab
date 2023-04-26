@@ -20,7 +20,7 @@ Vocab helps you ship multiple languages without compromising the reliability of 
 
 ### Step 1: Install Dependencies
 
-Vocab is a monorepo with different packages you can install depending on your usage, the below list will get you started using the cli, React and webpack integrations.
+Vocab is a monorepo with different packages you can install depending on your usage, the below list will get you started using the CLI and React integration.
 
 ```bash
 $ npm i --save-dev @vocab/cli
