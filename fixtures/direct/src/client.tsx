@@ -5,7 +5,7 @@ import {
   getSyncMessage,
   getAsyncMessage,
   preloadLanguage,
-  LanguageName,
+  type LanguageName,
 } from './utils';
 
 function App() {

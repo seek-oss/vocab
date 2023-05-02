@@ -15,7 +15,7 @@ import chalk from 'chalk';
 import { trace } from './logger';
 import {
   defaultTranslationDirSuffix,
-  Fallback,
+  type Fallback,
   getAltLanguageFilePath,
   getAltLanguages,
   getDevTranslationFileGlob,

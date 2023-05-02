@@ -1,5 +1,5 @@
 import { VocabProvider, useTranslations } from '@vocab/react';
-import React, { ReactNode, useState } from 'react';
+import React, { type ReactNode, useState } from 'react';
 import { render } from 'react-dom';
 
 import commonTranslations from './.vocab';

@@ -1,7 +1,7 @@
 import IntlMessageFormat from 'intl-messageformat';
 import {
-  MessageFormatElement,
-  PluralOrSelectOption,
+  type MessageFormatElement,
+  type PluralOrSelectOption,
   TYPE,
 } from '@formatjs/icu-messageformat-parser';
 import { printAST } from '@formatjs/icu-messageformat-parser/printer';

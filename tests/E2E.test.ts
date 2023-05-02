@@ -2,7 +2,7 @@ import {
   getAppSnapshot,
   startFixture,
   runServerFixture,
-  TestServer,
+  type TestServer,
   getLanguageChunk,
 } from '@vocab-private/test-helpers';
 

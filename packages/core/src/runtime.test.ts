@@ -1,4 +1,4 @@
-import { FormatXMLElementFn } from 'intl-messageformat';
+import type { FormatXMLElementFn } from 'intl-messageformat';
 import { createTranslationFile, createLanguage } from './runtime';
 
 const createDemoTranslationFile = () =>

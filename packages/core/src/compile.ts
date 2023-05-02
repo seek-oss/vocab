@@ -1,7 +1,7 @@
 import { promises as fs, existsSync } from 'fs';
 import path from 'path';
 
-import { LoadedTranslation, UserConfig } from './types';
+import type { LoadedTranslation, UserConfig } from './types';
 import {
   isArgumentElement,
   isDateElement,
@@ -10,7 +10,7 @@ import {
   isSelectElement,
   isTagElement,
   isTimeElement,
-  MessageFormatElement,
+  type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser';
 import prettier from 'prettier';
