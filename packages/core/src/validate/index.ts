@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UserConfig, LoadedTranslation, LanguageName } from '../types';
+import type { UserConfig, LoadedTranslation, LanguageName } from '../types';
 import chalk from 'chalk';
 
 import { loadAllTranslations } from '../load-translations';

@@ -1,5 +1,5 @@
 #!/usr/bin/env ts-node
-import { FixtureName, runServerFixture } from './helpers';
+import { type FixtureName, runServerFixture } from './helpers';
 
 const fixtureName = process.argv[2] as FixtureName;
 

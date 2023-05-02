@@ -5,7 +5,7 @@ import type {
   ParsedFormatFn,
 } from '@vocab/core';
 import React, {
-  ReactNode,
+  type ReactNode,
   useContext,
   useMemo,
   useReducer,
