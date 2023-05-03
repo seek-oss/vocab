@@ -6,6 +6,9 @@ import {
   getLanguageChunk,
 } from '@vocab-private/test-helpers';
 
+// Puppeteer methods can sometimes take a bit longer on CI (especially on windows)
+page.setDefaultTimeout(2000);
+
 describe('E2E', () => {
   describe('Server with initial render', () => {
     let server: TestServer;
