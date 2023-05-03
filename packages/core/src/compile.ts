@@ -41,10 +41,11 @@ interface TranslationTypeInfo {
 
 function extractHasTags(ast: MessageFormatElement[]): boolean {
   return ast.some((element) => {
-    if (isSelectElement(element)) {
+    if (isSelectElement(element) || isPluralElement(element)) {
       const children = Object.values(element.options).map((o) => o.value);
       return children.some((child) => extractHasTags(child));
     }
+
     return isTagElement(element);
   });
 }

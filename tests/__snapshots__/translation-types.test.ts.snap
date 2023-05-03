@@ -42,6 +42,10 @@ const translations = createTranslationFile<
       singularPrefix: string;
       pluralPrefix: string;
     }) => string;
+    'Plural with nested tag': <T = string>(values: {
+      numDogs: number;
+      Bold: FormatXMLElementFn<T>;
+    }) => ReturnType<FormatXMLElementFn<T>>;
     'Plural with self-referential param': (values: { foo: number }) => string;
     'Select ordinal': (values: { year: number }) => string;
     'Select ordinal with self-referential param': (values: {
@@ -56,6 +60,10 @@ const translations = createTranslationFile<
     'Select with pound element': (values: {
       foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
+    'Select with nested tag': <T = string>(values: {
+      foo: StringWithSuggestions<'a'>;
+      Bold: FormatXMLElementFn<T>;
+    }) => ReturnType<FormatXMLElementFn<T>>;
     'Select with self-referential param': (values: {
       foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
@@ -72,6 +80,8 @@ const translations = createTranslationFile<
     Plural: '{itemCount, plural, one {# item} other {# items}}',
     'Plural with nested params':
       '{numDogs, plural, one {# {singularPrefix} dog} other {# {pluralPrefix} dogs}}',
+    'Plural with nested tag':
+      '{numDogs, plural, one {<Bold>#</Bold> dog} other {<Bold>#</Bold> dogs}}',
     'Plural with self-referential param':
       '{foo, plural, zero {a} one {b} other {{foo} c}}',
     'Select ordinal':
@@ -82,6 +92,8 @@ const translations = createTranslationFile<
     'Select with nested params':
       '{foo, select, a {{bar} a} b {{baz} b} other {c}}',
     'Select with pound element': '{foo, select, a {# a} b {# b} other {c}}',
+    'Select with nested tag':
+      '{foo, select, a {<Bold>a</Bold>} other {<Bold>other</Bold>}}',
     'Select with self-referential param':
       '{foo, select, a {a} b {b} other {{foo} c}}',
   }),
