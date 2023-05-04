@@ -1,5 +1,11 @@
 # @vocab/phrase
 
+## 1.2.6
+
+### Patch Changes
+
+- [`c0459e0`](https://github.com/seek-oss/vocab/commit/c0459e0f34f36f7d96f6cd3e2ed93b1f3f8a0756) [#149](https://github.com/seek-oss/vocab/pull/149) Thanks [@askoufis](https://github.com/askoufis)! - Update descriptions when pushing translations
+
 ## 1.2.5
 
 ### Patch Changes
