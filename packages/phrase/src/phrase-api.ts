@@ -134,6 +134,7 @@ export async function pushTranslations(
   formData.append('file_format', 'csv');
   formData.append('branch', branch);
   formData.append('update_translations', 'true');
+  formData.append('update_descriptions', 'true');
 
   for (const [locale, index] of Object.entries(localeMapping)) {
     formData.append(`locale_mapping[${locale}]`, index);
