@@ -77,7 +77,7 @@ describe('E2E', () => {
 
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
+      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', { timeout: 2000 });
     });
 
     it('should allow special characters', async () => {
