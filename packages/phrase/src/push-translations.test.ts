@@ -14,7 +14,7 @@ jest.mock('./phrase-api', () => ({
   deleteUnusedKeys: jest.fn(() => Promise.resolve()),
 }));
 
-const uploadId = '1234';
+const devLanguageUploadId = '1234';
 
 function runPhrase(config: { deleteUnusedKeys: boolean }) {
   return push(
@@ -47,7 +47,7 @@ describe('push', () => {
 
       jest
         .mocked(pushTranslations)
-        .mockImplementation(() => Promise.resolve({ uploadId }));
+        .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
     });
 
     it('should resolve', async () => {
@@ -118,7 +118,7 @@ describe('push', () => {
       beforeEach(() => {
         jest
           .mocked(pushTranslations)
-          .mockImplementation(() => Promise.resolve({ uploadId }));
+          .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
       });
 
       it('should resolve', async () => {
@@ -174,7 +174,10 @@ describe('push', () => {
       it('should delete unused keys', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(deleteUnusedKeys).toHaveBeenCalledWith(uploadId, 'tester');
+        expect(deleteUnusedKeys).toHaveBeenCalledWith(
+          devLanguageUploadId,
+          'tester',
+        );
       });
     });
 

@@ -122,58 +122,66 @@ export async function pushTranslations(
   translationsByLanguage: TranslationsByLanguage,
   { devLanguage, branch }: { devLanguage: string; branch: string },
 ) {
-  const formData = new FormData();
-  const { csvString, localeMapping, keyIndex, commentIndex, tagColumn } =
+  const { csvFileStrings, keyIndex, commentIndex, tagColumn, messageIndex } =
     translationsToCsv(translationsByLanguage, devLanguage);
-  const fileContents = Buffer.from(csvString);
-  formData.append('file', fileContents, {
-    contentType: 'text/csv',
-    filename: 'translations.csv',
-  });
 
-  formData.append('file_format', 'csv');
-  formData.append('branch', branch);
-  formData.append('update_translations', 'true');
-  formData.append('update_descriptions', 'true');
+  let devLanguageUploadId = '';
 
-  for (const [locale, index] of Object.entries(localeMapping)) {
-    formData.append(`locale_mapping[${locale}]`, index);
-  }
+  for (const [language, csvFileString] of Object.entries(csvFileStrings)) {
+    const formData = new FormData();
 
-  formData.append('format_options[key_index]', keyIndex);
-  formData.append('format_options[comment_index]', commentIndex);
-  formData.append('format_options[tag_column]', tagColumn);
-  formData.append('format_options[enable_pluralization]', 'false');
+    const fileContents = Buffer.from(csvFileString);
+    formData.append('file', fileContents, {
+      contentType: 'text/csv',
+      filename: `${language}.translations.csv`,
+    });
 
-  log('Uploading translations');
+    formData.append('file_format', 'csv');
+    formData.append('branch', branch);
+    formData.append('update_translations', 'true');
+    formData.append('update_descriptions', 'true');
 
-  const result = await callPhrase<
-    | {
-        id: string;
-      }
-    | {
-        message: string;
-        errors: Array<unknown>;
-      }
-    | undefined
-  >(`uploads`, {
-    method: 'POST',
-    body: formData,
-  });
+    formData.append(`locale_mapping[${language}]`, messageIndex);
 
-  trace('Upload result:\n', result);
+    formData.append('format_options[key_index]', keyIndex);
+    formData.append('format_options[comment_index]', commentIndex);
+    formData.append('format_options[tag_column]', tagColumn);
+    formData.append('format_options[enable_pluralization]', 'false');
 
-  if (result && 'id' in result) {
-    log('Upload ID:', result.id, '\n');
-    log('Successfully Uploaded\n');
-  } else {
-    log(`Error uploading: ${result?.message}\n`);
-    log('Response:', result);
-    throw new Error('Error uploading');
+    log(`Uploading translations for language ${language}`);
+
+    const result = await callPhrase<
+      | {
+          id: string;
+        }
+      | {
+          message: string;
+          errors: Array<unknown>;
+        }
+      | undefined
+    >(`uploads`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    trace('Upload result:\n', result);
+
+    if (result && 'id' in result) {
+      log('Upload ID:', result.id, '\n');
+      log('Successfully Uploaded\n');
+    } else {
+      log(`Error uploading: ${result?.message}\n`);
+      log('Response:', result);
+      throw new Error('Error uploading');
+    }
+
+    if (language === devLanguage) {
+      devLanguageUploadId = result.id;
+    }
   }
 
   return {
-    uploadId: result.id,
+    devLanguageUploadId,
   };
 }
 

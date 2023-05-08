@@ -1,5 +1,9 @@
 import { stringify } from 'csv-stringify/sync';
-import type { TranslationsByLanguage } from '@vocab/core';
+import type { LanguageName, TranslationsByLanguage } from '@vocab/core';
+
+type Value = string | undefined;
+type CsvRow = Value[];
+type CsvFile = CsvRow[];
 
 export function translationsToCsv(
   translations: TranslationsByLanguage,
@@ -7,38 +11,51 @@ export function translationsToCsv(
 ) {
   const languages = Object.keys(translations);
   const altLanguages = languages.filter((language) => language !== devLanguage);
-  // Ensure languages are ordered for locale mapping
-  const orderedLanguages = [devLanguage, ...altLanguages];
 
   const devLanguageTranslations = translations[devLanguage];
 
-  const csv = Object.entries(devLanguageTranslations).map(
+  const csvFilesByLanguage: Record<LanguageName, CsvFile> = Object.fromEntries(
+    languages.map((language) => [language, []]),
+  );
+
+  Object.entries(devLanguageTranslations).map(
     ([key, { message, description, tags }]) => {
-      const altTranslationMessages = altLanguages.map(
-        (language) => translations[language]?.[key]?.message,
-      );
-      return [
-        message,
-        ...altTranslationMessages,
-        key,
-        description,
-        tags?.join(','),
-      ];
+      const sharedData = [key, description, tags?.join(',')];
+      const devLanguageRow = [...sharedData, message];
+      csvFilesByLanguage[devLanguage].push(devLanguageRow);
+
+      altLanguages.map((language) => {
+        const altTranslationMessage = translations[language]?.[key]?.message;
+
+        if (altTranslationMessage) {
+          csvFilesByLanguage[language].push([
+            ...sharedData,
+            altTranslationMessage,
+          ]);
+        }
+      });
     },
   );
 
-  const csvString = stringify(csv, {
-    delimiter: ',',
-    header: false,
-  });
+  const csvFileStrings = Object.fromEntries(
+    Object.entries(csvFilesByLanguage)
+      // Ensure CSV files are only created if the language has at least 1 translation
+      .filter(([_, csvFile]) => csvFile.length > 0)
+      .map(([language, csvFile]) => {
+        const csvFileString = stringify(csvFile, {
+          delimiter: ',',
+          header: false,
+        });
+
+        return [language, csvFileString];
+      }),
+  );
 
   // Column indices start at 1
-  const localeMapping = Object.fromEntries(
-    orderedLanguages.map((language, index) => [language, index + 1]),
-  );
-  const keyIndex = orderedLanguages.length + 1;
+  const keyIndex = 1;
   const commentIndex = keyIndex + 1;
   const tagColumn = commentIndex + 1;
+  const messageIndex = tagColumn + 1;
 
-  return { csvString, localeMapping, keyIndex, commentIndex, tagColumn };
+  return { csvFileStrings, keyIndex, messageIndex, commentIndex, tagColumn };
 }

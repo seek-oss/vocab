@@ -35,27 +35,29 @@ describe('translationsToCsv', () => {
           description: 'Hello in English',
         },
       },
+      th: {},
     };
 
-    const { csvString, localeMapping, keyIndex, commentIndex, tagColumn } =
+    const { csvFileStrings, keyIndex, commentIndex, tagColumn, messageIndex } =
       translationsToCsv(translations, devLanguage);
 
-    expect(csvString).toMatchInlineSnapshot(`
-      "Hello,Bonjour,Hello,,"greeting,hello,word"
-      World,Monde,World,Some description,
-      Hello,Au revoir,Goodbye,,"greeting,hello,word"
-      Foo,,Foo,,
-      "
-    `);
-
-    expect(localeMapping).toMatchInlineSnapshot(`
+    expect(csvFileStrings).toMatchInlineSnapshot(`
       {
-        "en": 1,
-        "fr": 2,
+        "en": "Hello,,"greeting,hello,word",Hello
+      World,Some description,,World
+      Goodbye,,"greeting,hello,word",Hello
+      Foo,,,Foo
+      ",
+        "fr": "Hello,,"greeting,hello,word",Bonjour
+      World,Some description,,Monde
+      Goodbye,,"greeting,hello,word",Au revoir
+      ",
       }
     `);
-    expect(keyIndex).toEqual(3);
-    expect(commentIndex).toEqual(4);
-    expect(tagColumn).toEqual(5);
+
+    expect(keyIndex).toEqual(1);
+    expect(commentIndex).toEqual(2);
+    expect(tagColumn).toEqual(3);
+    expect(messageIndex).toEqual(4);
   });
 });
