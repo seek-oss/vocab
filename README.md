@@ -450,7 +450,7 @@ $ vocab pull --branch my-branch
 
 When uploading translations, Phrase identifies keys that exist in the Phrase project, but were not
 referenced in the upload. These keys can be deleted from Phrase by providing the
-`---delete-unused-keys` flag to `vocab push`. E.g.
+`--delete-unused-keys` flag to `vocab push`. E.g.
 
 ```sh
 $ vocab push --branch my-branch --delete-unused-keys
