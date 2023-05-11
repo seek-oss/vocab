@@ -66,12 +66,12 @@ export async function push(
     }
   }
 
-  const { uploadId } = await pushTranslations(phraseTranslations, {
+  const { devLanguageUploadId } = await pushTranslations(phraseTranslations, {
     devLanguage: config.devLanguage,
     branch,
   });
 
   if (deleteUnusedKeys) {
-    await phraseDeleteUnusedKeys(uploadId, branch);
+    await phraseDeleteUnusedKeys(devLanguageUploadId, branch);
   }
 }
