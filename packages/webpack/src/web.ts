@@ -3,29 +3,29 @@ import { getParsedICUMessages } from '@vocab/core/icu-handler';
 
 export { createTranslationFile } from '@vocab/core/translation-file';
 
+const _interopDefault = (e: any) => (e && e.__esModule ? e : { default: e });
+
 export const createLanguage = (
-  moduleId: string,
   loadImport: () => Promise<any>,
 ): TranslationModule<any> => {
-  let promiseValue: Promise<any>;
+  let promise: Promise<any> | undefined;
+  let value: TranslationMessagesByKey | undefined;
 
   return {
     getValue: (locale) => {
-      // @ts-expect-error Missing webpack types
-      if (!__webpack_modules__[moduleId]) {
-        return undefined;
+      if (!value) {
+        // we don't have the value yet, so we can't parse it
+        return;
       }
-
-      // @ts-expect-error Missing webpack types
-      const m = __webpack_require__(moduleId) as TranslationMessagesByKey;
-
-      return getParsedICUMessages(m, locale);
+      return getParsedICUMessages(value, locale);
     },
-    load: () => {
-      if (!promiseValue) {
-        promiseValue = loadImport();
+    load: async () => {
+      if (!promise) {
+        promise = loadImport();
       }
-      return promiseValue;
+      // save the value so we can parse it
+      value = _interopDefault(await promise).default;
+      return promise;
     },
   };
 };

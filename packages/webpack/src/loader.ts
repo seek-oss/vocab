@@ -37,11 +37,13 @@ function createIdentifier(
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
     'base64',
   );
-
   const unloader = `${virtualResourceLoader}?source=${base64}`;
-  const fileIdent = path.basename(resourcePath, 'translations.json');
 
-  return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
+  const fileDir = path.dirname(resourcePath);
+  const fileName = path.basename(resourcePath, '.json');
+  const virtualFilePath = `${fileDir}/${fileName}-${lang}-virtual.json`;
+
+  return `${virtualFilePath}!=!${unloader}!`;
 }
 
 // reimplement `stringifyRequest` from loader-utils 2.x
@@ -63,7 +65,6 @@ function renderLanguageLoaderAsync(
 
     return /* ts */ `
       createLanguage(
-        require.resolveWeak(${identifier}),
         () => import(
           /* webpackChunkName: ${JSON.stringify(getChunkName(lang))} */
           ${identifier}

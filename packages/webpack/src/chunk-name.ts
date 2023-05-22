@@ -1,3 +1,3 @@
 export function getChunkName(lang: string) {
-  return `${lang}-translations`;
+  return `translations-${lang}`;
 }
