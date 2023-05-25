@@ -75,6 +75,10 @@ export type TranslationFile<
   load: (language: Language) => Promise<void>;
 };
 
+export type TranslationKeys<
+  Translations extends TranslationFile<any, ParsedFormatFnByKey>,
+> = keyof Awaited<ReturnType<Translations['getMessages']>>;
+
 export interface LanguageTarget {
   // The name or tag of a language
   name: LanguageName;
