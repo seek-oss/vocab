@@ -1,5 +1,37 @@
 # @vocab/core
 
+## 1.4.0
+
+### Minor Changes
+
+- [`09b7179`](https://github.com/seek-oss/vocab/commit/09b7179f77311886e4c0e53ca85d2e260f51dd30) [#154](https://github.com/seek-oss/vocab/pull/154) Thanks [@askoufis](https://github.com/askoufis)! - Add `TranslationKeys` type
+
+  The `TranslationKeys` type can be used to get a string literal union of all the translation keys used in a translation file.
+
+  **EXAMPLE USAGE**
+
+  ```jsonc
+  // .vocab/en.translations.json
+  {
+    "Hello": {
+      "message": "Hello"
+    },
+    "Goodbye": {
+      "message": "Goodbye"
+    }
+  }
+  ```
+
+  After running `vocab compile`:
+
+  ```tsx
+  import type { TranslationKeys } from '@vocab/core';
+  import translations from './.vocab';
+
+  // 'Hello' | 'Goodbye'
+  type Keys = TranslationKeys<typeof translations>;
+  ```
+
 ## 1.3.1
 
 ### Patch Changes
