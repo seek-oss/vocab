@@ -1,0 +1,38 @@
+[
+  {
+    "globalKey": "hello.mytranslations",
+    "key": "hello",
+    "tags": [
+      "only for this key",
+      "greeting",
+      "every",
+      "key",
+      "gets",
+      "these",
+      "tags"
+    ],
+    "namespace": "mytranslations",
+    "relativePath": "src/mytranslations.vocab/translations.json",
+    "messageByLanguage": {
+      "en": "Hello",
+      "fr": "Bonjour"
+    }
+  },
+  {
+    "globalKey": "world.mytranslations",
+    "key": "world",
+    "tags": [
+      "every",
+      "key",
+      "gets",
+      "these",
+      "tags"
+    ],
+    "namespace": "mytranslations",
+    "relativePath": "src/mytranslations.vocab/translations.json",
+    "messageByLanguage": {
+      "en": "world",
+      "fr": "monde"
+    }
+  }
+]

@@ -81,6 +81,7 @@
       "@vocab/cli": "link:./packages/cli",
       "@vocab/core": "link:./packages/core",
       "@vocab/phrase": "link:./packages/phrase",
+      "@vocab/file": "link:./packages/file",
       "@vocab/pseudo-localize": "link:./packages/pseudo-localize",
       "@vocab/react": "link:./packages/react",
       "@vocab/types": "link:./packages/types",

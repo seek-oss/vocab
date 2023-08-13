@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   '@vocab-fixtures/direct': link:./fixtures/direct
   '@vocab-fixtures/phrase': link:./fixtures/phrase
@@ -9,6 +13,7 @@ overrides:
   '@vocab/cli': link:./packages/cli
   '@vocab/core': link:./packages/core
   '@vocab/phrase': link:./packages/phrase
+  '@vocab/file': link:./packages/file
   '@vocab/pseudo-localize': link:./packages/pseudo-localize
   '@vocab/react': link:./packages/react
   '@vocab/types': link:./packages/types
@@ -282,6 +287,9 @@ importers:
       '@vocab/core':
         specifier: link:../core
         version: link:../core
+      '@vocab/file':
+        specifier: link:../file
+        version: link:../file
       '@vocab/phrase':
         specifier: link:../phrase
         version: link:../phrase
@@ -350,6 +358,28 @@ importers:
       '@types/prettier':
         specifier: ^2.1.5
         version: 2.7.2
+
+  packages/file:
+    dependencies:
+      '@vocab/core':
+        specifier: link:../core
+        version: link:../core
+      chalk:
+        specifier: ^4.1.0
+        version: 4.1.2
+      csv-stringify:
+        specifier: ^6.2.3
+        version: 6.2.3
+      debug:
+        specifier: ^4.3.1
+        version: 4.3.4
+    devDependencies:
+      '@types/debug':
+        specifier: ^4.1.5
+        version: 4.1.7
+      '@types/node-fetch':
+        specifier: ^2.5.7
+        version: 2.5.12
 
   packages/phrase:
     dependencies:
@@ -6536,7 +6566,7 @@ packages:
       '@jest/types': 27.5.1
       '@types/stack-utils': 2.0.1
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       micromatch: 4.0.5
       pretty-format: 27.5.1
       slash: 3.0.0

@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import type { UserConfig } from '@vocab/core';
-import { pull, push } from '@vocab/phrase';
+import * as phraseIntegration from '@vocab/phrase';
+import * as fileIntegration from '@vocab/file';
 import { resolveConfig, compile, validate } from '@vocab/core';
 import yargs from 'yargs';
 
@@ -37,16 +38,31 @@ yargs(process.argv.slice(2))
           describe: 'Whether or not to delete unused keys after pushing',
           default: false,
         },
+        file: {
+          type: 'string',
+          describe: 'The location to read and write from',
+          default: undefined,
+        },
+        integration: {
+          type: 'string',
+          describe: 'Which integration platform to use',
+          default: 'phrase',
+        },
       }),
     handler: async (options) => {
-      await push(options, config!);
+      if (options.integration === 'phrase') {
+        await phraseIntegration.push(options, config!);
+      }
+      if (options.integration === 'file') {
+        await fileIntegration.push(options, config!);
+      }
     },
   })
   .command({
     command: 'pull',
     builder: () => yargs.options({ branch: branchDefinition }),
     handler: async (options) => {
-      await pull(options, config!);
+      await phraseIntegration.pull(options, config!);
     },
   })
   .command({

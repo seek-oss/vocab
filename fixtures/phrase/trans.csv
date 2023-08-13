@@ -1,0 +1,3 @@
+globalKey,key,description,tags,en,fr
+hello.mytranslations,hello,,"only for this key, greeting, every, key, gets, these, tags",Hello,Bonjour
+world.mytranslations,world,,"every, key, gets, these, tags",world,monde

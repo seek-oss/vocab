@@ -435,9 +435,10 @@ $ vocab compile --watch
 
 Vocab can be used to synchronize your translations with translations from a remote translation platform.
 
-| Platform | Environment Variables               |
-| -------- | ----------------------------------- |
-| [Phrase] | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
+| Platform       | Environment Variables               |
+| -------------- | ----------------------------------- |
+| [Phrase]       | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
+| [File Storage] |                                     |
 
 ```bash
 $ vocab push --branch my-branch

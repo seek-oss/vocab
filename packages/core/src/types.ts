@@ -9,7 +9,7 @@ export type ParsedFormatFn = (parts: any) => any;
 export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
 
 /**
- * Equivalent to the `string` type, but tricks the language server into prodiving
+ * Equivalent to the `string` type, but tricks the language server into providing
  * suggestions for string literals passed into the `Suggestions` generic parameter
  *
  * @example
@@ -162,3 +162,19 @@ export type LoadedTranslation<Key extends TranslationKey = string> = {
   languages: TranslationsByLanguage<Key>;
   metadata: TranslationFileMetadata;
 };
+
+/**
+ * A single key and each of its translations across languages
+ * Includes it's global key, and other meta-data
+ *
+ * This is a convenience type for working with translations but is not memory efficient and should not be used where performance is a concern
+ */
+export interface ConsolidatedTranslation {
+  globalKey: string;
+  key: string;
+  description?: string;
+  tags?: string[];
+  namespace: string;
+  relativePath: string;
+  messageByLanguage: Record<string, string>;
+}

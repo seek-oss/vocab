@@ -9,6 +9,7 @@ import type {
   LanguageName,
   TranslationFileMetadata,
   TranslationFileContents,
+  ConsolidatedTranslation,
 } from './types';
 import chalk from 'chalk';
 
@@ -374,12 +375,14 @@ export function loadTranslation(
   };
 }
 
+interface LoadTranslationProps {
+  fallbacks: Fallback;
+  includeNodeModules: boolean;
+  withTags?: boolean;
+}
+
 export async function loadAllTranslations(
-  {
-    fallbacks,
-    includeNodeModules,
-    withTags,
-  }: { fallbacks: Fallback; includeNodeModules: boolean; withTags?: boolean },
+  { fallbacks, includeNodeModules, withTags }: LoadTranslationProps,
   config: UserConfig,
 ): Promise<Array<LoadedTranslation>> {
   const { projectRoot, ignore = [] } = config;
@@ -413,4 +416,66 @@ export async function loadAllTranslations(
     }
   }
   return result;
+}
+
+export async function loadConsolidatedTranslations(
+  {
+    devLanguage,
+    allLanguages,
+    ...props
+  }: LoadTranslationProps & { devLanguage: string; allLanguages: string[] },
+  config: UserConfig,
+) {
+  const translationFiles = await loadAllTranslations(props, config);
+  return consolidateTranslations({
+    translationFiles,
+    devLanguage,
+    allLanguages,
+  });
+}
+
+/**
+ * Consolidate all translations from separate files into a single de-normalised array.
+ */
+function consolidateTranslations({
+  devLanguage,
+  allLanguages,
+  translationFiles,
+}: {
+  translationFiles: LoadedTranslation[];
+  allLanguages: string[];
+  devLanguage: string;
+}): ConsolidatedTranslation[] {
+  const translations = translationFiles.flatMap((loadedTranslation) =>
+    loadedTranslation.keys.map((key) => {
+      const row: ConsolidatedTranslation = {
+        globalKey: getUniqueKey(key, loadedTranslation.namespace),
+        key,
+        description:
+          loadedTranslation.languages[devLanguage]?.[key]?.description,
+        tags: [
+          ...(loadedTranslation.languages[devLanguage]?.[key]?.tags || []),
+          ...(loadedTranslation.metadata.tags || []),
+        ],
+        namespace: loadedTranslation.namespace,
+        relativePath: loadedTranslation.relativePath,
+        messageByLanguage: {},
+      };
+
+      allLanguages.forEach((language) => {
+        if (loadedTranslation.languages[language]?.[key]) {
+          row.messageByLanguage[language] =
+            loadedTranslation.languages[language][key].message;
+        }
+      });
+
+      return row;
+    }),
+  );
+
+  trace(
+    `Consolidated ${translations.length} keys from ${translationFiles.length} files.`,
+  );
+
+  return translations;
 }

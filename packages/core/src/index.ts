@@ -9,6 +9,7 @@ export {
 export {
   getUniqueKey,
   loadAllTranslations,
+  loadConsolidatedTranslations,
   loadTranslation,
 } from './load-translations';
 export * from './types';
