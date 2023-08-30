@@ -1,6 +1,6 @@
 {
   "name": "@vocab-fixtures/file",
-  "description": "A playground reading and writing files for Phrase tests",
+  "description": "A playground reading and writing files for file tests",
   "version": "1.0.0",
   "author": "SEEK",
   "private": true,
