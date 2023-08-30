@@ -9,7 +9,6 @@ import type {
   LanguageName,
   TranslationFileMetadata,
   TranslationFileContents,
-  ConsolidatedTranslation,
 } from './types';
 import chalk from 'chalk';
 

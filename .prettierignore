@@ -9,3 +9,5 @@ CHANGELOG.md
 pnpm-lock.yaml
 
 *.vocab
+*.json
+*.csv

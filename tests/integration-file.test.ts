@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { exec as _exec } from 'node:child_process';
 import { cp, readFile, writeFile } from 'node:fs/promises';
-import path, { dirname, join, resolve } from 'node:path';
+import path, { dirname, join } from 'node:path';
 import { promisify } from 'node:util';
 
 const exec = promisify(_exec);

@@ -1,4 +1,4 @@
-import { ConsolidatedTranslation } from '@vocab/core/src';
+import type { ConsolidatedTranslation } from '@vocab/core/src';
 import { translationsToCsv } from './csv';
 
 describe('translationsToCsv', () => {
