@@ -1,0 +1,13 @@
+{
+  "name": "@vocab-fixtures/file",
+  "description": "A playground reading and writing files for Phrase tests",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "pull.csv": "vocab pull --integration file",
+    "push.csv": "vocab push --integration file",
+    "pull.json": "vocab pull --file translations.json --integration file",
+    "push.json": "vocab push --file translations.json --integration file"
+  }
+}

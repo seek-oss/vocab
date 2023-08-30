@@ -176,5 +176,10 @@ export interface ConsolidatedTranslation {
   tags?: string[];
   namespace: string;
   relativePath: string;
-  messageByLanguage: Record<string, string>;
+  messageByLanguage: Record<string, string | undefined>;
 }
+
+export type ConsolidatedTranslationMin = Pick<
+  ConsolidatedTranslation,
+  'globalKey' | 'messageByLanguage'
+>;

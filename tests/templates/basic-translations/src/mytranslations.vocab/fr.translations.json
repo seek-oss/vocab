@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "tags": [
+      "should",
+      "be",
+      "ignored"
+    ]
+  },
+  "hello": {
+    "message": "Bonjour",
+    "tags": [
+      "also",
+      "ignored"
+    ]
+  },
+  "world": {
+    "message": "monde"
+  }
+}

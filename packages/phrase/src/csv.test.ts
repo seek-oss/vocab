@@ -1,51 +1,52 @@
+import { ConsolidatedTranslation } from '@vocab/core/src';
 import { translationsToCsv } from './csv';
 
 describe('translationsToCsv', () => {
   it('should convert translations to CSV', () => {
-    const devLanguage = 'en';
-    const translations = {
-      en: {
-        Hello: {
-          message: 'Hello',
-          tags: ['greeting', 'hello', 'word'],
-        },
-        World: {
-          message: 'World',
-          description: 'Some description',
-        },
-        Goodbye: {
-          message: 'Hello',
-          description: '',
-          tags: ['greeting', 'hello', 'word'],
-        },
-        Foo: {
-          message: 'Foo',
-        },
+    const allLanguages = ['en', 'fr'];
+    const translations: ConsolidatedTranslation[] = [
+      {
+        globalKey: 'Hello',
+        key: 'Hello',
+        messageByLanguage: { en: 'Hello', fr: 'Bonjour' },
+        tags: ['greeting', 'hello', 'word'],
+        namespace: 'en',
+        relativePath: 'n1',
       },
-      fr: {
-        Hello: {
-          message: 'Bonjour',
-        },
-        World: {
-          message: 'Monde',
-          description: 'Some description',
-        },
-        Goodbye: {
-          message: 'Au revoir',
-          description: 'Hello in English',
-        },
+      {
+        globalKey: 'World',
+        key: 'World',
+        messageByLanguage: { en: 'World', fr: 'Monde' },
+        description: 'Some description',
+        namespace: 'n1',
+        relativePath: 'n1',
       },
-      th: {},
-    };
+      {
+        globalKey: 'Goodbye',
+        key: 'Goodbye',
+        messageByLanguage: { en: 'Goodbye', fr: 'Au revoir' },
+        description: '',
+        tags: ['greeting', 'hello', 'word'],
+        namespace: 'n1',
+        relativePath: 'n1',
+      },
+      {
+        globalKey: 'Foo',
+        key: 'Foo',
+        messageByLanguage: { en: 'Foo' },
+        namespace: 'n1',
+        relativePath: 'n1',
+      },
+    ];
 
     const { csvFileStrings, keyIndex, commentIndex, tagColumn, messageIndex } =
-      translationsToCsv(translations, devLanguage);
+      translationsToCsv(translations, allLanguages);
 
     expect(csvFileStrings).toMatchInlineSnapshot(`
       {
         "en": "Hello,,"greeting,hello,word",Hello
       World,Some description,,World
-      Goodbye,,"greeting,hello,word",Hello
+      Goodbye,,"greeting,hello,word",Goodbye
       Foo,,,Foo
       ",
         "fr": "Hello,,"greeting,hello,word",Bonjour

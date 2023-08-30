@@ -1,11 +1,12 @@
 import fs from 'fs/promises';
-import { loadConsolidatedTranslations, type UserConfig } from '@vocab/core';
+import type { UserConfig } from '@vocab/core';
+import { loadConsolidatedTranslations } from '@vocab/integration';
 import { translationsToCsv } from './csv';
 import { log, trace } from './logger';
 
-import { getFormatFromPath } from './utils';
+import { getFileFromOptions } from './utils';
 
-interface PushOptions {
+export interface PushOptions {
   file?: string;
   includeHeaders?: boolean;
 }
@@ -16,30 +17,20 @@ export async function push(options: PushOptions, config: UserConfig) {
 
   trace('Loading translations...');
 
-  const translations = await loadConsolidatedTranslations(
-    {
-      fallbacks: 'none',
-      includeNodeModules: false,
-      withTags: true,
-      devLanguage,
-      allLanguages,
-    },
-    config,
-  );
+  const translations = await loadConsolidatedTranslations(config);
 
-  const resolvedFormat = getFormatFromPath(options.file);
-  const filePath = options.file || `translations.${resolvedFormat}`;
+  const { filePath, fileFormat } = getFileFromOptions(options);
 
   log(
     `Writing ${
       translations.length
-    } keys to ${resolvedFormat.toLocaleUpperCase()} file. ${filePath}`,
+    } keys to ${fileFormat.toLocaleUpperCase()} file. ${filePath}`,
   );
 
-  if (resolvedFormat === 'json') {
+  if (fileFormat === 'json') {
     await fs.writeFile(filePath, JSON.stringify(translations, null, 2));
   }
-  if (resolvedFormat === 'csv') {
+  if (fileFormat === 'csv') {
     const { csvFileString } = translationsToCsv({
       devLanguage,
       allLanguages,

@@ -61,42 +61,46 @@ describe('push', () => {
 
       expect(jest.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
-        {
-          "en": {
-            "hello.mytranslations": {
-              "message": "Hello",
-              "tags": [
-                "only for this key",
-                "greeting",
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
+        [
+          {
+            "description": undefined,
+            "globalKey": "hello.mytranslations",
+            "key": "hello",
+            "messageByLanguage": {
+              "en": "Hello",
+              "fr": "Bonjour",
             },
-            "world.mytranslations": {
-              "message": "world",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
+            "namespace": "mytranslations",
+            "relativePath": "src/mytranslations.vocab/translations.json",
+            "tags": [
+              "only for this key",
+              "greeting",
+              "every",
+              "key",
+              "gets",
+              "these",
+              "tags",
+            ],
           },
-          "fr": {
-            "hello.mytranslations": {
-              "description": undefined,
-              "message": "Bonjour",
+          {
+            "description": undefined,
+            "globalKey": "world.mytranslations",
+            "key": "world",
+            "messageByLanguage": {
+              "en": "world",
+              "fr": "monde",
             },
-            "world.mytranslations": {
-              "description": undefined,
-              "message": "monde",
-            },
+            "namespace": "mytranslations",
+            "relativePath": "src/mytranslations.vocab/translations.json",
+            "tags": [
+              "every",
+              "key",
+              "gets",
+              "these",
+              "tags",
+            ],
           },
-        }
+        ]
       `);
     });
 
@@ -132,42 +136,46 @@ describe('push', () => {
 
         expect(jest.mocked(pushTranslations).mock.calls[0][0])
           .toMatchInlineSnapshot(`
-          {
-            "en": {
-              "hello.mytranslations": {
-                "message": "Hello",
-                "tags": [
-                  "only for this key",
-                  "greeting",
-                  "every",
-                  "key",
-                  "gets",
-                  "these",
-                  "tags",
-                ],
+          [
+            {
+              "description": undefined,
+              "globalKey": "hello.mytranslations",
+              "key": "hello",
+              "messageByLanguage": {
+                "en": "Hello",
+                "fr": "Bonjour",
               },
-              "world.mytranslations": {
-                "message": "world",
-                "tags": [
-                  "every",
-                  "key",
-                  "gets",
-                  "these",
-                  "tags",
-                ],
-              },
+              "namespace": "mytranslations",
+              "relativePath": "src/mytranslations.vocab/translations.json",
+              "tags": [
+                "only for this key",
+                "greeting",
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
             },
-            "fr": {
-              "hello.mytranslations": {
-                "description": undefined,
-                "message": "Bonjour",
+            {
+              "description": undefined,
+              "globalKey": "world.mytranslations",
+              "key": "world",
+              "messageByLanguage": {
+                "en": "world",
+                "fr": "monde",
               },
-              "world.mytranslations": {
-                "description": undefined,
-                "message": "monde",
-              },
+              "namespace": "mytranslations",
+              "relativePath": "src/mytranslations.vocab/translations.json",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
             },
-          }
+          ]
         `);
       });
 

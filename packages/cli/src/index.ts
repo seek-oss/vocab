@@ -60,9 +60,32 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'pull',
-    builder: () => yargs.options({ branch: branchDefinition }),
+    builder: () =>
+      yargs.options({
+        branch: branchDefinition,
+        file: {
+          type: 'string',
+          describe: 'The location to read and write from',
+          default: undefined,
+        },
+        integration: {
+          type: 'string',
+          describe: 'Which integration platform to use',
+          default: 'phrase',
+        },
+        check: {
+          type: 'boolean',
+          describe: 'Fail on changes rather than writing them',
+          default: false,
+        },
+      }),
     handler: async (options) => {
-      await phraseIntegration.pull(options, config!);
+      if (options.integration === 'phrase') {
+        await phraseIntegration.pull(options, config!);
+      }
+      if (options.integration === 'file') {
+        await fileIntegration.pull(options, config!);
+      }
     },
   })
   .command({

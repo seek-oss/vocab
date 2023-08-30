@@ -7,12 +7,14 @@ settings:
 overrides:
   '@vocab-fixtures/direct': link:./fixtures/direct
   '@vocab-fixtures/phrase': link:./fixtures/phrase
+  '@vocab-fixtures/file': link:./fixtures/file
   '@vocab-fixtures/server': link:./fixtures/server
   '@vocab-fixtures/simple': link:./fixtures/simple
   '@vocab-fixtures/translation-types': link:./fixtures/translation-types
   '@vocab/cli': link:./packages/cli
   '@vocab/core': link:./packages/core
   '@vocab/phrase': link:./packages/phrase
+  '@vocab/integration': link:./packages/integration
   '@vocab/file': link:./packages/file
   '@vocab/pseudo-localize': link:./packages/pseudo-localize
   '@vocab/react': link:./packages/react
@@ -150,6 +152,8 @@ importers:
       webpack-dev-server:
         specifier: ^4.11.1
         version: 4.11.1(webpack-cli@5.0.1)(webpack@5.76.3)
+
+  fixtures/file: {}
 
   fixtures/phrase: {}
 
@@ -364,12 +368,37 @@ importers:
       '@vocab/core':
         specifier: link:../core
         version: link:../core
+      '@vocab/integration':
+        specifier: link:../integration
+        version: link:../integration
       chalk:
         specifier: ^4.1.0
         version: 4.1.2
+      csv-parse:
+        specifier: ^5.4.0
+        version: 5.4.0
       csv-stringify:
         specifier: ^6.2.3
         version: 6.2.3
+      debug:
+        specifier: ^4.3.1
+        version: 4.3.4
+    devDependencies:
+      '@types/debug':
+        specifier: ^4.1.5
+        version: 4.1.7
+      '@types/node-fetch':
+        specifier: ^2.5.7
+        version: 2.5.12
+
+  packages/integration:
+    dependencies:
+      '@vocab/core':
+        specifier: link:../core
+        version: link:../core
+      chalk:
+        specifier: ^4.1.0
+        version: 4.1.2
       debug:
         specifier: ^4.3.1
         version: 4.3.4
@@ -386,6 +415,9 @@ importers:
       '@vocab/core':
         specifier: link:../core
         version: link:../core
+      '@vocab/integration':
+        specifier: link:../integration
+        version: link:../integration
       chalk:
         specifier: ^4.1.0
         version: 4.1.2
@@ -509,6 +541,9 @@ importers:
 
   tests:
     devDependencies:
+      '@vocab-fixtures/file':
+        specifier: link:../fixtures/file
+        version: link:../fixtures/file
       '@vocab-fixtures/translation-types':
         specifier: link:../fixtures/translation-types
         version: link:../fixtures/translation-types
@@ -4326,6 +4361,10 @@ packages:
 
   /csv-parse@4.16.3:
     resolution: {integrity: sha512-cO1I/zmz4w2dcKHVvpCr7JVRu8/FymG5OEpmvsZYlccYolPBLoVGKUHgNoc4ZGkFeFlWGEDmMyBM+TTqRdW/wg==}
+    dev: false
+
+  /csv-parse@5.4.0:
+    resolution: {integrity: sha512-JiQosUWiOFgp4hQn0an+SBoV9IKdqzhROM0iiN4LB7UpfJBlsSJlWl9nq4zGgxgMAzHJ6V4t29VAVD+3+2NJAg==}
     dev: false
 
   /csv-stringify@5.6.5:

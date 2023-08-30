@@ -1,16 +1,13 @@
 {
-  "name": "@vocab/file",
+  "name": "@vocab/integration",
   "version": "1.0.0",
-  "main": "dist/vocab-file.cjs.js",
-  "module": "dist/vocab-file.esm.js",
+  "main": "dist/vocab-integration.cjs.js",
+  "module": "dist/vocab-integration.esm.js",
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {
     "@vocab/core": "^1.4.0",
-    "@vocab/integration": "^1.0.0",
     "chalk": "^4.1.0",
-    "csv-stringify": "^6.2.3",
-    "csv-parse": "^5.4.0",
     "debug": "^4.3.1"
   },
   "devDependencies": {

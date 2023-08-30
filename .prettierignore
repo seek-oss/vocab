@@ -7,3 +7,5 @@ node_modules*/
 /.changeset/*
 CHANGELOG.md
 pnpm-lock.yaml
+
+*.vocab

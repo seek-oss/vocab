@@ -1,0 +1,12 @@
+{
+  "_meta": {
+    "tags": ["every", "key", "gets", "these", "tags"]
+  },
+  "hello": {
+    "message": "Hello",
+    "tags": ["only for this key", "greeting"]
+  },
+  "world": {
+    "message": "world"
+  }
+}

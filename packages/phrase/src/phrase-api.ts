@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
 import FormData from 'form-data';
-import type { TranslationsByLanguage } from '@vocab/core';
+import type {
+  ConsolidatedTranslation,
+  TranslationsByLanguage,
+} from '@vocab/core';
 import fetch from 'node-fetch';
 import { log, trace } from './logger';
 import { translationsToCsv } from './csv';
@@ -95,6 +98,31 @@ export async function callPhrase<T = any>(
     });
 }
 
+export async function pullAllTranslationsC(
+  branch: string,
+): Promise<Record<string, Record<string, string | undefined>>> {
+  const phraseResult = await callPhrase<
+    Array<{
+      key: { name: string };
+      locale: { code: string };
+      content: string;
+    }>
+  >(`translations?branch=${branch}&per_page=100`);
+
+  const translations: Record<string, Record<string, string | undefined>> = {};
+
+  for (const r of phraseResult) {
+    const globalKey = r.key.name;
+    if (!translations[globalKey]) {
+      translations[globalKey] = { [r.locale.code]: r.content };
+    } else {
+      translations[globalKey][r.locale.code] = r.content;
+    }
+  }
+
+  return translations;
+}
+
 export async function pullAllTranslations(
   branch: string,
 ): Promise<TranslationsByLanguage> {
@@ -119,11 +147,16 @@ export async function pullAllTranslations(
 }
 
 export async function pushTranslations(
-  translationsByLanguage: TranslationsByLanguage,
-  { devLanguage, branch }: { devLanguage: string; branch: string },
+  translationsByLanguage: ConsolidatedTranslation[],
+
+  {
+    allLanguages,
+    devLanguage,
+    branch,
+  }: { allLanguages: string[]; devLanguage: string; branch: string },
 ) {
   const { csvFileStrings, keyIndex, commentIndex, tagColumn, messageIndex } =
-    translationsToCsv(translationsByLanguage, devLanguage);
+    translationsToCsv(translationsByLanguage, allLanguages);
 
   let devLanguageUploadId = '';
 
@@ -214,6 +247,11 @@ export async function ensureBranch(branch: string) {
     },
     body: JSON.stringify({ name: branch }),
   });
+
+  // Phrase API can sometimes return before the branch is ready
+  // Whilst we can retry later calls, this wait reduces noise
+  //   to the user as they don't see the retries happening as often
+  await new Promise((r) => setTimeout(r, 500));
 
   log('Created branch:', branch);
 }

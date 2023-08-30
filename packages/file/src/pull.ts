@@ -1,43 +1,33 @@
+import type { ConsolidatedTranslation, UserConfig } from '@vocab/core';
 import {
-  loadAllTranslations,
-  getAltLanguages,
-  type ConsolidatedTranslation,
-  type UserConfig,
-} from '@vocab/core';
+  applyExternalTranslations,
+  type MessagesByLanguageByKey,
+} from '@vocab/integration';
 import { readFile } from 'fs/promises';
 import { csvToTranslations } from './csv';
 
-import { getFormatFromPath, mergeInExternalTranslations } from './utils';
+import { getFileFromOptions } from './utils';
 
-interface PullOptions {
+export interface PullOptions {
   file?: string;
+  check?: boolean;
 }
-
+/**
+ * Pulls translations from the external file, compares against existing translations, identifying differences and updates messages where appropriate
+ */
 export async function pull(options: PullOptions, config: UserConfig) {
-  const resolvedFormat = getFormatFromPath(options.file);
-  const filePath = options.file || `translations.${resolvedFormat}`;
-
-  const format = getFormatFromPath(filePath);
+  const { filePath, fileFormat } = getFileFromOptions(options);
 
   const contents = await readFile(filePath, 'utf-8');
 
   const externalTranslations: ConsolidatedTranslation[] =
-    format === 'json'
+    fileFormat === 'json'
       ? JSON.parse(contents)
       : csvToTranslations({ csvString: contents });
 
-  const devLanguage = config.devLanguage;
-  const alternativeLanguages = getAltLanguages(config);
-
-  const existingTranslations = await loadAllTranslations(
-    { fallbacks: 'none', includeNodeModules: false, withTags: true },
-    config,
+  const record: MessagesByLanguageByKey = Object.fromEntries(
+    externalTranslations.map((t) => [t.globalKey, t.messageByLanguage]),
   );
 
-  await mergeInExternalTranslations(
-    existingTranslations,
-    externalTranslations,
-    devLanguage,
-    alternativeLanguages,
-  );
+  applyExternalTranslations(record, options, config);
 }

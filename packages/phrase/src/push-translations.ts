@@ -1,8 +1,4 @@
-import type {
-  TranslationData,
-  TranslationsByLanguage,
-  UserConfig,
-} from '@vocab/core';
+import type { UserConfig } from '@vocab/core';
 
 import {
   ensureBranch,
@@ -10,7 +6,7 @@ import {
   pushTranslations,
 } from './phrase-api';
 import { trace } from './logger';
-import { loadAllTranslations, getUniqueKey } from '@vocab/core';
+import { loadConsolidatedTranslations } from '@vocab/integration';
 
 interface PushOptions {
   branch: string;
@@ -25,11 +21,8 @@ export async function push(
   { branch, deleteUnusedKeys }: PushOptions,
   config: UserConfig,
 ) {
-  const allLanguageTranslations = await loadAllTranslations(
-    { fallbacks: 'none', includeNodeModules: false, withTags: true },
-    config,
-  );
   trace(`Pushing translations to branch ${branch}`);
+  const devLanguage = config.devLanguage;
   const allLanguages = config.languages.map((v) => v.name);
   await ensureBranch(branch);
 
@@ -37,39 +30,16 @@ export async function push(
     `Pushing translations to phrase for languages ${allLanguages.join(', ')}`,
   );
 
-  const phraseTranslations: TranslationsByLanguage = {};
+  const consolidatedTranslations = await loadConsolidatedTranslations(config);
 
-  for (const loadedTranslation of allLanguageTranslations) {
-    for (const language of allLanguages) {
-      const localTranslations = loadedTranslation.languages[language];
-      if (!localTranslations) {
-        continue;
-      }
-      if (!phraseTranslations[language]) {
-        phraseTranslations[language] = {};
-      }
-
-      const {
-        metadata: { tags: sharedTags = [] },
-      } = loadedTranslation;
-
-      for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = getUniqueKey(localKey, loadedTranslation.namespace);
-        const { tags = [], ...localTranslation } = localTranslations[localKey];
-
-        if (language === config.devLanguage) {
-          (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
-        }
-
-        phraseTranslations[language][phraseKey] = localTranslation;
-      }
-    }
-  }
-
-  const { devLanguageUploadId } = await pushTranslations(phraseTranslations, {
-    devLanguage: config.devLanguage,
-    branch,
-  });
+  const { devLanguageUploadId } = await pushTranslations(
+    consolidatedTranslations,
+    {
+      devLanguage,
+      allLanguages,
+      branch,
+    },
+  );
 
   if (deleteUnusedKeys) {
     await phraseDeleteUnusedKeys(devLanguageUploadId, branch);
