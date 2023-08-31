@@ -16,7 +16,7 @@
     "@types/env-ci": "^3.1.0",
     "@vocab/core": "^1.4.0",
     "@vocab/phrase": "^1.2.8",
-    "env-ci": "^5.0.2",
+    "env-ci": "^9.0.0",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.1",
