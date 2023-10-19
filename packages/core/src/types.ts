@@ -134,6 +134,7 @@ export interface TranslationFileMetadata {
 }
 
 export interface TranslationData {
+  'global-key'?: string;
   message: TranslationMessage;
   description?: string;
   tags?: Tags;
