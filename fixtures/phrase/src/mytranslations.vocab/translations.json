@@ -8,5 +8,9 @@
   },
   "world": {
     "message": "world"
+  },
+  "profile": {
+    "message": "profile",
+    "global-key": "app.common.profile"
   }
 }

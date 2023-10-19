@@ -63,6 +63,17 @@ describe('push', () => {
         .toMatchInlineSnapshot(`
         {
           "en": {
+            "app.common.profile": {
+              "global-key": "app.common.profile",
+              "message": "profile",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
             "hello.mytranslations": {
               "message": "Hello",
               "tags": [
@@ -87,6 +98,10 @@ describe('push', () => {
             },
           },
           "fr": {
+            "app.common.profile": {
+              "description": undefined,
+              "message": "profil",
+            },
             "hello.mytranslations": {
               "description": undefined,
               "message": "Bonjour",
@@ -134,6 +149,17 @@ describe('push', () => {
           .toMatchInlineSnapshot(`
           {
             "en": {
+              "app.common.profile": {
+                "global-key": "app.common.profile",
+                "message": "profile",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
               "hello.mytranslations": {
                 "message": "Hello",
                 "tags": [
@@ -158,6 +184,10 @@ describe('push', () => {
               },
             },
             "fr": {
+              "app.common.profile": {
+                "description": undefined,
+                "message": "profil",
+              },
               "hello.mytranslations": {
                 "description": undefined,
                 "message": "Bonjour",
