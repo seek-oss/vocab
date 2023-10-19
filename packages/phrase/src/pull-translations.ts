@@ -11,6 +11,7 @@ import type { TranslationFileContents, UserConfig } from '@vocab/core';
 
 import { pullAllTranslations, ensureBranch } from './phrase-api';
 import { trace } from './logger';
+import { GLOBAL_KEY } from './config';
 
 interface PullOptions {
   branch?: string;
@@ -61,7 +62,8 @@ export async function pull(
       defaultValues[key] = {
         ...defaultValues[key],
         ...allPhraseTranslations[config.devLanguage][
-          getUniqueKey(key, loadedTranslation.namespace)
+          defaultValues[key][GLOBAL_KEY] ??
+            getUniqueKey(key, loadedTranslation.namespace)
         ],
       };
     }
@@ -85,7 +87,9 @@ export async function pull(
           allPhraseTranslations[alternativeLanguage];
 
         for (const key of localKeys) {
-          const phraseKey = getUniqueKey(key, loadedTranslation.namespace);
+          const phraseKey =
+            defaultValues[key][GLOBAL_KEY] ??
+            getUniqueKey(key, loadedTranslation.namespace);
           const phraseTranslationMessage =
             phraseAltTranslations[phraseKey]?.message;
 
