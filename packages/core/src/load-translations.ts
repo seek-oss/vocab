@@ -411,8 +411,7 @@ export async function loadAllTranslations(
         );
       }
       keys.add(uniqueKey);
-    }
-    for (const key of loadedTranslation.keys) {
+
       const globalKey =
         loadedTranslation.languages[config.devLanguage][key][GLOBAL_KEY];
       if (globalKey) {
