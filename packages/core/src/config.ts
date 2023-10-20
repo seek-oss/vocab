@@ -202,3 +202,5 @@ export function resolveConfigSync(
 
   return null;
 }
+
+export const GLOBAL_KEY = 'global-key';

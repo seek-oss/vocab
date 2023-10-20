@@ -75,6 +75,17 @@ describe('push', () => {
                 "tags",
               ],
             },
+            "thanks.mytranslations": {
+              "global-key": "app.thanks.label",
+              "message": "Thanks",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
             "world.mytranslations": {
               "message": "world",
               "tags": [
@@ -139,6 +150,17 @@ describe('push', () => {
                 "tags": [
                   "only for this key",
                   "greeting",
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "thanks.mytranslations": {
+                "global-key": "app.thanks.label",
+                "message": "Thanks",
+                "tags": [
                   "every",
                   "key",
                   "gets",

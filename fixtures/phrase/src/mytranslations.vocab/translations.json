@@ -8,5 +8,9 @@
   },
   "world": {
     "message": "world"
+  },
+  "thanks": {
+    "message": "Thanks",
+    "global-key": "app.thanks.label"
   }
 }
