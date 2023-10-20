@@ -9,8 +9,8 @@
   "world": {
     "message": "world"
   },
-  "profile": {
-    "message": "profile",
-    "global-key": "app.common.profile"
+  "thanks": {
+    "message": "Thanks",
+    "global-key": "app.thanks.label"
   }
 }

@@ -21,6 +21,7 @@ import {
   getDevTranslationFileGlob,
 } from './utils';
 import { generateLanguageFromTranslations } from './generate-language';
+import { GLOBAL_KEY } from './config';
 
 export function getUniqueKey(key: string, namespace: string) {
   return `${key}.${namespace}`;
@@ -410,6 +411,17 @@ export async function loadAllTranslations(
         );
       }
       keys.add(uniqueKey);
+
+      const globalKey =
+        loadedTranslation.languages[config.devLanguage][key][GLOBAL_KEY];
+      if (globalKey) {
+        if (keys.has(globalKey)) {
+          throw new Error(
+            `Duplicate keys found. Global key ${key} was found multiple times`,
+          );
+        }
+        keys.add(globalKey);
+      }
     }
   }
   return result;

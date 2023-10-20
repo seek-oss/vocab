@@ -63,10 +63,11 @@ describe('push', () => {
         .toMatchInlineSnapshot(`
         {
           "en": {
-            "app.common.profile": {
-              "global-key": "app.common.profile",
-              "message": "profile",
+            "hello.mytranslations": {
+              "message": "Hello",
               "tags": [
+                "only for this key",
+                "greeting",
                 "every",
                 "key",
                 "gets",
@@ -74,11 +75,10 @@ describe('push', () => {
                 "tags",
               ],
             },
-            "hello.mytranslations": {
-              "message": "Hello",
+            "thanks.mytranslations": {
+              "global-key": "app.thanks.label",
+              "message": "Thanks",
               "tags": [
-                "only for this key",
-                "greeting",
                 "every",
                 "key",
                 "gets",
@@ -98,10 +98,6 @@ describe('push', () => {
             },
           },
           "fr": {
-            "app.common.profile": {
-              "description": undefined,
-              "message": "profil",
-            },
             "hello.mytranslations": {
               "description": undefined,
               "message": "Bonjour",
@@ -149,10 +145,11 @@ describe('push', () => {
           .toMatchInlineSnapshot(`
           {
             "en": {
-              "app.common.profile": {
-                "global-key": "app.common.profile",
-                "message": "profile",
+              "hello.mytranslations": {
+                "message": "Hello",
                 "tags": [
+                  "only for this key",
+                  "greeting",
                   "every",
                   "key",
                   "gets",
@@ -160,11 +157,10 @@ describe('push', () => {
                   "tags",
                 ],
               },
-              "hello.mytranslations": {
-                "message": "Hello",
+              "thanks.mytranslations": {
+                "global-key": "app.thanks.label",
+                "message": "Thanks",
                 "tags": [
-                  "only for this key",
-                  "greeting",
                   "every",
                   "key",
                   "gets",
@@ -184,10 +180,6 @@ describe('push', () => {
               },
             },
             "fr": {
-              "app.common.profile": {
-                "description": undefined,
-                "message": "profil",
-              },
               "hello.mytranslations": {
                 "description": undefined,
                 "message": "Bonjour",

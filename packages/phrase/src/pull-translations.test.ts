@@ -41,10 +41,16 @@ describe('pull translations', () => {
             'hello.mytranslations': {
               message: 'Hi there',
             },
+            'app.thanks.label': {
+              message: 'Thank you.',
+            },
           },
           fr: {
             'hello.mytranslations': {
               message: 'merci',
+            },
+            'app.thanks.label': {
+              message: 'Merci.',
             },
           },
         }),
@@ -98,6 +104,10 @@ describe('pull translations', () => {
                 "greeting",
               ],
             },
+            "thanks": {
+              "global-key": "app.thanks.label",
+              "message": "Thank you.",
+            },
             "world": {
               "message": "world",
             },
@@ -105,6 +115,9 @@ describe('pull translations', () => {
           {
             "hello": {
               "message": "merci",
+            },
+            "thanks": {
+              "message": "Merci.",
             },
             "world": {
               "message": "monde",
@@ -181,6 +194,10 @@ describe('pull translations', () => {
                 "only for this key",
                 "greeting",
               ],
+            },
+            "thanks": {
+              "global-key": "app.thanks.label",
+              "message": "Thanks",
             },
             "world": {
               "message": "world",
