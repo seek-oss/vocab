@@ -15,10 +15,11 @@ import { trace } from './logger';
 interface PullOptions {
   branch?: string;
   deleteUnusedKeys?: boolean;
+  errorOnNoGlobalKeyTranslation?: boolean;
 }
 
 export async function pull(
-  { branch = 'local-development' }: PullOptions,
+  { branch = 'local-development', errorOnNoGlobalKeyTranslation }: PullOptions,
   config: UserConfig,
 ) {
   trace(`Pulling translations from branch ${branch}`);
@@ -61,7 +62,8 @@ export async function pull(
       defaultValues[key] = {
         ...defaultValues[key],
         ...allPhraseTranslations[config.devLanguage][
-          getUniqueKey(key, loadedTranslation.namespace)
+          defaultValues[key].globalKey ??
+            getUniqueKey(key, loadedTranslation.namespace)
         ],
       };
     }
@@ -85,7 +87,9 @@ export async function pull(
           allPhraseTranslations[alternativeLanguage];
 
         for (const key of localKeys) {
-          const phraseKey = getUniqueKey(key, loadedTranslation.namespace);
+          const phraseKey =
+            defaultValues[key].globalKey ??
+            getUniqueKey(key, loadedTranslation.namespace);
           const phraseTranslationMessage =
             phraseAltTranslations[phraseKey]?.message;
 
@@ -93,6 +97,11 @@ export async function pull(
             trace(
               `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
             );
+            if (errorOnNoGlobalKeyTranslation && defaultValues[key].globalKey) {
+              throw new Error(
+                `Missing translation for global key ${key} in language ${alternativeLanguage}`,
+              );
+            }
             continue;
           }
 

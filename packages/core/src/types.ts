@@ -137,6 +137,7 @@ export interface TranslationData {
   message: TranslationMessage;
   description?: string;
   tags?: Tags;
+  globalKey?: string;
 }
 
 export type TranslationsByKey<Key extends TranslationKey = string> = Record<
