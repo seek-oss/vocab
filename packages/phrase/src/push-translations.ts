@@ -10,7 +10,8 @@ import {
   pushTranslations,
 } from './phrase-api';
 import { trace } from './logger';
-import { loadAllTranslations, getUniqueKey, GLOBAL_KEY } from '@vocab/core';
+import { loadAllTranslations, getUniqueKey } from '@vocab/core';
+import { GLOBAL_KEY } from './config';
 
 interface PushOptions {
   branch: string;
