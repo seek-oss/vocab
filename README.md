@@ -506,6 +506,37 @@ Tags on keys in other languages will be ignored.
 [tags]: https://support.phrase.com/hc/en-us/articles/5822598372252-Tags-Strings-
 [configuration]: #Configuration
 
+#### Global key
+
+`vocab push` and `vocab pull` support global keys mapping.
+
+```jsonc
+// translations.json
+{
+  "Hello": {
+    "message": "Hello",
+    "global-key": "hello"
+  },
+  "Goodbye": {
+    "message": "Goodbye",
+    "global-key": "app.goodbye.label"
+  }
+}
+```
+
+In the above example,
+
+- `vocab push` will push the `hello` and `app.goodbye.label` keys to Phrase.
+- `vocab pull` will pull translations from Phrase and map them to the `hello` and `app.goodbye.label` keys.
+
+##### Error on no translation for global key
+
+We can throw error if Phrase does not have translation that matches a global key. This can be done by passing `--error-on-no-global-key-translation` flag to `vocab pull`. E.g.
+
+```sh
+vocab pull --error-on-no-global-key-translation
+```
+
 ## Troubleshooting
 
 ### Problem: Passed locale is being ignored or using en-US instead
