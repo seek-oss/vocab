@@ -44,7 +44,16 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'pull',
-    builder: () => yargs.options({ branch: branchDefinition }),
+    builder: () =>
+      yargs.options({
+        branch: branchDefinition,
+        'error-on-no-global-key-translation': {
+          type: 'boolean',
+          describe:
+            'Whether or not to throw error when there is no translation for global key',
+          default: false,
+        },
+      }),
     handler: async (options) => {
       await pull(options, config!);
     },
