@@ -308,5 +308,4 @@ describe('pull translations', () => {
       expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(1);
     });
   });
-
 });
