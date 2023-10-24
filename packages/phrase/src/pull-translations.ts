@@ -16,10 +16,11 @@ import { GLOBAL_KEY } from './config';
 interface PullOptions {
   branch?: string;
   deleteUnusedKeys?: boolean;
+  errorOnNoGlobalKeyTranslation?: boolean;
 }
 
 export async function pull(
-  { branch = 'local-development' }: PullOptions,
+  { branch = 'local-development', errorOnNoGlobalKeyTranslation }: PullOptions,
   config: UserConfig,
 ) {
   trace(`Pulling translations from branch ${branch}`);
@@ -97,6 +98,14 @@ export async function pull(
             trace(
               `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
             );
+            if (
+              errorOnNoGlobalKeyTranslation &&
+              defaultValues[key][GLOBAL_KEY]
+            ) {
+              throw new Error(
+                `Missing translation for global key ${key} in language ${alternativeLanguage}`,
+              );
+            }
             continue;
           }
 
