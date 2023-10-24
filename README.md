@@ -508,7 +508,7 @@ Tags on keys in other languages will be ignored.
 
 #### Global key
 
-`vocab push` and `vocab pull` support global keys mapping.
+`vocab push` and `vocab pull` can support global keys mapping. When you want certain translations to use a specific/custom key in Phrase, add the `global-key` to the structure.
 
 ```jsonc
 // translations.json
