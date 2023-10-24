@@ -11,6 +11,7 @@ import {
 } from './phrase-api';
 import { trace } from './logger';
 import { loadAllTranslations, getUniqueKey } from '@vocab/core';
+import { GLOBAL_KEY } from './config';
 
 interface PushOptions {
   branch: string;
@@ -54,12 +55,24 @@ export async function push(
       } = loadedTranslation;
 
       for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = getUniqueKey(localKey, loadedTranslation.namespace);
         const { tags = [], ...localTranslation } = localTranslations[localKey];
-
         if (language === config.devLanguage) {
           (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
         }
+        let globalKey: string | undefined;
+        if (
+          loadedTranslation.languages[config.devLanguage][
+            localKey
+          ].hasOwnProperty(GLOBAL_KEY)
+        ) {
+          globalKey =
+            loadedTranslation.languages[config.devLanguage][localKey][
+              GLOBAL_KEY
+            ];
+        }
+
+        const phraseKey =
+          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
 
         phraseTranslations[language][phraseKey] = localTranslation;
       }

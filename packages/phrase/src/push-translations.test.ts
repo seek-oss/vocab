@@ -63,11 +63,10 @@ describe('push', () => {
         .toMatchInlineSnapshot(`
         {
           "en": {
-            "hello.mytranslations": {
-              "message": "Hello",
+            "app.thanks.label": {
+              "global-key": "app.thanks.label",
+              "message": "Thanks",
               "tags": [
-                "only for this key",
-                "greeting",
                 "every",
                 "key",
                 "gets",
@@ -75,10 +74,11 @@ describe('push', () => {
                 "tags",
               ],
             },
-            "thanks.mytranslations": {
-              "global-key": "app.thanks.label",
-              "message": "Thanks",
+            "hello.mytranslations": {
+              "message": "Hello",
               "tags": [
+                "only for this key",
+                "greeting",
                 "every",
                 "key",
                 "gets",
@@ -145,11 +145,10 @@ describe('push', () => {
           .toMatchInlineSnapshot(`
           {
             "en": {
-              "hello.mytranslations": {
-                "message": "Hello",
+              "app.thanks.label": {
+                "global-key": "app.thanks.label",
+                "message": "Thanks",
                 "tags": [
-                  "only for this key",
-                  "greeting",
                   "every",
                   "key",
                   "gets",
@@ -157,10 +156,11 @@ describe('push', () => {
                   "tags",
                 ],
               },
-              "thanks.mytranslations": {
-                "global-key": "app.thanks.label",
-                "message": "Thanks",
+              "hello.mytranslations": {
+                "message": "Hello",
                 "tags": [
+                  "only for this key",
+                  "greeting",
                   "every",
                   "key",
                   "gets",

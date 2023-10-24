@@ -16,12 +16,20 @@ jest.mock('./phrase-api', () => ({
 
 const devLanguage = 'en';
 
-function runPhrase(options: {
-  languages: LanguageTarget[];
-  generatedLanguages: GeneratedLanguageTarget[];
-}) {
+function runPhrase(
+  options: {
+    languages: LanguageTarget[];
+    generatedLanguages: GeneratedLanguageTarget[];
+  },
+  pullOptions?: {
+    errorOnNoGlobalKeyTranslation?: boolean;
+  },
+) {
   return pull(
-    { branch: 'tester' },
+    {
+      branch: 'tester',
+      errorOnNoGlobalKeyTranslation: pullOptions?.errorOnNoGlobalKeyTranslation,
+    },
     {
       ...options,
       devLanguage,
@@ -252,6 +260,52 @@ describe('pull translations', () => {
       );
 
       expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('when pulling translations and some global keys do not have any translations', () => {
+    beforeEach(() => {
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
+        Promise.resolve({
+          en: {
+            'hello.mytranslations': {
+              message: 'Hi there',
+            },
+          },
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
+    });
+
+    const options = {
+      languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
+    };
+
+    it('should throw an error', async () => {
+      await expect(
+        runPhrase(options, {
+          errorOnNoGlobalKeyTranslation: true,
+        }),
+      ).rejects.toThrow(
+        new Error(`Missing translation for global key thanks in language fr`),
+      );
+
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(1);
     });
   });
 });
