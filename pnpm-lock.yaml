@@ -36,8 +36,8 @@ importers:
         specifier: ^7.21.0
         version: 7.21.0(@babel/core@7.21.0)
       '@changesets/changelog-github':
-        specifier: ^0.2.8
-        version: 0.2.8
+        specifier: ^0.4.0
+        version: 0.4.8
       '@changesets/cli':
         specifier: ^2.26.0
         version: 2.26.0
@@ -1831,11 +1831,11 @@ packages:
       '@changesets/types': 5.2.1
     dev: false
 
-  /@changesets/changelog-github@0.2.8:
-    resolution: {integrity: sha512-XO/6J/EvndQ+SOhRLvWUun5DLnuTmukpjhtFbHbQSNzzGvRUIyQ2//v6R5sgcazDGLoJixP7MaATEhYeppf+Cg==}
+  /@changesets/changelog-github@0.4.8:
+    resolution: {integrity: sha512-jR1DHibkMAb5v/8ym77E4AMNWZKB5NPzw5a5Wtqm1JepAuIF+hrKp2u04NKM14oBZhHglkCfrla9uq8ORnK/dw==}
     dependencies:
-      '@changesets/get-github-info': 0.4.5
-      '@changesets/types': 3.3.0
+      '@changesets/get-github-info': 0.5.2
+      '@changesets/types': 5.2.1
       dotenv: 8.6.0
     transitivePeerDependencies:
       - encoding
@@ -1908,8 +1908,8 @@ packages:
       semver: 5.7.1
     dev: false
 
-  /@changesets/get-github-info@0.4.5:
-    resolution: {integrity: sha512-tknjYi9ti3AIbGrDHfeJ1bBbXJi/FdV6AWH0oA4JFrCRe2IoczAJo2MeU+3banQx5TlL1fOTeUOM1YAK+sJB2g==}
+  /@changesets/get-github-info@0.5.2:
+    resolution: {integrity: sha512-JppheLu7S114aEs157fOZDjFqUDpm7eHdq5E8SSR0gUBTEK0cNSHsrSR5a66xs0z3RWuo46QvA3vawp8BxDHvg==}
     dependencies:
       dataloader: 1.4.0
       node-fetch: 2.6.9
@@ -1979,10 +1979,6 @@ packages:
       chalk: 2.4.2
       fs-extra: 7.0.1
       p-filter: 2.1.0
-    dev: false
-
-  /@changesets/types@3.3.0:
-    resolution: {integrity: sha512-rJamRo+OD/MQekImfIk07JZwYSB18iU6fYL8xOg0gfAiTh1a1+OlR1fPIxm55I7RsWw812is2YcPPwXdIewrhA==}
     dev: false
 
   /@changesets/types@4.1.0:
