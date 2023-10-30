@@ -49,7 +49,7 @@
     "@changesets/changelog-github": "^0.4.0",
     "@changesets/cli": "^2.26.0",
     "@formatjs/intl-locale": "^2.4.47",
-    "@manypkg/cli": "^0.20.0",
+    "@manypkg/cli": "^0.21.0",
     "@preconstruct/cli": "^2.3.0",
     "@types/expect-puppeteer": "^5.0.3",
     "@types/jest": "^29.4.0",
