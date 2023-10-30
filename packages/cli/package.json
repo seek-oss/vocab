@@ -1,6 +1,6 @@
 {
   "name": "@vocab/cli",
-  "version": "1.3.7",
+  "version": "1.4.0",
   "main": "dist/vocab-cli.cjs.js",
   "module": "dist/vocab-cli.esm.js",
   "bin": {
@@ -14,8 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "@types/env-ci": "^3.1.0",
-    "@vocab/core": "^1.4.0",
-    "@vocab/phrase": "^1.2.8",
+    "@vocab/core": "^1.5.0",
+    "@vocab/phrase": "^1.3.0",
     "env-ci": "^5.0.2",
     "fast-glob": "^3.2.4",
     "form-data": "^3.0.0",
