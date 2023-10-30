@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 overrides:
   '@vocab-fixtures/direct': link:./fixtures/direct
   '@vocab-fixtures/phrase': link:./fixtures/phrase

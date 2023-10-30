@@ -70,7 +70,7 @@
     "typescript": "^4.9.5",
     "webpack": "^5.37.0"
   },
-  "packageManager": "pnpm@8.4.0",
+  "packageManager": "pnpm@8.9.2",
   "pnpm": {
     "overrides": {
       "@vocab-fixtures/direct": "link:./fixtures/direct",
@@ -89,6 +89,7 @@
     }
   },
   "volta": {
-    "node": "16.19.0"
+    "node": "16.19.0",
+    "pnpm": "8.9.2"
   }
 }
