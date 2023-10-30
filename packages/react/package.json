@@ -1,6 +1,6 @@
 {
   "name": "@vocab/react",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "main": "dist/vocab-react.cjs.js",
   "module": "dist/vocab-react.esm.js",
   "author": "SEEK",
@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vocab/core": "^1.4.0",
+    "@vocab/core": "^1.5.0",
     "intl-messageformat": "^10.0.0"
   },
   "devDependencies": {
