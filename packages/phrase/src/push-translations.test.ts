@@ -63,11 +63,32 @@ describe('push', () => {
         .toMatchInlineSnapshot(`
         {
           "en": {
+            "app.thanks.label": {
+              "globalKey": "app.thanks.label",
+              "message": "Thanks",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
             "hello.mytranslations": {
               "message": "Hello",
               "tags": [
                 "only for this key",
                 "greeting",
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
+            "profile.mytranslations": {
+              "message": "profil",
+              "tags": [
                 "every",
                 "key",
                 "gets",
@@ -90,6 +111,10 @@ describe('push', () => {
             "hello.mytranslations": {
               "description": undefined,
               "message": "Bonjour",
+            },
+            "profile.mytranslations": {
+              "description": undefined,
+              "message": "profil",
             },
             "world.mytranslations": {
               "description": undefined,
@@ -134,11 +159,32 @@ describe('push', () => {
           .toMatchInlineSnapshot(`
           {
             "en": {
+              "app.thanks.label": {
+                "globalKey": "app.thanks.label",
+                "message": "Thanks",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
               "hello.mytranslations": {
                 "message": "Hello",
                 "tags": [
                   "only for this key",
                   "greeting",
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "profile.mytranslations": {
+                "message": "profil",
+                "tags": [
                   "every",
                   "key",
                   "gets",
@@ -161,6 +207,10 @@ describe('push', () => {
               "hello.mytranslations": {
                 "description": undefined,
                 "message": "Bonjour",
+              },
+              "profile.mytranslations": {
+                "description": undefined,
+                "message": "profil",
               },
               "world.mytranslations": {
                 "description": undefined,

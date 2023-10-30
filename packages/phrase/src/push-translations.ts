@@ -54,12 +54,15 @@ export async function push(
       } = loadedTranslation;
 
       for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = getUniqueKey(localKey, loadedTranslation.namespace);
         const { tags = [], ...localTranslation } = localTranslations[localKey];
-
         if (language === config.devLanguage) {
           (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
         }
+        const globalKey =
+          loadedTranslation.languages[config.devLanguage][localKey].globalKey;
+
+        const phraseKey =
+          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
 
         phraseTranslations[language][phraseKey] = localTranslation;
       }
