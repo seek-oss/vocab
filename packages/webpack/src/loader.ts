@@ -1,13 +1,13 @@
 import path from 'path';
-
-import type {
-  LoadedTranslation,
-  UserConfig,
-  TranslationMessagesByKey,
+import {
+  type LoadedTranslation,
+  type UserConfig,
+  type TranslationMessagesByKey,
+  getDevLanguageFileFromTsFile,
+  loadTranslation,
 } from '@vocab/core';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 import * as esModuleLexer from 'es-module-lexer';
-import { getDevLanguageFileFromTsFile, loadTranslation } from '@vocab/core';
 import type { LoaderContext as WebpackLoaderContext } from 'webpack';
 
 import { getChunkName } from './chunk-name';

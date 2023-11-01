@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
-import type { UserConfig } from '@vocab/core';
 import { pull, push } from '@vocab/phrase';
-import { resolveConfig, compile, validate } from '@vocab/core';
+import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
 import yargs from 'yargs';
 
 import envCi from 'env-ci';
