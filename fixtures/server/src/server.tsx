@@ -10,9 +10,7 @@ const statsFile = __non_webpack_require__('../dist-client/loadable-stats.json');
 
 import { App } from './App';
 
-import express from 'express';
-
-import type { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 
 const app = express();
 

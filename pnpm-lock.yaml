@@ -60,7 +60,7 @@ importers:
         specifier: ^5.0.3
         version: 5.0.5
       '@types/node':
-        specifier: 18.11.9
+        specifier: ^18.11.9
         version: 18.11.9
       '@types/wait-on':
         specifier: ^5.3.1
@@ -181,6 +181,9 @@ importers:
       '@types/loadable__webpack-plugin':
         specifier: ^5.7.1
         version: 5.7.5
+      '@types/node':
+        specifier: ^18.11.9
+        version: 18.11.9
       '@types/react':
         specifier: ^18.0.9
         version: 18.2.33

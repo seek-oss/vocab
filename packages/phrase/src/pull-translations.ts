@@ -2,12 +2,13 @@ import { writeFile, mkdir } from './file';
 import path from 'path';
 
 import {
+  type TranslationFileContents,
+  type UserConfig,
   loadAllTranslations,
   getAltLanguageFilePath,
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
-import type { TranslationFileContents, UserConfig } from '@vocab/core';
 
 import { pullAllTranslations, ensureBranch } from './phrase-api';
 import { trace } from './logger';

@@ -1,16 +1,16 @@
-import type {
-  TranslationData,
-  TranslationsByLanguage,
-  UserConfig,
+import {
+  loadAllTranslations,
+  getUniqueKey,
+  type TranslationData,
+  type TranslationsByLanguage,
+  type UserConfig,
 } from '@vocab/core';
-
 import {
   ensureBranch,
   deleteUnusedKeys as phraseDeleteUnusedKeys,
   pushTranslations,
 } from './phrase-api';
 import { trace } from './logger';
-import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 
 interface PushOptions {
   branch: string;
