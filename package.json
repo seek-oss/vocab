@@ -28,8 +28,7 @@
     "lint:tsc": "tsc",
     "release": "pnpm build && pnpm copy-readme-to-packages && changeset publish",
     "version": "changeset version && pnpm install --lockfile-only",
-    "test": "jest",
-    "test:local": "PUPPETEER_EXPERIMENTAL_CHROMIUM_MAC_ARM=1 jest",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
     "start-fixture": "ts-node test-helpers/src/start-fixture",
     "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
@@ -46,17 +45,17 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.21.0",
-    "@changesets/changelog-github": "^0.2.8",
+    "@changesets/changelog-github": "^0.4.0",
     "@changesets/cli": "^2.26.0",
     "@formatjs/intl-locale": "^2.4.47",
-    "@manypkg/cli": "^0.20.0",
+    "@manypkg/cli": "^0.21.0",
     "@preconstruct/cli": "^2.3.0",
     "@types/expect-puppeteer": "^5.0.3",
     "@types/jest": "^29.4.0",
     "@types/jest-environment-puppeteer": "^5.0.3",
-    "@types/node": "16.18.46",
+    "@types/node": "^18.11.9",
     "@types/wait-on": "^5.3.1",
-    "babel-loader": "^9.1.2",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-seek": "^11.1.0",
     "expect-puppeteer": "^7.0.1",
@@ -70,7 +69,7 @@
     "typescript": "^4.9.5",
     "webpack": "^5.37.0"
   },
-  "packageManager": "pnpm@8.4.0",
+  "packageManager": "pnpm@8.9.2",
   "pnpm": {
     "overrides": {
       "@vocab-fixtures/direct": "link:./fixtures/direct",
@@ -89,6 +88,7 @@
     }
   },
   "volta": {
-    "node": "16.19.0"
+    "node": "18.18.2",
+    "pnpm": "8.9.2"
   }
 }

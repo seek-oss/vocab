@@ -19,9 +19,13 @@ const devLanguage = 'en';
 function runPhrase(options: {
   languages: LanguageTarget[];
   generatedLanguages: GeneratedLanguageTarget[];
+  errorOnNoGlobalKeyTranslation?: boolean;
 }) {
   return pull(
-    { branch: 'tester' },
+    {
+      branch: 'tester',
+      errorOnNoGlobalKeyTranslation: options.errorOnNoGlobalKeyTranslation,
+    },
     {
       ...options,
       devLanguage,
@@ -41,10 +45,16 @@ describe('pull translations', () => {
             'hello.mytranslations': {
               message: 'Hi there',
             },
+            'app.thanks.label': {
+              message: 'Thank you.',
+            },
           },
           fr: {
             'hello.mytranslations': {
               message: 'merci',
+            },
+            'app.thanks.label': {
+              message: 'Merci.',
             },
           },
         }),
@@ -98,6 +108,13 @@ describe('pull translations', () => {
                 "greeting",
               ],
             },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "globalKey": "app.thanks.label",
+              "message": "Thank you.",
+            },
             "world": {
               "message": "world",
             },
@@ -105,6 +122,12 @@ describe('pull translations', () => {
           {
             "hello": {
               "message": "merci",
+            },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "message": "Merci.",
             },
             "world": {
               "message": "monde",
@@ -182,6 +205,13 @@ describe('pull translations', () => {
                 "greeting",
               ],
             },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "globalKey": "app.thanks.label",
+              "message": "Thanks",
+            },
             "world": {
               "message": "world",
             },
@@ -189,6 +219,9 @@ describe('pull translations', () => {
           {
             "hello": {
               "message": "merci",
+            },
+            "profile": {
+              "message": "profil",
             },
             "world": {
               "message": "monde",
@@ -235,6 +268,49 @@ describe('pull translations', () => {
       );
 
       expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('when pulling translations and some global keys do not have any translations', () => {
+    beforeEach(() => {
+      jest.mocked(pullAllTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(pullAllTranslations).mockImplementation(() =>
+        Promise.resolve({
+          en: {
+            'hello.mytranslations': {
+              message: 'Hi there',
+            },
+          },
+          fr: {
+            'hello.mytranslations': {
+              message: 'merci',
+            },
+          },
+        }),
+      );
+    });
+
+    const options = {
+      languages: [{ name: 'en' }, { name: 'fr' }],
+      generatedLanguages: [
+        {
+          name: 'generatedLanguage',
+          extends: 'en',
+          generator: {
+            transformMessage: (message: string) => `[${message}]`,
+          },
+        },
+      ],
+      errorOnNoGlobalKeyTranslation: true,
+    };
+
+    it('should throw an error', async () => {
+      await expect(runPhrase(options)).rejects.toThrow(
+        new Error(`Missing translation for global key thanks in language fr`),
+      );
+
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -410,6 +410,17 @@ export async function loadAllTranslations(
         );
       }
       keys.add(uniqueKey);
+
+      const globalKey =
+        loadedTranslation.languages[config.devLanguage][key].globalKey;
+      if (globalKey) {
+        if (keys.has(globalKey)) {
+          throw new Error(
+            `Duplicate keys found. Key with global key ${globalKey} and key ${key} was found multiple times`,
+          );
+        }
+        keys.add(globalKey);
+      }
     }
   }
   return result;

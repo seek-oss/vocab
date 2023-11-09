@@ -1,5 +1,26 @@
 # @vocab/cli
 
+## 1.4.0
+
+### Minor Changes
+
+- [`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007) [#170](https://github.com/seek-oss/vocab/pull/170) Thanks [@jasoncheng-jora](https://github.com/jasoncheng-jora)! - Error on no translation for global key
+
+  By default, `vocab pull` will not error if a translation is missing in Phrase for a translation with a global key.
+  If you want to throw an error in this situation, pass the `--error-on-no-global-key-translation` flag:
+
+  **EXAMPLE USAGE**:
+
+  ```sh
+  vocab pull --error-on-no-global-key-translation
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007), [`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007)]:
+  - @vocab/phrase@1.3.0
+  - @vocab/core@1.5.0
+
 ## 1.3.7
 
 ### Patch Changes

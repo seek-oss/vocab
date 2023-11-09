@@ -1,16 +1,16 @@
-import type {
-  TranslationData,
-  TranslationsByLanguage,
-  UserConfig,
+import {
+  loadAllTranslations,
+  getUniqueKey,
+  type TranslationData,
+  type TranslationsByLanguage,
+  type UserConfig,
 } from '@vocab/core';
-
 import {
   ensureBranch,
   deleteUnusedKeys as phraseDeleteUnusedKeys,
   pushTranslations,
 } from './phrase-api';
 import { trace } from './logger';
-import { loadAllTranslations, getUniqueKey } from '@vocab/core';
 
 interface PushOptions {
   branch: string;
@@ -54,12 +54,15 @@ export async function push(
       } = loadedTranslation;
 
       for (const localKey of Object.keys(localTranslations)) {
-        const phraseKey = getUniqueKey(localKey, loadedTranslation.namespace);
         const { tags = [], ...localTranslation } = localTranslations[localKey];
-
         if (language === config.devLanguage) {
           (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
         }
+        const globalKey =
+          loadedTranslation.languages[config.devLanguage][localKey].globalKey;
+
+        const phraseKey =
+          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
 
         phraseTranslations[language][phraseKey] = localTranslation;
       }

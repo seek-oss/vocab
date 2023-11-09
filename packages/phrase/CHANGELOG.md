@@ -1,5 +1,55 @@
 # @vocab/phrase
 
+## 1.3.0
+
+### Minor Changes
+
+- [`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007) [#170](https://github.com/seek-oss/vocab/pull/170) Thanks [@jasoncheng-jora](https://github.com/jasoncheng-jora)! - `vocab push` and `vocab pull` can support global keys mapping. When you want certain translations to use a specific/custom key in Phrase, add the `globalKey` to the structure.
+
+  **EXAMPLE USAGE**:
+
+  ```jsonc
+  // translations.json
+  {
+    "Hello": {
+      "message": "Hello",
+      "globalKey": "hello"
+    },
+    "Goodbye": {
+      "message": "Goodbye",
+      "globalKey": "app.goodbye.label"
+    }
+  }
+  ```
+
+  In the above example,
+
+  - `vocab push` will push the `hello` and `app.goodbye.label` keys to Phrase.
+  - `vocab pull` will pull translations from Phrase and map them to the `hello` and `app.goodbye.label` keys.
+
+- [`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007) [#170](https://github.com/seek-oss/vocab/pull/170) Thanks [@jasoncheng-jora](https://github.com/jasoncheng-jora)! - Add an optional `errorOnNoGlobalKeyTranslation` flag to `pull` function. If set to `true`, it will error if a translation is missing in Phrase for a translation with a global key.
+
+  **EXAMPLE USAGE**:
+
+  ```js
+  import { pull } from '@vocab/phrase';
+
+  const vocabConfig = {
+    devLanguage: 'en',
+    language: ['en', 'fr'],
+  };
+
+  await pull(
+    { branch: 'myBranch', errorOnNoGlobalKeyTranslation: true },
+    vocabConfig,
+  );
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`161d698`](https://github.com/seek-oss/vocab/commit/161d698f7fd198f594a765104f02261d2e45f007)]:
+  - @vocab/core@1.5.0
+
 ## 1.2.8
 
 ### Patch Changes

@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
-import type { UserConfig } from '@vocab/core';
 import { pull, push } from '@vocab/phrase';
-import { resolveConfig, compile, validate } from '@vocab/core';
+import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
 import yargs from 'yargs';
 
 import envCi from 'env-ci';
@@ -44,7 +43,16 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'pull',
-    builder: () => yargs.options({ branch: branchDefinition }),
+    builder: () =>
+      yargs.options({
+        branch: branchDefinition,
+        'error-on-no-global-key-translation': {
+          type: 'boolean',
+          describe:
+            'Throw an error when there is no translation for a global key',
+          default: false,
+        },
+      }),
     handler: async (options) => {
       await pull(options, config!);
     },
