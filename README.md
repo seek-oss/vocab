@@ -29,7 +29,7 @@ $ npm i --save @vocab/core @vocab/react
 
 ### Step 2: Configure Vocab
 
-You can configure Vocab directly when calling the API or via a `vocab.config.js` file.
+You can configure Vocab directly when calling the API or via a `vocab.config.js` or `vocab.config.cjs` file.
 
 In this example we've configured two languages, English and French, where our initial `translation.json` files will use English.
 
@@ -184,7 +184,7 @@ t('my key with component', {
 
 ## Configuration
 
-Configuration can either be passed into the Node API directly or be gathered from the nearest _vocab.config.js_ file.
+Configuration can either be passed into the Node API directly or be gathered from the nearest _vocab.config.js_ or _vocab.config.cjs_ file.
 
 **vocab.config.js**
 
@@ -341,7 +341,7 @@ functionality.
 
 ### Generating a pseudo-localized language using Vocab
 
-Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` file.
+Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` or `vocab.config.cjs` file.
 `@vocab/pseudo-localize` exports a `generator` that can be used directly in your config.
 
 **vocab.config.js**
