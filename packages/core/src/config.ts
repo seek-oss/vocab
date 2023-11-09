@@ -192,7 +192,7 @@ export function resolveConfigSync(
 ): UserConfig | null {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
-    : findUp.sync('vocab.config.js');
+    : findUp.sync(['vocab.config.js', 'vocab.config.cjs']);
 
   if (configFilePath) {
     trace(`Resolved configuration file to ${configFilePath}`);
