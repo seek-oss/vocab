@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.6.0
+
+### Minor Changes
+
+- [#176](https://github.com/seek-oss/vocab/pull/176) [`8228608`](https://github.com/seek-oss/vocab/commit/8228608a1c8bd2f1de0ac65401cad447b30fc0a8) Thanks [@rstacruz](https://github.com/rstacruz)! - Add support for a alternative config file name, `vocab.config.cjs`
+
 ## 1.5.0
 
 ### Minor Changes
