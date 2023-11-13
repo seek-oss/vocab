@@ -63,7 +63,7 @@ export const runServerFixture = (
 
     compiler.hooks.done.tap('vocab-test-helper', async () => {
       const cwd = path.dirname(
-        require.resolve(`@vocab-fixtures/${fixtureName}/vocab.config.js`),
+        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
       );
       const childProcess = spawn('node', ['./dist-server/server.js'], {
         env: { ...process.env, SERVER_PORT: port.toString() },
