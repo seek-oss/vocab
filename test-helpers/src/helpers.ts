@@ -20,16 +20,25 @@ export interface TestServer {
 
 let portCounter = 10001;
 
-export type FixtureName =
-  | 'direct'
-  | 'phrase'
-  | 'server'
-  | 'simple'
-  | 'translation-types';
+// TODO: Make `resolveConfigSync` accept a custom working directory so we don't need this map
+
+const configExtensionByFixtureName = {
+  direct: 'js',
+  phrase: 'js',
+  server: 'js',
+  simple: 'cjs',
+  'translation-types': 'js',
+} as const satisfies Record<string, 'js' | 'cjs'>;
+
+export type FixtureName = keyof typeof configExtensionByFixtureName;
 
 export const compileFixtureTranslations = async (fixtureName: FixtureName) => {
+  const configExtension = configExtensionByFixtureName[fixtureName];
+
   const config = resolveConfigSync(
-    require.resolve(`@vocab-fixtures/${fixtureName}/vocab.config.js`),
+    require.resolve(
+      `@vocab-fixtures/${fixtureName}/vocab.config.${configExtension}`,
+    ),
   );
 
   if (!config) {

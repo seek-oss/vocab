@@ -35,7 +35,7 @@ module.exports = ({ disableVocabPlugin }) => ({
       ? []
       : [
           new VocabWebpackPlugin({
-            configFile: require.resolve('./vocab.config.js'),
+            configFile: require.resolve('./vocab.config.cjs'),
           }),
         ]),
   ],
