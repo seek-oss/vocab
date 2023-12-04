@@ -36,7 +36,7 @@ jobs:
 
       - name: Install Puppeteer
         if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: node node_modules/puppeteer/install.js
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Build
         run: pnpm build
@@ -81,7 +81,7 @@ jobs:
 
       - name: Install Puppeteer
         if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: node node_modules/puppeteer/install.js
+        run: node node_modules/puppeteer/install.mjs
 
       - name: Build
         run: pnpm build
