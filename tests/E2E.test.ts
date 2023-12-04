@@ -6,6 +6,9 @@ import {
   getLanguageChunk,
 } from '@vocab-private/test-helpers';
 
+import 'expect-puppeteer';
+import 'jest-puppeteer';
+
 describe('E2E', () => {
   describe('Server with initial render', () => {
     let server: TestServer;
@@ -45,15 +48,17 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await page.goto(server.url);
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to en-AU english', async () => {
       const message = await page.waitForSelector('#message');
       const publishDate = await page.waitForSelector('#publish-date');
 
-      await expect(message).toMatch('Hello world');
-      await expect(publishDate).toMatch('Vocab was published on 20/11/2020');
+      await expect(message).toMatchTextContent('Hello world');
+      await expect(publishDate).toMatchTextContent(
+        'Vocab was published on 20/11/2020',
+      );
     });
 
     it('should handle to en-US locale', async () => {
@@ -61,7 +66,9 @@ describe('E2E', () => {
 
       const publishDate = await page.waitForSelector('#publish-date');
 
-      await expect(publishDate).toMatch('Vocab was published on 11/20/2020');
+      await expect(publishDate).toMatchTextContent(
+        'Vocab was published on 11/20/2020',
+      );
     });
 
     it('should switch to french', async () => {
@@ -69,7 +76,7 @@ describe('E2E', () => {
 
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('Bonjour monde');
+      await expect(message).toMatchTextContent('Bonjour monde');
     });
 
     it('should switch to pseudo', async () => {
@@ -77,13 +84,15 @@ describe('E2E', () => {
 
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', { timeout: 2000 });
+      await expect(message).toMatchTextContent('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', {
+        timeout: 2000,
+      });
     });
 
     it('should allow special characters', async () => {
       const message = await page.waitForSelector('#special-characters');
 
-      await expect(message).toMatch('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
+      await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
 
     it('should return the expected en chunk', async () => {
@@ -119,13 +128,13 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await page.goto(server.url);
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to english', async () => {
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('Hello world');
+      await expect(message).toMatchTextContent('Hello world');
     });
 
     it('should switch to french', async () => {
@@ -133,7 +142,7 @@ describe('E2E', () => {
 
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('Bonjour monde');
+      await expect(message).toMatchTextContent('Bonjour monde');
     });
 
     it('should switch to pseudo', async () => {
@@ -141,7 +150,7 @@ describe('E2E', () => {
 
       const message = await page.waitForSelector('#message');
 
-      await expect(message).toMatch('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
+      await expect(message).toMatchTextContent('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
     });
 
     afterAll(() => {
@@ -157,7 +166,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await page.goto(server.url);
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to en-US english', async () => {
@@ -167,9 +176,11 @@ describe('E2E', () => {
       const syncMessage = await page.waitForSelector('#sync-message');
       const asyncMessage = await page.waitForSelector('#async-message');
 
-      await expect(syncMessage).toMatch('Hello Synchronously');
-      await expect(asyncMessage).toMatch('Hello Asynchronously');
-      await expect(syncMessage).toMatch('*Vocab* was published on 11/20/2020');
+      await expect(syncMessage).toMatchTextContent('Hello Synchronously');
+      await expect(asyncMessage).toMatchTextContent('Hello Asynchronously');
+      await expect(syncMessage).toMatchTextContent(
+        '*Vocab* was published on 11/20/2020',
+      );
     });
 
     it('should switch to french', async () => {
@@ -181,8 +192,8 @@ describe('E2E', () => {
       const syncMessage = await page.waitForSelector('#sync-message');
       const asyncMessage = await page.waitForSelector('#async-message');
 
-      await expect(syncMessage).toMatch('Bonjour Synchronously');
-      await expect(asyncMessage).toMatch('Bonjour Asynchronously');
+      await expect(syncMessage).toMatchTextContent('Bonjour Synchronously');
+      await expect(asyncMessage).toMatchTextContent('Bonjour Asynchronously');
     });
 
     it('should switch to pseudo', async () => {
@@ -194,8 +205,8 @@ describe('E2E', () => {
       const syncMessage = await page.waitForSelector('#sync-message');
       const asyncMessage = await page.waitForSelector('#async-message');
 
-      await expect(syncMessage).toMatch('[Ḩẽẽƚƚöö] Synchronously');
-      await expect(asyncMessage).toMatch('[Ḩẽẽƚƚöö] Asynchronously');
+      await expect(syncMessage).toMatchTextContent('[Ḩẽẽƚƚöö] Synchronously');
+      await expect(asyncMessage).toMatchTextContent('[Ḩẽẽƚƚöö] Asynchronously');
     });
 
     afterAll(() => {
