@@ -129,7 +129,7 @@ export const getAppSnapshot = async (
     }
   });
 
-  const response = await page.goto(url, { waitUntil: 'load' });
+  const response = await page.goto(url, { waitUntil: 'networkidle0' });
   const sourceHtml = await response?.text();
   const clientRenderContent = await page.content();
 
