@@ -49,11 +49,7 @@ export function mergeWithDevLanguageTranslation({
   return newLanguage;
 }
 
-function getLanguageFallbacks({
-  languages,
-}: {
-  languages: Array<LanguageTarget>;
-}) {
+function getLanguageFallbacks({ languages }: { languages: LanguageTarget[] }) {
   const languageFallbackMap = new Map<LanguageName, LanguageName>();
 
   for (const lang of languages) {
@@ -68,9 +64,9 @@ function getLanguageFallbacks({
 export function getLanguageHierarchy({
   languages,
 }: {
-  languages: Array<LanguageTarget>;
+  languages: LanguageTarget[];
 }) {
-  const hierarchyMap = new Map<LanguageName, Array<LanguageName>>();
+  const hierarchyMap = new Map<LanguageName, LanguageName[]>();
   const fallbacks = getLanguageFallbacks({ languages });
 
   for (const lang of languages) {
@@ -108,7 +104,7 @@ export function getFallbackLanguageOrder({
     throw new Error(`Missing language hierarchy for ${languageName}`);
   }
 
-  const fallbackLanguageOrder: Array<string> = [languageName];
+  const fallbackLanguageOrder: string[] = [languageName];
 
   if (fallbacks !== 'none') {
     fallbackLanguageOrder.unshift(...languageHierarchy.reverse());
@@ -381,7 +377,7 @@ export async function loadAllTranslations(
     withTags,
   }: { fallbacks: Fallback; includeNodeModules: boolean; withTags?: boolean },
   config: UserConfig,
-): Promise<Array<LoadedTranslation>> {
+): Promise<LoadedTranslation[]> {
   const { projectRoot, ignore = [] } = config;
 
   const translationFiles = await glob(getDevTranslationFileGlob(config), {

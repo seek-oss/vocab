@@ -156,7 +156,7 @@ export async function pushTranslations(
         }
       | {
           message: string;
-          errors: Array<unknown>;
+          errors: unknown[];
         }
       | undefined
     >(`uploads`, {

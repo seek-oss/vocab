@@ -8,5 +8,6 @@ module.exports = {
     'no-process-exit': 'off',
     'no-var-requires': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off',
   },
 };

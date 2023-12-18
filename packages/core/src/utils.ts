@@ -78,7 +78,7 @@ export function getAltLanguages({
   languages,
 }: {
   devLanguage: LanguageName;
-  languages: Array<LanguageTarget>;
+  languages: LanguageTarget[];
 }) {
   return languages.map((v) => v.name).filter((lang) => lang !== devLanguage);
 }

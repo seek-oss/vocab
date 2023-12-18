@@ -102,7 +102,7 @@ describe('createTranslationFile', () => {
   it('should return a string when all tags return strings', () => {
     const translations = createDemoTranslationFileWithTag();
     const translationModule = translations.getLoadedMessages('en', 'en-US');
-    type ExpectedResultType = string | Array<string>;
+    type ExpectedResultType = string | string[];
     if (!translationModule) {
       throw new Error('no translationModule');
     }
