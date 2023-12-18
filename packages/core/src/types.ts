@@ -112,11 +112,11 @@ export interface UserConfig {
   /**
    * An array of languages to build for
    */
-  languages: Array<LanguageTarget>;
+  languages: LanguageTarget[];
   /**
    * An array of languages to generate from existing translations
    */
-  generatedLanguages?: Array<GeneratedLanguageTarget>;
+  generatedLanguages?: GeneratedLanguageTarget[];
   /**
    * A custom suffix to name vocab translation directories
    */
@@ -124,10 +124,10 @@ export interface UserConfig {
   /**
    * An array of glob paths to ignore from compilation and validation
    */
-  ignore?: Array<string>;
+  ignore?: string[];
 }
 
-export type Tags = Array<string>;
+export type Tags = string[];
 
 export interface TranslationFileMetadata {
   tags?: Tags;
@@ -157,7 +157,7 @@ export type TranslationsByLanguage<Key extends TranslationKey = string> =
 
 export type LoadedTranslation<Key extends TranslationKey = string> = {
   namespace: string;
-  keys: Array<Key>;
+  keys: Key[];
   filePath: string;
   relativePath: string;
   languages: TranslationsByLanguage<Key>;

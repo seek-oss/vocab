@@ -31,7 +31,7 @@ import {
 import { trace } from './logger';
 import { loadAllTranslations, loadTranslation } from './load-translations';
 
-type ICUParams = { [key: string]: string };
+type ICUParams = Record<string, string>;
 
 interface TranslationTypeInfo {
   params: ICUParams;

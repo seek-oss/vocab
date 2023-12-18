@@ -1,9 +1,7 @@
 import type { ParsedICUMessages, TranslationMessagesByKey } from './types';
 import IntlMessageFormat from 'intl-messageformat';
 
-type ICUMessagesByLocale = {
-  [locale: string]: ParsedICUMessages<any>;
-};
+type ICUMessagesByLocale = Record<string, ParsedICUMessages<any>>;
 
 const moduleCache = new WeakMap<
   TranslationMessagesByKey,

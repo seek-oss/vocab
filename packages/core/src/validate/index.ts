@@ -8,7 +8,7 @@ import { getAltLanguages } from '../utils';
 export function findMissingKeys(
   loadedTranslation: LoadedTranslation,
   devLanguageName: LanguageName,
-  altLanguages: Array<LanguageName>,
+  altLanguages: LanguageName[],
 ) {
   const devLanguage = loadedTranslation.languages[devLanguageName];
 
@@ -18,7 +18,7 @@ export function findMissingKeys(
     );
   }
 
-  const result: Record<LanguageName, Array<string>> = {};
+  const result: Record<LanguageName, string[]> = {};
   let valid = true;
 
   const requiredKeys = Object.keys(devLanguage);

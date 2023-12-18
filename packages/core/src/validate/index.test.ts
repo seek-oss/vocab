@@ -4,12 +4,12 @@ import { findMissingKeys } from './index';
 interface TestCase {
   loadedTranslation: LoadedTranslation;
   devLanguage: LanguageName;
-  altLanguages: Array<LanguageName>;
+  altLanguages: LanguageName[];
   valid: boolean;
-  missingKeys?: Record<LanguageName, Array<string>>;
+  missingKeys?: Record<LanguageName, string[]>;
 }
 
-const testCases: Array<TestCase> = [
+const testCases: TestCase[] = [
   {
     loadedTranslation: {
       filePath: 'some-file.json',
