@@ -29,7 +29,7 @@ jobs:
 
       - name: Cache Puppeteer
         id: puppeteer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /home/runner/.cache/puppeteer
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
@@ -74,7 +74,7 @@ jobs:
 
       - name: Cache Puppeteer
         id: puppeteer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: C:\Users\runneradmin\.cache\puppeteer
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
