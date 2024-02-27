@@ -4,73 +4,114 @@ Vocab is a strongly typed internationalization framework for React.
 
 Vocab helps you ship multiple languages without compromising the reliability of your site or slowing down delivery.
 
-- Shareable translations
-
+- **Shareable translations**\
   Translations are co-located with the components that use them. Vocab uses the module graph allowing shared components to be installed with package managers like npm, just like any other module.
 
-- Loading translations dynamically
-
+- **Loading translations dynamically**\
   Vocab only loads the current user's language. If the language changes Vocab can load the new language behind the scenes without reloading the page.
 
-- Strongly typed with TypeScript
-
+- **Strongly typed with TypeScript**\
   When using translations TypeScript will ensure code only accesses valid translations and translations are passed all required dynamic values.
 
 ## Getting started
 
 ### Step 1: Install Dependencies
 
-Vocab is a monorepo with different packages you can install depending on your usage, the below list will get you started using the CLI and React integration.
+Vocab is a monorepo containing different packages you can install depending on your usage.
+The below list will get you started using the CLI and React integration.
 
-```bash
-$ npm i --save-dev @vocab/cli
-$ npm i --save @vocab/core @vocab/react
+```sh
+npm install --save-dev @vocab/cli
+npm install --save @vocab/core @vocab/react
 ```
 
 ### Step 2: Configure Vocab
 
-You can configure Vocab directly when calling the API or via a `vocab.config.js` or `vocab.config.cjs` file.
+You can configure Vocab directly when calling the API, or via a `vocab.config.js` or `vocab.config.cjs` file.
 
-In this example we've configured two languages, English and French, where our initial `translation.json` files will use English.
+> [!TIP]  
+> It's a good idea to name your languages using [IETF language tags], however this is not a requirement.
 
-**vocab.config.js**
+In this example we've configured two languages named `en` (English) and `fr` (French).
+We've also configured a `devLanguage` of `en`.
+This is the language Vocab will assume when it sees a `translation.json` file without a language prefix.
 
 ```js
+// vocab.config.js
 module.exports = {
-  devLanguage: 'en',
   languages: [{ name: 'en' }, { name: 'fr' }]
+  devLanguage: 'en',
 };
 ```
 
+See the [configuration] section for more configuration options.
+
+[IETF language tags]: https://en.wikipedia.org/wiki/IETF_language_tag
+[configuration]: #configuration
+
 ### Step 3: Set the language using the React Provider
 
-Vocab doesn't tell you how to select or change your language. You just need to tell Vocab what language to use.
+Vocab uses React's context API to provide information for your translation lookups.
+To tell Vocab which language to use, wrap your app in a `VocabProvider` component and pass in a `language` prop corresponding to one of the language names configured in your `vocab.config.js` file.
 
-**Note:** Using methods discussed later we'll make sure the first language is loaded on page load. However, after this, changing languages may then lead to a period of no translations as Vocab downloads the new language's translations.
-
-**src/App.tsx**
+> [!NOTE]
+> Using methods discussed later we'll make sure the first language is loaded on page load.
+> However, after this, changing languages may lead to a period of no translations as Vocab downloads the new language's translations.
 
 ```tsx
+// src/App.tsx
+
+import { VocabProvider } from '@vocab/react';
+
+const App = ({ children }) => {
+  return (
+    <VocabProvider language="en">{children}</VocabProvider>
+  );
+};
+```
+
+If you need to customize the locale for your language, you can pass a `locale` prop to the `VocabProvider` component.
+This tells Vocab which locale to use when formatting your translations.
+
+```tsx
+// src/App.tsx
+
 import { VocabProvider } from '@vocab/react';
 
 function App({ children }) {
   return (
-    <VocabProvider language={language}>
+    <VocabProvider language="myCustomLanguage" locale="en">
       {children}
     </VocabProvider>
   );
 }
 ```
 
-### Step 4: Create initial values and use them
+See [here][overriding the locale] for more information on how and when to use the `locale` prop.
 
-A translation file is a JSON file consisting of a flat structure of keys, each with a message and an optional description.
+[overriding the locale]: #overriding-the-locale
 
-**Note:** Currently, to create a new translation it must be placed inside a folder ending in **`.vocab`**, this folder suffix can be configured with the `translationsDirectorySuffix` configuration value.
+### Step 4: Create translations
 
-**`./example.vocab/translations.json`**
+A translation file is a JSON file consisting of a flat structure of keys.
+Each key must contain a `message` property, and optionally a `description` property.
 
-```json
+Rather than creating one giant file for each language's translations, Vocab enables you to locate translations as close as possible to the components that use them.
+To facilitate this, Vocab lets you group translations inside folders ending in `.vocab`.
+You may have as many of these folders as you like in your project.
+
+> [!TIP]
+> Your folders can be named anything, as long as it ends in `.vocab`.
+> It's recommened to just name your folders `.vocab` so you have one less name to think of/rename in the future.
+
+Translation files must follow the naming pattern of `{languageName}.translations.json`.
+The exception to this is translations for your `devLanguage` which must be placed in a file named `translations.json`.
+
+In the following examples, we're defining translations for our `devLanguage`, and a language named `fr`.
+
+```jsonc
+// src/MyComponent/.vocab/translations.json
+
 {
   "my key": {
     "message": "Hello from Vocab",
@@ -79,30 +120,9 @@ A translation file is a JSON file consisting of a flat structure of keys, each w
 }
 ```
 
-Then run `vocab compile`. Or `vocab compile --watch`.
-This will create a new `index.ts` file for each folder ending in **`.vocab`**.
+```jsonc
+// src/MyComponent/.vocab/fr.translations.json
 
-You can then import these translations into your React components. Translations can be used by calling the `t` function returned by `useTranslations`.
-
-**./MyComponent.tsx**
-
-```tsx
-import { useTranslations } from '@vocab/react';
-import translations from './example.vocab';
-
-function MyComponent({ children }) {
-  const { t } = useTranslations(translations);
-  return <div>{t('my key')}</div>;
-}
-```
-
-### Step 5: Create translations
-
-So far, your app will run, but you're missing any translations other than the initial language. The below file can be created manually; however, you can also integrate with a remote translation platform to push and pull translations automatically. See [External translation tooling](#external-translation-tooling) for more information.
-
-**./example.vocab/fr-FR.translations.json**
-
-```json
 {
   "my key": {
     "message": "Bonjour de Vocab",
@@ -111,25 +131,54 @@ So far, your app will run, but you're missing any translations other than the in
 }
 ```
 
-### Step 6: [Optional] Set up Webpack plugin
+> [!NOTE]
+> You can create your translation files manually.
+> However, Vocab also offers integrations with remote translation platforms to push and pull translations automatically.
+> See [External translation tooling] for more information.
 
-Right now every language is loaded into your web application all the time, which could lead to a large bundle size. Ideally you will want to switch out the Node/default runtime for web runtime that will load only the active language.
+[External translation tooling]: #external-translation-tooling
 
-This is done using the **VocabWebpackPlugin**. Applying this plugin to your client webpack configuration will replace all vocab files with a dynamic asynchronous chunks designed for the web.
+### Step 5: Compile and consume translations
 
-```bash
-$ npm i --save-dev @vocab/webpack
+Once you have created some translations, run `vocab compile`.
+This command creates an `index.ts` file inside each folder ending in `.vocab`.
+Importing this file provides type-safe translations for your React components.
+Accessing translation messages is done by passing these imported translations to the `useTranslations` hook and using the returned `t` function.
+
+```tsx
+// src/MyComponent.tsx
+
+import { useTranslations } from '@vocab/react';
+import translations from './.vocab';
+
+function MyComponent({ children }) {
+  const { t } = useTranslations(translations);
+
+  // t('my key') will return the appropriate translation based on the language set in your app's VocabProvider
+  return <div>{t('my key')}</div>;
+}
 ```
 
-**webpack.config.js**
+### Step 6: [Optional] Set up Webpack plugin
+
+With the default setup, every language is loaded into your web application all the time, potentially leading to a large bundle size.
+Ideally you will want to switch out the Node.js/default runtime for the web runtime, which only loads the active language.
+
+This is done using the `VocabWebpackPlugin`.
+Applying this plugin to your client webpack configuration will replace all vocab files with dynamic asynchronous chunks designed for the web.
+
+```sh
+npm i --save-dev @vocab/webpack
+```
 
 ```js
+// webpack.config.js
+
 const { VocabWebpackPlugin } = require('@vocab/webpack');
 
 module.exports = {
-  ...,
   plugins: [new VocabWebpackPlugin()]
-}
+};
 ```
 
 ### Step 7: [Optional] Optimize for fast page loading
@@ -138,11 +187,11 @@ Using the above method without optimizing what chunks webpack uses you may find 
 
 This is where `getChunkName` can be used to retrieve the Webpack chunk used for a specific language.
 
-For example, here is a Server Render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
-
-**src/render.tsx**
+For example, here is a server render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
 
 ```tsx
+// src/render.tsx
+
 import { getChunkName } from '@vocab/webpack/chunk-name';
 
 // ...
@@ -154,13 +203,13 @@ const extractor = new ChunkExtractor();
 extractor.addChunk(chunkName);
 ```
 
-## ICU Message format
+## Dynamic Values in Translations
 
-Translation messages can sometimes contain dynamic values, such as dates/times, links or usernames. These values can often exist somewhere in the middle of a message and change location based on translation.
+Translation messages can sometimes contain dynamic values, such as dates/times, links, usernames, etc.
+These values often exist somewhere in the middle of a message, and could change location depending on the translation.
+To support this, Vocab uses [Format.js's `intl-messageformat` library], which enables you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
 
-To support this Vocab uses [Format.js's intl-messageformat] allowing you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
-
-In the below example we use two messages, one that passes in a single parameter and one uses a component.
+In the below example we are defining two messages: one that accepts a single parameter, and one that accepts a component.
 
 ```json
 {
@@ -173,7 +222,7 @@ In the below example we use two messages, one that passes in a single parameter 
 }
 ```
 
-Vocab will automatically parse these strings as ICU messages, identify the required parameters and ensure TypeScript knows the values must be passed in.
+Vocab will automatically parse these strings as ICU messages and generate strict types for any parameters it finds.
 
 ```tsx
 t('my key with param', { name: 'Vocab' });
@@ -182,13 +231,96 @@ t('my key with component', {
 });
 ```
 
+[Format.js's `intl-messageformat` library]: https://formatjs.io/docs/intl-messageformat/
+
+## Overriding the Locale
+
+By default, your language name is passed as the `locale` to the formatting API provided by [`intl-messageformat`].
+The `locale` is used to determine how to format dates, numbers, and other locale-sensitive values.
+If you wish to customize this behaviour, you can pass a `locale` prop to the `VocabProvider` component.
+
+```tsx
+<VocabProvider language="myCustomLanguage" locale="th-TH">
+  {children}
+</VocabProvider>
+```
+
+This can be useful in certain situations:
+
+- You have chosen to name your language something other than an [IETF language tag], but still want to use a specific locale for formatting
+- You want to use a different locale for formatting a specific language.
+  E.g. when formatting values for `th` (Thai) locales, the default calendar is Buddhist, but you may want to use the Gregorian calendar.
+  This can be achieved by specifying a `locale` value with a BCP 47 extension sequence suffix such as `-u-ca-gregory`.
+  For example: `th-u-ca-gregory`.
+  See the [MDN Intl docs] for more information on BCP 47 extension sequences.
+
+[`intl-messageformat`]: https://formatjs.io/docs/intl-messageformat/
+[IETF language tag]: https://en.wikipedia.org/wiki/IETF_language_tag
+[mdn intl docs]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument
+
+## Accessing the Current `language` or `locale`
+
+If you need to access either the `language` or `locale` that you passed to your `VocabProvider`, you can use the `useLanguage` hook:
+
+```tsx
+import { useLanguage } from '@vocab/react';
+
+const MyComponent = () => {
+  const { language, locale } = useLanguage();
+  return (
+    <div>
+      {language} - {locale}
+    </div>
+  );
+};
+```
+
+> [!CAUTION]\
+> `locale` is only available when you pass a `locale` prop to your `VocabProvider`.
+> If you don't pass a `locale` prop, `locale` will be `undefined`.
+> It's generally advised to name your languages using [IETF language tags] and let Vocab handle the locale for you.
+> This gives you the added benefit that you can use the `language` from `useLanguage` if necessary, and it will always be defined.
+
+Typically you won't need to access these values since the ICU message syntax supports locale-aware formatting of [numbers], [dates, and times].
+However, one use case where you might need to access these values is when formatting a currency value.
+This is because there is currently no way to specify the currency for an ICU message programmatically, so it must be hardcoded within the messsage.
+This poses a problem when you don't want to couple your translations to a specific currency.
+
+```json
+{
+  "my key with currency": {
+    "message": "You have {value, number, ::compact-short currency/GBP}"
+  }
+}
+```
+
+When given a `value` of `123`, the above message would render as `You have GBP 123`.
+
+To format a value with a dynamic currency, you could use the `useLanguage` hook to access the current `language` and format the currency value using the `Intl.NumberFormat` API:
+
+```tsx
+const Currency = ({ value, currency }) => {
+  const { language } = useLanguage();
+
+  const formattedValue = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency
+  }).format(value);
+
+  return <div>{formattedValue}</div>;
+};
+```
+
+[numbers]: https://formatjs.io/docs/core-concepts/icu-syntax/#number-type
+[dates, and times]: https://formatjs.io/docs/core-concepts/icu-syntax/#supported-datetime-skeleton
+
 ## Configuration
 
-Configuration can either be passed into the Node API directly or be gathered from the nearest _vocab.config.js_ or _vocab.config.cjs_ file.
-
-**vocab.config.js**
+Configuration can either be passed into the Node API directly or be gathered from the nearest `vocab.config.js` or `vocab.config.cjs` file.
 
 ```js
+// vocab.config.js
+
 function capitalize(element) {
   return element.toUpperCase();
 }
@@ -236,6 +368,24 @@ module.exports = {
 };
 ```
 
+## Accessing the Language Name and Locale
+
+Vocab provides a `useLanguage` hook to access the current language name and locale.
+The hook returns a `language` property containing the current language name (as configured in your vocab config), and `locale` property
+
+```tsx
+import { useLanguage } from '@vocab/react';
+
+const MyComponent = () => {
+  const { language, locale } = useLanguage();
+  return (
+    <div>
+      {language} - {locale}
+    </div>
+  );
+};
+```
+
 ## Generated languages
 
 Vocab supports the creation of generated languages via the `generatedLanguages` config.
@@ -254,9 +404,9 @@ An example of a use case for this function would be adding padding text to the s
 
 By default, a generated language's messages will be based off the `devLanguage`'s messages, but this can be overridden by providing an `extends` value that references another language.
 
-**vocab.config.js**
-
 ```js
+// vocab.config.js
+
 function capitalize(message) {
   return message.toUpperCase();
 }
@@ -284,12 +434,12 @@ module.exports = {
 Generated languages are consumed the same way as regular languages.
 Any Vocab API that accepts a `language` parameter will work with a generated language as well as a regular language.
 
-**App.tsx**
-
 ```tsx
+// App.tsx
+
 const App = () => (
   <VocabProvider language="generatedLanguage">
-    ...
+    <div>Hello, world!</div>
   </VocabProvider>
 );
 ```
@@ -301,8 +451,8 @@ const App = () => (
 
 The `@vocab/pseudo-localize` package exports low-level functions that can be used for pseudo-localization of translation messages.
 
-```bash
-$ npm i --save-dev @vocab/pseudo-localize
+```sh
+$ npm install --save-dev @vocab/pseudo-localize
 ```
 
 ```ts
@@ -332,21 +482,28 @@ const pseudoLocalizedMessage = pseudoLocalize(message);
 Pseudo-localization is a transformation that can be applied to a translation message.
 Vocab's implementation of this transformation contains the following elements:
 
-- _Start and end markers (`padString`):_ All strings are encapsulated in `[` and `]`. If a developer doesn’t see these characters they know the string has been clipped by an inflexible UI element.
-- _Transformation of ASCII characters to extended character equivalents (`substituteCharacters`):_ Stresses the UI from a vertical line-height perspective, tests font and encoding support, and weeds out strings that haven’t been externalized correctly (they will not have the pseudo-localization applied to them).
-- _Padding text (`extendVowels`):_ Simulates translation-induced expansion. Vocab's implementation of this involves repeating vowels (and `y`) to simulate a 40% expansion in the message's length.
+- _Start and end markers (`padString`):_ All strings are encapsulated in `[` and `]`.
 
-This Netflix technology [blog post][blog post] inspired Vocab's implementation of this
-functionality.
+  If a developer doesn’t see these characters they know the string has been clipped by an inflexible UI element.
+
+- _Transformation of ASCII characters to extended character equivalents (`substituteCharacters`):_ Stresses the UI from a vertical line-height perspective, tests font and encoding support, and weeds out strings that haven’t been externalized correctly (they will not have the pseudo-localization applied to them).
+
+- _Padding text (`extendVowels`):_ Simulates translation-induced expansion.
+
+  Vocab's implementation of this involves repeating vowels (and `y`) to simulate a 40% expansion in the message's length.
+
+This [Netflix technology blog post] inspired Vocab's implementation of this functionality.
+
+[netflix technology blog post]: https://netflixtechblog.com/pseudo-localization-netflix-12fff76fbcbe
 
 ### Generating a pseudo-localized language using Vocab
 
 Vocab can generate a pseudo-localized language via the [`generatedLanguages` config][generated languages config], either via the webpack plugin or your `vocab.config.js` or `vocab.config.cjs` file.
 `@vocab/pseudo-localize` exports a `generator` that can be used directly in your config.
 
-**vocab.config.js**
-
 ```js
+// vocab.config.js
+
 const { generator } = require('@vocab/pseudo-localize');
 
 module.exports = {
@@ -362,27 +519,35 @@ module.exports = {
 };
 ```
 
-[blog post]: https://netflixtechblog.com/pseudo-localization-netflix-12fff76fbcbe
 [generated languages config]: #generated-languages
 
-## Use without React
+## Use Without React
 
-If you need to use Vocab outside of React, you can access the returned Vocab file directly. You'll then be responsible for when to load translations and how to update on translation load.
+If you need to use Vocab outside of React, you can access the translations directly.
+You'll then be responsible for when to load translations and how to update on translation load.
 
 #### Async access
 
-- `getMessages(language: string) => Promise<Messages>` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will load the language before resolving.
+- `getMessages(language: string) => Promise<Messages>` returns messages for the given language formatted according to the correct locale.
+  If the language has not been loaded it will load the language before resolving.
 
-**Note:** To optimize loading time you may want to call `load` (see below) ahead of use.
+> [!NOTE]
+> To optimize loading time you may want to call [`load`] ahead of use.
+
+[`load`]: #sync-access
 
 #### Sync access
 
-- `load(language: string) => Promise<void>` attempts to pre-load messages for the given language. Resolving once complete. Note this only ensures the language is available and does not return any translations.
-- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale. If the language has not been loaded it will return `null`. Note that this will not load the language if it's not available. Useful when a synchronous (non-promise) return is required.
+- `load(language: string) => Promise<void>` attempts to pre-load messages for the given language, resolving once loaded.
+  This function only ensures the language is available and does not return any translations.
+- `getLoadedMessages(language: string) => Messages | null` returns messages for the given language formatted according to the correct locale.
+  If the language has not been loaded it will return `null`.
+  This will not load a language that is not available.
+  Useful when a synchronous (non-promise) return is required.
 
 **Example: Promise based formatting of messages**
 
-```typescript
+```ts
 import translations from './.vocab';
 
 async function getFooMessage(language) {
@@ -395,7 +560,7 @@ getFooMessage().then((m) => console.log(m));
 
 **Example: Synchronously returning a message**
 
-```typescript
+```ts
 import translations from './.vocab';
 
 function getFooMessageSync(language) {
@@ -421,14 +586,14 @@ Vocab generates custom `index.ts` files that give your React components strongly
 
 To generate these files run:
 
-```bash
-$ vocab compile
+```sh
+vocab compile
 ```
 
-Or to re-run the compiler when files change use:
+Or to re-run the compiler when files change:
 
-```bash
-$ vocab compile --watch
+```sh
+vocab compile --watch
 ```
 
 ## External Translation Tooling
@@ -439,9 +604,9 @@ Vocab can be used to synchronize your translations with translations from a remo
 | -------- | ----------------------------------- |
 | [Phrase] | PHRASE_PROJECT_ID, PHRASE_API_TOKEN |
 
-```bash
-$ vocab push --branch my-branch
-$ vocab pull --branch my-branch
+```sh
+vocab push --branch my-branch
+vocab pull --branch my-branch
 ```
 
 ### [Phrase] Platform Features
@@ -453,7 +618,7 @@ referenced in the upload. These keys can be deleted from Phrase by providing the
 `--delete-unused-keys` flag to `vocab push`. E.g.
 
 ```sh
-$ vocab push --branch my-branch --delete-unused-keys
+vocab push --branch my-branch --delete-unused-keys
 ```
 
 [phrase]: https://developers.phrase.com/api/
@@ -466,6 +631,7 @@ Tags can be added to an individual key via the `tags` property:
 
 ```jsonc
 // translations.json
+
 {
   "Hello": {
     "message": "Hello",
@@ -483,6 +649,7 @@ keys specified in the file:
 
 ```jsonc
 // translations.json
+
 {
   "_meta": {
     "tags": ["home_page"]
@@ -500,11 +667,12 @@ keys specified in the file:
 In the above example, both the `Hello` and `Goodbye` keys would have the `home_page` tag attached to
 them, but only the `Hello` key would have the `usage_greeting` tag attached to it.
 
-**NOTE**: Only tags specified on keys in your [`devLanguage`][configuration] will be uploaded.
-Tags on keys in other languages will be ignored.
+> [!NOTE]
+> Only tags specified on keys in your [`devLanguage`][configuration] will be uploaded.
+> Tags on keys in other languages will be ignored.
 
 [tags]: https://support.phrase.com/hc/en-us/articles/5822598372252-Tags-Strings-
-[configuration]: #Configuration
+[configuration]: #configuration
 
 #### Global key
 
@@ -512,6 +680,7 @@ Tags on keys in other languages will be ignored.
 
 ```jsonc
 // translations.json
+
 {
   "Hello": {
     "message": "Hello",
@@ -542,9 +711,6 @@ vocab pull --error-on-no-global-key-translation
 
 ### Problem: Passed locale is being ignored or using en-US instead
 
-When running in Node.js the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intl_internationalization_support). Node.js will silently switch to the closest locale it can find if the passed locale is not available.
+When running in Node.js, the locale formatting is supported by [Node.js's Internationalization support](https://nodejs.org/api/intl.html#intl_internationalization_support).
+Node.js will silently switch to the closest locale it can find if the passed locale is not available.
 See Node's documentation on [Options for building Node.js](https://nodejs.org/api/intl.html#intl_options_for_building_node_js) for information on ensuring Node has the locales you need.
-
-### License
-
-MIT.
