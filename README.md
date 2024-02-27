@@ -96,7 +96,7 @@ See [here][overriding the locale] for more information on how and when to use th
 A translation file is a JSON file consisting of a flat structure of keys.
 Each key must contain a `message` property, and optionally a `description` property.
 
-Rather than creating one giant file for each language's translations, Vocab enables you to locate translations as close as possible to the components that use them.
+Rather than creating one giant file for each language's translations, Vocab enables you to co-locate the translations alongside their consuming components.
 To facilitate this, Vocab lets you group translations inside folders ending in `.vocab`.
 You may have as many of these folders as you like in your project.
 
