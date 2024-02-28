@@ -9,16 +9,13 @@ export type ParsedFormatFn = (parts: any) => any;
 export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
 
 /**
- * Equivalent to the `string` type, but tricks the language server into prodiving
+ * Equivalent to the `string` type, but tricks TypeScript into prodiving
  * suggestions for string literals passed into the `Suggestions` generic parameter
  *
  * @example
- * Accept any string, but suggest specific animals
- * ```
  * type AnyAnimal = StringWithSuggestions<"cat" | "dog">;
  * // Suggests cat and dog, but accepts any string
  * const animal: AnyAnimal = "";
- * ```
  */
 export type StringWithSuggestions<Suggestions extends string> =
   | Suggestions
@@ -75,9 +72,44 @@ export type TranslationFile<
   load: (language: Language) => Promise<void>;
 };
 
+/**
+ * A utility type to get the union of all translation keys from a translation file
+ *
+ * @example
+ * // translations.json
+ * {
+ *   "Hello": {
+ *     "message": "Hello",
+ *   },
+ *   "Goodbye": {
+ *     "message": "Goodbye",
+ *   },
+ * }
+ *
+ * // myFile.ts
+ * import { TranslationKeys } from '@vocab/core';
+ * import translations from './.vocab';
+ *
+ * // 'Hello' | 'Goodbye'
+ * type TheTranslationKeys = TranslationKeys<typeof translations>;
+ *
+ * @example
+ * import { TranslationKeys } from '@vocab/core';
+ * import fooTranslations from './foo.vocab';
+ * import barTranslations from './bar.vocab';
+ *
+ * // It even works with multiple translation files
+ * type FooBarTranslationKeys = TranslationKeys<typeof fooTranslations | typeof barTranslations>;
+ */
 export type TranslationKeys<
   Translations extends TranslationFile<any, ParsedFormatFnByKey>,
-> = keyof Awaited<ReturnType<Translations['getMessages']>>;
+  // The `extends unknown` here forces TypeScript to distribute over the input type, which might be a union of
+  // multiple `TranslationFile`s. Without this, if you pass in a union, TypeScript tries to get the `ReturnType`
+  // of a union, which does not work and returns `never`.
+  // All types are assignable to `unknown`, so we never hit the `never` case.
+> = Translations extends unknown
+  ? keyof Awaited<ReturnType<Translations['getMessages']>>
+  : never;
 
 export interface LanguageTarget {
   // The name or tag of a language
