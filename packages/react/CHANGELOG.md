@@ -1,5 +1,14 @@
 # @vocab/react
 
+## 1.1.10
+
+### Patch Changes
+
+- [#206](https://github.com/seek-oss/vocab/pull/206) [`79a1c13`](https://github.com/seek-oss/vocab/commit/79a1c13a95c3f7b985c0ed551a79fcbc7072ff95) Thanks [@askoufis](https://github.com/askoufis)! - Add documentation for `VocabProvider` and `useLanguage`
+
+- Updated dependencies [[`79a1c13`](https://github.com/seek-oss/vocab/commit/79a1c13a95c3f7b985c0ed551a79fcbc7072ff95), [`79a1c13`](https://github.com/seek-oss/vocab/commit/79a1c13a95c3f7b985c0ed551a79fcbc7072ff95)]:
+  - @vocab/core@1.6.1
+
 ## 1.1.9
 
 ### Patch Changes

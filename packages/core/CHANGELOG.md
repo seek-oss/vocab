@@ -1,5 +1,25 @@
 # @vocab/core
 
+## 1.6.1
+
+### Patch Changes
+
+- [#206](https://github.com/seek-oss/vocab/pull/206) [`79a1c13`](https://github.com/seek-oss/vocab/commit/79a1c13a95c3f7b985c0ed551a79fcbc7072ff95) Thanks [@askoufis](https://github.com/askoufis)! - Enable the `TranslationKeys` type to operate on a union of translations
+
+  **EXAMPLE USAGE**
+
+  ```tsx
+  import { TranslationKeys } from '@vocab/core';
+  import fooTranslations from './foo.vocab';
+  import barTranslations from './bar.vocab';
+
+  type FooBarTranslationKeys = TranslationKeys<
+    typeof fooTranslations | typeof barTranslations
+  >;
+  ```
+
+- [#206](https://github.com/seek-oss/vocab/pull/206) [`79a1c13`](https://github.com/seek-oss/vocab/commit/79a1c13a95c3f7b985c0ed551a79fcbc7072ff95) Thanks [@askoufis](https://github.com/askoufis)! - Add documentation to the `TranslationKeys` type
+
 ## 1.6.0
 
 ### Minor Changes
