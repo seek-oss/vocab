@@ -368,24 +368,6 @@ module.exports = {
 };
 ```
 
-## Accessing the Language Name and Locale
-
-Vocab provides a `useLanguage` hook to access the current language name and locale.
-The hook returns a `language` property containing the current language name (as configured in your vocab config), and `locale` property
-
-```tsx
-import { useLanguage } from '@vocab/react';
-
-const MyComponent = () => {
-  const { language, locale } = useLanguage();
-  return (
-    <div>
-      {language} - {locale}
-    </div>
-  );
-};
-```
-
 ## Translation Key Types
 
 If you need to access the keys of your translations as a TypeScript type, you can use the `TranslationKeys` type from `@vocab/core`:
