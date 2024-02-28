@@ -1,14 +1,23 @@
 import { VocabProvider, useTranslations } from '@vocab/react';
+import type { TranslationKeys } from '@vocab/core';
 import React, { type ReactNode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import commonTranslations from './.vocab';
 import clientTranslations from './client.vocab';
 
+type CommonTranslationKeys = TranslationKeys<typeof commonTranslations>;
+
+const useCommonTranslation = (key: CommonTranslationKeys) => {
+  const { t } = useTranslations(commonTranslations);
+
+  return t(key);
+};
+
 function Content() {
   const common = useTranslations(commonTranslations);
   const client = useTranslations(clientTranslations);
-  const message = `${common.t('hello')} ${common.t('world')}`;
+  const message = `${common.t('hello')} ${useCommonTranslation('world')}`;
   const specialCharacterResult = client.t(
     'specialCharacters - \'‘’“”"!@#$%^&*()_+\\/`~\\\\',
   );

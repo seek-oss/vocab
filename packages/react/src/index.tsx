@@ -16,18 +16,60 @@ import React, {
 
 type Locale = string;
 
-interface TranslationsValue {
+interface TranslationsContextValue {
+  /**
+   * The `language` passed in to your `VocabProvider`
+   */
   language: LanguageName;
+  /**
+   * The `locale` passed in to your `VocabProvider`
+   *
+   * Please note that this value will be `undefined` if you have not passed a `locale` to your `VocabProvider`.
+   * If your languages are named with IETF language tags, you should just use `language` instead of
+   * this value, unless you specifically need to access your `locale` override.
+   */
   locale?: Locale;
 }
 
-const TranslationsContext = React.createContext<TranslationsValue | undefined>(
-  undefined,
-);
+const TranslationsContext = React.createContext<
+  TranslationsContextValue | undefined
+>(undefined);
 
-interface VocabProviderProps extends TranslationsValue {
+// Not extending TranslationsContextValue so we can tailor the docs for each prop to be better
+// suited to the provider, rather than for the useLanguage hook
+interface VocabProviderProps {
+  /**
+   * The language to load translations for. Must be one of the language names defined in your `vocab.config.js`.
+   */
+  language: TranslationsContextValue['language'];
+  /**
+   * A locale override. By default, Vocab will use the `language` as the locale when formatting messages if
+   * `locale` is not set. If your languages are named with IETF language tags, you probably don't need to
+   * set this value.
+   *
+   * You may want to override the locale for a specific language if the default formatting for that locale
+   * is not desired.
+   *
+   * @example
+   * // Override the locale for th-TH to use the Gregorian calendar instead of the default Buddhist calendar
+   * <VocabProvider language="th-TH" locale="th-TH-u-ca-gregory">
+   *   </App>
+   * <VocabProvider />
+   */
+  locale?: TranslationsContextValue['locale'];
   children: ReactNode;
 }
+
+/**
+ * Provides a translation context for your application
+ *
+ * @example
+ * import { VocabProvider } from '@vocab/react';
+ *
+ * <VocabProvider language="en">
+ *   <App />
+ * <VocabProvider />
+ */
 export const VocabProvider = ({
   children,
   language,
@@ -42,7 +84,10 @@ export const VocabProvider = ({
   );
 };
 
-export const useLanguage = (): TranslationsValue => {
+/**
+ * @returns The `language` and `locale` values passed in to your `VocabProvider`
+ */
+export const useLanguage = (): TranslationsContextValue => {
   const context = useContext(TranslationsContext);
   if (!context) {
     throw new Error(

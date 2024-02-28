@@ -368,6 +368,32 @@ module.exports = {
 };
 ```
 
+## Translation Key Types
+
+If you need to access the keys of your translations as a TypeScript type, you can use the `TranslationKeys` type from `@vocab/core`:
+
+```jsonc
+// translations.json
+{
+  "Hello": {
+    "message": "Hello"
+  },
+  "Goodbye": {
+    "message": "Goodbye"
+  }
+}
+```
+
+```ts
+import type { TranslationKeys } from '@vocab/core';
+import translations from './.vocab';
+
+// "Hello" | "Goodbye"
+type MyTranslationKeys = TranslationKeys<
+  typeof translations
+>;
+```
+
 ## Generated languages
 
 Vocab supports the creation of generated languages via the `generatedLanguages` config.
