@@ -179,8 +179,8 @@ importers:
         specifier: ^5.7.1
         version: 5.7.6
       '@types/node':
-        specifier: ^18.11.9
-        version: 18.19.4
+        specifier: ^20.11.22
+        version: 20.11.22
       '@types/react':
         specifier: ^18.0.9
         version: 18.2.46
@@ -2994,12 +2994,6 @@ packages:
 
   /@types/node@12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
-    dev: false
-
-  /@types/node@18.19.4:
-    resolution: {integrity: sha512-xNzlUhzoHotIsnFoXmJB+yWmBvFZgKCI9TtPIEdYIMM1KWfwuY8zh7wvc1u1OAXlC7dlf6mZVx/s+Y5KfFz19A==}
-    dependencies:
-      undici-types: 5.26.5
     dev: false
 
   /@types/node@20.11.22:
