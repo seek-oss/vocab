@@ -7,7 +7,6 @@
   "main": "src/index.ts",
   "devDependencies": {
     "@types/wait-on": "^5.3.1",
-    "@types/webpack-dev-server": "^3.11.6",
     "@vocab-fixtures/direct": "*",
     "@vocab-fixtures/phrase": "*",
     "@vocab-fixtures/server": "*",
@@ -16,6 +15,6 @@
     "@vocab/core": "*",
     "wait-on": "^7.0.0",
     "webpack": "^5.37.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^5.0.2"
   }
 }
