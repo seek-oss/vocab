@@ -84,8 +84,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.2(puppeteer@21.11.0)(typescript@4.9.5)
       prettier:
-        specifier: ^2.1.2
-        version: 2.8.8
+        specifier: ^3.0.0
+        version: 3.2.5
       puppeteer:
         specifier: ^21.5.2
         version: 21.11.0(typescript@4.9.5)
@@ -299,8 +299,8 @@ importers:
         specifier: ^2.6.1
         version: 2.7.0
       prettier:
-        specifier: ^2.1.2
-        version: 2.8.8
+        specifier: ^3.0.0
+        version: 3.2.5
       yargs:
         specifier: ^16.1.0
         version: 16.2.0
@@ -342,8 +342,8 @@ importers:
         specifier: ^10.0.0
         version: 10.5.11
       prettier:
-        specifier: ^2.1.2
-        version: 2.8.8
+        specifier: ^3.0.0
+        version: 3.2.5
     devDependencies:
       '@types/debug':
         specifier: ^4.1.5
@@ -7961,6 +7961,12 @@ packages:
   /prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: false
+
+  /prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: false
 
