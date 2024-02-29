@@ -81,8 +81,8 @@ importers:
         specifier: ^29.4.3
         version: 29.7.0(@types/node@20.11.22)(ts-node@10.9.2)
       jest-puppeteer:
-        specifier: ^9.0.1
-        version: 9.0.2(puppeteer@21.11.0)(typescript@4.9.5)
+        specifier: ^10.0.0
+        version: 10.0.1(puppeteer@21.11.0)(typescript@4.9.5)
       prettier:
         specifier: ^2.1.2
         version: 2.8.8
@@ -5297,6 +5297,11 @@ packages:
       os-homedir: 1.0.2
     dev: false
 
+  /expect-puppeteer@10.0.0:
+    resolution: {integrity: sha512-E7sE6nVdEbrnpDOBMmcLgyqLJKt876AlBg1A+gsu5R8cWx+SLafreOgJAgzXg5Qko7Tk0cW5oZdRbHQLU738dg==}
+    engines: {node: '>=16'}
+    dev: false
+
   /expect-puppeteer@9.0.2:
     resolution: {integrity: sha512-nv3RD8MOStXOf4bLpr1wiqxPMLL7MwXvtMeZBtGvg5bubAHiHcYBcvDTJwkUjdOWz3scjOnOOl5z6KZakMobCw==}
     engines: {node: '>=16'}
@@ -6650,15 +6655,15 @@ packages:
       - supports-color
     dev: false
 
-  /jest-dev-server@9.0.2:
-    resolution: {integrity: sha512-Zc/JB0IlNNrpXkhBw+h86cGrde/Mey52KvF+FER2eyrtYJTHObOwW7Iarxm3rPyTKby5+3Y2QZtl8pRz/5GCxg==}
+  /jest-dev-server@10.0.0:
+    resolution: {integrity: sha512-FtyBBDxrAIfTX3hyKSOwj5KU6Z7fFLew5pQYOFpwyf+qpPpULL8aYxtsFkbkAwcs+Mb7qhcNbVLeiWsLOd7CKw==}
     engines: {node: '>=16'}
     dependencies:
       chalk: 4.1.2
       cwd: 0.10.0
       find-process: 1.4.7
       prompts: 2.4.2
-      spawnd: 9.0.2
+      spawnd: 10.0.0
       tree-kill: 1.2.2
       wait-on: 7.2.0
     transitivePeerDependencies:
@@ -6706,14 +6711,14 @@ packages:
       jest-util: 29.7.0
     dev: false
 
-  /jest-environment-puppeteer@9.0.2(typescript@4.9.5):
-    resolution: {integrity: sha512-t7+W4LUiPoOz+xpKREgnu6IElMuRthOWTkrThDZqVKPmLhwbK3yx7OCiX8xT1Pw/Cv5WnSoNhwtN7czdCC3fQg==}
+  /jest-environment-puppeteer@10.0.1(typescript@4.9.5):
+    resolution: {integrity: sha512-FxMzVRyqieQqSy5CPWiwdK5t9dkRHid5eoRTVa8RtYeXLlpW6lU0dAmxEfPkdnDVCiPUhC2APeKOXq0J72bgag==}
     engines: {node: '>=16'}
     dependencies:
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@4.9.5)
       deepmerge: 4.3.1
-      jest-dev-server: 9.0.2
+      jest-dev-server: 10.0.0
       jest-environment-node: 29.7.0
     transitivePeerDependencies:
       - debug
@@ -6799,14 +6804,14 @@ packages:
       jest-resolve: 29.7.0
     dev: false
 
-  /jest-puppeteer@9.0.2(puppeteer@21.11.0)(typescript@4.9.5):
-    resolution: {integrity: sha512-ZB0K/tH+0e7foRRn+VpKIufvkW1by8l7ifh62VOdOh5ijEf7yt8W2/PcBNNwP0RLm46AytiBkrIEenvWhxcBRQ==}
+  /jest-puppeteer@10.0.1(puppeteer@21.11.0)(typescript@4.9.5):
+    resolution: {integrity: sha512-FzC35XbqeuQEt1smXh1EOqhJaRkWqJkyWDMfGkcZ8C59QHXeJ7F/iOmiNqYi6l/OsycUuOPCk+IkjfGfS9YbrQ==}
     engines: {node: '>=16'}
     peerDependencies:
       puppeteer: '>=19'
     dependencies:
-      expect-puppeteer: 9.0.2
-      jest-environment-puppeteer: 9.0.2(typescript@4.9.5)
+      expect-puppeteer: 10.0.0
+      jest-environment-puppeteer: 10.0.1(typescript@4.9.5)
       puppeteer: 21.11.0(typescript@4.9.5)
     transitivePeerDependencies:
       - debug
@@ -8745,8 +8750,8 @@ packages:
     resolution: {integrity: sha512-zC8zGoGkmc8J9ndvml8Xksr1Amk9qBujgbF0JAIWO7kXr43w0h/0GJNM/Vustixu+YE8N/MTrQ7N31FvHUACxQ==}
     dev: false
 
-  /spawnd@9.0.2:
-    resolution: {integrity: sha512-nl8DVHEDQ57IcKakzpjanspVChkMpGLuVwMR/eOn9cXE55Qr6luD2Kn06sA0ootRMdgrU4tInN6lA6ohTNvysw==}
+  /spawnd@10.0.0:
+    resolution: {integrity: sha512-6GKcakMTryb5b1SWCvdubCDHEsR2k+5VZUD5G19umZRarkvj1RyCGyizcqhjewI7cqZo8fTVD8HpnDZbVOLMtg==}
     engines: {node: '>=16'}
     dependencies:
       signal-exit: 4.1.0
