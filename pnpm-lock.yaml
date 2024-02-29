@@ -42,8 +42,8 @@ importers:
         specifier: ^2.26.0
         version: 2.27.1
       '@formatjs/intl-locale':
-        specifier: ^2.4.47
-        version: 2.4.47
+        specifier: ^3.0.0
+        version: 3.4.5
       '@manypkg/cli':
         specifier: ^0.21.0
         version: 0.21.2
@@ -2054,13 +2054,6 @@ packages:
       globals: 13.24.0
     dev: false
 
-  /@formatjs/ecma402-abstract@1.11.4:
-    resolution: {integrity: sha512-EBikYFp2JCdIfGEb5G9dyCkTGDmC57KSHhRQOC3aYxoPWVZvfWCDjZwkGYHN7Lis/fmuWl906bnNTJifDQ3sXw==}
-    dependencies:
-      '@formatjs/intl-localematcher': 0.2.25
-      tslib: 2.6.2
-    dev: false
-
   /@formatjs/ecma402-abstract@1.18.2:
     resolution: {integrity: sha512-+QoPW4csYALsQIl8GbN14igZzDbuwzcpWrku9nyMXlaqAlwRBgl5V+p0vWMGFqHOw37czNXaP/lEk4wbLgcmtA==}
     dependencies:
@@ -2089,23 +2082,24 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@formatjs/intl-getcanonicallocales@1.9.2:
-    resolution: {integrity: sha512-69WTStIJI2ikErOU1Il4NQKLVV8f2x6awr7+/dZz0uihuI7uQRcZtI6k/BBt4EtYaEl6w65YjUF93VuE015C0w==}
+  /@formatjs/intl-enumerator@1.4.5:
+    resolution: {integrity: sha512-IbEJHzJO0buoq//RqbLRDettIkZ/WYGOL+8dy5oxzefqlpTsmJFUo5t1sK0/1EoC+eOFiyhdgh5ihCH3Cehc0w==}
     dependencies:
       tslib: 2.6.2
     dev: false
 
-  /@formatjs/intl-locale@2.4.47:
-    resolution: {integrity: sha512-yEpjx6RgVVG3pPsxb/jydhnq/A02KmjMste5U/wWxscRK0sny8LPIoBwgkOQycRoMRLNlLemJaQB7VbHZJ9OVg==}
+  /@formatjs/intl-getcanonicallocales@2.3.0:
+    resolution: {integrity: sha512-BOXbLwqQ7nKua/l7tKqDLRN84WupDXFDhGJQMFvsMVA2dKuOdRaWTxWpL3cJ7qPkoNw11Jf+Xpj4OSPBBvW0eQ==}
     dependencies:
-      '@formatjs/ecma402-abstract': 1.11.4
-      '@formatjs/intl-getcanonicallocales': 1.9.2
       tslib: 2.6.2
     dev: false
 
-  /@formatjs/intl-localematcher@0.2.25:
-    resolution: {integrity: sha512-YmLcX70BxoSopLFdLr1Ds99NdlTI2oWoLbaUW2M406lxOIPzE1KQhRz2fPUkq34xVZQaihCoU29h0KK7An3bhA==}
+  /@formatjs/intl-locale@3.4.5:
+    resolution: {integrity: sha512-obUNTK0Py9sDSTlCXfNQotC7Oy5xd3iBx6dVtzd9YXProkP0NxcRrhlPmfHO9AuYNXdHuarHlozoBxZjOtM4mQ==}
     dependencies:
+      '@formatjs/ecma402-abstract': 1.18.2
+      '@formatjs/intl-enumerator': 1.4.5
+      '@formatjs/intl-getcanonicallocales': 2.3.0
       tslib: 2.6.2
     dev: false
 
