@@ -40,13 +40,13 @@
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",
-    "chalk": "^4.1.0",
     "chokidar": "^3.4.3",
     "debug": "^4.3.1",
     "fast-glob": "^3.2.4",
     "fastest-validator": "^1.9.0",
     "find-up": "^5.0.0",
     "intl-messageformat": "^10.0.0",
+    "picocolors": "^1.0.0",
     "prettier": "^2.1.2"
   },
   "devDependencies": {

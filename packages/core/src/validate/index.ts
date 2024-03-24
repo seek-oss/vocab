@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import type { UserConfig, LoadedTranslation, LanguageName } from '../types';
-import chalk from 'chalk';
+import pc from 'picocolors';
 
 import { loadAllTranslations } from '../load-translations';
 import { getAltLanguages } from '../utils';
@@ -60,16 +60,18 @@ export async function validate(config: UserConfig) {
     if (!translationValid) {
       valid = false;
       console.log(
-        chalk.red`Incomplete translations: "${chalk.bold(
-          loadedTranslation.relativePath,
-        )}"`,
+        pc.red(
+          `Incomplete translations: "${pc.bold(
+            loadedTranslation.relativePath,
+          )}"`,
+        ),
       );
 
       for (const lang of Object.keys(result)) {
         const missingKeys = result[lang];
 
         console.log(
-          chalk.yellow(lang),
+          pc.yellow(lang),
           '->',
           missingKeys.map((v) => `"${v}"`).join(', '),
         );
