@@ -1,11 +1,13 @@
 import type { UserConfig } from './types';
 import path from 'path';
 
-import chalk from 'chalk';
+import pc from 'picocolors';
 import findUp from 'find-up';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
 import { trace } from './logger';
+
+const boldCyan = (s: string) => pc.bold(pc.cyan(s));
 
 const validator = new Validator();
 const schema = {
@@ -69,11 +71,11 @@ export function validateConfig(c: UserConfig) {
           if (v.type === 'objectStrict') {
             return `Invalid key(s) ${splitMap(
               v.actual,
-              (m) => `"${chalk.cyan(m)}"`,
-            )}. Expected one of ${splitMap(v.expected, chalk.green)}`;
+              (m) => `"${pc.cyan(m)}"`,
+            )}. Expected one of ${splitMap(v.expected, pc.green)}`;
           }
           if (v.field) {
-            return v.message?.replace(v.field, chalk.cyan(v.field));
+            return v.message?.replace(v.field, pc.cyan(v.field));
           }
           return v.message;
         })
@@ -87,7 +89,7 @@ export function validateConfig(c: UserConfig) {
   if (!languageStrings.includes(c.devLanguage)) {
     throw new ValidationError(
       'InvalidDevLanguage',
-      `The dev language "${chalk.bold.cyan(
+      `The dev language "${boldCyan(
         c.devLanguage,
       )}" was not found in languages ${languageStrings.join(', ')}.`,
     );
@@ -99,9 +101,7 @@ export function validateConfig(c: UserConfig) {
     if (foundLanguages.includes(lang.name)) {
       throw new ValidationError(
         'DuplicateLanguage',
-        `The language "${chalk.bold.cyan(
-          lang.name,
-        )}" was defined multiple times.`,
+        `The language "${boldCyan(lang.name)}" was defined multiple times.`,
       );
     }
     foundLanguages.push(lang.name);
@@ -110,9 +110,7 @@ export function validateConfig(c: UserConfig) {
     if (lang.extends && !languageStrings.includes(lang.extends)) {
       throw new ValidationError(
         'InvalidExtends',
-        `The language "${chalk.bold.cyan(
-          lang.name,
-        )}"'s extends of ${chalk.bold.cyan(
+        `The language "${boldCyan(lang.name)}"'s extends of ${boldCyan(
           lang.extends,
         )} was not found in languages ${languageStrings.join(', ')}.`,
       );
@@ -125,7 +123,7 @@ export function validateConfig(c: UserConfig) {
     if (foundGeneratedLanguages.includes(generatedLang.name)) {
       throw new ValidationError(
         'DuplicateGeneratedLanguage',
-        `The generated language "${chalk.bold.cyan(
+        `The generated language "${boldCyan(
           generatedLang.name,
         )}" was defined multiple times.`,
       );
@@ -136,7 +134,7 @@ export function validateConfig(c: UserConfig) {
     if (languageStrings.includes(generatedLang.name)) {
       throw new ValidationError(
         'InvalidGeneratedLanguage',
-        `The generated language "${chalk.bold.cyan(
+        `The generated language "${boldCyan(
           generatedLang.name,
         )}" is already defined as a language.`,
       );
@@ -149,9 +147,9 @@ export function validateConfig(c: UserConfig) {
     ) {
       throw new ValidationError(
         'InvalidExtends',
-        `The generated language "${chalk.bold.cyan(
+        `The generated language "${boldCyan(
           generatedLang.name,
-        )}"'s extends of ${chalk.bold.cyan(
+        )}"'s extends of ${boldCyan(
           generatedLang.extends,
         )} was not found in languages ${languageStrings.join(', ')}.`,
       );

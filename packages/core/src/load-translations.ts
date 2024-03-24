@@ -10,7 +10,7 @@ import type {
   TranslationFileMetadata,
   TranslationFileContents,
 } from './types';
-import chalk from 'chalk';
+import pc from 'picocolors';
 
 import { trace } from './logger';
 import {
@@ -135,7 +135,7 @@ function getNamespaceByFilePath(
 
 function printValidationError(...params: unknown[]) {
   // eslint-disable-next-line no-console
-  console.error(chalk.red('Error loading translation:'), ...params);
+  console.error(pc.red('Error loading translation:'), ...params);
 }
 
 function getTranslationsFromFile(

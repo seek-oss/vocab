@@ -7,11 +7,11 @@
   "license": "MIT",
   "dependencies": {
     "@vocab/core": "^1.6.1",
-    "chalk": "^5.0.0",
     "csv-stringify": "^6.2.3",
     "debug": "^4.3.1",
     "form-data": "^3.0.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "picocolors": "^1.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
