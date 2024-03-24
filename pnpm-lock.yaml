@@ -41,9 +41,6 @@ importers:
       '@changesets/cli':
         specifier: ^2.26.0
         version: 2.27.1
-      '@formatjs/intl-locale':
-        specifier: ^3.0.0
-        version: 3.4.5
       '@manypkg/cli':
         specifier: ^0.21.0
         version: 0.21.2
@@ -2079,27 +2076,6 @@ packages:
     resolution: {integrity: sha512-QWLAYvM0n8hv7Nq5BEs4LKIjevpVpbGLAJgOaYzg9wABEoX1j0JO1q2/jVkO6CVlq0dbsxZCngS5aXbysYueqA==}
     dependencies:
       '@formatjs/ecma402-abstract': 1.18.2
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/intl-enumerator@1.4.5:
-    resolution: {integrity: sha512-IbEJHzJO0buoq//RqbLRDettIkZ/WYGOL+8dy5oxzefqlpTsmJFUo5t1sK0/1EoC+eOFiyhdgh5ihCH3Cehc0w==}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/intl-getcanonicallocales@2.3.0:
-    resolution: {integrity: sha512-BOXbLwqQ7nKua/l7tKqDLRN84WupDXFDhGJQMFvsMVA2dKuOdRaWTxWpL3cJ7qPkoNw11Jf+Xpj4OSPBBvW0eQ==}
-    dependencies:
-      tslib: 2.6.2
-    dev: false
-
-  /@formatjs/intl-locale@3.4.5:
-    resolution: {integrity: sha512-obUNTK0Py9sDSTlCXfNQotC7Oy5xd3iBx6dVtzd9YXProkP0NxcRrhlPmfHO9AuYNXdHuarHlozoBxZjOtM4mQ==}
-    dependencies:
-      '@formatjs/ecma402-abstract': 1.18.2
-      '@formatjs/intl-enumerator': 1.4.5
-      '@formatjs/intl-getcanonicallocales': 2.3.0
       tslib: 2.6.2
     dev: false
 
