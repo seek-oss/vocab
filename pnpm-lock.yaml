@@ -318,8 +318,8 @@ importers:
         specifier: ^2.0.10
         version: 2.7.6
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       chokidar:
         specifier: ^3.4.3
         version: 3.6.0
@@ -355,8 +355,8 @@ importers:
         specifier: link:../core
         version: link:../core
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       csv-stringify:
         specifier: ^6.2.3
         version: 6.4.6
@@ -417,8 +417,8 @@ importers:
         specifier: link:../core
         version: link:../core
       chalk:
-        specifier: ^4.1.0
-        version: 4.1.2
+        specifier: ^5.0.0
+        version: 5.3.0
       cjs-module-lexer:
         specifier: ^1.2.2
         version: 1.2.3
@@ -4053,6 +4053,11 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: false
+
+  /chalk@5.3.0:
+    resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
     dev: false
 
   /char-regex@1.0.2:
