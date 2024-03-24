@@ -48,7 +48,6 @@
     "@babel/preset-typescript": "^7.21.0",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.26.0",
-    "@formatjs/intl-locale": "^2.4.47",
     "@manypkg/cli": "^0.21.0",
     "@preconstruct/cli": "^2.3.0",
     "@types/jest": "^29.4.0",
