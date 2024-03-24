@@ -1,5 +1,12 @@
 # @vocab/react
 
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies [[`1c1702d`](https://github.com/seek-oss/vocab/commit/1c1702d1b62804a91b53b12a8ac1d7a77dc74743)]:
+  - @vocab/core@1.6.2
+
 ## 1.1.10
 
 ### Patch Changes

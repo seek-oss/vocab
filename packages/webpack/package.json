@@ -1,6 +1,6 @@
 {
   "name": "@vocab/webpack",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "exports": {
@@ -39,7 +39,7 @@
     "web"
   ],
   "dependencies": {
-    "@vocab/core": "^1.6.1",
+    "@vocab/core": "^1.6.2",
     "cjs-module-lexer": "^1.2.2",
     "debug": "^4.3.1",
     "es-module-lexer": "^0.10.0",

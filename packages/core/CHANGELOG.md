@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.6.2
+
+### Patch Changes
+
+- [#211](https://github.com/seek-oss/vocab/pull/211) [`1c1702d`](https://github.com/seek-oss/vocab/commit/1c1702d1b62804a91b53b12a8ac1d7a77dc74743) Thanks [@renovate](https://github.com/apps/renovate)! - Replace `chalk` with `picocolors`
+
 ## 1.6.1
 
 ### Patch Changes
