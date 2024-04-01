@@ -1,6 +1,11 @@
 {
   "name": "@vocab/phrase",
   "version": "1.3.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/vocab.git",
+    "directory": "packages/phrase"
+  },
   "main": "dist/vocab-phrase.cjs.js",
   "module": "dist/vocab-phrase.esm.js",
   "author": "SEEK",
