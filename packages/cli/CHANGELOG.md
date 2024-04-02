@@ -1,5 +1,11 @@
 # @vocab/cli
 
+## 1.4.4
+
+### Patch Changes
+
+- [#216](https://github.com/seek-oss/vocab/pull/216) [`44b2516`](https://github.com/seek-oss/vocab/commit/44b2516249bf7bbe5f9fb4aa915331bdc93335b5) Thanks [@renovate](https://github.com/apps/renovate)! - Update `env-ci` dependency
+
 ## 1.4.3
 
 ### Patch Changes
