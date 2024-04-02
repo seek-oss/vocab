@@ -1,6 +1,11 @@
 {
   "name": "@vocab/cli",
   "version": "1.4.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/vocab.git",
+    "directory": "packages/cli"
+  },
   "main": "dist/vocab-cli.cjs.js",
   "module": "dist/vocab-cli.esm.js",
   "bin": {

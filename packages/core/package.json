@@ -1,6 +1,11 @@
 {
   "name": "@vocab/core",
   "version": "1.6.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/vocab.git",
+    "directory": "packages/core"
+  },
   "main": "dist/vocab-core.cjs.js",
   "module": "dist/vocab-core.esm.js",
   "exports": {

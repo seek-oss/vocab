@@ -1,6 +1,11 @@
 {
   "name": "@vocab/webpack",
   "version": "1.2.8",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/vocab.git",
+    "directory": "packages/webpack"
+  },
   "main": "dist/vocab-webpack.cjs.js",
   "module": "dist/vocab-webpack.esm.js",
   "exports": {
