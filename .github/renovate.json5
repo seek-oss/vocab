@@ -1,3 +1,11 @@
 {
   extends: ['github>seek-oss/rynovate'],
+  packageRules: [
+    {
+      groupName: 'ESM-only packages',
+      matchUpdateTypes: 'major',
+      matchPackageNames: ['env-ci'],
+      enabled: false,
+    },
+  ],
 }
