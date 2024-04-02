@@ -1,5 +1,11 @@
 # @vocab/webpack
 
+## 1.2.9
+
+### Patch Changes
+
+- [#217](https://github.com/seek-oss/vocab/pull/217) [`4cd019c`](https://github.com/seek-oss/vocab/commit/4cd019c714470a0a6d13a4eb86c6c4b11097d2f0) Thanks [@renovate](https://github.com/apps/renovate)! - Update `es-module-lexer` dependency
+
 ## 1.2.8
 
 ### Patch Changes
