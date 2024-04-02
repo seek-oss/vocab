@@ -1,6 +1,11 @@
 {
   "name": "@vocab/pseudo-localize",
   "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/vocab.git",
+    "directory": "packages/pseudo-localize"
+  },
   "main": "dist/vocab-pseudo-localize.cjs.js",
   "module": "dist/vocab-pseudo-localize.esm.js",
   "author": "SEEK",

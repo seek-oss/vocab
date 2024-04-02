@@ -73,6 +73,11 @@ function renderLanguageLoaderAsync(
   };
 }
 
+function findExportNames(source: string, mode: 'cjs'): string[];
+function findExportNames(
+  source: string,
+  mode: 'esm',
+): esModuleLexer.ExportSpecifier[];
 function findExportNames(source: string, mode: 'cjs' | 'esm') {
   if (mode === 'esm') {
     const [, exports] = esModuleLexer.parse(source);
@@ -126,12 +131,12 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
   const esmExports = findExportNames(source, 'esm');
   if (esmExports.length > 0) {
     const exportName = esmExports[0];
-    trace(`Found ESM export '${exportName}' in ${this.resourcePath}`);
+    trace(`Found ESM export '${exportName.n}' in ${this.resourcePath}`);
 
     result = /* ts */ `
       import { createLanguage, createTranslationFile } from '@vocab/webpack/${target}';
       ${translations}
-      export { translations as ${exportName} };
+      export { translations as ${exportName.n} };
     `;
   } else {
     // init needs to be called and waited upon
