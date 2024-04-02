@@ -39,7 +39,7 @@ This is the language Vocab will assume when it sees a `translation.json` file wi
 ```js
 // vocab.config.js
 module.exports = {
-  languages: [{ name: 'en' }, { name: 'fr' }]
+  languages: [{ name: 'en' }, { name: 'fr' }],
   devLanguage: 'en',
 };
 ```
