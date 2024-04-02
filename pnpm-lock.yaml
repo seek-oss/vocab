@@ -423,8 +423,8 @@ importers:
         specifier: ^4.3.1
         version: 4.3.4
       es-module-lexer:
-        specifier: ^0.10.0
-        version: 0.10.5
+        specifier: ^1.0.0
+        version: 1.5.0
       picocolors:
         specifier: ^1.0.0
         version: 1.0.0
@@ -4877,10 +4877,6 @@ packages:
       internal-slot: 1.0.7
       iterator.prototype: 1.1.2
       safe-array-concat: 1.1.2
-    dev: false
-
-  /es-module-lexer@0.10.5:
-    resolution: {integrity: sha512-+7IwY/kiGAacQfY+YBhKMvEmyAJnw5grTUgjG85Pe7vcUI/6b7pZjZG8nQ7+48YhzEAEqrEgD2dCz/JIK+AYvw==}
     dev: false
 
   /es-module-lexer@1.5.0:
