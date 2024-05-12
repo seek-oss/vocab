@@ -290,8 +290,8 @@ importers:
         specifier: ^3.2.4
         version: 3.3.2
       form-data:
-        specifier: ^3.0.0
-        version: 3.0.1
+        specifier: ^4.0.0
+        version: 4.0.0
       node-fetch:
         specifier: ^2.6.1
         version: 2.7.0
@@ -361,8 +361,8 @@ importers:
         specifier: ^4.3.1
         version: 4.3.4
       form-data:
-        specifier: ^3.0.0
-        version: 3.0.1
+        specifier: ^4.0.0
+        version: 4.0.0
       node-fetch:
         specifier: ^2.6.1
         version: 2.7.0
@@ -5588,15 +5588,6 @@ packages:
   /form-data-encoder@2.1.4:
     resolution: {integrity: sha512-yDYSgNMraqvnxiEXO4hi88+YZxaHC6QKzb5N84iRCTDeRO7ZALpir/lVmf/uXUhnwUr2O4HU8s/n6x+yNjQkHw==}
     engines: {node: '>= 14.17'}
-    dev: false
-
-  /form-data@3.0.1:
-    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
-    engines: {node: '>= 6'}
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
     dev: false
 
   /form-data@4.0.0:
