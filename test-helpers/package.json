@@ -7,12 +7,12 @@
   "main": "src/index.ts",
   "devDependencies": {
     "@types/wait-on": "^5.3.1",
-    "@vocab-fixtures/direct": "*",
-    "@vocab-fixtures/phrase": "*",
-    "@vocab-fixtures/server": "*",
-    "@vocab-fixtures/simple": "*",
-    "@vocab-fixtures/translation-types": "*",
-    "@vocab/core": "*",
+    "@vocab-fixtures/direct": "workspace:*",
+    "@vocab-fixtures/phrase": "workspace:*",
+    "@vocab-fixtures/server": "workspace:*",
+    "@vocab-fixtures/simple": "workspace:*",
+    "@vocab-fixtures/translation-types": "workspace:*",
+    "@vocab/core": "workspace:*",
     "wait-on": "^7.0.0",
     "webpack": "^5.37.0",
     "webpack-dev-server": "^5.0.2"

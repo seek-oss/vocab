@@ -17,7 +17,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vocab/core": "^1.6.2",
+    "@vocab/core": "workspace:^",
     "intl-messageformat": "^10.0.0"
   },
   "devDependencies": {
