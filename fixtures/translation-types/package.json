@@ -7,7 +7,7 @@
     "compile": "vocab compile"
   },
   "dependencies": {
-    "@vocab/cli": "*",
-    "@vocab/core": "*"
+    "@vocab/cli": "workspace:*",
+    "@vocab/core": "workspace:*"
   }
 }

@@ -1,5 +1,6 @@
 {
   "name": "@vocab-private/monorepo",
+  "version": "0.0.1",
   "description": "Vocab is an internationalisation framework for React",
   "bugs": {
     "url": "https://github.com/seek-oss/vocab/issues"
@@ -18,11 +19,11 @@
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",
-    "format": "concurrently --prefix-colors auto --group 'pnpm:format:*'",
+    "format": "pnpm run --stream '/^format:.*/'",
     "format:eslint": "eslint --fix --cache .",
     "format:manypkg": "manypkg fix",
     "format:prettier": "prettier --cache --write .",
-    "lint": "concurrently --prefix-colors auto --group 'pnpm:lint:*'",
+    "lint": "pnpm run --stream '/^lint:.*/'",
     "lint:eslint": "eslint --cache .",
     "lint:manypkg": "manypkg check",
     "lint:prettier": "prettier --cache --check .",
@@ -30,17 +31,11 @@
     "release": "pnpm build && pnpm copy-readme-to-packages && changeset publish",
     "version": "changeset version && pnpm install --lockfile-only",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "copy-readme-to-packages": "ts-node scripts/copy-readme-to-packages",
-    "start-fixture": "ts-node test-helpers/src/start-fixture",
-    "run-server-fixture": "ts-node test-helpers/src/run-server-fixture",
+    "copy-readme-to-packages": "tsx scripts/copy-readme-to-packages",
+    "start-fixture": "tsx test-helpers/src/start-fixture",
+    "run-server-fixture": "tsx test-helpers/src/run-server-fixture",
     "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile"
   },
-  "preconstruct": {
-    "packages": [
-      "packages/*"
-    ]
-  },
-  "version": "0.0.1",
   "dependencies": {
     "@babel/core": "^7.12.0",
     "@babel/preset-env": "^7.20.2",
@@ -48,44 +43,33 @@
     "@babel/preset-typescript": "^7.21.0",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.26.0",
-    "@manypkg/cli": "^0.21.0",
+    "@manypkg/cli": "^0.21.4",
     "@preconstruct/cli": "^2.3.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^20.11.22",
     "@types/wait-on": "^5.3.1",
-    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-seek": "^13.0.0",
     "expect-puppeteer": "^10.0.0",
     "fast-glob": "^3.2.4",
     "jest": "^29.4.3",
-    "jest-puppeteer": "^9.0.1",
+    "jest-puppeteer": "^10.0.1",
     "prettier": "^2.1.2",
-    "puppeteer": "^21.5.2",
-    "ts-node": "^10.9.1",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.9.5",
+    "puppeteer": "^22.9.0",
+    "tsx": "^4.10.5",
+    "typescript": "^5.4.5",
     "webpack": "^5.37.0"
   },
-  "packageManager": "pnpm@9.1.1",
-  "pnpm": {
-    "overrides": {
-      "@vocab-fixtures/direct": "link:./fixtures/direct",
-      "@vocab-fixtures/phrase": "link:./fixtures/phrase",
-      "@vocab-fixtures/server": "link:./fixtures/server",
-      "@vocab-fixtures/simple": "link:./fixtures/simple",
-      "@vocab-fixtures/translation-types": "link:./fixtures/translation-types",
-      "@vocab/cli": "link:./packages/cli",
-      "@vocab/core": "link:./packages/core",
-      "@vocab/phrase": "link:./packages/phrase",
-      "@vocab/pseudo-localize": "link:./packages/pseudo-localize",
-      "@vocab/react": "link:./packages/react",
-      "@vocab/types": "link:./packages/types",
-      "@vocab/virtual-resource-loader": "link:./packages/virtual-resource-loader",
-      "@vocab/webpack": "link:./packages/webpack"
-    }
+  "preconstruct": {
+    "packages": [
+      "packages/*"
+    ]
   },
+  "manypkg": {
+    "workspaceProtocol": "require"
+  },
+  "packageManager": "pnpm@9.1.1",
   "volta": {
     "node": "20.13.1",
     "pnpm": "9.1.1"

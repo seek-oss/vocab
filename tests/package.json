@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@vocab-fixtures/translation-types": "*",
-    "@vocab-private/test-helpers": "*"
+    "@vocab-fixtures/translation-types": "workspace:*",
+    "@vocab-private/test-helpers": "workspace:*"
   }
 }

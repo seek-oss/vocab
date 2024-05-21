@@ -44,12 +44,12 @@
     "web"
   ],
   "dependencies": {
-    "@vocab/core": "^1.6.2",
+    "@vocab/core": "workspace:^",
     "cjs-module-lexer": "^1.2.2",
     "debug": "^4.3.1",
     "es-module-lexer": "^1.0.0",
     "picocolors": "^1.0.0",
-    "virtual-resource-loader": "^1.0.1"
+    "virtual-resource-loader": "workspace:^"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",

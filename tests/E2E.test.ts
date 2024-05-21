@@ -48,6 +48,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
+      await jestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -128,6 +129,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
+      await jestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -166,6 +168,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
+      await jestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
