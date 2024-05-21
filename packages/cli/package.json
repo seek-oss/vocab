@@ -15,22 +15,21 @@
     "dist",
     "bin.js"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {
-    "@types/env-ci": "^3.1.0",
     "@vocab/core": "workspace:^",
     "@vocab/phrase": "workspace:^",
     "env-ci": "^7.3.0",
     "fast-glob": "^3.2.4",
     "form-data": "^4.0.0",
-    "node-fetch": "^2.6.1",
-    "prettier": "^2.1.2",
-    "yargs": "^16.1.0"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.7",
-    "@types/prettier": "^2.1.5",
-    "@types/yargs": "^15.0.9"
+    "@types/env-ci": "^3.1.0",
+    "@types/yargs": "^17.0.32"
   }
 }

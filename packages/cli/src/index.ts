@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { pull, push } from '@vocab/phrase';
 import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
-import yargs from 'yargs';
+import yargsCli from 'yargs';
 
 import envCi from 'env-ci';
 
@@ -16,7 +16,7 @@ const branchDefinition = {
 let config: UserConfig | null = null;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-yargs(process.argv.slice(2))
+yargsCli(process.argv.slice(2))
   .scriptName('vocab')
   .option('config', {
     type: 'string',
@@ -28,7 +28,7 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'push',
-    builder: () =>
+    builder: (yargs) =>
       yargs.options({
         branch: branchDefinition,
         'delete-unused-keys': {
@@ -43,7 +43,7 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'pull',
-    builder: () =>
+    builder: (yargs) =>
       yargs.options({
         branch: branchDefinition,
         'error-on-no-global-key-translation': {
@@ -59,7 +59,7 @@ yargs(process.argv.slice(2))
   })
   .command({
     command: 'compile',
-    builder: () =>
+    builder: (yargs) =>
       yargs.options({
         watch: { type: 'boolean', default: false },
       }),

@@ -253,9 +253,6 @@ importers:
 
   packages/cli:
     dependencies:
-      '@types/env-ci':
-        specifier: ^3.1.0
-        version: 3.1.4
       '@vocab/core':
         specifier: workspace:^
         version: link:../core
@@ -271,25 +268,16 @@ importers:
       form-data:
         specifier: ^4.0.0
         version: 4.0.0
-      node-fetch:
-        specifier: ^2.6.1
-        version: 2.7.0
-      prettier:
-        specifier: ^2.1.2
-        version: 2.8.8
       yargs:
-        specifier: ^16.1.0
-        version: 16.2.0
+        specifier: ^17.7.2
+        version: 17.7.2
     devDependencies:
-      '@types/node-fetch':
-        specifier: ^2.5.7
-        version: 2.6.11
-      '@types/prettier':
-        specifier: ^2.1.5
-        version: 2.7.3
+      '@types/env-ci':
+        specifier: ^3.1.0
+        version: 3.1.4
       '@types/yargs':
-        specifier: ^15.0.9
-        version: 15.0.19
+        specifier: ^17.0.32
+        version: 17.0.32
 
   packages/core:
     dependencies:
@@ -342,9 +330,6 @@ importers:
       form-data:
         specifier: ^4.0.0
         version: 4.0.0
-      node-fetch:
-        specifier: ^2.6.1
-        version: 2.7.0
       picocolors:
         specifier: ^1.0.0
         version: 1.0.0
@@ -352,9 +337,9 @@ importers:
       '@types/debug':
         specifier: ^4.1.5
         version: 4.1.12
-      '@types/node-fetch':
-        specifier: ^2.5.7
-        version: 2.6.11
+      '@types/node':
+        specifier: ^20.11.22
+        version: 20.12.6
 
   packages/pseudo-localize: {}
 
@@ -1748,9 +1733,6 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node-fetch@2.6.11':
-    resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
-
   '@types/node-forge@1.3.11':
     resolution: {integrity: sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==}
 
@@ -1834,9 +1816,6 @@ packages:
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
-
-  '@types/yargs@15.0.19':
-    resolution: {integrity: sha512-2XUaGVmyQjgyAZldf0D0c14vvo/yv0MhQBSTJcejMMaitsn3nxCB6TmH4G0ZQf+uxROOa9mpanoSm8h6SG/1ZA==}
 
   '@types/yargs@17.0.32':
     resolution: {integrity: sha512-xQ67Yc/laOG5uMfX/093MRlGGCIBzZMarVa+gfNKJxWAIgykYpVGkBdbqEzGDDfCrVUj6Hiff4mTZ5BA6TmAog==}
@@ -2370,9 +2349,6 @@ packages:
 
   cliui@6.0.0:
     resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
-
-  cliui@7.0.4:
-    resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
 
   cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
@@ -5410,10 +5386,6 @@ packages:
     resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
     engines: {node: '>=6'}
 
-  yargs-parser@20.2.9:
-    resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
-    engines: {node: '>=10'}
-
   yargs-parser@21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
@@ -5421,10 +5393,6 @@ packages:
   yargs@15.4.1:
     resolution: {integrity: sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==}
     engines: {node: '>=8'}
-
-  yargs@16.2.0:
-    resolution: {integrity: sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==}
-    engines: {node: '>=10'}
 
   yargs@17.7.2:
     resolution: {integrity: sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==}
@@ -7143,11 +7111,6 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node-fetch@2.6.11':
-    dependencies:
-      '@types/node': 20.12.6
-      form-data: 4.0.0
-
   '@types/node-forge@1.3.11':
     dependencies:
       '@types/node': 20.12.6
@@ -7244,10 +7207,6 @@ snapshots:
       '@types/node': 20.12.6
 
   '@types/yargs-parser@21.0.3': {}
-
-  '@types/yargs@15.0.19':
-    dependencies:
-      '@types/yargs-parser': 21.0.3
 
   '@types/yargs@17.0.32':
     dependencies:
@@ -7939,12 +7898,6 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 6.2.0
-
-  cliui@7.0.4:
-    dependencies:
-      string-width: 4.2.3
-      strip-ansi: 6.0.1
-      wrap-ansi: 7.0.0
 
   cliui@8.0.1:
     dependencies:
@@ -11528,8 +11481,6 @@ snapshots:
       camelcase: 5.3.1
       decamelize: 1.2.0
 
-  yargs-parser@20.2.9: {}
-
   yargs-parser@21.1.1: {}
 
   yargs@15.4.1:
@@ -11545,16 +11496,6 @@ snapshots:
       which-module: 2.0.1
       y18n: 4.0.3
       yargs-parser: 18.1.3
-
-  yargs@16.2.0:
-    dependencies:
-      cliui: 7.0.4
-      escalade: 3.1.2
-      get-caller-file: 2.0.5
-      require-directory: 2.1.1
-      string-width: 4.2.3
-      y18n: 5.0.8
-      yargs-parser: 20.2.9
 
   yargs@17.7.2:
     dependencies:
