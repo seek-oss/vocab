@@ -120,7 +120,7 @@ export const getAppSnapshot = async (
   const page = await browser.newPage();
 
   page.on('console', (msg) => {
-    if (msg.type() === 'warning') {
+    if (msg.type() === 'warn') {
       warnings.filter(warningFilter).push(msg.text());
     }
 
