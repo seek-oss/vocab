@@ -46,7 +46,7 @@
     "@manypkg/cli": "^0.21.4",
     "@preconstruct/cli": "^2.3.0",
     "@types/jest": "^29.4.0",
-    "@types/node": "^20.11.22",
+    "@types/node": "^18.11.9",
     "@types/wait-on": "^5.3.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
@@ -71,7 +71,7 @@
   },
   "packageManager": "pnpm@9.1.1",
   "volta": {
-    "node": "20.13.1",
+    "node": "18.20.3",
     "pnpm": "9.1.1"
   }
 }
