@@ -1,5 +1,15 @@
 # @vocab/phrase
 
+## 2.0.0
+
+### Major Changes
+
+- [#236](https://github.com/seek-oss/vocab/pull/236) [`3f5ffe1`](https://github.com/seek-oss/vocab/commit/3f5ffe1a73fdcdf7f47ceb7423ab241fc46a91c7) Thanks [@askoufis](https://github.com/askoufis)! - Drop support for Node.js <18
+
+### Patch Changes
+
+- [#236](https://github.com/seek-oss/vocab/pull/236) [`3f5ffe1`](https://github.com/seek-oss/vocab/commit/3f5ffe1a73fdcdf7f47ceb7423ab241fc46a91c7) Thanks [@askoufis](https://github.com/askoufis)! - Update dependencies
+
 ## 1.3.3
 
 ### Patch Changes
