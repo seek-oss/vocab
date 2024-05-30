@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import FormData from 'form-data';
 import type { TranslationsByLanguage } from '@vocab/core';
-import fetch from 'node-fetch';
 import { log, trace } from './logger';
 import { translationsToCsv } from './csv';
 
@@ -161,7 +160,7 @@ export async function pushTranslations(
       | undefined
     >(`uploads`, {
       method: 'POST',
-      body: formData,
+      body: formData.toString(),
     });
 
     trace('Upload result:\n', result);
