@@ -1,5 +1,14 @@
 # @vocab/cli
 
+## 2.0.1
+
+### Patch Changes
+
+- [#254](https://github.com/seek-oss/vocab/pull/254) [`17cc753`](https://github.com/seek-oss/vocab/commit/17cc7536d148030607cd047314388571a08c9810) Thanks [@jahredhope](https://github.com/jahredhope)! - Remove unused dependency on `form-data` npm package
+
+- Updated dependencies [[`f0b80de`](https://github.com/seek-oss/vocab/commit/f0b80de146d1a4c565bda0302ef53b0e07657559), [`17cc753`](https://github.com/seek-oss/vocab/commit/17cc7536d148030607cd047314388571a08c9810)]:
+  - @vocab/phrase@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
