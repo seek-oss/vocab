@@ -15,7 +15,7 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
     headers: {
       Authorization: `token ${phraseApiToken}`,
       // Provide identification via User Agent as requested in https://developers.phrase.com/api/#overview--identification-via-user-agent
-      'User-Agent': 'SEEK Demo Candidate App (jhope@seek.com.au)',
+      'User-Agent': 'Vocab Client (https://github.com/seek-oss/vocab)',
       ...options.headers,
     },
   }).then(async (response) => {
