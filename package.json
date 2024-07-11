@@ -34,7 +34,9 @@
     "copy-readme-to-packages": "tsx scripts/copy-readme-to-packages",
     "start-fixture": "tsx test-helpers/src/start-fixture",
     "run-server-fixture": "tsx test-helpers/src/run-server-fixture",
-    "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile"
+    "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile",
+    "fixture:phrase:push": "pnpm run --filter @vocab-fixtures/phrase push",
+    "fixture:phrase:pull": "pnpm run --filter @vocab-fixtures/phrase pull"
   },
   "dependencies": {
     "@babel/core": "^7.12.0",
