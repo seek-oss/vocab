@@ -16,6 +16,7 @@ export default [
   ...eslintConfigSeek,
   {
     languageOptions: {
+      // `jest-puppeteer` provides a global `page` object
       globals: {
         page: true,
       },
