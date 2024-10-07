@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import FormData from 'form-data';
 import type { TranslationsByLanguage } from '@vocab/core';
 import { log, trace } from './logger';
 import { translationsToCsv } from './csv';
@@ -16,7 +15,7 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
     headers: {
       Authorization: `token ${phraseApiToken}`,
       // Provide identification via User Agent as requested in https://developers.phrase.com/api/#overview--identification-via-user-agent
-      'User-Agent': 'SEEK Demo Candidate App (jhope@seek.com.au)',
+      'User-Agent': 'Vocab Client (https://github.com/seek-oss/vocab)',
       ...options.headers,
     },
   }).then(async (response) => {
@@ -129,22 +128,24 @@ export async function pushTranslations(
   for (const [language, csvFileString] of Object.entries(csvFileStrings)) {
     const formData = new FormData();
 
-    const fileContents = Buffer.from(csvFileString);
-    formData.append('file', fileContents, {
-      contentType: 'text/csv',
-      filename: `${language}.translations.csv`,
-    });
+    formData.append(
+      'file',
+      new Blob([csvFileString], {
+        type: 'text/csv',
+      }),
+      `${language}.translations.csv`,
+    );
 
     formData.append('file_format', 'csv');
     formData.append('branch', branch);
     formData.append('update_translations', 'true');
     formData.append('update_descriptions', 'true');
 
-    formData.append(`locale_mapping[${language}]`, messageIndex);
+    formData.append(`locale_mapping[${language}]`, messageIndex.toString());
 
-    formData.append('format_options[key_index]', keyIndex);
-    formData.append('format_options[comment_index]', commentIndex);
-    formData.append('format_options[tag_column]', tagColumn);
+    formData.append('format_options[key_index]', keyIndex.toString());
+    formData.append('format_options[comment_index]', commentIndex.toString());
+    formData.append('format_options[tag_column]', tagColumn.toString());
     formData.append('format_options[enable_pluralization]', 'false');
 
     log(`Uploading translations for language ${language}`);
@@ -160,7 +161,7 @@ export async function pushTranslations(
       | undefined
     >(`uploads`, {
       method: 'POST',
-      body: formData.toString(),
+      body: formData,
     });
 
     trace('Upload result:\n', result);

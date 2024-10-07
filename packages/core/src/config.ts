@@ -166,7 +166,8 @@ function createConfig(configFilePath: string) {
 
   return {
     projectRoot: cwd,
-    ...(require(configFilePath as string) as UserConfig),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    ...(require(configFilePath) as UserConfig),
   };
 }
 

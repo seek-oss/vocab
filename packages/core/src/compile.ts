@@ -342,7 +342,7 @@ async function writeIfChanged(filepath: string, contents: string) {
     const existingContents = await fs.readFile(filepath, { encoding: 'utf-8' });
 
     hasChanged = existingContents !== contents;
-  } catch (e) {
+  } catch {
     // ignore error, likely a file doesn't exist error so we want to write anyway
   }
 

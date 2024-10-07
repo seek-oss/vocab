@@ -57,6 +57,7 @@ export const runServerFixture = (
     await compileFixtureTranslations(fixtureName);
 
     const port = portCounter++;
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig();
     const compiler = webpack(config);
@@ -91,6 +92,7 @@ export const startFixture = (
   new Promise(async (resolve) => {
     await compileFixtureTranslations(fixtureName);
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
     const config = getConfig(options);
     const compiler = webpack(config);

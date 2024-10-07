@@ -1,5 +1,17 @@
 # @vocab/phrase
 
+## 2.0.1
+
+### Patch Changes
+
+- [#255](https://github.com/seek-oss/vocab/pull/255) [`f0b80de`](https://github.com/seek-oss/vocab/commit/f0b80de146d1a4c565bda0302ef53b0e07657559) Thanks [@jahredhope](https://github.com/jahredhope)! - Update user-agent when calling Phrase to reference Vocab repository
+
+- [#254](https://github.com/seek-oss/vocab/pull/254) [`17cc753`](https://github.com/seek-oss/vocab/commit/17cc7536d148030607cd047314388571a08c9810) Thanks [@jahredhope](https://github.com/jahredhope)! - Fix forbidden errors when pushing translations
+
+  Migrate from `form-data` npm package to the native [Node FormData class](https://nodejs.org/api/globals.html#class-formdata) to ensure compatibility with the earlier move to native Fetch.
+
+  Mixing the two was causing some consumers to receive 503 Forbidden errors when pushing translations to Phrase.
+
 ## 2.0.0
 
 ### Major Changes
@@ -69,12 +81,15 @@
 
   const vocabConfig = {
     devLanguage: 'en',
-    language: ['en', 'fr'],
+    language: ['en', 'fr']
   };
 
   await pull(
-    { branch: 'myBranch', errorOnNoGlobalKeyTranslation: true },
-    vocabConfig,
+    {
+      branch: 'myBranch',
+      errorOnNoGlobalKeyTranslation: true
+    },
+    vocabConfig
   );
   ```
 
@@ -215,10 +230,13 @@
 
   const vocabConfig = {
     devLanguage: 'en',
-    language: ['en', 'fr'],
+    language: ['en', 'fr']
   };
 
-  await push({ branch: 'myBranch', deleteUnusedKeys: true }, vocabConfig);
+  await push(
+    { branch: 'myBranch', deleteUnusedKeys: true },
+    vocabConfig
+  );
   ```
 
 ### Patch Changes
