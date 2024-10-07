@@ -38,7 +38,9 @@ function createIdentifier(
     'base64',
   );
 
-  const unloader = `${virtualResourceLoader}?source=${base64}`;
+  const unloader = `${virtualResourceLoader}?source=${encodeURIComponent(
+    base64,
+  )}`;
   const fileIdent = path.basename(resourcePath, 'translations.json');
 
   return `./${fileIdent}-${lang}-virtual.json!=!${unloader}!`;
