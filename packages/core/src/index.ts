@@ -11,4 +11,4 @@ export {
   loadAllTranslations,
   loadTranslation,
 } from './load-translations';
-export * from './types';
+export type * from './types';

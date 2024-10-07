@@ -252,6 +252,7 @@ export function loadAltLanguageFile(
         const altFilePath = getAltLanguageFilePath(filePath, fallbackLanguage);
         delete require.cache[altFilePath];
 
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const translationFile = require(altFilePath);
         const { keys: fallbackLanguageTranslation } = getTranslationsFromFile(
           translationFile,
@@ -267,7 +268,7 @@ export function loadAltLanguageFile(
             devTranslation,
           }),
         );
-      } catch (e) {
+      } catch {
         trace(`Missing alt language file ${getAltLanguageFilePath(
           filePath,
           fallbackLanguage,
@@ -310,6 +311,7 @@ export function loadTranslation(
   > = {};
 
   delete require.cache[filePath];
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const translationContent = require(filePath);
   const relativePath = path.relative(
     userConfig.projectRoot || process.cwd(),
