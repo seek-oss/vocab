@@ -272,9 +272,6 @@ importers:
       '@vocab/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@vocab/webpack':
-        specifier: workspace:*
-        version: link:../../packages/webpack
       react:
         specifier: ^18.1.0
         version: 18.3.1
