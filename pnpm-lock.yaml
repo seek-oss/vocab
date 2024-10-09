@@ -275,9 +275,6 @@ importers:
       '@vocab/webpack':
         specifier: workspace:*
         version: link:../../packages/webpack
-      babel-loader:
-        specifier: ^9.1.2
-        version: 9.2.1(@babel/core@7.25.2)(webpack@5.94.0)
       react:
         specifier: ^18.1.0
         version: 18.3.1
