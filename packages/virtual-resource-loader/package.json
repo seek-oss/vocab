@@ -1,7 +1,7 @@
 {
   "name": "virtual-resource-loader",
   "description": "Create new files inside a webpack compilation, without a file existing on disk",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "dist/virtual-resource-loader.cjs.js",
   "module": "dist/virtual-resource-loader.esm.js",
   "author": "SEEK",
