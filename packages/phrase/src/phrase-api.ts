@@ -99,7 +99,7 @@ export async function pullAllTranslations(
   const phraseResult = await callPhrase<
     Array<{
       key: { name: string };
-      locale: { code: string };
+      locale: { name: string };
       content: string;
     }>
   >(`translations?branch=${branch}&per_page=100`);
@@ -107,10 +107,10 @@ export async function pullAllTranslations(
   const translations: TranslationsByLanguage = {};
 
   for (const r of phraseResult) {
-    if (!translations[r.locale.code]) {
-      translations[r.locale.code] = {};
+    if (!translations[r.locale.name]) {
+      translations[r.locale.name] = {};
     }
-    translations[r.locale.code][r.key.name] = { message: r.content };
+    translations[r.locale.name][r.key.name] = { message: r.content };
   }
 
   return translations;
