@@ -3,14 +3,18 @@ import path from 'path';
 
 import webpack from 'webpack';
 import WDS from 'webpack-dev-server';
+import { createServer, preview } from 'vite';
 import waitOn from 'wait-on';
 
 import { spawn } from 'child_process';
 
 import { compile, resolveConfigSync } from '@vocab/core';
 
+type Bundler = 'webpack' | 'vite';
+
 interface Options {
   disableVocabPlugin?: boolean;
+  bundler?: Bundler;
 }
 
 export interface TestServer {
@@ -27,6 +31,7 @@ const configExtensionByFixtureName = {
   phrase: 'js',
   server: 'js',
   simple: 'cjs',
+  'simple-vite': 'cjs',
   'translation-types': 'js',
 } as const satisfies Record<string, 'js' | 'cjs'>;
 
@@ -85,7 +90,12 @@ export const runServerFixture = (
     });
   });
 
-export const startFixture = (
+type FixtureStartFunction = (
+  fixtureName: FixtureName,
+  options?: Options,
+) => Promise<TestServer>;
+
+export const startWebpackFixture: FixtureStartFunction = (
   fixtureName: FixtureName,
   options: Options = {},
 ): Promise<TestServer> =>
@@ -111,6 +121,81 @@ export const startFixture = (
       console.log(`Running fixture ${fixtureName}`);
     });
   });
+
+export const startViteFixture: FixtureStartFunction = async (
+  fixtureName: FixtureName,
+  options: Options = {},
+): Promise<TestServer> =>
+  new Promise(async (resolve) => {
+    await compileFixtureTranslations(fixtureName);
+
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
+
+    const port = portCounter++;
+    const server = await createServer({
+      ...config.default,
+      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+      root: path.dirname(
+        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+      ),
+      server: {
+        port,
+      },
+    });
+
+    const devServer = await server.listen();
+
+    console.log(`Running fixture ${fixtureName}`);
+
+    resolve({
+      url: `http://localhost:${devServer.config.server.port}`,
+      close: () => devServer.close(),
+    });
+  });
+
+export const previewViteFixture: FixtureStartFunction = async (
+  fixtureName: FixtureName,
+  options: Options = {},
+): Promise<TestServer> =>
+  new Promise(async (resolve) => {
+    await compileFixtureTranslations(fixtureName);
+
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
+
+    const port = portCounter++;
+    const server = await preview({
+      ...config.default,
+      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+      root: path.dirname(
+        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+      ),
+      preview: {
+        strictPort: true,
+        port,
+        open: false,
+      },
+    });
+
+    console.log(`Running fixture ${fixtureName}`);
+
+    resolve({
+      url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
+      close: () => server.close(),
+    });
+  });
+
+const fixtureBundlerMap: Record<Bundler, FixtureStartFunction> = {
+  webpack: startWebpackFixture,
+  vite: startViteFixture,
+};
+
+export const startFixture = (
+  fixtureName: FixtureName,
+  options: Options = { bundler: 'webpack' },
+): Promise<TestServer> =>
+  fixtureBundlerMap[options.bundler ?? 'webpack'](fixtureName, options);
 
 export const getAppSnapshot = async (
   url: string,

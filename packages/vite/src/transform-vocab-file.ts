@@ -6,12 +6,36 @@ import {
   type UserConfig,
 } from '@vocab/core';
 
-export const transformVocabFile = (
+import * as esModuleLexer from 'es-module-lexer';
+import * as cjsModuleLexer from 'cjs-module-lexer';
+
+import { sourceQueryKey, virtualModuleId } from './consts';
+
+import { trace as _trace } from './logger';
+
+const trace = _trace.extend('transform');
+
+function findExportNames(source: string, mode: 'cjs'): string[];
+function findExportNames(
+  source: string,
+  mode: 'esm',
+): esModuleLexer.ExportSpecifier[];
+function findExportNames(source: string, mode: 'cjs' | 'esm') {
+  if (mode === 'esm') {
+    const [, exports] = esModuleLexer.parse(source);
+    return exports;
+  }
+  const { exports } = cjsModuleLexer.parse(source);
+  return exports;
+}
+
+export const transformVocabFile = async (
   code: string,
   id: string,
   config: UserConfig,
 ) => {
-  // Todo: Lex the code to determine if it's a CommonJS or ES module
+  trace('Transforming vocab file', id);
+
   let result = code;
 
   const devJsonFilePath = getDevLanguageFileFromTsFile(id);
@@ -21,10 +45,7 @@ export const transformVocabFile = (
     config,
   );
 
-  const renderLanguageLoader = renderLanguageLoaderAsync(
-    devJsonFilePath,
-    loadedTranslation,
-  );
+  const renderLanguageLoader = renderLanguageLoaderAsync(loadedTranslation);
 
   const translations = /* ts */ `
     const translations = createTranslationFile({
@@ -34,33 +55,46 @@ export const transformVocabFile = (
       });
   `;
 
-  result = /* ts */ `
+  await esModuleLexer.init;
+  const esmExports = findExportNames(code, 'esm');
+  if (esmExports.length > 0) {
+    const exportName = esmExports[0];
+    trace(`Found ESM export '${exportName.n}' in ${id}`);
+
+    result = /* ts */ `
       import { createLanguage, createTranslationFile } from '@vocab/vite/create-language';
       ${translations}
-      export default translations;
+      export { translations as ${exportName.n} };
     `;
+  } else {
+    // init needs to be called and waited upon
+    await cjsModuleLexer.init();
+
+    const exportName = findExportNames(code, 'cjs')[0];
+    trace(`Found CJS export '${exportName}' in ${id}`);
+
+    result = /* ts */ `
+      import { createLanguage, createTranslationFile } from '@vocab/vite/create-language';
+      ${translations}
+      exports.${exportName} = translations;
+    `;
+  }
+  trace('Created translation file', result);
 
   return result;
 };
 
-function renderLanguageLoaderAsync(
-  resourcePath: string,
-  loadedTranslation: LoadedTranslation,
-) {
+function renderLanguageLoaderAsync(loadedTranslation: LoadedTranslation) {
   return (lang: string) => {
     const identifier = JSON.stringify(
-      createIdentifier(lang, resourcePath, loadedTranslation),
+      createIdentifier(lang, loadedTranslation),
     );
 
     return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
   };
 }
 
-function createIdentifier(
-  lang: string,
-  resourcePath: string,
-  loadedTranslation: LoadedTranslation,
-) {
+function createIdentifier(lang: string, loadedTranslation: LoadedTranslation) {
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
@@ -73,8 +107,7 @@ function createIdentifier(
     'base64',
   );
 
-  // TODO: clean up virtual resource path. Vite does not require encoding/decoding the source
-  const unloader = `?source=${encodeURIComponent(base64)}`;
+  const encodedResource = `${sourceQueryKey}${base64}`;
 
-  return `./${lang}-vocab-virtual-module.json${unloader}`;
+  return `./${lang}-${virtualModuleId}.json${encodedResource}`;
 }

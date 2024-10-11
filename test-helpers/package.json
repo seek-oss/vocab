@@ -16,5 +16,8 @@
     "wait-on": "^8.0.0",
     "webpack": "^5.37.0",
     "webpack-dev-server": "^5.0.2"
+  },
+  "dependencies": {
+    "vite": "^5.4.8"
   }
 }

@@ -11,6 +11,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        chunkFileNames: '[name].js',
         manualChunks: {
           react: ['react-dom', 'react'],
           vocab: ['@vocab/*'],
