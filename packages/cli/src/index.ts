@@ -13,6 +13,13 @@ const branchDefinition = {
   default: branch || 'local-development',
 } as const;
 
+const ignorePathDefinition = {
+  type: 'string',
+  array: true,
+  describe: 'list of paths to ignore from the command',
+  default: [] as string[],
+} as const;
+
 let config: UserConfig | null = null;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -36,6 +43,7 @@ yargsCli(process.argv.slice(2))
           describe: 'Whether or not to delete unused keys after pushing',
           default: false,
         },
+        ignore: ignorePathDefinition,
       }),
     handler: async (options) => {
       await push(options, config!);

@@ -629,6 +629,18 @@ referenced in the upload. These keys can be deleted from Phrase by providing the
 vocab push --branch my-branch --delete-unused-keys
 ```
 
+#### Ignore files
+
+When uploading translations, Phrase identifies all translation files in the project. You can ignore
+specific files from being parsed and uploaded by providing the
+`--ignore [array] [default: []]` flag to `vocab push`. This flag accepts an array of glob patterns to ignore.
+
+```sh
+vocab push --branch my-branch --ignore "**/ignored_directory/**" "**/another_ignored_directory/**"
+```
+
+note: There is an `ignore` key inside the `vocab.config.js` file that can be used to ignore files from being compiled, validated, and uploaded. This option is separate and is only used to ignore additional files from being uploaded. For example when your directory contains `/dist` or `/build` folders that you wish to exclude from being uploaded.
+
 [phrase]: https://developers.phrase.com/api/
 
 #### [Tags]
