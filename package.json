@@ -28,6 +28,7 @@
     "lint:manypkg": "manypkg check",
     "lint:prettier": "prettier --cache --check .",
     "lint:tsc": "tsc",
+    "changeset": "changeset",
     "release": "pnpm build && pnpm copy-readme-to-packages && changeset publish",
     "version": "changeset version && pnpm install --lockfile-only",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",

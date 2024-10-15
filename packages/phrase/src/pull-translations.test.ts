@@ -77,7 +77,7 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(4);
     });
 
     it('should update keys', async () => {
@@ -91,6 +91,13 @@ describe('pull translations', () => {
           ),
       ).toMatchInlineSnapshot(`
         [
+          {
+            "_meta": {},
+            "excluded": {
+              "message": "this is excluded",
+            },
+          },
+          {},
           {
             "_meta": {
               "tags": [
@@ -174,7 +181,7 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(2);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(4);
     });
 
     it('should update keys', async () => {
@@ -188,6 +195,13 @@ describe('pull translations', () => {
           ),
       ).toMatchInlineSnapshot(`
         [
+          {
+            "_meta": {},
+            "excluded": {
+              "message": "this is excluded",
+            },
+          },
+          {},
           {
             "_meta": {
               "tags": [
@@ -310,7 +324,7 @@ describe('pull translations', () => {
         new Error(`Missing translation for global key thanks in language fr`),
       );
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(1);
+      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(3);
     });
   });
 });

@@ -16,9 +16,13 @@ jest.mock('./phrase-api', () => ({
 
 const devLanguageUploadId = '1234';
 
-function runPhrase(config: { deleteUnusedKeys: boolean }) {
+function runPhrase(config: { deleteUnusedKeys: boolean; ignore?: string[] }) {
   return push(
-    { branch: 'tester', deleteUnusedKeys: config.deleteUnusedKeys },
+    {
+      branch: 'tester',
+      deleteUnusedKeys: config.deleteUnusedKeys,
+      ignore: config.ignore || [],
+    },
     {
       devLanguage: 'en',
       languages: [{ name: 'en' }, { name: 'fr' }],
@@ -73,6 +77,10 @@ describe('push', () => {
                 "these",
                 "tags",
               ],
+            },
+            "excluded.ignore": {
+              "message": "this is excluded",
+              "tags": [],
             },
             "hello.mytranslations": {
               "message": "Hello",
@@ -170,6 +178,10 @@ describe('push', () => {
                   "tags",
                 ],
               },
+              "excluded.ignore": {
+                "message": "this is excluded",
+                "tags": [],
+              },
               "hello.mytranslations": {
                 "message": "Hello",
                 "tags": [
@@ -243,6 +255,95 @@ describe('push', () => {
 
         expect(deleteUnusedKeys).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('when ignore is ["**/ignore.vocab/**"]', () => {
+    const config = { deleteUnusedKeys: false, ignore: ['**/ignore.vocab/**'] };
+
+    beforeEach(() => {
+      jest.mocked(pushTranslations).mockClear();
+      jest.mocked(writeFile).mockClear();
+      jest.mocked(deleteUnusedKeys).mockClear();
+
+      jest
+        .mocked(pushTranslations)
+        .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
+    });
+
+    it('should resolve', async () => {
+      await expect(runPhrase(config)).resolves.toBeUndefined();
+
+      expect(jest.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
+    });
+
+    it('should update keys', async () => {
+      await expect(runPhrase(config)).resolves.toBeUndefined();
+
+      expect(jest.mocked(pushTranslations).mock.calls[0][0])
+        .toMatchInlineSnapshot(`
+        {
+          "en": {
+            "app.thanks.label": {
+              "globalKey": "app.thanks.label",
+              "message": "Thanks",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
+            "hello.mytranslations": {
+              "message": "Hello",
+              "tags": [
+                "only for this key",
+                "greeting",
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
+            "profile.mytranslations": {
+              "message": "profil",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
+            "world.mytranslations": {
+              "message": "world",
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
+            },
+          },
+          "fr": {
+            "hello.mytranslations": {
+              "description": undefined,
+              "message": "Bonjour",
+            },
+            "profile.mytranslations": {
+              "description": undefined,
+              "message": "profil",
+            },
+            "world.mytranslations": {
+              "description": undefined,
+              "message": "monde",
+            },
+          },
+        }
+      `);
     });
   });
 });
