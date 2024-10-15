@@ -26,6 +26,9 @@ export async function push(
   { branch, deleteUnusedKeys, ignore }: PushOptions,
   config: UserConfig,
 ) {
+  if (ignore) {
+    trace(`ignoring files on paths: ${ignore.join(', ')}`);
+  }
   const allLanguageTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false, withTags: true },
     {

@@ -16,7 +16,7 @@ const branchDefinition = {
 const ignorePathDefinition = {
   type: 'string',
   array: true,
-  describe: 'list of paths to ignore from the command',
+  describe: 'Array of glob paths to ignore when searching for keys to push',
   default: [] as string[],
 } as const;
 
