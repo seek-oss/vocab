@@ -165,22 +165,14 @@ describe('E2E', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      try {
-        server = await previewViteFixture('vite', {
-          bundler: 'vite',
-        });
-      } catch (e) {
-        console.error('before All error', e);
-      }
+      server = await previewViteFixture('vite', {
+        bundler: 'vite',
+      });
     });
 
     beforeEach(async () => {
-      try {
-        await jestPuppeteer.resetPage();
-        await page.goto(server.url, { waitUntil: 'networkidle0' });
-      } catch (e) {
-        console.error('before error', e);
-      }
+      await jestPuppeteer.resetPage();
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to en-AU english', async () => {
@@ -270,12 +262,8 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      try {
-        await jestPuppeteer.resetPage();
-        await page.goto(server.url, { waitUntil: 'networkidle0' });
-      } catch (e) {
-        console.error('before error', e);
-      }
+      await jestPuppeteer.resetPage();
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to en-AU english', async () => {
