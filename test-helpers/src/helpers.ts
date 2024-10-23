@@ -240,13 +240,11 @@ export const getLanguageChunk = async ({
   return await response?.text();
 };
 
-const isFrame = (frameOrPage: Page | Frame): frameOrPage is Frame => {
-  return (frameOrPage as Frame).page !== undefined;
-};
+const isFrame = (frameOrPage: Page | Frame): frameOrPage is Frame =>
+  (frameOrPage as Frame).page !== undefined;
 
 export const debugPageOrFrame = async (frameOrPage: Page | Frame) => {
   if (isFrame(frameOrPage)) {
-    // eslint-disable-next-line no-console
     console.log(
       `data:image/png;base64, ${await frameOrPage
         .page()
@@ -254,7 +252,6 @@ export const debugPageOrFrame = async (frameOrPage: Page | Frame) => {
     );
   }
   if (!isFrame(frameOrPage)) {
-    // eslint-disable-next-line no-console
     console.log(
       `data:image/png;base64, ${await frameOrPage.screenshot({
         encoding: 'base64',
