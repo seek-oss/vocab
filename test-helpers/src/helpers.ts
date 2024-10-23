@@ -9,6 +9,7 @@ import waitOn from 'wait-on';
 import { spawn } from 'child_process';
 
 import { compile, resolveConfigSync } from '@vocab/core';
+import type { Page, Frame } from 'puppeteer';
 
 type Bundler = 'webpack' | 'vite';
 
@@ -179,12 +180,6 @@ export const previewViteFixture: FixtureStartFunction = async (
     });
 
     console.log(`Running fixture ${fixtureName}`);
-    console.log(
-      `resolvedUrls`,
-      server.resolvedUrls,
-      server.resolvedUrls?.local,
-      server.resolvedUrls?.network,
-    );
 
     resolve({
       url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
@@ -243,4 +238,27 @@ export const getLanguageChunk = async ({
 }) => {
   const response = await page.goto(`${serverUrl}/${language}-translations.js`);
   return await response?.text();
+};
+
+const isFrame = (frameOrPage: Page | Frame): frameOrPage is Frame => {
+  return (frameOrPage as Frame).page !== undefined;
+};
+
+export const debugPageOrFrame = async (frameOrPage: Page | Frame) => {
+  if (isFrame(frameOrPage)) {
+    // eslint-disable-next-line no-console
+    console.log(
+      `data:image/png;base64, ${await frameOrPage
+        .page()
+        .screenshot({ encoding: 'base64' })}`,
+    );
+  }
+  if (!isFrame(frameOrPage)) {
+    // eslint-disable-next-line no-console
+    console.log(
+      `data:image/png;base64, ${await frameOrPage.screenshot({
+        encoding: 'base64',
+      })}`,
+    );
+  }
 };

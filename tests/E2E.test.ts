@@ -5,6 +5,7 @@ import {
   type TestServer,
   getLanguageChunk,
   previewViteFixture,
+  debugPageOrFrame,
 } from '@vocab-private/test-helpers';
 
 import 'expect-puppeteer';
@@ -176,6 +177,7 @@ describe('E2E', () => {
     });
 
     it('should default to en-AU english', async () => {
+      debugPageOrFrame(page);
       const message = await page.waitForSelector('#message');
       const publishDate = await page.waitForSelector('#publish-date');
 
