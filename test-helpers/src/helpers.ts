@@ -179,6 +179,12 @@ export const previewViteFixture: FixtureStartFunction = async (
     });
 
     console.log(`Running fixture ${fixtureName}`);
+    console.log(
+      `resolvedUrls`,
+      server.resolvedUrls,
+      server.resolvedUrls?.local,
+      server.resolvedUrls?.network,
+    );
 
     resolve({
       url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
