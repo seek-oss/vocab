@@ -84,17 +84,19 @@ export const transformVocabFile = async (
   return result;
 };
 
-function renderLanguageLoaderAsync(loadedTranslation: LoadedTranslation) {
-  return (lang: string) => {
+const renderLanguageLoaderAsync =
+  (loadedTranslation: LoadedTranslation) => (lang: string) => {
     const identifier = JSON.stringify(
       createIdentifier(lang, loadedTranslation),
     );
 
     return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
   };
-}
 
-function createIdentifier(lang: string, loadedTranslation: LoadedTranslation) {
+const createIdentifier = (
+  lang: string,
+  loadedTranslation: LoadedTranslation,
+) => {
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
@@ -110,4 +112,4 @@ function createIdentifier(lang: string, loadedTranslation: LoadedTranslation) {
   const encodedResource = `${sourceQueryKey}${base64}`;
 
   return `./${lang}-${virtualModuleId}.json${encodedResource}`;
-}
+};

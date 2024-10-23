@@ -1,5 +1,5 @@
-import type { Rollup, UserConfig as ViteUserConfig } from 'vite';
-import { createDefaultChunks, createVocabChunks } from './create-vocab-chunks';
+import type { UserConfig as ViteUserConfig } from 'vite';
+import { createChunks } from './create-vocab-chunks';
 
 export const createConfig = (config: ViteUserConfig): ViteUserConfig => {
   const baseOutputs = config.build?.rollupOptions?.output;
@@ -8,23 +8,7 @@ export const createConfig = (config: ViteUserConfig): ViteUserConfig => {
     ? baseOutputs
     : [baseOutputs || {}];
 
-  outputs.forEach((output) => {
-    const originalManualChunks = output.manualChunks;
-    output.manualChunks = (id: string, ctx: Rollup.ManualChunkMeta) => {
-      if (typeof originalManualChunks === 'function') {
-        return (
-          originalManualChunks(id, ctx) ?? createVocabChunks(id, ctx) ?? null
-        );
-      }
-      if (typeof originalManualChunks === 'object') {
-        return (
-          createDefaultChunks(originalManualChunks, id) ??
-          createVocabChunks(id, ctx) ??
-          null
-        );
-      }
-    };
-  });
+  outputs.forEach(createChunks);
 
   return {
     ...config,

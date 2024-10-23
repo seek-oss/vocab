@@ -249,7 +249,16 @@ importers:
         specifier: ^5.0.2
         version: 5.1.0(webpack@5.95.0)
 
-  fixtures/simple-vite:
+  fixtures/translation-types:
+    dependencies:
+      '@vocab/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@vocab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+
+  fixtures/vite:
     dependencies:
       '@babel/core':
         specifier: ^7.12.0
@@ -284,15 +293,6 @@ importers:
       vite:
         specifier: ^5.4.8
         version: 5.4.8(@types/node@18.19.55)(terser@5.34.1)
-
-  fixtures/translation-types:
-    dependencies:
-      '@vocab/cli':
-        specifier: workspace:*
-        version: link:../../packages/cli
-      '@vocab/core':
-        specifier: workspace:*
-        version: link:../../packages/core
 
   packages/cli:
     dependencies:

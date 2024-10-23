@@ -16,7 +16,7 @@
     "start:direct": "pnpm dev && pnpm --filter @vocab-fixtures/direct compile && pnpm start-fixture direct",
     "start:server": "pnpm dev && pnpm --filter @vocab-fixtures/server compile && pnpm start-fixture server",
     "start:simple": "pnpm dev && pnpm --filter @vocab-fixtures/simple compile && pnpm start-fixture simple",
-    "start:simple-vite": "pnpm dev && pnpm --filter @vocab-fixtures/simple-vite compile && pnpm preview-vite-fixture simple-vite vite",
+    "start:vite": "pnpm dev && pnpm --filter @vocab-fixtures/vite compile && pnpm preview-vite-fixture vite",
     "build": "preconstruct build",
     "dev": "preconstruct dev",
     "watch": "preconstruct watch",

@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [
     vitePluginVocab({
       configFile: userConfig,
+      combineLanguageChunks: false,
     }),
   ],
   build: {

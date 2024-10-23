@@ -11,10 +11,12 @@ import { compiledVocabFileFilter, virtualModuleId } from './consts';
 
 export type VocabPluginOptions = {
   configFile: UserConfig;
+  combineLanguageChunks: boolean;
 };
 
 export default function vitePluginVocab({
   configFile,
+  combineLanguageChunks = true,
 }: VocabPluginOptions): VitePlugin {
   trace(
     `Creating Vocab plugin${
@@ -43,7 +45,10 @@ export default function vitePluginVocab({
       }
     },
     config(config: ViteUserConfig) {
-      return createConfig(config);
+      if (combineLanguageChunks) {
+        return createConfig(config);
+      }
+      return config;
     },
   };
 }

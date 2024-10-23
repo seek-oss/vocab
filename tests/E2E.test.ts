@@ -161,82 +161,26 @@ describe('E2E', () => {
     });
   });
 
-  describe('Simple-vite without plugin', () => {
+  describe('vite with plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
-      server = await previewViteFixture('simple-vite', {
-        bundler: 'vite',
-        disableVocabPlugin: true,
-      });
+      try {
+        server = await previewViteFixture('vite', {
+          bundler: 'vite',
+        });
+      } catch (e) {
+        console.error('before All error', e);
+      }
     });
 
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
-      await page.goto(server.url, { waitUntil: 'networkidle0' });
-    });
-
-    it('should default to en-AU english', async () => {
-      const message = await page.waitForSelector('#message');
-      const publishDate = await page.waitForSelector('#publish-date');
-
-      await expect(message).toMatchTextContent('Hello world');
-      await expect(publishDate).toMatchTextContent(
-        'Vocab was published on 20/11/2020',
-      );
-    });
-
-    it('should handle to en-US locale', async () => {
-      await page.click('#toggle-locale');
-
-      const publishDate = await page.waitForSelector('#publish-date');
-
-      await expect(publishDate).toMatchTextContent(
-        'Vocab was published on 11/20/2020',
-      );
-    });
-
-    it('should switch to french', async () => {
-      await page.select('#language-select', 'fr');
-
-      const message = await page.waitForSelector('#message');
-
-      await expect(message).toMatchTextContent('Bonjour monde');
-    });
-
-    it('should switch to pseudo', async () => {
-      await page.select('#language-select', 'pseudo');
-
-      const message = await page.waitForSelector('#message');
-
-      await expect(message).toMatchTextContent('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', {
-        timeout: 2000,
-      });
-    });
-
-    it('should allow special characters', async () => {
-      const message = await page.waitForSelector('#special-characters');
-
-      await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
-    });
-
-    afterAll(async () => {
-      await server.close();
-    });
-  });
-
-  describe('Simple-vite with plugin', () => {
-    let server: TestServer;
-
-    beforeAll(async () => {
-      server = await previewViteFixture('simple-vite', {
-        bundler: 'vite',
-      });
-    });
-
-    beforeEach(async () => {
-      await jestPuppeteer.resetPage();
-      await page.goto(server.url, { waitUntil: 'networkidle0' });
+      try {
+        await jestPuppeteer.resetPage();
+        await page.goto(server.url, { waitUntil: 'networkidle0' });
+      } catch (e) {
+        console.error('before error', e);
+      }
     });
 
     it('should default to en-AU english', async () => {
@@ -286,7 +230,7 @@ describe('E2E', () => {
     it('should return the expected en chunk', async () => {
       expect(
         await getLanguageChunk({
-          serverUrl: `${server.url}/assets`,
+          serverUrl: `${server.url}`,
           language: 'en',
         }),
       ).toMatchSnapshot();
@@ -295,7 +239,7 @@ describe('E2E', () => {
     it('should return the expected fr chunk', async () => {
       expect(
         await getLanguageChunk({
-          serverUrl: `${server.url}/assets`,
+          serverUrl: `${server.url}`,
           language: 'fr',
         }),
       ).toMatchSnapshot();
@@ -304,10 +248,78 @@ describe('E2E', () => {
     it('should return the expected pseudo chunk', async () => {
       expect(
         await getLanguageChunk({
-          serverUrl: `${server.url}/assets`,
+          serverUrl: `${server.url}`,
           language: 'pseudo',
         }),
       ).toMatchSnapshot();
+    });
+
+    afterAll(async () => {
+      await server.close();
+    });
+  });
+
+  describe('vite without plugin', () => {
+    let server: TestServer;
+
+    beforeAll(async () => {
+      server = await previewViteFixture('vite', {
+        bundler: 'vite',
+        disableVocabPlugin: true,
+      });
+    });
+
+    beforeEach(async () => {
+      try {
+        await jestPuppeteer.resetPage();
+        await page.goto(server.url, { waitUntil: 'networkidle0' });
+      } catch (e) {
+        console.error('before error', e);
+      }
+    });
+
+    it('should default to en-AU english', async () => {
+      const message = await page.waitForSelector('#message');
+      const publishDate = await page.waitForSelector('#publish-date');
+
+      await expect(message).toMatchTextContent('Hello world');
+      await expect(publishDate).toMatchTextContent(
+        'Vocab was published on 20/11/2020',
+      );
+    });
+
+    it('should handle to en-US locale', async () => {
+      await page.click('#toggle-locale');
+
+      const publishDate = await page.waitForSelector('#publish-date');
+
+      await expect(publishDate).toMatchTextContent(
+        'Vocab was published on 11/20/2020',
+      );
+    });
+
+    it('should switch to french', async () => {
+      await page.select('#language-select', 'fr');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatchTextContent('Bonjour monde');
+    });
+
+    it('should switch to pseudo', async () => {
+      await page.select('#language-select', 'pseudo');
+
+      const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatchTextContent('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', {
+        timeout: 2000,
+      });
+    });
+
+    it('should allow special characters', async () => {
+      const message = await page.waitForSelector('#special-characters');
+
+      await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
 
     afterAll(async () => {

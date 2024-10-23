@@ -31,7 +31,7 @@ const configExtensionByFixtureName = {
   phrase: 'js',
   server: 'js',
   simple: 'cjs',
-  'simple-vite': 'cjs',
+  vite: 'cjs',
   'translation-types': 'js',
 } as const satisfies Record<string, 'js' | 'cjs'>;
 
@@ -182,7 +182,9 @@ export const previewViteFixture: FixtureStartFunction = async (
 
     resolve({
       url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
-      close: () => server.close(),
+      close: async () => {
+        await server.close();
+      },
     });
   });
 
@@ -234,7 +236,5 @@ export const getLanguageChunk = async ({
   language: string;
 }) => {
   const response = await page.goto(`${serverUrl}/${language}-translations.js`);
-  const source = await response?.text();
-
-  return source;
+  return await response?.text();
 };

@@ -81,17 +81,17 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 }]);"
 `;
 
-exports[`E2E Simple-vite with plugin should return the expected en chunk 1`] = `
+exports[`E2E vite with plugin should return the expected en chunk 1`] = `
 "const e="Hello",o="world",t={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:t,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),l="<strong>Vocab</strong> was published on {publishDate, date, small}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:l},c=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:l},Symbol.toStringTag,{value:"Module"}));export{c as a,r as e};
 "
 `;
 
-exports[`E2E Simple-vite with plugin should return the expected fr chunk 1`] = `
+exports[`E2E vite with plugin should return the expected fr chunk 1`] = `
 "const e="Bonjour",o="monde",t={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:t,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),l="Vocab a été publié le {publishDate, date, medium}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:l},u=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:l},Symbol.toStringTag,{value:"Module"}));export{u as a,r as f};
 "
 `;
 
-exports[`E2E Simple-vite with plugin should return the expected pseudo chunk 1`] = `
+exports[`E2E vite with plugin should return the expected pseudo chunk 1`] = `
 "const o="[Ḩẽẽƚƚöö]",e="[ŵöööřƚƌ]",l={hello:o,world:e},b=Object.freeze(Object.defineProperty({__proto__:null,default:l,hello:o,world:e},Symbol.toStringTag,{value:"Module"})),t="[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]",s={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"[‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\]",vocabPublishDate:t},a=Object.freeze(Object.defineProperty({__proto__:null,default:s,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{a as G,b as p};
 "
 `;

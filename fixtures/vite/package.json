@@ -1,12 +1,13 @@
 {
-  "name": "@vocab-fixtures/simple-vite",
+  "name": "@vocab-fixtures/vite",
   "version": "1.0.0",
   "author": "SEEK",
   "private": true,
   "scripts": {
     "compile": "vocab compile",
     "start": "vocab compile --watch & vite",
-    "build": "vocab compile && vite build"
+    "build": "vocab compile && vite build",
+    "preview": "vocab compile && vite preview"
   },
   "dependencies": {
     "@babel/core": "^7.12.0",
