@@ -11,6 +11,7 @@
     "@vocab-fixtures/phrase": "workspace:*",
     "@vocab-fixtures/server": "workspace:*",
     "@vocab-fixtures/simple": "workspace:*",
+    "@vocab-fixtures/vite": "workspace:*",
     "@vocab-fixtures/translation-types": "workspace:*",
     "@vocab/core": "workspace:*",
     "vite": "^5.4.8",
