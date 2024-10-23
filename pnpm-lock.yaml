@@ -480,6 +480,9 @@ importers:
       '@vocab-fixtures/translation-types':
         specifier: workspace:*
         version: link:../fixtures/translation-types
+      '@vocab-fixtures/vite':
+        specifier: workspace:*
+        version: link:../fixtures/vite
       '@vocab/core':
         specifier: workspace:*
         version: link:../packages/core
