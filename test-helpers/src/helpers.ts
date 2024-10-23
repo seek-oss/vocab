@@ -165,13 +165,17 @@ export const previewViteFixture: FixtureStartFunction = async (
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
 
+    const root = path.dirname(
+      require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+    );
+
+    console.log('root for vite preview', root);
+
     const port = portCounter++;
     const server = await preview({
       ...config.default,
       ...(options.disableVocabPlugin ? { plugins: [] } : {}),
-      root: path.dirname(
-        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
-      ),
+      root,
       preview: {
         strictPort: true,
         port,
