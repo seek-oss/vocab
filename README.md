@@ -199,7 +199,7 @@ module.exports = {
 > [!NOTE]
 > This plugin is still experimental and may not work in all cases. If you encounter any issues, please open an issue on the Vocab GitHub repository.
 
-Vocab also provides a Vite plugin to handle the same functionality as the Webpack plugin. 
+Vocab also provides a Vite plugin to handle the same functionality as the Webpack plugin.
 
 ```shell
 npm i --save-dev @vocab/vite
@@ -214,14 +214,17 @@ import { vocabPluginVite } from '@vocab/vite';
 import configFile from './vocab.config.cjs';
 
 export default defineConfig({
-  plugins: [vocabPluginVite({
-    configFile,
-  })]
+  plugins: [
+    vocabPluginVite({
+      configFile
+    })
+  ]
 });
 ```
 
 By default, the Vocab plugin will combine all loaded languages into a single chunk for each language.
 You can disable this behaviour by passing `combineLanguageChunks: false` to the plugin.
+
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
@@ -229,48 +232,61 @@ import { vocabPluginVite } from '@vocab/vite';
 import configFile from './vocab.config.cjs';
 
 export default defineConfig({
-  plugins: [vocabPluginVite({
-    configFile,
-    combineLanguageChunks: false,
-  })],
+  plugins: [
+    vocabPluginVite({
+      configFile,
+      combineLanguageChunks: false
+    })
+  ]
 });
 ```
 
-#### rollupOptions.manualChunks
+#### manualChunks
 
 If you have your own `manualChunks` setup in your `vite.config.js` and you want to use the plugins chunking strategy you can use the `createVocabChunks` function to handle the vocab part of the chunking strategy.
 
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite, createVocabChunks } from '@vocab/vite';
+import {
+  vocabPluginVite,
+  createVocabChunks
+} from '@vocab/vite';
 import configFile from './vocab.config.cjs';
 
 export default defineConfig({
-  plugins: [vocabPluginVite({
-    configFile,
-    combineLanguageChunks: false, // Disable the default behaviour
-  })],
+  plugins: [
+    vocabPluginVite({
+      configFile,
+      combineLanguageChunks: false // Disable the default behaviour
+    })
+  ],
   build: {
     rollupOptions: {
-      manualChunks: (id, ctx) => {
-        // handle your own manual chunks before or after the vocab chunks.
-        const languageChunkName = createVocabChunks(id, ctx);
-        if (languageChunkName) {
-          // vocab has found a language chunk. Either return it or handle it in your own way.
-          return languageChunkName;
+      output: {
+        manualChunks: (id, ctx) => {
+          // handle your own manual chunks before or after the vocab chunks.
+          const languageChunkName = createVocabChunks(
+            id,
+            ctx
+          );
+          if (languageChunkName) {
+            // vocab has found a language chunk. Either return it or handle it in your own way.
+            return languageChunkName;
+          }
         }
-      },
-    },
-  },
+      }
+    }
+  }
 });
 ```
 
 #### VocabPluginOptions
+
 ```ts
 type VocabPluginOptions = {
   /**
-   * The Vocab configuration file. 
+   * The Vocab configuration file.
    * The type can be found in the `@vocab/core/types`.
    * This value is required
    */

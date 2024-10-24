@@ -4,9 +4,11 @@ import { trace as _trace } from './logger';
 const trace = _trace.extend('create-vocab-chunks');
 
 const handleChunkCollision = (id: string) => {
-  trace(`create-vocab-chunks and your vite config manualChunks option both try to chunk the following module: ${id}.
-  Please remove or alter the manualChunks option from your vite config or disable combineLanguageChunks in your plugin config.`);
-  // TODO: throw error or provide more context?
+  throw new Error(
+    `create-vocab-chunks and your vite config manualChunks option both try to chunk the following module: ${id}.
+    Please remove or alter the manualChunks option from your vite config or disable combineLanguageChunks in your plugin config.
+    See the README for more information.`,
+  );
 };
 
 export const createChunks = (output: Rollup.OutputOptions) => {
