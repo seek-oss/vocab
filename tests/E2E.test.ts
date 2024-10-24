@@ -5,9 +5,7 @@ import {
   type TestServer,
   getLanguageChunk,
   previewViteFixture,
-  debugPageOrFrame,
 } from '@vocab-private/test-helpers';
-import type { Page } from 'puppeteer';
 
 import 'expect-puppeteer';
 import 'jest-puppeteer';
@@ -163,55 +161,23 @@ describe('E2E', () => {
     });
   });
 
-  // eslint-disable-next-line jest/no-focused-tests
-  describe.only('vite with plugin', () => {
+  describe('vite with plugin', () => {
     let server: TestServer;
-    let localPage: Page;
 
     beforeAll(async () => {
       server = await previewViteFixture('vite', {
         bundler: 'vite',
       });
-      localPage = await browser.newPage();
-      localPage.setCacheEnabled(false);
-      localPage.on('request', (request) => {
-        // eslint-disable-next-line no-console
-        console.log(
-          'PUPPETEER:network-request',
-          request.url(),
-          request.headers(),
-        );
-      });
-
-      localPage.on('response', (response) => {
-        // eslint-disable-next-line no-console
-        console.log(
-          'PUPPETEER:network-response',
-          response.status(),
-          response.statusText(),
-          response.headers(),
-        );
-      });
     });
 
     beforeEach(async () => {
-      // eslint-disable-next-line no-console
-      console.log('server.url', server.url);
       await jestPuppeteer.resetPage();
-      await localPage.setExtraHTTPHeaders({
-        Accept: '*/*',
-      });
-      await localPage.goto(server.url, { waitUntil: 'load' });
-    });
-
-    afterAll(async () => {
-      await server.close();
-      await localPage.close();
+      await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
     it('should default to en-AU english', async () => {
-      const message = await localPage.waitForSelector('#message');
-      const publishDate = await localPage.waitForSelector('#publish-date');
+      const message = await page.waitForSelector('#message');
+      const publishDate = await page.waitForSelector('#publish-date');
 
       await expect(message).toMatchTextContent('Hello world');
       await expect(publishDate).toMatchTextContent(
@@ -220,10 +186,9 @@ describe('E2E', () => {
     });
 
     it('should handle to en-US locale', async () => {
-      debugPageOrFrame(localPage);
-      await localPage.click('#toggle-locale');
+      await page.click('#toggle-locale');
 
-      const publishDate = await localPage.waitForSelector('#publish-date');
+      const publishDate = await page.waitForSelector('#publish-date');
 
       await expect(publishDate).toMatchTextContent(
         'Vocab was published on 11/20/2020',
@@ -231,17 +196,17 @@ describe('E2E', () => {
     });
 
     it('should switch to french', async () => {
-      await localPage.select('#language-select', 'fr');
+      await page.select('#language-select', 'fr');
 
-      const message = await localPage.waitForSelector('#message');
+      const message = await page.waitForSelector('#message');
 
       await expect(message).toMatchTextContent('Bonjour monde');
     });
 
     it('should switch to pseudo', async () => {
-      await localPage.select('#language-select', 'pseudo');
+      await page.select('#language-select', 'pseudo');
 
-      const message = await localPage.waitForSelector('#message');
+      const message = await page.waitForSelector('#message');
 
       await expect(message).toMatchTextContent('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]', {
         timeout: 2000,
@@ -249,7 +214,7 @@ describe('E2E', () => {
     });
 
     it('should allow special characters', async () => {
-      const message = await localPage.waitForSelector('#special-characters');
+      const message = await page.waitForSelector('#special-characters');
 
       await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
@@ -279,6 +244,10 @@ describe('E2E', () => {
           language: 'pseudo',
         }),
       ).toMatchSnapshot();
+    });
+
+    afterAll(async () => {
+      await server.close();
     });
   });
 

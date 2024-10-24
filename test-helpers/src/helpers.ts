@@ -9,7 +9,6 @@ import waitOn from 'wait-on';
 import { spawn } from 'child_process';
 
 import { compile, resolveConfigSync } from '@vocab/core';
-import type { Page, Frame } from 'puppeteer';
 
 type Bundler = 'webpack' | 'vite';
 
@@ -170,9 +169,6 @@ export const previewViteFixture: FixtureStartFunction = async (
         require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
       );
 
-      console.log('root for vite preview', root);
-      console.log('vite config', config);
-
       const port = portCounter++;
       await build({
         ...config.default,
@@ -191,10 +187,6 @@ export const previewViteFixture: FixtureStartFunction = async (
       });
 
       console.log(`Running fixture ${fixtureName}`);
-
-      await waitOn({
-        resources: [`${server.resolvedUrls?.local[0]}/index.html`],
-      });
 
       resolve({
         url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
@@ -257,24 +249,4 @@ export const getLanguageChunk = async ({
 }) => {
   const response = await page.goto(`${serverUrl}/${language}-translations.js`);
   return await response?.text();
-};
-
-const isFrame = (frameOrPage: Page | Frame): frameOrPage is Frame =>
-  (frameOrPage as Frame).page !== undefined;
-
-export const debugPageOrFrame = async (frameOrPage: Page | Frame) => {
-  if (isFrame(frameOrPage)) {
-    console.log(
-      `data:image/png;base64, ${await frameOrPage
-        .page()
-        .screenshot({ encoding: 'base64' })}`,
-    );
-  }
-  if (!isFrame(frameOrPage)) {
-    console.log(
-      `data:image/png;base64, ${await frameOrPage.screenshot({
-        encoding: 'base64',
-      })}`,
-    );
-  }
 };
