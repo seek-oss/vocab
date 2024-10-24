@@ -159,38 +159,44 @@ export const previewViteFixture: FixtureStartFunction = async (
   fixtureName: FixtureName,
   options: Options = {},
 ): Promise<TestServer> =>
-  new Promise(async (resolve) => {
-    await compileFixtureTranslations(fixtureName);
+  new Promise(async (resolve, reject) => {
+    try {
+      await compileFixtureTranslations(fixtureName);
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
 
-    const root = path.dirname(
-      require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
-    );
+      const root = path.dirname(
+        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+      );
 
-    console.log('root for vite preview', root);
+      console.log('root for vite preview', root);
+      console.log('vite config', config);
 
-    const port = portCounter++;
-    const server = await preview({
-      ...config.default,
-      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
-      root,
-      preview: {
-        strictPort: true,
-        port,
-        open: false,
-      },
-    });
+      const port = portCounter++;
+      const server = await preview({
+        ...config.default,
+        ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+        root,
+        preview: {
+          strictPort: true,
+          port,
+          open: false,
+        },
+      });
 
-    console.log(`Running fixture ${fixtureName}`);
+      console.log(`Running fixture ${fixtureName}`);
 
-    resolve({
-      url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
-      close: async () => {
-        await server.close();
-      },
-    });
+      resolve({
+        url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
+        close: async () => {
+          await server.close();
+        },
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
 const fixtureBundlerMap: Record<Bundler, FixtureStartFunction> = {
