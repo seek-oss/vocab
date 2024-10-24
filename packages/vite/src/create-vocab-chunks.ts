@@ -3,36 +3,6 @@ import { trace as _trace } from './logger';
 
 const trace = _trace.extend('create-vocab-chunks');
 
-const handleChunkCollision = (id: string) => {
-  throw new Error(
-    `create-vocab-chunks and your vite config manualChunks option both try to chunk the following module: ${id}.
-    Please remove or alter the manualChunks option from your vite config or disable combineLanguageChunks in your plugin config.
-    See the README for more information.`,
-  );
-};
-
-export const createChunks = (output: Rollup.OutputOptions) => {
-  const originalManualChunks = output.manualChunks;
-  output.manualChunks = (id: string, ctx: Rollup.ManualChunkMeta) => {
-    if (typeof originalManualChunks === 'function') {
-      const originalChunks = originalManualChunks(id, ctx);
-      const vocabChunks = createVocabChunks(id, ctx);
-      if (originalChunks && vocabChunks) {
-        handleChunkCollision(id);
-      }
-      return originalChunks ?? vocabChunks ?? null;
-    }
-    if (typeof originalManualChunks === 'object') {
-      const originalChunks = createDefaultChunks(originalManualChunks, id);
-      const vocabChunks = createVocabChunks(id, ctx);
-      if (originalChunks && vocabChunks) {
-        handleChunkCollision(id);
-      }
-      return originalChunks ?? vocabChunks ?? null;
-    }
-  };
-};
-
 export const createVocabChunks = (
   id: string,
   { getModuleInfo }: Rollup.ManualChunkMeta,
@@ -72,17 +42,4 @@ export const createVocabChunks = (
   if (dependentEntryPoints.length > 0) {
     return `${language}-translations`;
   }
-};
-
-const createDefaultChunks = (
-  manualChunks: Record<string, string[]>,
-  id: string,
-) => {
-  for (const [chunkAlias, modules] of Object.entries(manualChunks)) {
-    if (modules.some((module) => id.includes(module))) {
-      return chunkAlias;
-    }
-  }
-
-  return null;
 };

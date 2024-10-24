@@ -222,28 +222,9 @@ export default defineConfig({
 });
 ```
 
-By default, the Vocab plugin will combine all loaded languages into a single chunk for each language.
-You can disable this behaviour by passing `combineLanguageChunks: false` to the plugin.
+#### createVocabChunks
 
-```js
-// vite.config.js
-import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
-import configFile from './vocab.config.cjs';
-
-export default defineConfig({
-  plugins: [
-    vocabPluginVite({
-      configFile,
-      combineLanguageChunks: false
-    })
-  ]
-});
-```
-
-#### manualChunks
-
-If you have your own `manualChunks` setup in your `vite.config.js` and you want to use the plugins chunking strategy you can use the `createVocabChunks` function to handle the vocab part of the chunking strategy.
+If you want to combine all language files into a single chunk, you can use the `createVocabChunks` function. Simply use the function in your `manualChunks` configuration.
 
 ```js
 // vite.config.js
@@ -258,7 +239,6 @@ export default defineConfig({
   plugins: [
     vocabPluginVite({
       configFile,
-      combineLanguageChunks: false // Disable the default behaviour
     })
   ],
   build: {
@@ -291,11 +271,6 @@ type VocabPluginOptions = {
    * This value is required
    */
   configFile: UserConfig;
-  /**
-   * Combine all loaded languages into a single chunk for each language.
-   * Default: true,
-   */
-  combineLanguageChunks: boolean;
 };
 ```
 
