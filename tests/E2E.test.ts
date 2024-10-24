@@ -179,7 +179,12 @@ describe('E2E', () => {
 
       localPage.on('response', (response) => {
         // eslint-disable-next-line no-console
-        console.log('PUPPETEER:network-response', response.url());
+        console.log(
+          'PUPPETEER:network-response',
+          response.status(),
+          response.statusText(),
+          response.headers(),
+        );
       });
     });
 
