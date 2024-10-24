@@ -238,7 +238,7 @@ import configFile from './vocab.config.cjs';
 export default defineConfig({
   plugins: [
     vocabPluginVite({
-      configFile,
+      configFile
     })
   ],
   build: {
