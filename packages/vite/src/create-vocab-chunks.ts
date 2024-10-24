@@ -72,7 +72,7 @@ export const createVocabChunks = (
   }
 };
 
-export const createDefaultChunks = (
+const createDefaultChunks = (
   manualChunks: Record<string, string[]>,
   id: string,
 ) => {
