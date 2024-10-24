@@ -176,7 +176,11 @@ describe('E2E', () => {
       localPage.setCacheEnabled(false);
       localPage.on('request', (request) => {
         // eslint-disable-next-line no-console
-        console.log('PUPPETEER:network-request', request.url());
+        console.log(
+          'PUPPETEER:network-request',
+          request.url(),
+          request.headers(),
+        );
       });
 
       localPage.on('response', (response) => {
@@ -194,6 +198,9 @@ describe('E2E', () => {
       // eslint-disable-next-line no-console
       console.log('server.url', server.url);
       await jestPuppeteer.resetPage();
+      await localPage.setExtraHTTPHeaders({
+        Accept: '*/*',
+      });
       await localPage.goto(server.url, { waitUntil: 'load' });
     });
 
