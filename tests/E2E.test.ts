@@ -5,6 +5,7 @@ import {
   type TestServer,
   getLanguageChunk,
   previewViteFixture,
+  debugPageOrFrame,
 } from '@vocab-private/test-helpers';
 import type { Page } from 'puppeteer';
 
@@ -172,6 +173,7 @@ describe('E2E', () => {
         bundler: 'vite',
       });
       localPage = await browser.newPage();
+      localPage.setCacheEnabled(false);
       localPage.on('request', (request) => {
         // eslint-disable-next-line no-console
         console.log('PUPPETEER:network-request', request.url());
@@ -192,7 +194,7 @@ describe('E2E', () => {
       // eslint-disable-next-line no-console
       console.log('server.url', server.url);
       await jestPuppeteer.resetPage();
-      await localPage.goto(server.url, { waitUntil: 'networkidle0' });
+      await localPage.goto(server.url, { waitUntil: 'load' });
     });
 
     afterAll(async () => {
@@ -211,6 +213,7 @@ describe('E2E', () => {
     });
 
     it('should handle to en-US locale', async () => {
+      debugPageOrFrame(localPage);
       await localPage.click('#toggle-locale');
 
       const publishDate = await localPage.waitForSelector('#publish-date');
