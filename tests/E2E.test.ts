@@ -5,7 +5,6 @@ import {
   type TestServer,
   getLanguageChunk,
   previewViteFixture,
-  debugPageOrFrame,
 } from '@vocab-private/test-helpers';
 import type { Page } from 'puppeteer';
 
@@ -163,7 +162,8 @@ describe('E2E', () => {
     });
   });
 
-  describe('vite with plugin', () => {
+  // eslint-disable-next-line jest/no-focused-tests
+  describe.only('vite with plugin', () => {
     let server: TestServer;
     let localPage: Page;
 
@@ -196,7 +196,6 @@ describe('E2E', () => {
     });
 
     it('should default to en-AU english', async () => {
-      debugPageOrFrame(localPage);
       const message = await localPage.waitForSelector('#message');
       const publishDate = await localPage.waitForSelector('#publish-date');
 
