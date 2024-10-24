@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [
     vitePluginVocab({
       configFile: userConfig,
-      combineLanguageChunks: false,
     }),
   ],
   build: {
@@ -15,7 +14,6 @@ export default defineConfig({
         chunkFileNames: '[name].js',
         manualChunks: {
           react: ['react-dom', 'react'],
-          vocab: ['@vocab/*'],
         },
       },
     },

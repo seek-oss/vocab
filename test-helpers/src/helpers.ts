@@ -3,7 +3,7 @@ import path from 'path';
 
 import webpack from 'webpack';
 import WDS from 'webpack-dev-server';
-import { createServer, preview } from 'vite';
+import { createServer, preview, build } from 'vite';
 import waitOn from 'wait-on';
 
 import { spawn } from 'child_process';
@@ -174,6 +174,11 @@ export const previewViteFixture: FixtureStartFunction = async (
       console.log('vite config', config);
 
       const port = portCounter++;
+      await build({
+        ...config.default,
+        ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+        root,
+      });
       const server = await preview({
         ...config.default,
         ...(options.disableVocabPlugin ? { plugins: [] } : {}),
@@ -186,6 +191,10 @@ export const previewViteFixture: FixtureStartFunction = async (
       });
 
       console.log(`Running fixture ${fixtureName}`);
+
+      await waitOn({
+        resources: [`${server.resolvedUrls?.local[0]}/index.html`],
+      });
 
       resolve({
         url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
