@@ -172,6 +172,8 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
+      // eslint-disable-next-line no-console
+      console.log('server.url', server.url);
       await jestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
