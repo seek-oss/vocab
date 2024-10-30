@@ -390,15 +390,17 @@ export async function loadAllTranslations(
 
   trace(`Found ${translationFiles.length} translation files`);
 
-  const result = await Promise.all(
-    translationFiles.map((filePath) =>
-      loadTranslation({ filePath, fallbacks, withTags }, config),
-    ),
-  );
-
+  const loadedTranslations: LoadedTranslation[] = [];
   const keys = new Set<string>();
 
-  for (const loadedTranslation of result) {
+  for (const translationFile of translationFiles) {
+    const loadedTranslation = loadTranslation(
+      { filePath: translationFile, fallbacks, withTags },
+      config,
+    );
+
+    loadedTranslations.push(loadedTranslation);
+
     for (const key of loadedTranslation.keys) {
       const uniqueKey = getUniqueKey(key, loadedTranslation.namespace);
       if (keys.has(uniqueKey)) {
@@ -421,5 +423,6 @@ export async function loadAllTranslations(
       }
     }
   }
-  return result;
+
+  return loadedTranslations;
 }
