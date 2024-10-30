@@ -1,5 +1,18 @@
 # @vocab/phrase
 
+## 2.0.2
+
+### Patch Changes
+
+- [#272](https://github.com/seek-oss/vocab/pull/272) [`dad4649`](https://github.com/seek-oss/vocab/commit/dad4649d2898c3ba7277598af343aac0581f7ccc) Thanks [@adenj](https://github.com/adenj)! - Fix translation issue caused by mismatched Phrase locale identifiers.
+
+  Previous behaviour meant that translations were pushed using the locale name in Phrase, but Vocab was retrieving translations by locale code. Phrase locale codes and locale names are not always aligned. This would lead to Vocab searching for translations by code rather than name, often resulting in missing translations.
+
+  Vocab now consistently pushes and pulls translations using Phrase’s locale name, regardless of the locale code set in Phrase.
+
+- Updated dependencies [[`2e21978`](https://github.com/seek-oss/vocab/commit/2e21978b30b04826f22f3631e9a7adef3be09dc2)]:
+  - @vocab/core@1.6.3
+
 ## 2.0.1
 
 ### Patch Changes
