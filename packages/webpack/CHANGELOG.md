@@ -1,5 +1,15 @@
 # @vocab/webpack
 
+## 1.2.10
+
+### Patch Changes
+
+- [#237](https://github.com/seek-oss/vocab/pull/237) [`b74686d`](https://github.com/seek-oss/vocab/commit/b74686d7ed232eff330b2a734895f66eaa5387a1) Thanks [@renovate](https://github.com/apps/renovate)! - URI-encode virtual language module data for compatibility with Webpack v5's `this.getOptions` API
+
+- Updated dependencies [[`2e21978`](https://github.com/seek-oss/vocab/commit/2e21978b30b04826f22f3631e9a7adef3be09dc2), [`b74686d`](https://github.com/seek-oss/vocab/commit/b74686d7ed232eff330b2a734895f66eaa5387a1)]:
+  - @vocab/core@1.6.3
+  - virtual-resource-loader@2.0.0
+
 ## 1.2.9
 
 ### Patch Changes

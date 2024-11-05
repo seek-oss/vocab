@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.6.3
+
+### Patch Changes
+
+- [#284](https://github.com/seek-oss/vocab/pull/284) [`2e21978`](https://github.com/seek-oss/vocab/commit/2e21978b30b04826f22f3631e9a7adef3be09dc2) Thanks [@askoufis](https://github.com/askoufis)! - `loadAllTranslations`: Refactor to remove unnecessary `await` and remove extra loop
+
 ## 1.6.2
 
 ### Patch Changes
@@ -259,25 +265,32 @@
 
   ```tsx
   import type { UserConfig } from '@vocab/types';
-  import { loadTranslation, loadAllTranslations } from '@vocab/core';
+  import {
+    loadTranslation,
+    loadAllTranslations
+  } from '@vocab/core';
 
   const userConfig: UserConfig = {
     devLanguage: 'en',
-    languages: [{ name: 'en' }, { name: 'th' }],
+    languages: [{ name: 'en' }, { name: 'th' }]
   };
 
   const translations = loadTranslation(
     {
       filePath: '/path/to/translations.json',
       fallbacks: 'valid',
-      withTags: true,
+      withTags: true
     },
-    userConfig,
+    userConfig
   );
 
   const allTranslations = loadAllTranslations(
-    { fallbacks: 'valid', includeNodeModules: false, withTags: true },
-    userConfig,
+    {
+      fallbacks: 'valid',
+      includeNodeModules: false,
+      withTags: true
+    },
+    userConfig
   );
   ```
 

@@ -1,5 +1,13 @@
 # @vocab/cli
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`2e21978`](https://github.com/seek-oss/vocab/commit/2e21978b30b04826f22f3631e9a7adef3be09dc2), [`dad4649`](https://github.com/seek-oss/vocab/commit/dad4649d2898c3ba7277598af343aac0581f7ccc)]:
+  - @vocab/core@1.6.3
+  - @vocab/phrase@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
