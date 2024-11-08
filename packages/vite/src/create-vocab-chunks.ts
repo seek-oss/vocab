@@ -7,7 +7,7 @@ export const createVocabChunks = (
   id: string,
   { getModuleInfo }: Rollup.ManualChunkMeta,
 ) => {
-  const match = /(\w+)-vocab-virtual-module/.exec(id);
+  const match = /(\w+)-virtual:vocab/.exec(id);
   if (!match) {
     return;
   }
