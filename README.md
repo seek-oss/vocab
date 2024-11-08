@@ -13,7 +13,7 @@ Vocab helps you ship multiple languages without compromising the reliability of 
 - **Strongly typed with TypeScript**\
   When using translations TypeScript will ensure code only accesses valid translations and translations are passed all required dynamic values.
 
-## table of contents
+## Table of contents
 
 - [Getting started](#getting-started)
   - [Step 1: Install Dependencies](#step-1-install-dependencies)
@@ -211,12 +211,12 @@ default usage
 // vite.config.js
 import { defineConfig } from 'vite';
 import { vocabPluginVite } from '@vocab/vite';
-import configFile from './vocab.config.cjs';
+import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
     vocabPluginVite({
-      configFile
+      vocabConfig
     })
   ]
 });
@@ -224,21 +224,20 @@ export default defineConfig({
 
 #### createVocabChunks
 
-If you want to combine all language files into a single chunk, you can use the `createVocabChunks` function. Simply use the function in your `manualChunks` configuration.
+If you want to combine all language files into a single chunk, you can use the `createVocabChunks` function.
+Simply use the function in your `manualChunks` configuration.
 
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import {
-  vocabPluginVite,
-  createVocabChunks
-} from '@vocab/vite';
-import configFile from './vocab.config.cjs';
+import { vocabPluginVite } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
+import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
     vocabPluginVite({
-      configFile
+      vocabConfig
     })
   ],
   build: {
@@ -270,7 +269,7 @@ type VocabPluginOptions = {
    * The type can be found in the `@vocab/core/types`.
    * This value is required
    */
-  configFile: UserConfig;
+  vocabConfig: UserConfig;
 };
 ```
 

@@ -1,13 +1,12 @@
 import { defineConfig } from 'vite';
 import vitePluginVocab from '@vocab/vite';
 import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
-import userConfig from './vocab.config.cjs';
+import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
     vitePluginVocab({
-      configFile: userConfig,
-      combineLanguageChunks: false,
+      vocabConfig,
     }),
   ],
   build: {

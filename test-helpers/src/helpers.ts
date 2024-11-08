@@ -62,8 +62,11 @@ export const runServerFixture = (
     await compileFixtureTranslations(fixtureName);
 
     const port = portCounter++;
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
+
+    const getConfig = (
+      await import(`@vocab-fixtures/${fixtureName}/webpack.config.js`)
+    ).default;
+
     const config = getConfig();
     const compiler = webpack(config);
 
@@ -90,20 +93,22 @@ export const runServerFixture = (
     });
   });
 
-type FixtureStartFunction = (
+type StartFixtureFunction = (
   fixtureName: FixtureName,
   options?: Options,
 ) => Promise<TestServer>;
 
-export const startWebpackFixture: FixtureStartFunction = (
+export const startWebpackFixture: StartFixtureFunction = (
   fixtureName: FixtureName,
   options: Options = {},
 ): Promise<TestServer> =>
   new Promise(async (resolve) => {
     await compileFixtureTranslations(fixtureName);
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const getConfig = require(`@vocab-fixtures/${fixtureName}/webpack.config.js`);
+    const getConfig = (
+      await import(`@vocab-fixtures/${fixtureName}/webpack.config.js`)
+    ).default;
+
     const config = getConfig(options);
     const compiler = webpack(config);
 
@@ -122,15 +127,16 @@ export const startWebpackFixture: FixtureStartFunction = (
     });
   });
 
-export const startViteFixture: FixtureStartFunction = async (
+export const startViteFixture: StartFixtureFunction = async (
   fixtureName: FixtureName,
-  options: Options = {},
+  options: Omit<Options, 'bundler'> = {},
 ): Promise<TestServer> =>
   new Promise(async (resolve) => {
     await compileFixtureTranslations(fixtureName);
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
+    const config = await import(
+      `@vocab-fixtures/${fixtureName}/vite.config.js`
+    );
 
     const port = portCounter++;
     const server = await createServer({
@@ -154,7 +160,7 @@ export const startViteFixture: FixtureStartFunction = async (
     });
   });
 
-export const previewViteFixture: FixtureStartFunction = async (
+export const previewViteFixture: StartFixtureFunction = async (
   fixtureName: FixtureName,
   options: Options = {},
 ): Promise<TestServer> =>
@@ -162,8 +168,9 @@ export const previewViteFixture: FixtureStartFunction = async (
     try {
       await compileFixtureTranslations(fixtureName);
 
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const config = require(`@vocab-fixtures/${fixtureName}/vite.config.js`);
+      const config = await import(
+        `@vocab-fixtures/${fixtureName}/vite.config.js`
+      );
 
       const root = path.dirname(
         require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
@@ -200,7 +207,7 @@ export const previewViteFixture: FixtureStartFunction = async (
     }
   });
 
-const fixtureBundlerMap: Record<Bundler, FixtureStartFunction> = {
+const fixtureBundlerMap: Record<Bundler, StartFixtureFunction> = {
   webpack: startWebpackFixture,
   vite: startViteFixture,
 };

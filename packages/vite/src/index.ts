@@ -9,15 +9,15 @@ import { trace } from './logger';
 import { compiledVocabFileFilter, virtualModuleId } from './consts';
 
 export type VocabPluginOptions = {
-  configFile: UserConfig;
+  vocabConfig: UserConfig;
 };
 
 export default function vitePluginVocab({
-  configFile,
+  vocabConfig,
 }: VocabPluginOptions): VitePlugin {
   trace(
     `Creating Vocab plugin${
-      configFile ? ` with config file ${configFile}` : ''
+      vocabConfig ? ` with config file ${vocabConfig}` : ''
     }`,
   );
   return {
@@ -34,7 +34,7 @@ export default function vitePluginVocab({
     },
     async transform(code, id) {
       if (compiledVocabFileFilter.test(id)) {
-        const transformedCode = await transformVocabFile(code, id, configFile);
+        const transformedCode = await transformVocabFile(code, id, vocabConfig);
         return {
           code: transformedCode,
           map: null, // provide source map if available
