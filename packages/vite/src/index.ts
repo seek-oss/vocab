@@ -24,7 +24,7 @@ export default function vitePluginVocab({
     name: 'vite-plugin-vocab',
     resolveId(id) {
       if (id.includes(virtualModuleId)) {
-        return id;
+        return `\0${id}`;
       }
     },
     load(id) {
