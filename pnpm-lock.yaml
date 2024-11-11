@@ -249,7 +249,16 @@ importers:
         specifier: ^5.0.2
         version: 5.1.0(webpack@5.95.0)
 
-  fixtures/simple-vite:
+  fixtures/translation-types:
+    dependencies:
+      '@vocab/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@vocab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+
+  fixtures/vite:
     dependencies:
       '@babel/core':
         specifier: ^7.12.0
@@ -272,6 +281,9 @@ importers:
       '@vocab/react':
         specifier: workspace:*
         version: link:../../packages/react
+      '@vocab/vite':
+        specifier: workspace:*
+        version: link:../../packages/vite
       react:
         specifier: ^18.1.0
         version: 18.3.1
@@ -281,15 +293,6 @@ importers:
       vite:
         specifier: ^5.4.8
         version: 5.4.8(@types/node@18.19.55)(terser@5.34.1)
-
-  fixtures/translation-types:
-    dependencies:
-      '@vocab/cli':
-        specifier: workspace:*
-        version: link:../../packages/cli
-      '@vocab/core':
-        specifier: workspace:*
-        version: link:../../packages/core
 
   packages/cli:
     dependencies:
@@ -401,6 +404,31 @@ importers:
 
   packages/virtual-resource-loader: {}
 
+  packages/vite:
+    dependencies:
+      '@vocab/core':
+        specifier: workspace:^
+        version: link:../core
+      cjs-module-lexer:
+        specifier: ^1.2.2
+        version: 1.4.1
+      debug:
+        specifier: ^4.3.1
+        version: 4.3.7
+      es-module-lexer:
+        specifier: ^1.0.0
+        version: 1.5.4
+      picocolors:
+        specifier: ^1.0.0
+        version: 1.1.0
+    devDependencies:
+      '@types/debug':
+        specifier: ^4.1.5
+        version: 4.1.12
+      vite:
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@18.19.55)(terser@5.34.1)
+
   packages/webpack:
     dependencies:
       '@vocab/core':
@@ -449,9 +477,15 @@ importers:
       '@vocab-fixtures/translation-types':
         specifier: workspace:*
         version: link:../fixtures/translation-types
+      '@vocab-fixtures/vite':
+        specifier: workspace:*
+        version: link:../fixtures/vite
       '@vocab/core':
         specifier: workspace:*
         version: link:../packages/core
+      vite:
+        specifier: ^5.4.8
+        version: 5.4.8(@types/node@18.19.55)(terser@5.34.1)
       wait-on:
         specifier: ^8.0.0
         version: 8.0.1

@@ -13,6 +13,17 @@ Vocab helps you ship multiple languages without compromising the reliability of 
 - **Strongly typed with TypeScript**\
   When using translations TypeScript will ensure code only accesses valid translations and translations are passed all required dynamic values.
 
+## Table of contents
+
+- [Getting started](#getting-started)
+  - [Step 1: Install Dependencies](#step-1-install-dependencies)
+  - [Step 2: Configure Vocab](#step-2-configure-vocab)
+  - [Step 3: Set the language using the React Provider](#step-3-set-the-language-using-the-react-provider)
+  - [Step 4: Create translations](#step-4-create-translations)
+  - [Step 5: Compile and consume translations](#step-5-compile-and-consume-translations)
+  - [Step 6: [Optional] Set up plugin](#step-6-optional-set-up-plugin)
+  - [Step 7: [Optional] Optimize for fast page loading](#step-7-optional-optimize-for-fast-page-loading)
+
 ## Getting started
 
 ### Step 1: Install Dependencies
@@ -159,7 +170,9 @@ function MyComponent({ children }) {
 }
 ```
 
-### Step 6: [Optional] Set up Webpack plugin
+### Step 6: [Optional] Set up plugin
+
+#### Webpack Plugin
 
 With the default setup, every language is loaded into your web application all the time, potentially leading to a large bundle size.
 Ideally you will want to switch out the Node.js/default runtime for the web runtime, which only loads the active language.
@@ -178,6 +191,85 @@ const { VocabWebpackPlugin } = require('@vocab/webpack');
 
 module.exports = {
   plugins: [new VocabWebpackPlugin()]
+};
+```
+
+#### Vite Plugin _(this plugin is experimental)_
+
+> [!NOTE]
+> This plugin is still experimental and may not work in all cases. If you encounter any issues, please open an issue on the Vocab GitHub repository.
+
+Vocab also provides a Vite plugin to handle the same functionality as the Webpack plugin.
+
+```shell
+npm i --save-dev @vocab/vite
+```
+
+default usage
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import { vocabPluginVite } from '@vocab/vite';
+import vocabConfig from './vocab.config.cjs';
+
+export default defineConfig({
+  plugins: [
+    vocabPluginVite({
+      vocabConfig
+    })
+  ]
+});
+```
+
+#### createVocabChunks
+
+If you want to combine all language files into a single chunk, you can use the `createVocabChunks` function.
+Simply use the function in your `manualChunks` configuration.
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+import { vocabPluginVite } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
+import vocabConfig from './vocab.config.cjs';
+
+export default defineConfig({
+  plugins: [
+    vocabPluginVite({
+      vocabConfig
+    })
+  ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id, ctx) => {
+          // handle your own manual chunks before or after the vocab chunks.
+          const languageChunkName = createVocabChunks(
+            id,
+            ctx
+          );
+          if (languageChunkName) {
+            // vocab has found a language chunk. Either return it or handle it in your own way.
+            return languageChunkName;
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+#### VocabPluginOptions
+
+```ts
+type VocabPluginOptions = {
+  /**
+   * The Vocab configuration file.
+   * The type can be found in the `@vocab/core/types`.
+   * This value is required
+   */
+  vocabConfig: UserConfig;
 };
 ```
 

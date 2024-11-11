@@ -1,12 +1,13 @@
 {
-  "name": "@vocab-fixtures/simple-vite",
-  "version": "1.0.0",
+  "name": "@vocab-fixtures/vite",
+  "version": "0.0.1",
   "author": "SEEK",
   "private": true,
   "scripts": {
     "compile": "vocab compile",
     "start": "vocab compile --watch & vite",
-    "build": "vocab compile && vite build"
+    "build": "vocab compile && vite build",
+    "preview": "vocab compile && vite preview"
   },
   "dependencies": {
     "@babel/core": "^7.12.0",
@@ -16,6 +17,7 @@
     "@vocab/core": "workspace:*",
     "@vocab/pseudo-localize": "workspace:*",
     "@vocab/react": "workspace:*",
+    "@vocab/vite": "workspace:*",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "vite": "^5.4.8"
