@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "preserve",
     "moduleResolution": "Bundler",
     "target": "ESNext",
     "noEmit": true,
