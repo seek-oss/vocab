@@ -299,7 +299,7 @@ extractor.addChunk(chunkName);
 
 Translation messages can sometimes contain dynamic values, such as dates/times, links, usernames, etc.
 These values often exist somewhere in the middle of a message, and could change location depending on the translation.
-To support this, Vocab uses [Format.js's `intl-messageformat` library], which enables you to use [ICU Message syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) in your messages.
+To support this, Vocab uses [Format.js's `intl-messageformat` library], which enables you to use [ICU Message syntax](https://formatjs.github.io/docs/core-concepts/icu-syntax/) in your messages.
 
 In the below example we are defining two messages: one that accepts a single parameter, and one that accepts a component.
 
@@ -323,7 +323,7 @@ t('my key with component', {
 });
 ```
 
-[Format.js's `intl-messageformat` library]: https://formatjs.io/docs/intl-messageformat/
+[Format.js's `intl-messageformat` library]: https://formatjs.github.io/docs/intl-messageformat/
 
 ## Overriding the Locale
 
@@ -346,7 +346,7 @@ This can be useful in certain situations:
   For example: `th-u-ca-gregory`.
   See the [MDN Intl docs] for more information on BCP 47 extension sequences.
 
-[`intl-messageformat`]: https://formatjs.io/docs/intl-messageformat/
+[`intl-messageformat`]: https://formatjs.github.io/docs/intl-messageformat/
 [IETF language tag]: https://en.wikipedia.org/wiki/IETF_language_tag
 [mdn intl docs]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument
 
@@ -403,8 +403,8 @@ const Currency = ({ value, currency }) => {
 };
 ```
 
-[numbers]: https://formatjs.io/docs/core-concepts/icu-syntax/#number-type
-[dates, and times]: https://formatjs.io/docs/core-concepts/icu-syntax/#supported-datetime-skeleton
+[numbers]: https://formatjs.github.io/docs/core-concepts/icu-syntax/#number-type
+[dates, and times]: https://formatjs.github.io/docs/core-concepts/icu-syntax/#supported-datetime-skeleton
 
 ## Configuration
 
@@ -544,7 +544,7 @@ const App = () => (
 );
 ```
 
-[icu message syntax]: https://formatjs.io/docs/intl-messageformat/#message-syntax
+[icu message syntax]: https://formatjs.github.io/docs/intl-messageformat/#message-syntax
 [diacritics]: https://en.wikipedia.org/wiki/Diacritic
 
 ## Pseudo-localization
