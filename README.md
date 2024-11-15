@@ -721,6 +721,17 @@ referenced in the upload. These keys can be deleted from Phrase by providing the
 vocab push --branch my-branch --delete-unused-keys
 ```
 
+#### Ignoring Files
+
+The `ignore` key in your [Vocab config](#configuration) allows you to ignore certain files from being validated, compiled and uploaded.
+However, in some cases you may only want certain files to be compiled and validated, but not uploaded, such as those present in a build output directory.
+This can be accomplished by providing the `--ignore` flag to `vocab push`.
+This flag accepts an array of glob patterns to ignore.
+
+```sh
+vocab push --branch my-branch --ignore "**/dist/**" "**/another_ignored_directory/**"
+```
+
 [phrase]: https://developers.phrase.com/api/
 
 #### [Tags]

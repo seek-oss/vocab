@@ -15,6 +15,7 @@ import { trace } from './logger';
 interface PushOptions {
   branch: string;
   deleteUnusedKeys?: boolean;
+  ignore?: string[];
 }
 
 /**
@@ -22,12 +23,18 @@ interface PushOptions {
  * A unique namespace is appended to each key using the file path the key came from.
  */
 export async function push(
-  { branch, deleteUnusedKeys }: PushOptions,
+  { branch, deleteUnusedKeys, ignore }: PushOptions,
   config: UserConfig,
 ) {
+  if (ignore) {
+    trace(`ignoring files on paths: ${ignore.join(', ')}`);
+  }
   const allLanguageTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false, withTags: true },
-    config,
+    {
+      ...config,
+      ignore: [...(config.ignore || []), ...(ignore || [])],
+    },
   );
   trace(`Pushing translations to branch ${branch}`);
   const allLanguages = config.languages.map((v) => v.name);
