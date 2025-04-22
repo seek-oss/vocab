@@ -82,16 +82,16 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 `;
 
 exports[`E2E vite with plugin should return the expected en chunk 1`] = `
-"const e="Hello",o="world",l={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:l,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),t="<strong>Vocab</strong> was published on {publishDate, date, small}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{c as a,r as e};
+"const o="Hello",e="world",l={hello:o,world:e},r=Object.freeze(Object.defineProperty({__proto__:null,default:l,hello:o,world:e},Symbol.toStringTag,{value:"Module"})),t="<strong>Vocab</strong> was published on {publishDate, date, small}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{r as _,c as a};
 "
 `;
 
 exports[`E2E vite with plugin should return the expected fr chunk 1`] = `
-"const e="Bonjour",o="monde",a={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:a,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),t="Vocab a été publié le {publishDate, date, medium}",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{c as a,r as f};
+"const e="Bonjour",o="monde",a={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:a,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),t="Vocab a été publié le {publishDate, date, medium}",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{r as _,c as a};
 "
 `;
 
 exports[`E2E vite with plugin should return the expected pseudo chunk 1`] = `
-"const o="[Ḩẽẽƚƚöö]",t="[ŵöööřƚƌ]",s={hello:o,world:t},b=Object.freeze(Object.defineProperty({__proto__:null,default:s,hello:o,world:t},Symbol.toStringTag,{value:"Module"})),e="[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"[‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\]",vocabPublishDate:e},a=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{a as G,b as p};
+"const o="[Ḩẽẽƚƚöö]",t="[ŵöööřƚƌ]",s={hello:o,world:t},b=Object.freeze(Object.defineProperty({__proto__:null,default:s,hello:o,world:t},Symbol.toStringTag,{value:"Module"})),e="[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"[‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\]",vocabPublishDate:e},a=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{a as G,b as _};
 "
 `;
