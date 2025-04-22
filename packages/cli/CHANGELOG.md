@@ -1,5 +1,16 @@
 # @vocab/cli
 
+## 2.1.0
+
+### Minor Changes
+
+- [#282](https://github.com/seek-oss/vocab/pull/282) [`b54de90`](https://github.com/seek-oss/vocab/commit/b54de902299d64e8e450669203a61b5116e8fcb2) Thanks [@DanDroryAu](https://github.com/DanDroryAu)! - Added a new `--ignore` flag on the cli.
+
+### Patch Changes
+
+- Updated dependencies [[`b54de90`](https://github.com/seek-oss/vocab/commit/b54de902299d64e8e450669203a61b5116e8fcb2)]:
+  - @vocab/phrase@2.1.0
+
 ## 2.0.2
 
 ### Patch Changes
