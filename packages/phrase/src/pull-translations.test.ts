@@ -196,6 +196,13 @@ describe('pull translations', () => {
       ).toMatchInlineSnapshot(`
         [
           {
+            "_meta": {},
+            "excluded": {
+              "message": "this is excluded",
+            },
+          },
+          {},
+          {
             "_meta": {
               "tags": [
                 "every",
@@ -234,13 +241,6 @@ describe('pull translations', () => {
               "message": "monde",
             },
           },
-          {
-            "_meta": {},
-            "excluded": {
-              "message": "this is excluded",
-            },
-          },
-          {},
         ]
       `);
     });
