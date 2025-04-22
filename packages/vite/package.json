@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "author": "SEEK",
   "license": "MIT",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/seek-oss/vocab.git",
