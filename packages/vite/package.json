@@ -23,19 +23,25 @@
     "./create-vocab-chunks": {
       "module": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.esm.js",
       "default": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.cjs.js"
+    },
+    "./get-chunk-name": {
+      "module": "./get-chunk-name/dist/vocab-vite-get-chunk-name.esm.js",
+      "default": "./get-chunk-name/dist/vocab-vite-get-chunk-name.cjs.js"
     }
   },
   "preconstruct": {
     "entrypoints": [
       "index.ts",
       "create-language.ts",
-      "create-vocab-chunks.ts"
+      "create-vocab-chunks.ts",
+      "get-chunk-name.ts"
     ]
   },
   "files": [
     "dist",
     "create-language",
-    "create-vocab-chunks"
+    "create-vocab-chunks",
+    "get-chunk-name"
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",
