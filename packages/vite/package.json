@@ -24,7 +24,7 @@
       "module": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.esm.js",
       "default": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.cjs.js"
     },
-    "./get-chunk-name": {
+    "./chunk-name": {
       "module": "./get-chunk-name/dist/vocab-vite-get-chunk-name.esm.js",
       "default": "./get-chunk-name/dist/vocab-vite-get-chunk-name.cjs.js"
     }
