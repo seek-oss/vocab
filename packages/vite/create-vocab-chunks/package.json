@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-vite-create-vocab-chunks.cjs.js",
-  "module": "dist/vocab-vite-create-vocab-chunks.esm.js"
-}

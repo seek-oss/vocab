@@ -62,7 +62,7 @@ export const transformVocabFile = async (
     trace(`Found ESM export '${exportName.n}' in ${id}`);
 
     result = /* ts */ `
-      import { createLanguage, createTranslationFile } from '@vocab/vite/create-language';
+      import { createLanguage, createTranslationFile } from '@vocab/vite/runtime';
       ${translations}
       export { translations as ${exportName.n} };
     `;
@@ -74,7 +74,7 @@ export const transformVocabFile = async (
     trace(`Found CJS export '${exportName}' in ${id}`);
 
     result = /* ts */ `
-      import { createLanguage, createTranslationFile } from '@vocab/vite/create-language';
+      import { createLanguage, createTranslationFile } from '@vocab/vite/runtime';
       ${translations}
       exports.${exportName} = translations;
     `;
