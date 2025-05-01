@@ -16,32 +16,26 @@
       "module": "./dist/vocab-vite.esm.js",
       "default": "./dist/vocab-vite.cjs.js"
     },
-    "./create-language": {
-      "module": "./create-language/dist/vocab-vite-create-language.esm.js",
-      "default": "./create-language/dist/vocab-vite-create-language.cjs.js"
+    "./runtime": {
+      "module": "./runtime/dist/vocab-vite-runtime.esm.js",
+      "default": "./runtime/dist/vocab-vite-runtime.cjs.js"
     },
-    "./create-vocab-chunks": {
-      "module": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.esm.js",
-      "default": "./create-vocab-chunks/dist/vocab-vite-create-vocab-chunks.cjs.js"
-    },
-    "./chunk-name": {
-      "module": "./get-chunk-name/dist/vocab-vite-get-chunk-name.esm.js",
-      "default": "./get-chunk-name/dist/vocab-vite-get-chunk-name.cjs.js"
+    "./chunks": {
+      "module": "./chunks/dist/vocab-vite-chunks.esm.js",
+      "default": "./chunks/dist/vocab-vite-chunks.cjs.js"
     }
   },
   "preconstruct": {
     "entrypoints": [
       "index.ts",
-      "create-language.ts",
-      "create-vocab-chunks.ts",
-      "get-chunk-name.ts"
+      "runtime.ts",
+      "chunks.ts"
     ]
   },
   "files": [
     "dist",
-    "create-language",
-    "create-vocab-chunks",
-    "get-chunk-name"
+    "runtime",
+    "chunks"
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",

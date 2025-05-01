@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-vite-create-language.cjs.js",
-  "module": "dist/vocab-vite-create-language.esm.js"
-}

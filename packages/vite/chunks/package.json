@@ -1,0 +1,4 @@
+{
+  "main": "dist/vocab-vite-chunks.cjs.js",
+  "module": "dist/vocab-vite-chunks.esm.js"
+}
