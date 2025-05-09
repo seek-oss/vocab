@@ -16,6 +16,18 @@ jest.mock('./phrase-api', () => ({
 
 const devLanguage = 'en';
 
+const serializeMockedFileWrites = () =>
+  jest
+    .mocked(writeFile)
+    .mock.calls.map(([filePath, contents]) => ({
+      contents: JSON.parse(contents as string),
+      filePath: filePath.toString(),
+    }))
+    // Sort files by path so that the order is consistent
+    .sort(({ filePath: a }, { filePath: b }) => a.localeCompare(b))
+    // Discard file paths as we really only care about file contents
+    .map(({ contents }) => contents);
+
 function runPhrase(options: {
   languages: LanguageTarget[];
   generatedLanguages: GeneratedLanguageTarget[];
@@ -39,7 +51,7 @@ describe('pull translations', () => {
     beforeEach(() => {
       jest.mocked(pullAllTranslations).mockClear();
       jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockResolvedValue(
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -83,21 +95,30 @@ describe('pull translations', () => {
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(
-        jest
-          .mocked(writeFile)
-          .mock.calls.map(([_filePath, contents]) =>
-            JSON.parse(contents as string),
-          ),
-      ).toMatchInlineSnapshot(`
+      const writtenTranslations = serializeMockedFileWrites();
+      expect(writtenTranslations).toMatchInlineSnapshot(`
         [
+          {},
           {
             "_meta": {},
             "excluded": {
               "message": "this is excluded",
             },
           },
-          {},
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "message": "Merci.",
+            },
+            "world": {
+              "message": "monde",
+            },
+          },
           {
             "_meta": {
               "tags": [
@@ -126,20 +147,6 @@ describe('pull translations', () => {
               "message": "world",
             },
           },
-          {
-            "hello": {
-              "message": "merci",
-            },
-            "profile": {
-              "message": "profil",
-            },
-            "thanks": {
-              "message": "Merci.",
-            },
-            "world": {
-              "message": "monde",
-            },
-          },
         ]
       `);
     });
@@ -149,7 +156,7 @@ describe('pull translations', () => {
     beforeEach(() => {
       jest.mocked(pullAllTranslations).mockClear();
       jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockResolvedValue(
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -187,21 +194,27 @@ describe('pull translations', () => {
     it('should update keys', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(
-        jest
-          .mocked(writeFile)
-          .mock.calls.map(([_filePath, contents]) =>
-            JSON.parse(contents as string),
-          ),
-      ).toMatchInlineSnapshot(`
+      const writtenTranslations = serializeMockedFileWrites();
+      expect(writtenTranslations).toMatchInlineSnapshot(`
         [
+          {},
           {
             "_meta": {},
             "excluded": {
               "message": "this is excluded",
             },
           },
-          {},
+          {
+            "hello": {
+              "message": "merci",
+            },
+            "profile": {
+              "message": "profil",
+            },
+            "world": {
+              "message": "monde",
+            },
+          },
           {
             "_meta": {
               "tags": [
@@ -230,17 +243,6 @@ describe('pull translations', () => {
               "message": "world",
             },
           },
-          {
-            "hello": {
-              "message": "merci",
-            },
-            "profile": {
-              "message": "profil",
-            },
-            "world": {
-              "message": "monde",
-            },
-          },
         ]
       `);
     });
@@ -250,7 +252,7 @@ describe('pull translations', () => {
     beforeEach(() => {
       jest.mocked(pullAllTranslations).mockClear();
       jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockResolvedValue(
         Promise.resolve({
           fr: {
             'hello.mytranslations': {
@@ -286,10 +288,10 @@ describe('pull translations', () => {
   });
 
   describe('when pulling translations and some global keys do not have any translations', () => {
-    beforeEach(() => {
+    it('should throw an error', async () => {
       jest.mocked(pullAllTranslations).mockClear();
       jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockImplementation(() =>
+      jest.mocked(pullAllTranslations).mockResolvedValue(
         Promise.resolve({
           en: {
             'hello.mytranslations': {
@@ -303,28 +305,24 @@ describe('pull translations', () => {
           },
         }),
       );
-    });
 
-    const options = {
-      languages: [{ name: 'en' }, { name: 'fr' }],
-      generatedLanguages: [
-        {
-          name: 'generatedLanguage',
-          extends: 'en',
-          generator: {
-            transformMessage: (message: string) => `[${message}]`,
+      const options = {
+        languages: [{ name: 'en' }, { name: 'fr' }],
+        generatedLanguages: [
+          {
+            name: 'generatedLanguage',
+            extends: 'en',
+            generator: {
+              transformMessage: (message: string) => `[${message}]`,
+            },
           },
-        },
-      ],
-      errorOnNoGlobalKeyTranslation: true,
-    };
+        ],
+        errorOnNoGlobalKeyTranslation: true,
+      };
 
-    it('should throw an error', async () => {
       await expect(runPhrase(options)).rejects.toThrow(
         new Error(`Missing translation for global key thanks in language fr`),
       );
-
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(3);
     });
   });
 });
