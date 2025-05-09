@@ -111,5 +111,5 @@ const createIdentifier = (
 
   const encodedResource = `${sourceQueryKey}${base64}`;
 
-  return `\0${virtualModuleId}-${lang}.json${encodedResource}`;
+  return `${virtualModuleId}-${lang}.json${encodedResource}`;
 };

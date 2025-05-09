@@ -26,9 +26,17 @@ export default function vitePluginVocab({
   return {
     name: 'vite-plugin-vocab',
     apply: 'build',
+    enforce: 'pre',
     configResolved(config) {
       // Check if the build is for SSR. This plugin should not run for SSR builds.
       isSSR = Boolean(config.build.ssr);
+    },
+    resolveId(id) {
+      if (isSSR) return null;
+
+      if (id.includes(virtualModuleId)) {
+        return `\0${id}`;
+      }
     },
     load(id) {
       if (isSSR) return null;
