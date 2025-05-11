@@ -1,5 +1,13 @@
 # @vocab/vite
 
+## 0.2.1
+
+### Patch Changes
+
+- [#305](https://github.com/seek-oss/vocab/pull/305) [`0b7abee`](https://github.com/seek-oss/vocab/commit/0b7abee04c7ef5b25bf6f9e04a8d58a3f09748cc) Thanks [@DanDroryAu](https://github.com/DanDroryAu)! - `vite-plugin`: enforce `pre` in plugin execution.
+
+- [#308](https://github.com/seek-oss/vocab/pull/308) [`ce183f9`](https://github.com/seek-oss/vocab/commit/ce183f961688b14056cdf87d9d4d769baf5b38df) Thanks [@askoufis](https://github.com/askoufis)! - Extend `vite` peer dependnecy range to include `^6.0.0`
+
 ## 0.2.0
 
 ### Minor Changes
