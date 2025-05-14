@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.6.4
+
+### Patch Changes
+
+- [#309](https://github.com/seek-oss/vocab/pull/309) [`5444b6a`](https://github.com/seek-oss/vocab/commit/5444b6ae5c344033672d9ae20d72c3e32c1fc70d) Thanks [@askoufis](https://github.com/askoufis)! - Update `prettier` to v3
+
 ## 1.6.3
 
 ### Patch Changes
