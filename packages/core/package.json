@@ -52,10 +52,9 @@
     "find-up": "^5.0.0",
     "intl-messageformat": "^10.0.0",
     "picocolors": "^1.0.0",
-    "prettier": "^2.1.2"
+    "prettier": "^3.5.3"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.5",
-    "@types/prettier": "^2.1.5"
+    "@types/debug": "^4.1.5"
   }
 }

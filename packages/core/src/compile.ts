@@ -236,7 +236,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
     imports,
     loadedTranslation,
   );
-  const declaration = prettier.format(serializedTranslationType, {
+  const declaration = await prettier.format(serializedTranslationType, {
     ...prettierConfig,
     parser: 'typescript',
   });
