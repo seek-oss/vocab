@@ -1,5 +1,12 @@
 # @vocab/phrase
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`5444b6a`](https://github.com/seek-oss/vocab/commit/5444b6ae5c344033672d9ae20d72c3e32c1fc70d)]:
+  - @vocab/core@1.6.4
+
 ## 2.1.0
 
 ### Minor Changes
