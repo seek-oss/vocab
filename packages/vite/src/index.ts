@@ -32,21 +32,27 @@ export default function vitePluginVocab({
       isSSR = Boolean(config.build.ssr);
     },
     resolveId(id) {
-      if (isSSR) return null;
+      if (isSSR) {
+        return null;
+      }
 
       if (id.includes(virtualModuleId)) {
         return `\0${id}`;
       }
     },
     load(id) {
-      if (isSSR) return null;
+      if (isSSR) {
+        return null;
+      }
 
       if (id.includes(`\0${virtualModuleId}`)) {
         return virtualResourceLoader(id);
       }
     },
     async transform(code, id) {
-      if (isSSR) return null;
+      if (isSSR) {
+        return null;
+      }
 
       if (compiledVocabFileFilter.test(id)) {
         const transformedCode = await transformVocabFile(code, id, vocabConfig);

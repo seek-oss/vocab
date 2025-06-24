@@ -41,7 +41,9 @@ export const createVocabChunks = (
       dependentEntryPoints.push(moduleId);
     }
 
-    for (const importerId of importers) idsToHandle.add(importerId);
+    for (const importerId of importers) {
+      idsToHandle.add(importerId);
+    }
   }
 
   if (dependentEntryPoints.length > 0) {
