@@ -49,10 +49,10 @@
   "manypkg": {
     "workspaceProtocol": "require"
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.13.1",
   "volta": {
     "node": "20.19.3",
-    "pnpm": "10.12.4"
+    "pnpm": "10.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.0",
