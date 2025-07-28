@@ -14,7 +14,7 @@
     "@vocab-fixtures/translation-types": "workspace:*",
     "@vocab-fixtures/vite": "workspace:*",
     "@vocab/core": "workspace:*",
-    "vite": "^6.3.5",
+    "vite": "^7.0.0",
     "wait-on": "^8.0.0",
     "webpack": "^5.37.0",
     "webpack-dev-server": "^5.0.2"
