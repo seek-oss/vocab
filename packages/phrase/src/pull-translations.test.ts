@@ -49,11 +49,11 @@ function runPhrase(options: {
 
 describe('pull translations', () => {
   describe('when pulling translations for languages that already have translations', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
+        await Promise.resolve({
           en: {
             'hello.mytranslations': {
               message: 'Hi there',
@@ -154,11 +154,11 @@ describe('pull translations', () => {
   });
 
   describe('when pulling translations and some languages do not have any translations', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
+        await Promise.resolve({
           en: {
             'hello.mytranslations': {
               message: 'Hi there',
@@ -250,11 +250,11 @@ describe('pull translations', () => {
   });
 
   describe('when pulling translations and the project has not configured translations for the dev language', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
+        await Promise.resolve({
           fr: {
             'hello.mytranslations': {
               message: 'merci',
@@ -293,7 +293,7 @@ describe('pull translations', () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
+        await Promise.resolve({
           en: {
             'hello.mytranslations': {
               message: 'Hi there',
