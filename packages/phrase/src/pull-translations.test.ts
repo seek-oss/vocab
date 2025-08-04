@@ -1,23 +1,24 @@
 import path from 'path';
 import { pull } from './pull-translations';
 import { pullAllTranslations } from './phrase-api';
+import { vi } from 'vitest';
 import { writeFile } from './file';
 import type { GeneratedLanguageTarget, LanguageTarget } from '@vocab/core';
 
-jest.mock('./file', () => ({
-  writeFile: jest.fn(() => Promise.resolve),
-  mkdir: jest.fn(() => Promise.resolve),
+vi.mock('./file', () => ({
+  writeFile: vi.fn(() => Promise.resolve),
+  mkdir: vi.fn(() => Promise.resolve),
 }));
 
-jest.mock('./phrase-api', () => ({
-  ensureBranch: jest.fn(() => Promise.resolve()),
-  pullAllTranslations: jest.fn(() => Promise.resolve({ en: {}, fr: {} })),
+vi.mock('./phrase-api', () => ({
+  ensureBranch: vi.fn(() => Promise.resolve()),
+  pullAllTranslations: vi.fn(() => Promise.resolve({ en: {}, fr: {} })),
 }));
 
 const devLanguage = 'en';
 
 const serializeMockedFileWrites = () =>
-  jest
+  vi
     .mocked(writeFile)
     .mock.calls.map(([filePath, contents]) => ({
       contents: JSON.parse(contents as string),
@@ -48,29 +49,27 @@ function runPhrase(options: {
 
 describe('pull translations', () => {
   describe('when pulling translations for languages that already have translations', () => {
-    beforeEach(() => {
-      jest.mocked(pullAllTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
-            'app.thanks.label': {
-              message: 'Thank you.',
-            },
+    beforeEach(async () => {
+      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
-            'app.thanks.label': {
-              message: 'Merci.',
-            },
+          'app.thanks.label': {
+            message: 'Thank you.',
           },
-        }),
-      );
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
+          },
+          'app.thanks.label': {
+            message: 'Merci.',
+          },
+        },
+      });
     });
 
     const options = {
@@ -89,7 +88,7 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(4);
+      expect(vi.mocked(writeFile)).toHaveBeenCalledTimes(4);
     });
 
     it('should update keys', async () => {
@@ -153,23 +152,21 @@ describe('pull translations', () => {
   });
 
   describe('when pulling translations and some languages do not have any translations', () => {
-    beforeEach(() => {
-      jest.mocked(pullAllTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
+    beforeEach(async () => {
+      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
     });
 
     const options = {
@@ -188,7 +185,7 @@ describe('pull translations', () => {
     it('should resolve', async () => {
       await expect(runPhrase(options)).resolves.toBeUndefined();
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(4);
+      expect(vi.mocked(writeFile)).toHaveBeenCalledTimes(4);
     });
 
     it('should update keys', async () => {
@@ -249,18 +246,16 @@ describe('pull translations', () => {
   });
 
   describe('when pulling translations and the project has not configured translations for the dev language', () => {
-    beforeEach(() => {
-      jest.mocked(pullAllTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+    beforeEach(async () => {
+      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
     });
 
     const options = {
@@ -283,28 +278,26 @@ describe('pull translations', () => {
         ),
       );
 
-      expect(jest.mocked(writeFile)).toHaveBeenCalledTimes(0);
+      expect(vi.mocked(writeFile)).toHaveBeenCalledTimes(0);
     });
   });
 
   describe('when pulling translations and some global keys do not have any translations', () => {
     it('should throw an error', async () => {
-      jest.mocked(pullAllTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(pullAllTranslations).mockResolvedValue(
-        Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
+      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
 
       const options = {
         languages: [{ name: 'en' }, { name: 'fr' }],

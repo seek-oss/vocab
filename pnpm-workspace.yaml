@@ -1,5 +1,8 @@
 packages:
-  - 'packages/*'
-  - 'fixtures/*'
-  - 'tests'
-  - 'test-helpers'
+  - packages/*
+  - fixtures/*
+  - tests
+  - test-helpers
+
+onlyBuiltDependencies:
+  - puppeteer
