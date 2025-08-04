@@ -1,3 +1,8 @@
+import 'expect-puppeteer';
+import 'vitest-puppeteer';
+
+page.setDefaultTimeout(20_000);
+
 import {
   getAppSnapshot,
   startFixture,
@@ -6,9 +11,6 @@ import {
   getLanguageChunk,
   previewViteFixture,
 } from '@vocab-private/test-helpers';
-
-import 'expect-puppeteer';
-import 'jest-puppeteer';
 
 describe('E2E', () => {
   describe('Server with initial render', () => {
@@ -49,7 +51,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
+      await vitestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -130,7 +132,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
+      await vitestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -171,7 +173,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
+      await vitestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -261,8 +263,12 @@ describe('E2E', () => {
       });
     });
 
+    afterAll(async () => {
+      await server.close();
+    });
+
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
+      await vitestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 
@@ -309,10 +315,6 @@ describe('E2E', () => {
 
       await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
-
-    afterAll(async () => {
-      await server.close();
-    });
   });
 
   describe('Direct with plugin', () => {
@@ -323,7 +325,7 @@ describe('E2E', () => {
     });
 
     beforeEach(async () => {
-      await jestPuppeteer.resetPage();
+      await vitestPuppeteer.resetPage();
       await page.goto(server.url, { waitUntil: 'networkidle0' });
     });
 

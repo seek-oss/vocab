@@ -3,7 +3,7 @@ import path from 'path';
 
 import webpack from 'webpack';
 import WDS from 'webpack-dev-server';
-import { createServer, preview, build } from 'vite';
+import { createServer, preview, build, loadConfigFromFile } from 'vite';
 import waitOn from 'wait-on';
 
 import { spawn } from 'child_process';
@@ -130,82 +130,94 @@ export const startWebpackFixture: StartFixtureFunction = (
 export const startViteFixture: StartFixtureFunction = async (
   fixtureName: FixtureName,
   options: Omit<Options, 'bundler'> = {},
-): Promise<TestServer> =>
-  new Promise(async (resolve) => {
-    await compileFixtureTranslations(fixtureName);
+) => {
+  await compileFixtureTranslations(fixtureName);
 
-    const config = await import(
-      `@vocab-fixtures/${fixtureName}/vite.config.js`
-    );
+  const root = path.dirname(
+    require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+  );
 
-    const port = portCounter++;
-    const server = await createServer({
-      ...config.default,
-      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
-      root: path.dirname(
-        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
-      ),
-      server: {
-        port,
-      },
-    });
+  const config = loadConfigFromFile(
+    {
+      command: 'serve',
+      mode: 'development',
+    },
+    undefined,
+    root,
+  );
 
-    const devServer = await server.listen();
-
-    console.log(`Running fixture ${fixtureName}`);
-
-    resolve({
-      url: `http://localhost:${devServer.config.server.port}`,
-      close: () => devServer.close(),
-    });
+  const port = portCounter++;
+  const server = await createServer({
+    ...config,
+    ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+    root: path.dirname(
+      require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+    ),
+    server: {
+      port,
+    },
   });
+
+  const devServer = await server.listen();
+
+  console.log(`Running fixture ${fixtureName}`);
+
+  return {
+    url: `http://localhost:${devServer.config.server.port}`,
+    close: async () => devServer.close(),
+  };
+};
 
 export const previewViteFixture: StartFixtureFunction = async (
   fixtureName: FixtureName,
   options: Options = {},
-): Promise<TestServer> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      await compileFixtureTranslations(fixtureName);
+) => {
+  try {
+    await compileFixtureTranslations(fixtureName);
 
-      const config = await import(
-        `@vocab-fixtures/${fixtureName}/vite.config.js`
-      );
+    const root = path.dirname(
+      require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+    );
 
-      const root = path.dirname(
-        require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
-      );
+    const config = loadConfigFromFile(
+      {
+        command: 'serve',
+        mode: 'development',
+      },
+      undefined,
+      root,
+    );
 
-      const port = portCounter++;
-      await build({
-        ...config.default,
-        ...(options.disableVocabPlugin ? { plugins: [] } : {}),
-        root,
-      });
-      const server = await preview({
-        ...config.default,
-        ...(options.disableVocabPlugin ? { plugins: [] } : {}),
-        root,
-        preview: {
-          strictPort: true,
-          port,
-          open: false,
-        },
-      });
+    const port = portCounter++;
+    await build({
+      ...config,
+      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+      root,
+    });
+    const server = await preview({
+      ...config,
+      ...(options.disableVocabPlugin ? { plugins: [] } : {}),
+      root,
+      preview: {
+        strictPort: true,
+        port,
+        open: false,
+      },
+    });
 
-      console.log(`Running fixture ${fixtureName}`);
+    console.log(`Running fixture ${fixtureName}`);
 
-      resolve({
-        url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
-        close: async () => {
-          await server.close();
-        },
-      });
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
+    return {
+      url: server.resolvedUrls?.local[0] || `http://localhost:${port}`,
+      close: async () => {
+        await server.close();
+      },
+    };
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
 
 const fixtureBundlerMap: Record<Bundler, StartFixtureFunction> = {
   webpack: startWebpackFixture,

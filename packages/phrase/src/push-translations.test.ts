@@ -1,17 +1,18 @@
 import path from 'path';
+import { vi } from 'vitest';
 import { push } from './push-translations';
 import { pushTranslations, deleteUnusedKeys } from './phrase-api';
 import { writeFile } from './file';
 
-jest.mock('./file', () => ({
-  writeFile: jest.fn(() => Promise.resolve),
-  mkdir: jest.fn(() => Promise.resolve),
+vi.mock('./file', () => ({
+  writeFile: vi.fn(() => Promise.resolve),
+  mkdir: vi.fn(() => Promise.resolve),
 }));
 
-jest.mock('./phrase-api', () => ({
-  ensureBranch: jest.fn(() => Promise.resolve()),
-  pushTranslations: jest.fn(() => Promise.resolve({ uploadId: '1234' })),
-  deleteUnusedKeys: jest.fn(() => Promise.resolve()),
+vi.mock('./phrase-api', () => ({
+  ensureBranch: vi.fn(() => Promise.resolve()),
+  pushTranslations: vi.fn(() => Promise.resolve({ uploadId: '1234' })),
+  deleteUnusedKeys: vi.fn(() => Promise.resolve()),
 }));
 
 const devLanguageUploadId = '1234';
@@ -45,25 +46,25 @@ describe('push', () => {
     const config = { deleteUnusedKeys: false };
 
     beforeEach(() => {
-      jest.mocked(pushTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(deleteUnusedKeys).mockClear();
+      vi.mocked(pushTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(deleteUnusedKeys).mockClear();
 
-      jest
-        .mocked(pushTranslations)
-        .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
+      vi.mocked(pushTranslations).mockImplementation(() =>
+        Promise.resolve({ devLanguageUploadId }),
+      );
     });
 
     it('should resolve', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(jest.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(jest.mocked(pushTranslations).mock.calls[0][0])
+      expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
         {
           "en": {
@@ -142,28 +143,28 @@ describe('push', () => {
     const config = { deleteUnusedKeys: true };
 
     beforeEach(() => {
-      jest.mocked(pushTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(deleteUnusedKeys).mockClear();
+      vi.mocked(pushTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(deleteUnusedKeys).mockClear();
     });
 
     describe('and the upload succeeds', () => {
       beforeEach(() => {
-        jest
-          .mocked(pushTranslations)
-          .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
+        vi.mocked(pushTranslations).mockImplementation(() =>
+          Promise.resolve({ devLanguageUploadId }),
+        );
       });
 
       it('should resolve', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(jest.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
+        expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
       });
 
       it('should update keys', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(jest.mocked(pushTranslations).mock.calls[0][0])
+        expect(vi.mocked(pushTranslations).mock.calls[0][0])
           .toMatchInlineSnapshot(`
           {
             "en": {
@@ -245,9 +246,9 @@ describe('push', () => {
 
     describe('and the upload fails', () => {
       beforeEach(() => {
-        jest
-          .mocked(pushTranslations)
-          .mockImplementation(() => Promise.reject('Upload failed'));
+        vi.mocked(pushTranslations).mockImplementation(() =>
+          Promise.reject('Upload failed'),
+        );
       });
 
       it('should not delete unused keys', async () => {
@@ -262,25 +263,25 @@ describe('push', () => {
     const config = { deleteUnusedKeys: false, ignore: ['**/ignore.vocab/**'] };
 
     beforeEach(() => {
-      jest.mocked(pushTranslations).mockClear();
-      jest.mocked(writeFile).mockClear();
-      jest.mocked(deleteUnusedKeys).mockClear();
+      vi.mocked(pushTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(deleteUnusedKeys).mockClear();
 
-      jest
-        .mocked(pushTranslations)
-        .mockImplementation(() => Promise.resolve({ devLanguageUploadId }));
+      vi.mocked(pushTranslations).mockImplementation(() =>
+        Promise.resolve({ devLanguageUploadId }),
+      );
     });
 
     it('should resolve', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(jest.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(jest.mocked(pushTranslations).mock.calls[0][0])
+      expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
         {
           "en": {

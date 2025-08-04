@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`E2E Simple with plugin should return the expected en chunk 1`] = `
+exports[`E2E > Simple with plugin > should return the expected en chunk 1`] = `
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["en-translations"],{
 
@@ -27,7 +27,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 }]);"
 `;
 
-exports[`E2E Simple with plugin should return the expected fr chunk 1`] = `
+exports[`E2E > Simple with plugin > should return the expected fr chunk 1`] = `
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["fr-translations"],{
 
@@ -54,7 +54,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 }]);"
 `;
 
-exports[`E2E Simple with plugin should return the expected pseudo chunk 1`] = `
+exports[`E2E > Simple with plugin > should return the expected pseudo chunk 1`] = `
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["pseudo-translations"],{
 
@@ -81,17 +81,17 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 }]);"
 `;
 
-exports[`E2E vite with plugin should return the expected en chunk 1`] = `
+exports[`E2E > vite with plugin > should return the expected en chunk 1`] = `
 "const o="Hello",t="world",l={hello:o,world:t},r=Object.freeze(Object.defineProperty({__proto__:null,default:l,hello:o,world:t},Symbol.toStringTag,{value:"Module"})),e="<strong>Vocab</strong> was published on {publishDate, date, small}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:e},n=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{r as _,n as a};
 "
 `;
 
-exports[`E2E vite with plugin should return the expected fr chunk 1`] = `
+exports[`E2E > vite with plugin > should return the expected fr chunk 1`] = `
 "const e="Bonjour",o="monde",a={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:a,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),t="Vocab a été publié le {publishDate, date, medium}",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{r as _,c as a};
 "
 `;
 
-exports[`E2E vite with plugin should return the expected pseudo chunk 1`] = `
+exports[`E2E > vite with plugin > should return the expected pseudo chunk 1`] = `
 "const t="[Ḩẽẽƚƚöö]",o="[ŵöööřƚƌ]",s={hello:t,world:o},a=Object.freeze(Object.defineProperty({__proto__:null,default:s,hello:t,world:o},Symbol.toStringTag,{value:"Module"})),e="[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]",b={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"[‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\]",vocabPublishDate:e},l=Object.freeze(Object.defineProperty({__proto__:null,default:b,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{l as G,a as _};
 "
 `;
