@@ -52,26 +52,24 @@ describe('pull translations', () => {
     beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
-      vi.mocked(pullAllTranslations).mockResolvedValue(
-        await Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
-            'app.thanks.label': {
-              message: 'Thank you.',
-            },
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
-            'app.thanks.label': {
-              message: 'Merci.',
-            },
+          'app.thanks.label': {
+            message: 'Thank you.',
           },
-        }),
-      );
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
+          },
+          'app.thanks.label': {
+            message: 'Merci.',
+          },
+        },
+      });
     });
 
     const options = {
@@ -157,20 +155,18 @@ describe('pull translations', () => {
     beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
-      vi.mocked(pullAllTranslations).mockResolvedValue(
-        await Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
     });
 
     const options = {
@@ -253,15 +249,13 @@ describe('pull translations', () => {
     beforeEach(async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
-      vi.mocked(pullAllTranslations).mockResolvedValue(
-        await Promise.resolve({
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
     });
 
     const options = {
@@ -292,20 +286,18 @@ describe('pull translations', () => {
     it('should throw an error', async () => {
       vi.mocked(pullAllTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
-      vi.mocked(pullAllTranslations).mockResolvedValue(
-        await Promise.resolve({
-          en: {
-            'hello.mytranslations': {
-              message: 'Hi there',
-            },
+      vi.mocked(pullAllTranslations).mockResolvedValue({
+        en: {
+          'hello.mytranslations': {
+            message: 'Hi there',
           },
-          fr: {
-            'hello.mytranslations': {
-              message: 'merci',
-            },
+        },
+        fr: {
+          'hello.mytranslations': {
+            message: 'merci',
           },
-        }),
-      );
+        },
+      });
 
       const options = {
         languages: [{ name: 'en' }, { name: 'fr' }],
