@@ -179,23 +179,30 @@ export const previewViteFixture: StartFixtureFunction = async (
       require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
     );
 
-    const config = loadConfigFromFile(
-      {
-        command: 'serve',
-        mode: 'development',
-      },
-      undefined,
-      root,
-    );
-
     const port = portCounter++;
     await build({
-      ...config,
+      ...loadConfigFromFile(
+        {
+          command: 'build',
+          mode: 'development',
+        },
+        undefined,
+        root,
+      ),
       ...(options.disableVocabPlugin ? { plugins: [] } : {}),
       root,
     });
+
     const server = await preview({
-      ...config,
+      ...loadConfigFromFile(
+        {
+          command: 'serve',
+          isPreview: true,
+          mode: 'development',
+        },
+        undefined,
+        root,
+      ),
       ...(options.disableVocabPlugin ? { plugins: [] } : {}),
       root,
       preview: {
