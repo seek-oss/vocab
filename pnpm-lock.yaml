@@ -53,9 +53,6 @@ importers:
       fast-glob:
         specifier: ^3.2.4
         version: 3.3.3
-      jiti:
-        specifier: ^2.5.1
-        version: 2.5.1
       prettier:
         specifier: ^3.5.3
         version: 3.6.2
@@ -9871,7 +9868,8 @@ snapshots:
       - ts-node
     optional: true
 
-  jiti@2.5.1: {}
+  jiti@2.5.1:
+    optional: true
 
   jju@1.4.0: {}
 
