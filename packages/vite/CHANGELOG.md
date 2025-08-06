@@ -1,5 +1,11 @@
 # @vocab/vite
 
+## 0.2.3
+
+### Patch Changes
+
+- [#323](https://github.com/seek-oss/vocab/pull/323) [`6e999ad`](https://github.com/seek-oss/vocab/commit/6e999ad2ec404294b28cf63aa28e185943d8ec0a) Thanks [@williamlark](https://github.com/williamlark)! - Add support for `vite@^7.0.0`
+
 ## 0.2.2
 
 ### Patch Changes
@@ -26,7 +32,6 @@
   ### Renamed exports
 
   Moves a few of the Vite plugin functions under different export paths for better organisation. The functions themselves have not changed, only their exported location.
-
   - `@vocab/vite/create-language` -> `@vocab/vite/runtime`
   - `@vocab/vite/create-vocab-chunks` -> `@vocab/vite/chunks`
 
