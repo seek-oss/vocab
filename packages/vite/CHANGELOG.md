@@ -1,5 +1,11 @@
 # @vocab/vite
 
+## 0.2.4
+
+### Patch Changes
+
+- [#322](https://github.com/seek-oss/vocab/pull/322) [`b05e90c`](https://github.com/seek-oss/vocab/commit/b05e90c21a379a66acd138feae8647b2331844b6) Thanks [@renovate](https://github.com/apps/renovate)! - Update `cjs-module-lexer` dependency to `^2.0.0`
+
 ## 0.2.3
 
 ### Patch Changes
