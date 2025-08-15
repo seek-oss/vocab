@@ -19,7 +19,7 @@ app.use(
   express.static(path.resolve('./dist-client'), { fallthrough: false }),
 );
 
-app.get('*', (req: Request, res: Response) => {
+app.get('*splat', (req: Request, res: Response) => {
   console.log('Received request', req.url);
   const appPath = req.path;
   const language = appPath.startsWith('/en') ? 'en' : 'fr';
