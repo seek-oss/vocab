@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { defineConfig, defaultInclude, defaultExclude } from 'vitest/config';
 
 export default defineConfig({
   server: {
@@ -8,8 +8,28 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    name: 'browser',
+    restoreMocks: true,
+    exclude: defaultExclude,
     environment: 'puppeteer',
     globalSetup: 'vitest-environment-puppeteer/global-init',
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'node',
+          include: defaultInclude,
+          exclude: ['tests/E2E.test.ts'],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'browser',
+          environment: 'puppeteer',
+          globalSetup: 'vitest-environment-puppeteer/global-init',
+          include: ['tests/E2E.test.ts'],
+        },
+      },
+    ],
   },
 });
