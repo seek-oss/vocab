@@ -70,6 +70,10 @@ export const runServerFixture = (
     const config = getConfig();
     const compiler = webpack(config);
 
+    if (!compiler) {
+      throw new Error('Failed to create webpack compiler');
+    }
+
     compiler.hooks.done.tap('vocab-test-helper', async () => {
       const cwd = path.dirname(
         require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
@@ -111,6 +115,9 @@ export const startWebpackFixture: StartFixtureFunction = (
 
     const config = getConfig(options);
     const compiler = webpack(config);
+    if (!compiler) {
+      throw new Error('Failed to create webpack compiler');
+    }
 
     const port = portCounter++;
     const server = new WDS({ port }, compiler);
