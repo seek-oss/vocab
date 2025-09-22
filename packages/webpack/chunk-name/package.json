@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-webpack-chunk-name.cjs.js",
-  "module": "dist/vocab-webpack-chunk-name.esm.js"
-}

@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-core-translation-file.cjs.js",
-  "module": "dist/vocab-core-translation-file.esm.js"
-}

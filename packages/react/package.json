@@ -6,8 +6,16 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/react"
   },
-  "main": "dist/vocab-react.cjs.js",
-  "module": "dist/vocab-react.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "SEEK",
   "license": "MIT",
   "peerDependencies": {

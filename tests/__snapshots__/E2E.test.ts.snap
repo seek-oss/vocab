@@ -4,20 +4,20 @@ exports[`E2E > Simple with plugin > should return the expected en chunk 1`] = `
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["en-translations"],{
 
-/***/ "./fixtures/simple/src/.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IkhlbGxvIiwid29ybGQiOiJ3b3JsZCJ9!":
-/*!****************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IkhlbGxvIiwid29ybGQiOiJ3b3JsZCJ9! ***!
-  \\****************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IkhlbGxvIiwid29ybGQiOiJ3b3JsZCJ9!":
+/*!******************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IkhlbGxvIiwid29ybGQiOiJ3b3JsZCJ9! ***!
+  \\******************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"hello":"Hello","world":"world"}');
 
 /***/ }),
 
-/***/ "./fixtures/simple/src/client.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiI8c3Ryb25nPlZvY2FiPC9zdHJvbmc%2BIHdhcyBwdWJsaXNoZWQgb24ge3B1Ymxpc2hEYXRlLCBkYXRlLCBzbWFsbH0ifQ%3D%3D!":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/client.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiI8c3Ryb25nPlZvY2FiPC9zdHJvbmc%2BIHdhcyBwdWJsaXNoZWQgb24ge3B1Ymxpc2hEYXRlLCBkYXRlLCBzbWFsbH0ifQ%3D%3D! ***!
-  \\************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/client.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiI8c3Ryb25nPlZvY2FiPC9zdHJvbmc%2BIHdhcyBwdWJsaXNoZWQgb24ge3B1Ymxpc2hEYXRlLCBkYXRlLCBzbWFsbH0ifQ%3D%3D!":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/client.vocab/translations.json-en-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiI8c3Ryb25nPlZvY2FiPC9zdHJvbmc%2BIHdhcyBwdWJsaXNoZWQgb24ge3B1Ymxpc2hEYXRlLCBkYXRlLCBzbWFsbH0ifQ%3D%3D! ***!
+  \\**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\":"‘’“”\\'\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\","vocabPublishDate":"<strong>Vocab</strong> was published on {publishDate, date, small}"}');
@@ -31,20 +31,20 @@ exports[`E2E > Simple with plugin > should return the expected fr chunk 1`] = `
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["fr-translations"],{
 
-/***/ "./fixtures/simple/src/.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IkJvbmpvdXIiLCJ3b3JsZCI6Im1vbmRlIn0%3D!":
-/*!**********************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IkJvbmpvdXIiLCJ3b3JsZCI6Im1vbmRlIn0%3D! ***!
-  \\**********************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IkJvbmpvdXIiLCJ3b3JsZCI6Im1vbmRlIn0%3D!":
+/*!************************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IkJvbmpvdXIiLCJ3b3JsZCI6Im1vbmRlIn0%3D! ***!
+  \\************************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"hello":"Bonjour","world":"monde"}');
 
 /***/ }),
 
-/***/ "./fixtures/simple/src/client.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0%3D!":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/client.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0%3D! ***!
-  \\************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/client.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0%3D!":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/client.vocab/translations.json-fr-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0%3D! ***!
+  \\**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\":"‘’“”\\'\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\","vocabPublishDate":"Vocab a été publié le {publishDate, date, medium}"}');
@@ -58,20 +58,20 @@ exports[`E2E > Simple with plugin > should return the expected pseudo chunk 1`] 
 ""use strict";
 (self["webpackChunk_vocab_private_monorepo"] = self["webpackChunk_vocab_private_monorepo"] || []).push([["pseudo-translations"],{
 
-/***/ "./fixtures/simple/src/.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ%3D%3D!":
-/*!************************************************************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ%3D%3D! ***!
-  \\************************************************************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ%3D%3D!":
+/*!**************************************************************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ%3D%3D! ***!
+  \\**************************************************************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"hello":"[Ḩẽẽƚƚöö]","world":"[ŵöööřƚƌ]"}');
 
 /***/ }),
 
-/***/ "./fixtures/simple/src/client.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5%2FGmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9!":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
-  !*** ./fixtures/simple/src/client.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/virtual-resource-loader.cjs.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5%2FGmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9! ***!
-  \\**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./fixtures/simple/src/client.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5%2FGmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9!":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\\
+  !*** ./fixtures/simple/src/client.vocab/translations.json-pseudo-virtual.json!=!./packages/virtual-resource-loader/dist/index.js?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B%2BXFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5%2FGmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9! ***!
+  \\****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module) => {
 
 module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\":"[‘’“”\\'\\\\"!@#$%^&*()_+\\\\\\\\/\`~\\\\\\\\\\\\\\\\]","vocabPublishDate":"[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]"}');

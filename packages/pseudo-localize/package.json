@@ -6,8 +6,16 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/pseudo-localize"
   },
-  "main": "dist/vocab-pseudo-localize.cjs.js",
-  "module": "dist/vocab-pseudo-localize.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "SEEK",
   "license": "MIT",
   "files": [

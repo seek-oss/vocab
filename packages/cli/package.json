@@ -6,8 +6,12 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/cli"
   },
-  "main": "dist/vocab-cli.cjs.js",
-  "module": "dist/vocab-cli.esm.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "vocab": "bin.js"
   },
@@ -15,9 +19,6 @@
     "dist",
     "bin.js"
   ],
-  "engines": {
-    "node": ">=18"
-  },
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {

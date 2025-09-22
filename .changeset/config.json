@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@1.4.0/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
   "changelog": [
     "@changesets/changelog-github",
     { "repo": "seek-oss/vocab" }
@@ -8,8 +8,14 @@
   "linked": [],
   "access": "public",
   "baseBranch": "master",
+  "privatePackages":{
+    "tag": false,
+    "version": false
+  },
   "updateInternalDependencies": "patch",
-  "ignore": ["@vocab-fixtures/*", "@vocab-private/*"],
+  "snapshot": {
+    "useCalculatedVersion": true
+  },
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "updateInternalDependents": "always"
   }

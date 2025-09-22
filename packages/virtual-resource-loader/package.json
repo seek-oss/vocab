@@ -2,8 +2,16 @@
   "name": "virtual-resource-loader",
   "description": "Create new files inside a webpack compilation, without a file existing on disk",
   "version": "2.0.0",
-  "main": "dist/virtual-resource-loader.cjs.js",
-  "module": "dist/virtual-resource-loader.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "SEEK",
   "license": "MIT",
   "repository": {

@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-vite-get-chunk-name.cjs.js",
-  "module": "dist/vocab-vite-get-chunk-name.esm.js"
-}

@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-webpack-loader.cjs.js",
-  "module": "dist/vocab-webpack-loader.esm.js"
-}
