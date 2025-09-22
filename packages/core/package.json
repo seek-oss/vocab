@@ -6,42 +6,32 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/core"
   },
-  "main": "dist/vocab-core.cjs.js",
-  "module": "dist/vocab-core.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "module": "./dist/vocab-core.esm.js",
-      "default": "./dist/vocab-core.cjs.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./icu-handler": {
-      "module": "./icu-handler/dist/vocab-core-icu-handler.esm.js",
-      "default": "./icu-handler/dist/vocab-core-icu-handler.cjs.js"
+      "import": "./dist/icu-handler.mjs",
+      "require": "./dist/icu-handler.js"
     },
     "./runtime": {
-      "module": "./runtime/dist/vocab-core-runtime.esm.js",
-      "default": "./runtime/dist/vocab-core-runtime.cjs.js"
+      "import": "./dist/runtime.mjs",
+      "require": "./dist/runtime.js"
     },
     "./translation-file": {
-      "module": "./translation-file/dist/vocab-core-translation-file.esm.js",
-      "default": "./translation-file/dist/vocab-core-translation-file.cjs.js"
-    }
+      "import": "./dist/translation-file.mjs",
+      "require": "./dist/translation-file.js"
+    },
+    "./package.json": "./package.json"
   },
   "author": "SEEK",
   "license": "MIT",
-  "preconstruct": {
-    "entrypoints": [
-      "index.ts",
-      "runtime.ts",
-      "icu-handler.ts",
-      "translation-file.ts"
-    ]
-  },
   "files": [
-    "dist",
-    "runtime",
-    "icu-handler",
-    "translation-file"
+    "dist"
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",

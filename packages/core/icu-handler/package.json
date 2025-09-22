@@ -1,4 +1,0 @@
-{
-  "main": "dist/vocab-core-icu-handler.cjs.js",
-  "module": "dist/vocab-core-icu-handler.esm.js"
-}

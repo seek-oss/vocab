@@ -6,42 +6,32 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/webpack"
   },
-  "main": "dist/vocab-webpack.cjs.js",
-  "module": "dist/vocab-webpack.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "module": "./dist/vocab-webpack.esm.js",
-      "default": "./dist/vocab-webpack.cjs.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./chunk-name": {
-      "module": "./chunk-name/dist/vocab-webpack-chunk-name.esm.js",
-      "default": "./chunk-name/dist/vocab-webpack-chunk-name.cjs.js"
+      "import": "./dist/chunk-name.mjs",
+      "require": "./dist/chunk-name.js"
     },
     "./loader": {
-      "module": "./loader/dist/vocab-webpack-loader.esm.js",
-      "default": "./loader/dist/vocab-webpack-loader.cjs.js"
+      "import": "./dist/loader.mjs",
+      "require": "./dist/loader.js"
     },
     "./web": {
-      "module": "./web/dist/vocab-webpack-web.esm.js",
-      "default": "./web/dist/vocab-webpack-web.cjs.js"
-    }
+      "import": "./dist/web.mjs",
+      "require": "./dist/web.js"
+    },
+    "./package.json": "./package.json"
   },
   "author": "SEEK",
   "license": "MIT",
-  "preconstruct": {
-    "entrypoints": [
-      "index.ts",
-      "loader.ts",
-      "web.ts",
-      "chunk-name.ts"
-    ]
-  },
   "files": [
-    "chunk-name",
-    "dist",
-    "loader",
-    "web"
+    "dist"
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",

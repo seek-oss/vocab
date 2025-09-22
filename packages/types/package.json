@@ -6,8 +6,11 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/types"
   },
-  "main": "dist/vocab-types.cjs.js",
-  "module": "dist/vocab-types.esm.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "author": "SEEK",
   "license": "MIT",
   "files": [
@@ -15,5 +18,13 @@
   ],
   "dependencies": {
     "@vocab/core": "workspace:^"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   }
 }

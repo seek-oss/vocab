@@ -6,11 +6,16 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/phrase"
   },
-  "engines": {
-    "node": ">=18"
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "dist/vocab-phrase.cjs.js",
-  "module": "dist/vocab-phrase.esm.js",
   "author": "SEEK",
   "license": "MIT",
   "dependencies": {

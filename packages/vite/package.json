@@ -8,34 +8,30 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/vite"
   },
-  "main": "dist/vocab-vite.cjs.js",
-  "module": "dist/vocab-vite.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "module": "./dist/vocab-vite.esm.js",
-      "default": "./dist/vocab-vite.cjs.js"
-    },
-    "./runtime": {
-      "module": "./runtime/dist/vocab-vite-runtime.esm.js",
-      "default": "./runtime/dist/vocab-vite-runtime.cjs.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./chunks": {
-      "module": "./chunks/dist/vocab-vite-chunks.esm.js",
-      "default": "./chunks/dist/vocab-vite-chunks.cjs.js"
-    }
-  },
-  "preconstruct": {
-    "entrypoints": [
-      "index.ts",
-      "runtime.ts",
-      "chunks.ts"
-    ]
+      "import": "./dist/chunks.mjs",
+      "require": "./dist/chunks.js"
+    },
+    "./get-chunk-name": {
+      "import": "./dist/get-chunk-name.mjs",
+      "require": "./dist/get-chunk-name.js"
+    },
+    "./runtime": {
+      "import": "./dist/runtime.mjs",
+      "require": "./dist/runtime.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
-    "dist",
-    "runtime",
-    "chunks"
+    "dist"
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",
