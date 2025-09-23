@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import vitePluginVocab from '@vocab/vite';
+import { vitePluginVocab } from '@vocab/vite';
 import { createVocabChunks } from '@vocab/vite/chunks';
 import vocabConfig from './vocab.config.cjs';
 

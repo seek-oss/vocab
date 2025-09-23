@@ -393,12 +393,6 @@ importers:
         specifier: ^19.1.0
         version: 19.1.1
 
-  packages/types:
-    dependencies:
-      '@vocab/core':
-        specifier: workspace:^
-        version: link:../core
-
   packages/virtual-resource-loader: {}
 
   packages/vite:
