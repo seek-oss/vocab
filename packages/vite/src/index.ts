@@ -12,9 +12,9 @@ export type VocabPluginOptions = {
   vocabConfig: UserConfig;
 };
 
-export default function vitePluginVocab({
+export const vitePluginVocab = ({
   vocabConfig,
-}: VocabPluginOptions): VitePlugin {
+}: VocabPluginOptions): VitePlugin => {
   let isSSR = false;
 
   trace(
@@ -64,4 +64,4 @@ export default function vitePluginVocab({
       }
     },
   };
-}
+};
