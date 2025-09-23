@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/packages/react/dist/index.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import React, { cloneElement, isValidElement, useCallback, useContext, useMemo, useReducer } from \"react\";\n\n//#region src/components.tsx\nconst TranslationsContext = React.createContext(void 0);\n/**\n* Provides a translation context for your application\n*\n* @example\n* import { VocabProvider } from '@vocab/react';\n*\n* <VocabProvider language=\"en\">\n*   <App />\n* <VocabProvider />\n*/\nconst VocabProvider = ({ children, language, locale }) => {\n\tconst value = useMemo(() => ({\n\t\tlanguage,\n\t\tlocale\n\t}), [language, locale]);\n\treturn /* @__PURE__ */ React.createElement(TranslationsContext.Provider, { value }, children);\n};\n/**\n* @returns The `language` and `locale` values passed in to your `VocabProvider`\n*/\nconst useLanguage = () => {\n\tconst context = useContext(TranslationsContext);\n\tif (!context) throw new Error(\"Attempted to access translation without Vocab context set. Did you forget to render VocabProvider?\");\n\tif (!context.language) throw new Error(\"Attempted to access translation without language set. Did you forget to pass language to VocabProvider?\");\n\treturn context;\n};\nconst SERVER_RENDERING = typeof window === \"undefined\";\nfunction useTranslations(translations) {\n\tconst { language, locale } = useLanguage();\n\tconst [, forceRender] = useReducer((s) => s + 1, 0);\n\tconst translationsObject = translations.getLoadedMessages(language, locale || language);\n\tlet ready = true;\n\tif (!translationsObject) {\n\t\tif (SERVER_RENDERING) throw new Error(`Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`);\n\t\ttranslations.load(language).then(() => {\n\t\t\tforceRender();\n\t\t});\n\t\tready = false;\n\t}\n\tconst t = useCallback((key, params) => {\n\t\tif (!translationsObject) return \" \";\n\t\tconst message = translationsObject?.[key];\n\t\tif (!message) {\n\t\t\tconsole.error(`Unable to find translation for key \"${key}\". Possible keys are ${Object.keys(translationsObject).map((v) => `\"${v}\"`).join(\", \")}`);\n\t\t\treturn \"\";\n\t\t}\n\t\tconst result = message.format(params);\n\t\tif (Array.isArray(result)) for (let i = 0; i < result.length; i++) {\n\t\t\tconst item = result[i];\n\t\t\tif (typeof item === \"object\" && item && !item.key && isValidElement(item)) result[i] = cloneElement(item, { key: `_vocab-${i}` });\n\t\t}\n\t\treturn result;\n\t}, [translationsObject]);\n\treturn {\n\t\tready,\n\t\tt\n\t};\n}\n\n//#endregion\nexport { VocabProvider, useLanguage, useTranslations };\n//# sourceMappingURL=index.mjs.map",
+      "start": 1758604115984,
+      "end": 1758604115987,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "normal"
+    }
+  ]
+}

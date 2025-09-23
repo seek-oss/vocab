@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export * from './date-time';\nexport * from './number';\n",
+      "start": 1758604116145,
+      "end": 1758604116147,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116147,
+      "end": 1758604116147,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116147,
+      "end": 1758604116147,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116147,
+      "end": 1758604116147,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116147,
+      "end": 1758604116147,
+      "order": "normal"
+    }
+  ]
+}

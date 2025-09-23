@@ -1,0 +1,1171 @@
+[
+  {
+    "id": "\u0000virtual:vocab-en.json?source=eyJoZWxsbyI6IkhlbGxvIiwid29ybGQiOiJ3b3JsZCJ9",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 33,
+    "distSize": 33
+  },
+  {
+    "id": "\u0000virtual:vocab-en.json?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B+XFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B+XFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiI8c3Ryb25nPlZvY2FiPC9zdHJvbmc+IHdhcyBwdWJsaXNoZWQgb24ge3B1Ymxpc2hEYXRlLCBkYXRlLCBzbWFsbH0ifQ==",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 187,
+    "distSize": 187
+  },
+  {
+    "id": "\u0000virtual:vocab-fr.json?source=eyJoZWxsbyI6IkJvbmpvdXIiLCJ3b3JsZCI6Im1vbmRlIn0=",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 35,
+    "distSize": 35
+  },
+  {
+    "id": "\u0000virtual:vocab-fr.json?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B+XFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B+XFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0=",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 173,
+    "distSize": 173
+  },
+  {
+    "id": "\u0000virtual:vocab-pseudo.json?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ==",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 58,
+    "distSize": 58
+  },
+  {
+    "id": "\u0000virtual:vocab-pseudo.json?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B+XFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5/GmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9",
+    "deps": [],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 0
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 246,
+    "distSize": 246
+  },
+  {
+    "id": "\u0000vite/modulepreload-polyfill.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/index.html"
+    ],
+    "plugins": [
+      {
+        "name": "vite:modulepreload-polyfill",
+        "transform": 0
+      },
+      {
+        "name": "vite:modulepreload-polyfill",
+        "resolveId": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 1168,
+    "distSize": 1168
+  },
+  {
+    "id": "\u0000vite/preload-helper.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/src/.vocab/index.ts",
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.vocab/index.ts"
+    ],
+    "plugins": [
+      {
+        "name": "vite:build-import-analysis",
+        "transform": 0
+      }
+    ],
+    "virtual": true,
+    "totalTime": 0,
+    "invokeCount": 1,
+    "sourceSize": 2147,
+    "distSize": 2147
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/fixtures/vite/index.html",
+    "deps": [
+      "\u0000vite/modulepreload-polyfill.js",
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.tsx"
+    ],
+    "importers": [],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:build-html",
+        "transform": 17
+      }
+    ],
+    "virtual": false,
+    "totalTime": 19,
+    "invokeCount": 1,
+    "sourceSize": 311,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/fixtures/vite/src/.vocab/index.ts",
+    "deps": [
+      "\u0000vite/preload-helper.js",
+      "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.tsx"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 1
+      },
+      {
+        "name": "vite:esbuild",
+        "transform": 6
+      },
+      {
+        "name": "vite:build-import-analysis",
+        "transform": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 8,
+    "invokeCount": 1,
+    "sourceSize": 628,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/fixtures/vite/src/client.tsx",
+    "deps": [
+      "/Users/askoufis/code/vocab/packages/react/dist/index.mjs",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js?commonjs-es-import",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/client.js?commonjs-es-import",
+      "/Users/askoufis/code/vocab/fixtures/vite/src/.vocab/index.ts",
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.vocab/index.ts"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/index.html"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:esbuild",
+        "transform": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 4,
+    "invokeCount": 1,
+    "sourceSize": 2303,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/fixtures/vite/src/client.vocab/index.ts",
+    "deps": [
+      "\u0000vite/preload-helper.js",
+      "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.tsx"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 3
+      },
+      {
+        "name": "vite-plugin-vocab",
+        "transform": 1
+      },
+      {
+        "name": "vite:esbuild",
+        "transform": 11
+      },
+      {
+        "name": "vite:build-import-analysis",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 16,
+    "invokeCount": 1,
+    "sourceSize": 1441,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+fast-memoize@2.2.7/node_modules/@formatjs/fast-memoize/lib/index.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 34
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 34,
+    "invokeCount": 1,
+    "sourceSize": 2567,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 2942,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/error.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 3,
+    "invokeCount": 1,
+    "sourceSize": 4465,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/error.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/types.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/manipulator.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/formatters.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 35
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 35,
+    "invokeCount": 1,
+    "sourceSize": 1743,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/manipulator.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/types.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 4
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 4,
+    "invokeCount": 1,
+    "sourceSize": 4828,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/error.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/types.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 3,
+    "invokeCount": 1,
+    "sourceSize": 48781,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 186,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/time-data.generated.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/date-time-pattern-generator.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 16709,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/types.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/manipulator.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 2367,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 4886,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/index.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/date-time.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/number.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 55,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/number.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 11952,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/number.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 104,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/error.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/formatters.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/packages/core/dist/icu-handler-ckZzFRyo.mjs"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 26
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 26,
+    "invokeCount": 1,
+    "sourceSize": 354,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+fast-memoize@2.2.7/node_modules/@formatjs/fast-memoize/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/formatters.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 8513,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/error.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/formatters.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 2,
+    "invokeCount": 1,
+    "sourceSize": 2285,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/formatters.js",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/error.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 7024,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js?commonjs-exports",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/index.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/client.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 12
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 4
+      }
+    ],
+    "virtual": false,
+    "totalTime": 12,
+    "invokeCount": 1,
+    "sourceSize": 515019,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom.production.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom.production.js?commonjs-exports",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 5
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 5,
+    "invokeCount": 1,
+    "sourceSize": 6655,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/client.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/client.js?commonjs-module",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js"
+    ],
+    "importers": [
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/client.js?commonjs-es-import"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 4
+      },
+      {
+        "name": "vite:define",
+        "transform": 5
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      }
+    ],
+    "virtual": false,
+    "totalTime": 9,
+    "invokeCount": 1,
+    "sourceSize": 1373,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/index.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/index.js?commonjs-module",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom.production.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 5
+      },
+      {
+        "name": "vite:define",
+        "transform": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 7,
+    "invokeCount": 1,
+    "sourceSize": 1359,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/cjs/react.production.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/cjs/react.production.js?commonjs-exports"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 4
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 3
+      }
+    ],
+    "virtual": false,
+    "totalTime": 4,
+    "invokeCount": 1,
+    "sourceSize": 17075,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js?commonjs-module",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/cjs/react.production.js"
+    ],
+    "importers": [
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js?commonjs-es-import",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom.production.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 4
+      },
+      {
+        "name": "vite:define",
+        "transform": 5
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 9,
+    "invokeCount": 1,
+    "sourceSize": 186,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/cjs/scheduler.production.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/cjs/scheduler.production.js?commonjs-exports"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/index.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 10181,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/index.js",
+    "deps": [
+      "\u0000commonjsHelpers.js",
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/index.js?commonjs-module",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/scheduler@0.26.0/node_modules/scheduler/cjs/scheduler.production.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/cjs/react-dom-client.production.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 5
+      },
+      {
+        "name": "vite:define",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 4
+      }
+    ],
+    "virtual": false,
+    "totalTime": 6,
+    "invokeCount": 1,
+    "sourceSize": 194,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/manipulator.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/parser.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/number.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/core.js",
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/src/error.js"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 34
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 2
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 34,
+    "invokeCount": 1,
+    "sourceSize": 17648,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/core/dist/icu-handler-ckZzFRyo.mjs",
+    "deps": [
+      "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/packages/core/dist/icu-handler.mjs"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 5
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 5,
+    "invokeCount": 1,
+    "sourceSize": 776,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/core/dist/icu-handler.mjs",
+    "deps": [
+      "/Users/askoufis/code/vocab/packages/core/dist/icu-handler-ckZzFRyo.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 4
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 4,
+    "invokeCount": 1,
+    "sourceSize": 100,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/core/dist/translation-file-Dn19n2oY.mjs",
+    "deps": [],
+    "importers": [
+      "/Users/askoufis/code/vocab/packages/core/dist/translation-file.mjs"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 1,
+    "invokeCount": 1,
+    "sourceSize": 1048,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/core/dist/translation-file.mjs",
+    "deps": [
+      "/Users/askoufis/code/vocab/packages/core/dist/translation-file-Dn19n2oY.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      }
+    ],
+    "virtual": false,
+    "totalTime": 3,
+    "invokeCount": 1,
+    "sourceSize": 107,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/react/dist/index.mjs",
+    "deps": [
+      "\u0000/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js?commonjs-es-import"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.tsx"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 3
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 4
+      }
+    ],
+    "virtual": false,
+    "totalTime": 3,
+    "invokeCount": 1,
+    "sourceSize": 2441,
+    "distSize": 0
+  },
+  {
+    "id": "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs",
+    "deps": [
+      "/Users/askoufis/code/vocab/packages/core/dist/translation-file.mjs",
+      "/Users/askoufis/code/vocab/packages/core/dist/icu-handler.mjs"
+    ],
+    "importers": [
+      "/Users/askoufis/code/vocab/fixtures/vite/src/.vocab/index.ts",
+      "/Users/askoufis/code/vocab/fixtures/vite/src/client.vocab/index.ts"
+    ],
+    "plugins": [
+      {
+        "name": "vite:load-fallback",
+        "transform": 10
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 1
+      },
+      {
+        "name": "vite:resolve",
+        "resolveId": 0
+      }
+    ],
+    "virtual": false,
+    "totalTime": 10,
+    "invokeCount": 1,
+    "sourceSize": 667,
+    "distSize": 0
+  }
+]

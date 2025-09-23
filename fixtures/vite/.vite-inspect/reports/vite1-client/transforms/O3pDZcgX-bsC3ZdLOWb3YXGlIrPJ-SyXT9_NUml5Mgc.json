@@ -1,0 +1,38 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/react@19.1.1/node_modules/react/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\nif (process.env.NODE_ENV === 'production') {\n  module.exports = require('./cjs/react.production.js');\n} else {\n  module.exports = require('./cjs/react.development.js');\n}\n",
+      "start": 1758604115983,
+      "end": 1758604115987,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604115987,
+      "end": 1758604115987,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "result": "\"use strict\";\nif (true) {\n  module.exports = require(\"./cjs/react.production.js\");\n} else {\n  module.exports = require(\"./cjs/react.development.js\");\n}\n",
+      "start": 1758604115987,
+      "end": 1758604115992,
+      "order": "normal-normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116055,
+      "end": 1758604116055,
+      "order": "normal"
+    }
+  ]
+}

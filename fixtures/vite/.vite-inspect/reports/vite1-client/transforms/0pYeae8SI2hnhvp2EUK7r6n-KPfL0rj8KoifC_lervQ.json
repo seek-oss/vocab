@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/intl-messageformat@10.7.16/node_modules/intl-messageformat/lib/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "/*\nCopyright (c) 2014, Yahoo! Inc. All rights reserved.\nCopyrights licensed under the New BSD License.\nSee the accompanying LICENSE file for terms.\n*/\nimport { IntlMessageFormat } from './src/core';\nexport * from './src/core';\nexport * from './src/error';\nexport * from './src/formatters';\nexport { IntlMessageFormat };\nexport default IntlMessageFormat;\n",
+      "start": 1758604116066,
+      "end": 1758604116092,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116092,
+      "end": 1758604116092,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116092,
+      "end": 1758604116092,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116092,
+      "end": 1758604116092,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116093,
+      "end": 1758604116093,
+      "order": "normal"
+    }
+  ]
+}

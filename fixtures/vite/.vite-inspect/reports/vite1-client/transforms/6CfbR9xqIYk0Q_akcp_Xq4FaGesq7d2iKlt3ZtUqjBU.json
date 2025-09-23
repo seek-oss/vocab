@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/packages/core/dist/translation-file-Dn19n2oY.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "//#region src/translation-file.ts\nfunction createTranslationFile(translationsByLanguage) {\n\tfunction getByLanguage(language) {\n\t\tconst translationModule = translationsByLanguage[language];\n\t\tif (!translationModule) throw new Error(`Attempted to retrieve translations for unknown language \"${language}\"`);\n\t\treturn translationModule;\n\t}\n\treturn {\n\t\tgetLoadedMessages(language, locale) {\n\t\t\treturn getByLanguage(language).getValue(locale || language) || null;\n\t\t},\n\t\tgetMessages(language, locale) {\n\t\t\tconst translationModule = getByLanguage(language);\n\t\t\treturn translationModule.load().then(() => {\n\t\t\t\tconst result = translationModule.getValue(locale || language);\n\t\t\t\tif (!result) throw new Error(`Unable to find translations for ${language} after attempting to load. Module may have failed to load or an internal error may have occurred.`);\n\t\t\t\treturn result;\n\t\t\t});\n\t\t},\n\t\tload(language) {\n\t\t\treturn getByLanguage(language).load();\n\t\t}\n\t};\n}\n\n//#endregion\nexport { createTranslationFile };\n//# sourceMappingURL=translation-file-Dn19n2oY.mjs.map",
+      "start": 1758604116057,
+      "end": 1758604116058,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116058,
+      "end": 1758604116058,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116058,
+      "end": 1758604116058,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116058,
+      "end": 1758604116058,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116058,
+      "end": 1758604116058,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,430 @@
+{
+  "instances": [
+    {
+      "root": "/Users/askoufis/code/vocab/fixtures/vite",
+      "vite": "vite1",
+      "plugins": [
+        {
+          "name": "vite:build-metadata",
+          "renderChunk": "[Function]"
+        },
+        {
+          "name": "vite:watch-package-data",
+          "buildStart": "[Function]",
+          "buildEnd": "[Function]",
+          "watchChange": "[Function]"
+        },
+        {
+          "name": "alias",
+          "buildStart": "[Function]",
+          "resolveId": "[Function]"
+        },
+        {
+          "name": "vite-plugin-vocab",
+          "apply": "build",
+          "enforce": "pre",
+          "configResolved": "[Function]",
+          "resolveId": "[Function]",
+          "load": "[Function]",
+          "transform": "[Function]"
+        },
+        {
+          "name": "vite-plugin-inspect",
+          "enforce": "pre",
+          "apply": "[Function]",
+          "configResolved": "[Function]",
+          "configureServer": "[Function]",
+          "load": {
+            "order": "pre",
+            "handler": "[Function]"
+          },
+          "hotUpdate": "[Function]",
+          "buildEnd": "[Function]",
+          "sharedDuringBuild": true
+        },
+        {
+          "name": "vite:modulepreload-polyfill",
+          "resolveId": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:resolve",
+          "resolveId": {
+            "filter": {
+              "id": {
+                "exclude": {}
+              }
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": [
+                {},
+                {}
+              ]
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:html-inline-proxy",
+          "resolveId": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:css",
+          "buildStart": "[Function]",
+          "buildEnd": "[Function]",
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "transform": {
+            "filter": {
+              "id": {
+                "include": {},
+                "exclude": [
+                  {},
+                  {}
+                ]
+              }
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:esbuild",
+          "configureServer": "[Function]",
+          "transform": "[Function]"
+        },
+        {
+          "name": "vite:json",
+          "transform": {
+            "filter": {
+              "id": {
+                "include": {},
+                "exclude": {}
+              }
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:wasm-helper",
+          "resolveId": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": [
+                {},
+                {}
+              ]
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:worker",
+          "buildStart": "[Function]",
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "shouldTransformCachedModule": "[Function]",
+          "transform": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "renderChunk": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:asset",
+          "perEnvironmentStartEndDuringDev": true,
+          "buildStart": "[Function]",
+          "resolveId": {
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": {
+                "exclude": {}
+              }
+            },
+            "handler": "[Function]"
+          },
+          "renderChunk": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:wasm-fallback",
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:define",
+          "transform": {
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:css-post",
+          "renderStart": "[Function]",
+          "transform": {
+            "filter": {
+              "id": {
+                "include": {},
+                "exclude": [
+                  {},
+                  {}
+                ]
+              }
+            },
+            "handler": "[Function]"
+          },
+          "renderChunk": "[Function]",
+          "augmentChunkHash": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:build-html",
+          "transform": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:worker-import-meta-url",
+          "applyToEnvironment": "[Function]",
+          "shouldTransformCachedModule": "[Function]",
+          "transform": {
+            "filter": {
+              "code": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:asset-import-meta-url",
+          "applyToEnvironment": "[Function]",
+          "transform": {
+            "filter": {
+              "id": {
+                "exclude": [
+                  {},
+                  {}
+                ]
+              },
+              "code": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:force-systemjs-wrap-complete",
+          "renderChunk": "[Function]"
+        },
+        {
+          "name": "vite:prepare-out-dir",
+          "options": "[Function]",
+          "renderStart": {
+            "order": "pre",
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "commonjs",
+          "applyToEnvironment": "[Function]"
+        },
+        {
+          "name": "vite:data-uri",
+          "buildStart": "[Function]",
+          "resolveId": "[Function]",
+          "load": "[Function]"
+        },
+        {
+          "name": "vite:rollup-options-plugins",
+          "applyToEnvironment": "[Function]"
+        },
+        {
+          "name": "vite:dynamic-import-vars",
+          "resolveId": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "transform": {
+            "filter": {
+              "id": {
+                "exclude": {}
+              },
+              "code": {}
+            },
+            "handler": "[Function]"
+          }
+        },
+        {
+          "name": "vite:import-glob",
+          "buildStart": "[Function]",
+          "transform": {
+            "filter": {
+              "code": "import.meta.glob"
+            },
+            "handler": "[Function]"
+          },
+          "hotUpdate": "[Function]"
+        },
+        {
+          "name": "vite:build-import-analysis",
+          "resolveId": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "load": {
+            "filter": {
+              "id": {}
+            },
+            "handler": "[Function]"
+          },
+          "transform": {
+            "filter": {
+              "code": {}
+            },
+            "handler": "[Function]"
+          },
+          "renderChunk": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:esbuild-transpile",
+          "applyToEnvironment": "[Function]",
+          "renderChunk": "[Function]"
+        },
+        {
+          "name": "vite:terser",
+          "applyToEnvironment": "[Function]",
+          "renderChunk": "[Function]",
+          "closeBundle": "[Function]"
+        },
+        {
+          "name": "vite:manifest",
+          "perEnvironmentStartEndDuringDev": true,
+          "applyToEnvironment": "[Function]",
+          "buildStart": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:ssr-manifest",
+          "applyToEnvironment": "[Function]",
+          "generateBundle": "[Function]"
+        },
+        {
+          "name": "vite:reporter",
+          "sharedDuringBuild": true,
+          "perEnvironmentStartEndDuringDev": true,
+          "transform": "[Function]",
+          "buildStart": "[Function]",
+          "buildEnd": "[Function]",
+          "renderStart": "[Function]",
+          "renderChunk": "[Function]",
+          "generateBundle": "[Function]",
+          "writeBundle": "[Function]"
+        },
+        {
+          "name": "vite:load-fallback",
+          "load": {
+            "handler": "[Function]"
+          }
+        }
+      ],
+      "environments": [
+        "client"
+      ],
+      "environmentPlugins": {
+        "client": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33
+        ]
+      }
+    }
+  ]
+}

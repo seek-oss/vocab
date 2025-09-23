@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/manipulator.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __spreadArray } from \"tslib\";\nimport { isArgumentElement, isDateElement, isNumberElement, isPluralElement, isSelectElement, isTagElement, isTimeElement, TYPE, } from './types';\nfunction cloneDeep(obj) {\n    if (Array.isArray(obj)) {\n        // @ts-expect-error meh\n        return __spreadArray([], obj.map(cloneDeep), true);\n    }\n    if (obj !== null && typeof obj === 'object') {\n        // @ts-expect-error meh\n        return Object.keys(obj).reduce(function (cloned, k) {\n            // @ts-expect-error meh\n            cloned[k] = cloneDeep(obj[k]);\n            return cloned;\n        }, {});\n    }\n    return obj;\n}\nfunction hoistPluralOrSelectElement(ast, el, positionToInject) {\n    // pull this out of the ast and move it to the top\n    var cloned = cloneDeep(el);\n    var options = cloned.options;\n    cloned.options = Object.keys(options).reduce(function (all, k) {\n        var newValue = hoistSelectors(__spreadArray(__spreadArray(__spreadArray([], ast.slice(0, positionToInject), true), options[k].value, true), ast.slice(positionToInject + 1), true));\n        all[k] = {\n            value: newValue,\n        };\n        return all;\n    }, {});\n    return cloned;\n}\nfunction isPluralOrSelectElement(el) {\n    return isPluralElement(el) || isSelectElement(el);\n}\nfunction findPluralOrSelectElement(ast) {\n    return !!ast.find(function (el) {\n        if (isPluralOrSelectElement(el)) {\n            return true;\n        }\n        if (isTagElement(el)) {\n            return findPluralOrSelectElement(el.children);\n        }\n        return false;\n    });\n}\n/**\n * Hoist all selectors to the beginning of the AST & flatten the\n * resulting options. E.g:\n * \"I have {count, plural, one{a dog} other{many dogs}}\"\n * becomes \"{count, plural, one{I have a dog} other{I have many dogs}}\".\n * If there are multiple selectors, the order of which one is hoisted 1st\n * is non-deterministic.\n * The goal is to provide as many full sentences as possible since fragmented\n * sentences are not translator-friendly\n * @param ast AST\n */\nexport function hoistSelectors(ast) {\n    for (var i = 0; i < ast.length; i++) {\n        var el = ast[i];\n        if (isPluralOrSelectElement(el)) {\n            return [hoistPluralOrSelectElement(ast, el, i)];\n        }\n        if (isTagElement(el) && findPluralOrSelectElement([el])) {\n            throw new Error('Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option');\n        }\n    }\n    return ast;\n}\n/**\n * Collect all variables in an AST to Record<string, TYPE>\n * @param ast AST to collect variables from\n * @param vars Record of variable name to variable type\n */\nfunction collectVariables(ast, vars) {\n    if (vars === void 0) { vars = new Map(); }\n    ast.forEach(function (el) {\n        if (isArgumentElement(el) ||\n            isDateElement(el) ||\n            isTimeElement(el) ||\n            isNumberElement(el)) {\n            if (el.value in vars && vars.get(el.value) !== el.type) {\n                throw new Error(\"Variable \".concat(el.value, \" has conflicting types\"));\n            }\n            vars.set(el.value, el.type);\n        }\n        if (isPluralElement(el) || isSelectElement(el)) {\n            vars.set(el.value, el.type);\n            Object.keys(el.options).forEach(function (k) {\n                collectVariables(el.options[k].value, vars);\n            });\n        }\n        if (isTagElement(el)) {\n            vars.set(el.value, el.type);\n            collectVariables(el.children, vars);\n        }\n    });\n}\n/**\n * Check if 2 ASTs are structurally the same. This primarily means that\n * they have the same variables with the same type\n * @param a\n * @param b\n * @returns\n */\nexport function isStructurallySame(a, b) {\n    var aVars = new Map();\n    var bVars = new Map();\n    collectVariables(a, aVars);\n    collectVariables(b, bVars);\n    if (aVars.size !== bVars.size) {\n        return {\n            success: false,\n            error: new Error(\"Different number of variables: [\".concat(Array.from(aVars.keys()).join(', '), \"] vs [\").concat(Array.from(bVars.keys()).join(', '), \"]\")),\n        };\n    }\n    return Array.from(aVars.entries()).reduce(function (result, _a) {\n        var key = _a[0], type = _a[1];\n        if (!result.success) {\n            return result;\n        }\n        var bType = bVars.get(key);\n        if (bType == null) {\n            return {\n                success: false,\n                error: new Error(\"Missing variable \".concat(key, \" in message\")),\n            };\n        }\n        if (bType !== type) {\n            return {\n                success: false,\n                error: new Error(\"Variable \".concat(key, \" has conflicting types: \").concat(TYPE[type], \" vs \").concat(TYPE[bType])),\n            };\n        }\n        return result;\n    }, { success: true });\n}\n",
+      "start": 1758604116136,
+      "end": 1758604116140,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116140,
+      "end": 1758604116140,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116140,
+      "end": 1758604116140,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116140,
+      "end": 1758604116140,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116140,
+      "end": 1758604116140,
+      "order": "normal"
+    }
+  ]
+}

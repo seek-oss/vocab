@@ -1,0 +1,12 @@
+{
+  "resolvedId": "\u0000virtual:vocab-fr.json?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B+XFxcXCI6IuKAmOKAmeKAnOKAnSdcIiFAIyQlXiYqKClfK1xcL2B+XFxcXCIsInZvY2FiUHVibGlzaERhdGUiOiJWb2NhYiBhIMOpdMOpIHB1Ymxpw6kgbGUge3B1Ymxpc2hEYXRlLCBkYXRlLCBtZWRpdW19In0=",
+  "transforms": [
+    {
+      "name": "vite-plugin-vocab",
+      "result": "{\"specialCharacters - '‘’“”\\\"!@#$%^&*()_+\\\\/`~\\\\\\\\\":\"‘’“”'\\\"!@#$%^&*()_+\\\\/`~\\\\\\\\\",\"vocabPublishDate\":\"Vocab a été publié le {publishDate, date, medium}\"}",
+      "start": 1758604116001,
+      "end": 1758604116001,
+      "sourcemaps": null
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __assign } from \"tslib\";\nimport { ErrorKind } from './error';\nimport { Parser } from './parser';\nimport { isDateElement, isDateTimeSkeleton, isNumberElement, isNumberSkeleton, isPluralElement, isSelectElement, isTagElement, isTimeElement, } from './types';\nfunction pruneLocation(els) {\n    els.forEach(function (el) {\n        delete el.location;\n        if (isSelectElement(el) || isPluralElement(el)) {\n            for (var k in el.options) {\n                delete el.options[k].location;\n                pruneLocation(el.options[k].value);\n            }\n        }\n        else if (isNumberElement(el) && isNumberSkeleton(el.style)) {\n            delete el.style.location;\n        }\n        else if ((isDateElement(el) || isTimeElement(el)) &&\n            isDateTimeSkeleton(el.style)) {\n            delete el.style.location;\n        }\n        else if (isTagElement(el)) {\n            pruneLocation(el.children);\n        }\n    });\n}\nexport function parse(message, opts) {\n    if (opts === void 0) { opts = {}; }\n    opts = __assign({ shouldParseSkeletons: true, requiresOtherClause: true }, opts);\n    var result = new Parser(message, opts).parse();\n    if (result.err) {\n        var error = SyntaxError(ErrorKind[result.err.kind]);\n        // @ts-expect-error Assign to error object\n        error.location = result.err.location;\n        // @ts-expect-error Assign to error object\n        error.originalMessage = result.err.message;\n        throw error;\n    }\n    if (!(opts === null || opts === void 0 ? void 0 : opts.captureLocation)) {\n        pruneLocation(result.val);\n    }\n    return result.val;\n}\nexport * from './types';\n// only for testing\nexport var _Parser = Parser;\nexport { isStructurallySame } from './manipulator';\n",
+      "start": 1758604116099,
+      "end": 1758604116134,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116134,
+      "end": 1758604116134,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116134,
+      "end": 1758604116134,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116134,
+      "end": 1758604116134,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116134,
+      "end": 1758604116134,
+      "order": "normal"
+    }
+  ]
+}

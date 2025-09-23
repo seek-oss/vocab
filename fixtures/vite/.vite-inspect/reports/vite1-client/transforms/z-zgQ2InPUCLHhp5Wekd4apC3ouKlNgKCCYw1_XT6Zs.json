@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-skeleton-parser@1.8.14/node_modules/@formatjs/icu-skeleton-parser/lib/regex.generated.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// @generated from regex-gen.ts\nexport var WHITE_SPACE_REGEX = /[\\t-\\r \\x85\\u200E\\u200F\\u2028\\u2029]/i;\n",
+      "start": 1758604116152,
+      "end": 1758604116153,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116154,
+      "end": 1758604116154,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116154,
+      "end": 1758604116154,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116154,
+      "end": 1758604116154,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116154,
+      "end": 1758604116154,
+      "order": "normal"
+    }
+  ]
+}

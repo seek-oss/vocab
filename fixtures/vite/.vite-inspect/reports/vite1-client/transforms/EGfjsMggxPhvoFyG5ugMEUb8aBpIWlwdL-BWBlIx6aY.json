@@ -1,0 +1,43 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/fixtures/vite/index.html",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>vocab vite plugin test</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/client.tsx\"></script>\n  </body>\n</html>\n",
+      "start": 1758604115960,
+      "end": 1758604115962,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604115962,
+      "end": 1758604115962,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604115962,
+      "end": 1758604115962,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604115962,
+      "end": 1758604115962,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:build-html",
+      "result": "import \"vite/modulepreload-polyfill\";\n\nimport \"/src/client.tsx\"",
+      "start": 1758604115962,
+      "end": 1758604115979,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604115983,
+      "end": 1758604115983,
+      "order": "normal"
+    }
+  ]
+}

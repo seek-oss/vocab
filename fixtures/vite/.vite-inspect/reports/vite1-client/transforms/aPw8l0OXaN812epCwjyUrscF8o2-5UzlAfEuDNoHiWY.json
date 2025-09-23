@@ -1,0 +1,12 @@
+{
+  "resolvedId": "\u0000virtual:vocab-pseudo.json?source=eyJzcGVjaWFsQ2hhcmFjdGVycyAtICfigJjigJnigJzigJ1cIiFAIyQlXiYqKClfK1xcL2B+XFxcXCI6IlvigJjigJnigJzigJ0nXCIhQCMkJV4mKigpXytcXC9gflxcXFxdIiwidm9jYWJQdWJsaXNoRGF0ZSI6Ils8c3Ryb25nPuG5vMO2w7bDp8SDxIPDnzwvc3Ryb25nPiDFtcSDxIPEg8WhIMalx5rHmseaw5/GmsOsw6zDrMWh4bip4bq94bq94bq9xowgw7bDtsO24LiB4Li14LmJIHtwdWJsaXNoRGF0ZSwgZGF0ZSwgc21hbGx9XSJ9",
+  "transforms": [
+    {
+      "name": "vite-plugin-vocab",
+      "result": "{\"specialCharacters - '‘’“”\\\"!@#$%^&*()_+\\\\/`~\\\\\\\\\":\"[‘’“”'\\\"!@#$%^&*()_+\\\\/`~\\\\\\\\]\",\"vocabPublishDate\":\"[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]\"}",
+      "start": 1758604116001,
+      "end": 1758604116001,
+      "sourcemaps": null
+    }
+  ]
+}

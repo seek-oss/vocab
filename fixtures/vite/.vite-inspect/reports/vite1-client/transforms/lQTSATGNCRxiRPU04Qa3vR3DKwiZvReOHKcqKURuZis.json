@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/packages/core/dist/icu-handler-ckZzFRyo.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { IntlMessageFormat } from \"intl-messageformat\";\n\n//#region src/icu-handler.ts\nconst moduleCache = /* @__PURE__ */ new WeakMap();\nconst getParsedICUMessages = (m, locale) => {\n\tconst moduleCachedResult = moduleCache.get(m);\n\tif (moduleCachedResult && moduleCachedResult[locale]) return moduleCachedResult[locale];\n\tconst parsedICUMessages = {};\n\tfor (const translation of Object.keys(m)) {\n\t\tconst intlMessageFormat = new IntlMessageFormat(m[translation], locale);\n\t\tparsedICUMessages[translation] = { format: (params) => intlMessageFormat.format(params) };\n\t}\n\tmoduleCache.set(m, {\n\t\t...moduleCachedResult,\n\t\t[locale]: parsedICUMessages\n\t});\n\treturn parsedICUMessages;\n};\n\n//#endregion\nexport { getParsedICUMessages };\n//# sourceMappingURL=icu-handler-ckZzFRyo.mjs.map",
+      "start": 1758604116058,
+      "end": 1758604116063,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116063,
+      "end": 1758604116063,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116063,
+      "end": 1758604116063,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116063,
+      "end": 1758604116063,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116063,
+      "end": 1758604116063,
+      "order": "normal"
+    }
+  ]
+}

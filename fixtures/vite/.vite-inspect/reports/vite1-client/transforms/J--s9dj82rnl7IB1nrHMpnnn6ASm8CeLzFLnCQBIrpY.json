@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/packages/vite/dist/runtime.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createTranslationFile } from \"@vocab/core/translation-file\";\nimport { getParsedICUMessages } from \"@vocab/core/icu-handler\";\n\n//#region src/create-language.ts\nconst createLanguage = (loadImport) => {\n\tlet promiseValue;\n\tlet resolvedValue;\n\treturn {\n\t\tgetValue: (locale) => {\n\t\t\tif (!resolvedValue) return;\n\t\t\treturn getParsedICUMessages(resolvedValue, locale);\n\t\t},\n\t\tload: () => {\n\t\t\tif (!promiseValue) {\n\t\t\t\tpromiseValue = loadImport();\n\t\t\t\tpromiseValue.then((value) => {\n\t\t\t\t\tresolvedValue = value.default;\n\t\t\t\t});\n\t\t\t}\n\t\t\treturn promiseValue;\n\t\t}\n\t};\n};\n\n//#endregion\nexport { createLanguage, createTranslationFile };\n//# sourceMappingURL=runtime.mjs.map",
+      "start": 1758604115999,
+      "end": 1758604116009,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116009,
+      "end": 1758604116009,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116009,
+      "end": 1758604116009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116009,
+      "end": 1758604116009,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116009,
+      "end": 1758604116009,
+      "order": "normal"
+    }
+  ]
+}

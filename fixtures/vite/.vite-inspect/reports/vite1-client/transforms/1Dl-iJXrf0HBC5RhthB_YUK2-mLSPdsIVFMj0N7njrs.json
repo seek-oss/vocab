@@ -1,0 +1,12 @@
+{
+  "resolvedId": "\u0000virtual:vocab-pseudo.json?source=eyJoZWxsbyI6IlvhuKjhur3hur3Gmsaaw7bDtl0iLCJ3b3JsZCI6IlvFtcO2w7bDtsWZxprGjF0ifQ==",
+  "transforms": [
+    {
+      "name": "vite-plugin-vocab",
+      "result": "{\"hello\":\"[Ḩẽẽƚƚöö]\",\"world\":\"[ŵöööřƚƌ]\"}",
+      "start": 1758604115999,
+      "end": 1758604115999,
+      "sourcemaps": null
+    }
+  ]
+}

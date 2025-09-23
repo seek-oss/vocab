@@ -1,0 +1,38 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/react-dom@19.1.1_react@19.1.1/node_modules/react-dom/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\nfunction checkDCE() {\n  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */\n  if (\n    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ||\n    typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function'\n  ) {\n    return;\n  }\n  if (process.env.NODE_ENV !== 'production') {\n    // This branch is unreachable because this function is only called\n    // in production, but the condition is true only in development.\n    // Therefore if the branch is still here, dead code elimination wasn't\n    // properly applied.\n    // Don't change the message. React DevTools relies on it. Also make sure\n    // this message doesn't occur elsewhere in this function, or it will cause\n    // a false positive.\n    throw new Error('^_^');\n  }\n  try {\n    // Verify that the code above has been dead code eliminated (DCE'd).\n    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);\n  } catch (err) {\n    // DevTools shouldn't crash React, no matter what.\n    // We should still report in case we break this code.\n    console.error(err);\n  }\n}\n\nif (process.env.NODE_ENV === 'production') {\n  // DCE check should happen before ReactDOM bundle executes so that\n  // DevTools can report bad minification during injection.\n  checkDCE();\n  module.exports = require('./cjs/react-dom.production.js');\n} else {\n  module.exports = require('./cjs/react-dom.development.js');\n}\n",
+      "start": 1758604116051,
+      "end": 1758604116056,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "result": "\"use strict\";\nfunction checkDCE() {\n  if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === \"undefined\" || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== \"function\") {\n    return;\n  }\n  if (false) {\n    throw new Error(\"^_^\");\n  }\n  try {\n    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);\n  } catch (err) {\n    console.error(err);\n  }\n}\nif (true) {\n  checkDCE();\n  module.exports = require(\"./cjs/react-dom.production.js\");\n} else {\n  module.exports = require(\"./cjs/react-dom.development.js\");\n}\n",
+      "start": 1758604116056,
+      "end": 1758604116058,
+      "order": "normal-normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116066,
+      "end": 1758604116066,
+      "order": "normal"
+    }
+  ]
+}

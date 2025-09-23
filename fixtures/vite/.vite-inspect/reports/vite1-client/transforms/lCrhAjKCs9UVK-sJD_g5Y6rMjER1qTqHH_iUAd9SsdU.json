@@ -1,0 +1,11 @@
+{
+  "resolvedId": "\u0000vite/modulepreload-polyfill.js",
+  "transforms": [
+    {
+      "name": "vite:modulepreload-polyfill",
+      "result": "__VITE_IS_MODERN__&&(function polyfill() {\n\tconst relList = document.createElement(\"link\").relList;\n\tif (relList && relList.supports && relList.supports(\"modulepreload\")) return;\n\tfor (const link of document.querySelectorAll(\"link[rel=\\\"modulepreload\\\"]\")) processPreload(link);\n\tnew MutationObserver((mutations) => {\n\t\tfor (const mutation of mutations) {\n\t\t\tif (mutation.type !== \"childList\") continue;\n\t\t\tfor (const node of mutation.addedNodes) if (node.tagName === \"LINK\" && node.rel === \"modulepreload\") processPreload(node);\n\t\t}\n\t}).observe(document, {\n\t\tchildList: true,\n\t\tsubtree: true\n\t});\n\tfunction getFetchOpts(link) {\n\t\tconst fetchOpts = {};\n\t\tif (link.integrity) fetchOpts.integrity = link.integrity;\n\t\tif (link.referrerPolicy) fetchOpts.referrerPolicy = link.referrerPolicy;\n\t\tif (link.crossOrigin === \"use-credentials\") fetchOpts.credentials = \"include\";\n\t\telse if (link.crossOrigin === \"anonymous\") fetchOpts.credentials = \"omit\";\n\t\telse fetchOpts.credentials = \"same-origin\";\n\t\treturn fetchOpts;\n\t}\n\tfunction processPreload(link) {\n\t\tif (link.ep) return;\n\t\tlink.ep = true;\n\t\tconst fetchOpts = getFetchOpts(link);\n\t\tfetch(link.href, fetchOpts);\n\t}\n}());",
+      "start": 1758604115984,
+      "end": 1758604115984
+    }
+  ]
+}

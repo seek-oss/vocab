@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/node_modules/.pnpm/@formatjs+icu-messageformat-parser@2.11.2/node_modules/@formatjs/icu-messageformat-parser/lib/regex.generated.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// @generated from regex-gen.ts\nexport var SPACE_SEPARATOR_REGEX = /[ \\xA0\\u1680\\u2000-\\u200A\\u202F\\u205F\\u3000]/;\nexport var WHITE_SPACE_REGEX = /[\\t-\\r \\x85\\u200E\\u200F\\u2028\\u2029]/;\n",
+      "start": 1758604116145,
+      "end": 1758604116146,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116146,
+      "end": 1758604116146,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116146,
+      "end": 1758604116146,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116146,
+      "end": 1758604116146,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116146,
+      "end": 1758604116146,
+      "order": "normal"
+    }
+  ]
+}

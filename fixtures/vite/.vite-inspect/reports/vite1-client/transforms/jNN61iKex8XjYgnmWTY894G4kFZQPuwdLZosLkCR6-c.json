@@ -1,0 +1,36 @@
+{
+  "resolvedId": "/Users/askoufis/code/vocab/packages/core/dist/translation-file.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createTranslationFile } from \"./translation-file-Dn19n2oY.mjs\";\n\nexport { createTranslationFile };",
+      "start": 1758604116053,
+      "end": 1758604116056,
+      "sourcemaps": null
+    },
+    {
+      "name": "vite-plugin-vocab",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "pre"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "normal-normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1758604116056,
+      "end": 1758604116056,
+      "order": "normal"
+    }
+  ]
+}
