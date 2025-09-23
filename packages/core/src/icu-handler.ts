@@ -1,5 +1,5 @@
 import type { ParsedICUMessages, TranslationMessagesByKey } from './types';
-import IntlMessageFormat from 'intl-messageformat';
+import { IntlMessageFormat } from 'intl-messageformat';
 
 type ICUMessagesByLocale = Record<string, ParsedICUMessages<any>>;
 
