@@ -4,7 +4,7 @@ import {
   type PluralOrSelectOption,
   TYPE,
 } from '@formatjs/icu-messageformat-parser';
-import { printAST } from '@formatjs/icu-messageformat-parser/printer';
+import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
 import type { MessageGenerator, TranslationsByKey } from './types';
 
 export function generateLanguageFromTranslations({
