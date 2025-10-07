@@ -4,11 +4,15 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   release:
     name: Publish & Deploy
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     env:
       CI: true
     steps:
@@ -29,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Ensure npm 11.5.1 or later is installed
+      - name: Install latest npm
+        run: npm install -g npm@latest
+
+
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
@@ -36,4 +45,38 @@ jobs:
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.SEEK_OSS_CI_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  snapshot:
+    name: Publish snapshot version
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    env:
+      CI: true
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version-file: package.json
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Ensure npm 11.5.1 or later is installed
+      - name: Install latest npm
+        run: npm install -g npm@latest
+
+      - name: Publish
+        uses: seek-oss/changesets-snapshot@v0
+        with:
+          pre-publish: pnpm build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
