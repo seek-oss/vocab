@@ -1,5 +1,31 @@
 # @vocab/vite
 
+## 0.3.0
+
+### Minor Changes
+
+- [#332](https://github.com/seek-oss/vocab/pull/332) [`e6303ab`](https://github.com/seek-oss/vocab/commit/e6303ab94d8a927dd67438d51439ba04b808937b) Thanks [@askoufis](https://github.com/askoufis)! - Replace default plugin export with named `vitePluginVocab` export
+
+  **BREAKING CHANGE**
+
+  This package no longer provides a default export. You must now import the named export `vitePluginVocab` instead.
+
+  **EXAMPLE USAGE**
+
+  ```diff
+  -import vitePluginVocab from '@vocab/vite';
+  +import { vitePluginVocab } from '@vocab/vite';
+  ```
+
+### Patch Changes
+
+- [#330](https://github.com/seek-oss/vocab/pull/330) [`f3a6e58`](https://github.com/seek-oss/vocab/commit/f3a6e58d06c2def3f6ca4fd613b6b671a43a9d69) Thanks [@askoufis](https://github.com/askoufis)! - Publish correct hybrid CJS/ESM bundles
+
+  This package now correctly configures and bundles CJS and ESM code. No API changes have been made.
+
+- Updated dependencies [[`3e123e4`](https://github.com/seek-oss/vocab/commit/3e123e4ba337356b205981294f1cbbf9e4943b6a), [`f3a6e58`](https://github.com/seek-oss/vocab/commit/f3a6e58d06c2def3f6ca4fd613b6b671a43a9d69)]:
+  - @vocab/core@1.6.5
+
 ## 0.2.4
 
 ### Patch Changes

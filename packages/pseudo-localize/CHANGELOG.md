@@ -1,5 +1,13 @@
 # @vocab/pseudo-localize
 
+## 1.0.2
+
+### Patch Changes
+
+- [#330](https://github.com/seek-oss/vocab/pull/330) [`f3a6e58`](https://github.com/seek-oss/vocab/commit/f3a6e58d06c2def3f6ca4fd613b6b671a43a9d69) Thanks [@askoufis](https://github.com/askoufis)! - Publish correct hybrid CJS/ESM bundles
+
+  This package now correctly configures and bundles CJS and ESM code. No API changes have been made.
+
 ## 1.0.1
 
 ### Patch Changes
