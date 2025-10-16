@@ -1,5 +1,16 @@
 # @vocab/react
 
+## 1.1.14
+
+### Patch Changes
+
+- [#330](https://github.com/seek-oss/vocab/pull/330) [`f3a6e58`](https://github.com/seek-oss/vocab/commit/f3a6e58d06c2def3f6ca4fd613b6b671a43a9d69) Thanks [@askoufis](https://github.com/askoufis)! - Publish correct hybrid CJS/ESM bundles
+
+  This package now correctly configures and bundles CJS and ESM code. No API changes have been made.
+
+- Updated dependencies [[`3e123e4`](https://github.com/seek-oss/vocab/commit/3e123e4ba337356b205981294f1cbbf9e4943b6a), [`f3a6e58`](https://github.com/seek-oss/vocab/commit/f3a6e58d06c2def3f6ca4fd613b6b671a43a9d69)]:
+  - @vocab/core@1.6.5
+
 ## 1.1.13
 
 ### Patch Changes
