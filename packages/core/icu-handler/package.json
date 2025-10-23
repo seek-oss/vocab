@@ -1,0 +1,5 @@
+{
+  "main": "../dist/icu-handler.js",
+  "module": "../dist/icu-handler.mjs",
+  "types": "../dist/icu-handler.d.ts"
+}
