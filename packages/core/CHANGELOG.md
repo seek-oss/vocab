@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.6.6
+
+### Patch Changes
+
+- [#338](https://github.com/seek-oss/vocab/pull/338) [`265326e`](https://github.com/seek-oss/vocab/commit/265326e88d3b7348ac68b30579c13e5163624960) Thanks [@samchungy](https://github.com/samchungy)! - Add Node10 moduleResolution support for subpath imports
+
 ## 1.6.5
 
 ### Patch Changes
