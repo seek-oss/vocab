@@ -1,0 +1,5 @@
+{
+  "main": "../dist/runtime.js",
+  "module": "../dist/runtime.mjs",
+  "types": "../dist/runtime.d.ts"
+}
