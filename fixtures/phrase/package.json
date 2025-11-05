@@ -8,8 +8,14 @@
     "push": "dotenv vocab push",
     "pull": "dotenv vocab pull"
   },
+  "peerDependencies": {
+    "@vocab/core": "workspace:*"
+  },
   "dependencies": {
     "@vocab/cli": "workspace:*",
     "dotenv-cli": "^10.0.0"
+  },
+  "devDependencies": {
+    "@vocab/core": "workspace:*"
   }
 }

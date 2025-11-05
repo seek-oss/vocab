@@ -736,7 +736,7 @@ vocab push --branch my-branch --ignore "**/dist/**" "**/another_ignored_director
 
 By default, Phrase may not apply the project's automatic translation behaviour for new keys uploaded via API.
 
-The `--auto-translate` flag enables automatic translation for missing translations in the Phrase platform. See [Phrase auto-translate API Documentation] for more information.
+The `--auto-translate` flag instructs Phrase to automatically translate any missing keys using machine translation.. See [Phrase auto-translate API Documentation] for more information.
 
 ```sh
 vocab push --branch my-branch --auto-translate
