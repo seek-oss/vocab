@@ -126,7 +126,7 @@ describe('phrase-api', () => {
             "true",
           ],
           [
-            "autoTranslate",
+            "autotranslate",
             "true",
           ],
           [

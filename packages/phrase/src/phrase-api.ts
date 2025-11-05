@@ -146,7 +146,7 @@ export async function pushTranslations(
     formData.append('update_descriptions', 'true');
 
     if (autoTranslate) {
-      formData.append('autoTranslate', 'true');
+      formData.append('autotranslate', 'true');
     }
 
     formData.append(`locale_mapping[${language}]`, messageIndex.toString());
