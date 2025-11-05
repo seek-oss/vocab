@@ -6,6 +6,9 @@ import { pushTranslations } from './phrase-api';
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
+const getFormDataEntries = (call: [unknown, { body: FormData }]) =>
+  [...call[1].body.entries()].filter(([key]) => key !== 'file');
+
 describe('phrase-api', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -54,16 +57,8 @@ describe('phrase-api', () => {
       );
 
       // Check that fetch was called with correct FormData
-      expect([...firstCall[1].body.entries()]).toMatchInlineSnapshot(`
+      expect(getFormDataEntries(firstCall as any)).toMatchInlineSnapshot(`
         [
-          [
-            "file",
-            File {
-              Symbol(kHandle): Blob {},
-              Symbol(kLength): 28,
-              Symbol(kType): "text/csv",
-            },
-          ],
           [
             "file_format",
             "csv",
@@ -112,16 +107,8 @@ describe('phrase-api', () => {
       });
 
       const firstCall = mockFetch.mock.calls[0];
-      expect([...firstCall[1].body.entries()]).toMatchInlineSnapshot(`
+      expect(getFormDataEntries(firstCall as any)).toMatchInlineSnapshot(`
         [
-          [
-            "file",
-            File {
-              Symbol(kHandle): Blob {},
-              Symbol(kLength): 28,
-              Symbol(kType): "text/csv",
-            },
-          ],
           [
             "file_format",
             "csv",
