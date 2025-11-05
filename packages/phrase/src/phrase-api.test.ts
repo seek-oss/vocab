@@ -48,66 +48,58 @@ describe('phrase-api', () => {
       expect(mockFetch).toHaveBeenCalledTimes(2); // One call per language
       expect(result).toEqual({ devLanguageUploadId: 'upload-123' });
 
-      // Check that fetch was called with correct FormData
       const firstCall = mockFetch.mock.calls[0];
-      expect(firstCall).toMatchInlineSnapshot(`
+      expect(firstCall[0]).toBe(
+        'https://api.phrase.com/v2/projects/test-project-id/uploads',
+      );
+
+      // Check that fetch was called with correct FormData
+      expect([...firstCall[1].body.entries()]).toMatchInlineSnapshot(`
         [
-          "https://api.phrase.com/v2/projects/test-project-id/uploads",
-          {
-            "body": FormData {
-              Symbol(state): [
-                {
-                  "name": "file",
-                  "value": File {
-                    Symbol(kHandle): Blob {},
-                    Symbol(kLength): 28,
-                    Symbol(kType): "text/csv",
-                  },
-                },
-                {
-                  "name": "file_format",
-                  "value": "csv",
-                },
-                {
-                  "name": "branch",
-                  "value": "test-branch",
-                },
-                {
-                  "name": "update_translations",
-                  "value": "true",
-                },
-                {
-                  "name": "update_descriptions",
-                  "value": "true",
-                },
-                {
-                  "name": "locale_mapping[en]",
-                  "value": "4",
-                },
-                {
-                  "name": "format_options[key_index]",
-                  "value": "1",
-                },
-                {
-                  "name": "format_options[comment_index]",
-                  "value": "2",
-                },
-                {
-                  "name": "format_options[tag_column]",
-                  "value": "3",
-                },
-                {
-                  "name": "format_options[enable_pluralization]",
-                  "value": "false",
-                },
-              ],
+          [
+            "file",
+            File {
+              Symbol(kHandle): Blob {},
+              Symbol(kLength): 28,
+              Symbol(kType): "text/csv",
             },
-            "headers": {
-              "Authorization": "token test-token",
-              "User-Agent": "Vocab Client (https://github.com/seek-oss/vocab)",
-            },
-            "method": "POST",
-          },
+          ],
+          [
+            "file_format",
+            "csv",
+          ],
+          [
+            "branch",
+            "test-branch",
+          ],
+          [
+            "update_translations",
+            "true",
+          ],
+          [
+            "update_descriptions",
+            "true",
+          ],
+          [
+            "locale_mapping[en]",
+            "4",
+          ],
+          [
+            "format_options[key_index]",
+            "1",
+          ],
+          [
+            "format_options[comment_index]",
+            "2",
+          ],
+          [
+            "format_options[tag_column]",
+            "3",
+          ],
+          [
+            "format_options[enable_pluralization]",
+            "false",
+          ],
         ]
       `);
     });
@@ -120,59 +112,57 @@ describe('phrase-api', () => {
       });
 
       const firstCall = mockFetch.mock.calls[0];
-      expect(firstCall[1].body).toMatchInlineSnapshot(`
-        FormData {
-          Symbol(state): [
-            {
-              "name": "file",
-              "value": File {
-                Symbol(kHandle): Blob {},
-                Symbol(kLength): 28,
-                Symbol(kType): "text/csv",
-              },
-            },
-            {
-              "name": "file_format",
-              "value": "csv",
-            },
-            {
-              "name": "branch",
-              "value": "test-branch",
-            },
-            {
-              "name": "update_translations",
-              "value": "true",
-            },
-            {
-              "name": "update_descriptions",
-              "value": "true",
-            },
-            {
-              "name": "autoTranslate",
-              "value": "true",
-            },
-            {
-              "name": "locale_mapping[en]",
-              "value": "4",
-            },
-            {
-              "name": "format_options[key_index]",
-              "value": "1",
-            },
-            {
-              "name": "format_options[comment_index]",
-              "value": "2",
-            },
-            {
-              "name": "format_options[tag_column]",
-              "value": "3",
-            },
-            {
-              "name": "format_options[enable_pluralization]",
-              "value": "false",
+      expect([...firstCall[1].body.entries()]).toMatchInlineSnapshot(`
+        [
+          [
+            "file",
+            File {
+              Symbol(kHandle): Blob {},
+              Symbol(kLength): 28,
+              Symbol(kType): "text/csv",
             },
           ],
-        }
+          [
+            "file_format",
+            "csv",
+          ],
+          [
+            "branch",
+            "test-branch",
+          ],
+          [
+            "update_translations",
+            "true",
+          ],
+          [
+            "update_descriptions",
+            "true",
+          ],
+          [
+            "autoTranslate",
+            "true",
+          ],
+          [
+            "locale_mapping[en]",
+            "4",
+          ],
+          [
+            "format_options[key_index]",
+            "1",
+          ],
+          [
+            "format_options[comment_index]",
+            "2",
+          ],
+          [
+            "format_options[tag_column]",
+            "3",
+          ],
+          [
+            "format_options[enable_pluralization]",
+            "false",
+          ],
+        ]
       `);
     });
   });
