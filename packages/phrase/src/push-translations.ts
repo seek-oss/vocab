@@ -13,6 +13,7 @@ import {
 import { trace } from './logger';
 
 interface PushOptions {
+  autoTranslate?: boolean;
   branch: string;
   deleteUnusedKeys?: boolean;
   ignore?: string[];
@@ -23,7 +24,7 @@ interface PushOptions {
  * A unique namespace is appended to each key using the file path the key came from.
  */
 export async function push(
-  { branch, deleteUnusedKeys, ignore }: PushOptions,
+  { autoTranslate, branch, deleteUnusedKeys, ignore }: PushOptions,
   config: UserConfig,
 ) {
   if (ignore) {
@@ -77,8 +78,9 @@ export async function push(
   }
 
   const { devLanguageUploadId } = await pushTranslations(phraseTranslations, {
-    devLanguage: config.devLanguage,
+    autoTranslate,
     branch,
+    devLanguage: config.devLanguage,
   });
 
   if (deleteUnusedKeys) {

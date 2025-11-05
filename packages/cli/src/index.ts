@@ -43,6 +43,11 @@ yargsCli(process.argv.slice(2))
           describe: 'Whether or not to delete unused keys after pushing',
           default: false,
         },
+        'auto-translate': {
+          type: 'boolean',
+          describe: 'Enable automatic translation for missing translations',
+          default: false,
+        },
         ignore: ignorePathDefinition,
       }),
     handler: async (options) => {

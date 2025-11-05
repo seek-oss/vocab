@@ -17,9 +17,14 @@ vi.mock('./phrase-api', () => ({
 
 const devLanguageUploadId = '1234';
 
-function runPhrase(config: { deleteUnusedKeys: boolean; ignore?: string[] }) {
+function runPhrase(config: {
+  autoTranslate?: boolean;
+  deleteUnusedKeys: boolean;
+  ignore?: string[];
+}) {
   return push(
     {
+      autoTranslate: config.autoTranslate,
       branch: 'tester',
       deleteUnusedKeys: config.deleteUnusedKeys,
       ignore: config.ignore || [],
@@ -345,6 +350,34 @@ describe('push', () => {
           },
         }
       `);
+    });
+  });
+
+  describe('when autoTranslate is enabled', () => {
+    const config = { autoTranslate: true, deleteUnusedKeys: false };
+
+    beforeEach(() => {
+      vi.mocked(pushTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(deleteUnusedKeys).mockClear();
+
+      vi.mocked(pushTranslations).mockImplementation(() =>
+        Promise.resolve({ devLanguageUploadId }),
+      );
+    });
+
+    it('should pass autoTranslate parameter to pushTranslations', async () => {
+      await expect(runPhrase(config)).resolves.toBeUndefined();
+
+      // Check that pushTranslations was called with the correct parameters
+      expect(vi.mocked(pushTranslations)).toHaveBeenCalledWith(
+        expect.any(Object), // translations data
+        expect.objectContaining({
+          devLanguage: 'en',
+          branch: 'tester',
+          autoTranslate: true,
+        }),
+      );
     });
   });
 });
