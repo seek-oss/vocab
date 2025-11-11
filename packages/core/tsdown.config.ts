@@ -8,7 +8,7 @@ export default defineConfig({
     'src/runtime.ts',
   ],
   format: ['esm', 'cjs'],
-  exports: true,
+  exports: { devExports: '@vocab-private/monorepo' },
   dts: true,
   sourcemap: true,
 });

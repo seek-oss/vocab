@@ -9,6 +9,9 @@ export default defineConfig({
       vocabConfig,
     }),
   ],
+  resolve: {
+    conditions: ['@vocab-private/monorepo'],
+  },
   build: {
     rollupOptions: {
       output: {

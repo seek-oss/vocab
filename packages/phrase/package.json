@@ -11,6 +11,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "@vocab-private/monorepo": "./src/index.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
@@ -30,5 +31,14 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    }
+  }
 }
