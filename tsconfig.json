@@ -8,7 +8,7 @@
     "incremental": true,
     "jsx": "react",
     "strict": true,
-    "customConditions": ["@vocab-private/monorepo'"],
+    "customConditions": ["@vocab-private/monorepo"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
