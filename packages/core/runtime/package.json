@@ -1,5 +1,5 @@
 {
-  "main": "../dist/runtime.js",
+  "main": "../dist/runtime.cjs",
   "module": "../dist/runtime.mjs",
   "types": "../dist/runtime.d.ts"
 }
