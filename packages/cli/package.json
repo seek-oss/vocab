@@ -9,7 +9,10 @@
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.cts",
   "exports": {
-    ".": "./dist/index.cjs",
+    ".": {
+      "@vocab-private/monorepo": "./src/index.ts",
+      "default": "./dist/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "bin": {
@@ -31,5 +34,11 @@
   "devDependencies": {
     "@types/env-ci": "^3.1.0",
     "@types/yargs": "^17.0.32"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": "./dist/index.cjs",
+      "./package.json": "./package.json"
+    }
   }
 }

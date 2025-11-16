@@ -11,18 +11,22 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
+      "@vocab-private/monorepo": "./src/index.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./chunk-name": {
+      "@vocab-private/monorepo": "./src/chunk-name.ts",
       "import": "./dist/chunk-name.mjs",
       "require": "./dist/chunk-name.cjs"
     },
     "./loader": {
+      "@vocab-private/monorepo": "./src/loader.ts",
       "import": "./dist/loader.mjs",
       "require": "./dist/loader.cjs"
     },
     "./web": {
+      "@vocab-private/monorepo": "./src/web.ts",
       "import": "./dist/web.mjs",
       "require": "./dist/web.cjs"
     },
@@ -47,5 +51,26 @@
   },
   "peerDependencies": {
     "webpack": "^5.37.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
+      },
+      "./chunk-name": {
+        "import": "./dist/chunk-name.mjs",
+        "require": "./dist/chunk-name.js"
+      },
+      "./loader": {
+        "import": "./dist/loader.mjs",
+        "require": "./dist/loader.js"
+      },
+      "./web": {
+        "import": "./dist/web.mjs",
+        "require": "./dist/web.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

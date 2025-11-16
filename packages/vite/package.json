@@ -13,18 +13,22 @@
   "types": "./dist/index.d.cts",
   "exports": {
     ".": {
+      "@vocab-private/monorepo": "./src/index.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./chunks": {
+      "@vocab-private/monorepo": "./src/chunks.ts",
       "import": "./dist/chunks.mjs",
       "require": "./dist/chunks.cjs"
     },
     "./get-chunk-name": {
+      "@vocab-private/monorepo": "./src/get-chunk-name.ts",
       "import": "./dist/get-chunk-name.mjs",
       "require": "./dist/get-chunk-name.cjs"
     },
     "./runtime": {
+      "@vocab-private/monorepo": "./src/runtime.ts",
       "import": "./dist/runtime.mjs",
       "require": "./dist/runtime.cjs"
     },
@@ -46,5 +50,26 @@
   },
   "peerDependencies": {
     "vite": "^5.4.8 || ^6.0.0 || ^7.0.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
+      },
+      "./chunks": {
+        "import": "./dist/chunks.mjs",
+        "require": "./dist/chunks.js"
+      },
+      "./get-chunk-name": {
+        "import": "./dist/get-chunk-name.mjs",
+        "require": "./dist/get-chunk-name.js"
+      },
+      "./runtime": {
+        "import": "./dist/runtime.mjs",
+        "require": "./dist/runtime.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }
