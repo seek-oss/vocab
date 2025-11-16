@@ -6,25 +6,25 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/webpack"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     },
     "./chunk-name": {
       "import": "./dist/chunk-name.mjs",
-      "require": "./dist/chunk-name.js"
+      "require": "./dist/chunk-name.cjs"
     },
     "./loader": {
       "import": "./dist/loader.mjs",
-      "require": "./dist/loader.js"
+      "require": "./dist/loader.cjs"
     },
     "./web": {
       "import": "./dist/web.mjs",
-      "require": "./dist/web.js"
+      "require": "./dist/web.cjs"
     },
     "./package.json": "./package.json"
   },

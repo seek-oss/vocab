@@ -6,25 +6,25 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/core"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     },
     "./icu-handler": {
       "import": "./dist/icu-handler.mjs",
-      "require": "./dist/icu-handler.js"
+      "require": "./dist/icu-handler.cjs"
     },
     "./runtime": {
       "import": "./dist/runtime.mjs",
-      "require": "./dist/runtime.js"
+      "require": "./dist/runtime.cjs"
     },
     "./translation-file": {
       "import": "./dist/translation-file.mjs",
-      "require": "./dist/translation-file.js"
+      "require": "./dist/translation-file.cjs"
     },
     "./package.json": "./package.json"
   },
