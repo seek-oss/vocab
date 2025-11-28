@@ -2,6 +2,7 @@ import {
   type UserConfig,
   resolveConfigSync,
   validateConfig,
+  compiledVocabFileFilter as _compiledVocabFileFilter,
 } from '@vocab/core';
 import type { Compiler } from 'webpack';
 import { trace } from './logger';
@@ -10,7 +11,10 @@ interface UserOptions extends Partial<UserConfig> {
   configFile?: string;
 }
 
-export const compiledVocabFileFilter = /\.vocab[\\/]index\.(?:ts|js|cjs|mjs)$/;
+/**
+ * @deprecated Import from `@vocab/core` instead
+ */
+export const compiledVocabFileFilter = _compiledVocabFileFilter;
 
 export class VocabWebpackPlugin {
   options: UserConfig;

@@ -180,13 +180,15 @@ function serialiseTranslationRuntime(
 
     ${serializeTypeImports(imports, '@vocab/core')}
     import { createLanguage, createTranslationFile } from '@vocab/core/runtime';
+    import type { TranslationFile } from '@vocab/core';
 
-    const translations = createTranslationFile<
+    const translations: TranslationFile<
       ${languagesUnionAsString},
       ${serialiseObjectToType(translationsType)}
-    >({
-      ${languageEntries}
-    });
+    > = createTranslationFile
+      ({
+        ${languageEntries}
+      });
 
     export default translations;
   `;

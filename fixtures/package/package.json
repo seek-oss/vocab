@@ -1,0 +1,15 @@
+{
+  "name": "@vocab-fixtures/package",
+  "private": true,
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@vocab/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@vocab/cli": "workspace:^",
+    "@vocab/rollup-plugin": "workspace:^",
+    "tsdown": "^0.16.0"
+  }
+}

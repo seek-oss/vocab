@@ -24,7 +24,7 @@ export type StringWithSuggestions<Suggestions extends string> =
 /**
  * ParsedICUMessage A strictly typed formatter from intl-messageformat
  */
-interface ParsedICUMessage<FormatFn extends ParsedFormatFn> {
+export interface ParsedICUMessage<FormatFn extends ParsedFormatFn> {
   format: FormatFn;
 }
 
