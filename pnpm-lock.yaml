@@ -417,6 +417,7 @@ importers:
       memoize:
         specifier: ^10.1.0
         version: 10.1.0
+    devDependencies:
       rolldown:
         specifier: '>=1.0.0-beta.52'
         version: 1.0.0-beta.52
