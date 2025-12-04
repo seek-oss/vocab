@@ -2,7 +2,8 @@
   "name": "@vocab-fixtures/package",
   "private": true,
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "compile": "vocab compile"
   },
   "dependencies": {
     "@vocab/core": "workspace:^"
