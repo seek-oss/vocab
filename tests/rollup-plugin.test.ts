@@ -5,9 +5,9 @@ import { promisify } from 'node:util';
 
 describe('rollup plugin', () => {
   it('should generate the expected build output', async () => {
-    await exec('pnpm build');
-
     const cwd = resolve(import.meta.dirname, '../fixtures/package');
+    await exec('pnpm build', { cwd });
+
     const distContents = await getDirContents(resolve(cwd, 'dist'));
     const cleansedDistContents = distContents.map((entry) =>
       entry.replaceAll(cwd, ''),
