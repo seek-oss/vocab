@@ -47,3 +47,10 @@ export default defineConfig({
   plugins: [vocabTranslations({ root: './src' })]
 });
 ```
+
+## Options
+
+### `root` (string, required)
+
+The root of the library that all paths are resolved relative to.
+Typically this should be the root of your source code, e.g. `"./src"`, _not_ the root of your library.
