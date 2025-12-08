@@ -120,6 +120,22 @@ importers:
         specifier: ^5.0.2
         version: 5.2.2(webpack@5.102.1)
 
+  fixtures/package:
+    dependencies:
+      '@vocab/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+    devDependencies:
+      '@vocab/cli':
+        specifier: workspace:^
+        version: link:../../packages/cli
+      '@vocab/rollup-plugin':
+        specifier: workspace:^
+        version: link:../../packages/rollup-plugin
+      tsdown:
+        specifier: ^0.16.0
+        version: 0.16.1(typescript@5.9.3)
+
   fixtures/phrase:
     dependencies:
       '@vocab/cli':
@@ -392,6 +408,22 @@ importers:
       react:
         specifier: ^19.1.0
         version: 19.2.0
+
+  packages/rollup-plugin:
+    dependencies:
+      '@vocab/core':
+        specifier: workspace:^
+        version: link:../core
+      memoize:
+        specifier: ^10.1.0
+        version: 10.1.0
+    devDependencies:
+      rolldown:
+        specifier: '>=1.0.0-beta.47'
+        version: 1.0.0-beta.47
+      rollup:
+        specifier: ^4.0.0
+        version: 4.52.5
 
   packages/virtual-resource-loader: {}
 
@@ -3781,6 +3813,10 @@ packages:
   memfs@4.50.0:
     resolution: {integrity: sha512-N0LUYQMUA1yS5tJKmMtU9yprPm6ZIg24yr/OVv/7t6q0kKDIho4cBbXRi1XKttUmNYDYgF/q45qrKE/UhGO0CA==}
 
+  memoize@10.1.0:
+    resolution: {integrity: sha512-MMbFhJzh4Jlg/poq1si90XRlTZRDHVqdlz2mPyGJ6kqMpyHUyVpDd5gpFAvVehW64+RA1eKE9Yt8aSLY7w2Kgg==}
+    engines: {node: '>=18'}
+
   merge-descriptors@1.0.3:
     resolution: {integrity: sha512-gaNvAS7TZ897/rVaZ0nMtAyxNyi/pdbjbAwUpFQpN70GqnVfOiXpeUUMKRBmzXaSQ8DdTX4/0ms62r2K+hE6mQ==}
 
@@ -3827,6 +3863,10 @@ packages:
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
+
+  mimic-function@5.0.1:
+    resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
+    engines: {node: '>=18'}
 
   minimalistic-assert@1.0.1:
     resolution: {integrity: sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==}
@@ -8883,6 +8923,10 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
 
+  memoize@10.1.0:
+    dependencies:
+      mimic-function: 5.0.1
+
   merge-descriptors@1.0.3: {}
 
   merge-descriptors@2.0.0: {}
@@ -8913,6 +8957,8 @@ snapshots:
   mime@1.6.0: {}
 
   mimic-fn@2.1.0: {}
+
+  mimic-function@5.0.1: {}
 
   minimalistic-assert@1.0.1: {}
 

@@ -5,10 +5,12 @@ exports[`Translation types > a single message > should generate types for transl
 // To make changes update translation.json files directly.
 
 import { createLanguage, createTranslationFile } from '@vocab/core/runtime';
+import type { TranslationFile } from '@vocab/core';
 
-const translations = createTranslationFile<'en', { Simple: () => 'Simple' }>({
-  en: createLanguage({ Simple: 'Simple' }),
-});
+const translations: TranslationFile<'en', { Simple: () => 'Simple' }> =
+  createTranslationFile({
+    en: createLanguage({ Simple: 'Simple' }),
+  });
 
 export default translations;
 "
@@ -20,8 +22,9 @@ exports[`Translation types > all message types > should generate types for trans
 
 import type { FormatXMLElementFn, StringWithSuggestions } from '@vocab/core';
 import { createLanguage, createTranslationFile } from '@vocab/core/runtime';
+import type { TranslationFile } from '@vocab/core';
 
-const translations = createTranslationFile<
+const translations: TranslationFile<
   'en',
   {
     Simple: () => 'Simple';
@@ -68,7 +71,7 @@ const translations = createTranslationFile<
       foo: StringWithSuggestions<'a' | 'b'>;
     }) => string;
   }
->({
+> = createTranslationFile({
   en: createLanguage({
     Simple: 'Simple',
     Param: 'Welcome {candidateName}!',

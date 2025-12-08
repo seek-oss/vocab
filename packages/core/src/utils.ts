@@ -16,6 +16,8 @@ export type Fallback = 'none' | 'valid' | 'all';
 
 const globAnyPathWithOptionalPrefix = '**/?(*)';
 
+export const compiledVocabFileFilter = /\.vocab[\\/]index\.(?:ts|js|cjs|mjs)$/;
+
 export function isDevLanguageFile(filePath: string) {
   return (
     filePath.endsWith(`/${devTranslationFileName}`) ||
