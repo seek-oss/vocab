@@ -1,5 +1,24 @@
 # @vocab/webpack
 
+## 1.2.15
+
+### Patch Changes
+
+- [#351](https://github.com/seek-oss/vocab/pull/351) [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116) Thanks [@askoufis](https://github.com/askoufis)! - Deprecate `compiledVocabFileFilter`
+
+  `compiledVocabFileFilter` has been deprecated. Please import it from `@vocab/core` instead.
+
+  **MIGRATION GUIDE**:
+
+  ```diff
+  -import { compiledVocabFileFilter } from '@vocab/webpack';
+  -import { compiledVocabFileFilter } from '@vocab/vite';
+  +import { compiledVocabFileFilter } from '@vocab/core';
+  ```
+
+- Updated dependencies [[`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116), [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116)]:
+  - @vocab/core@1.7.0
+
 ## 1.2.14
 
 ### Patch Changes
