@@ -1,5 +1,26 @@
 # @vocab/core
 
+## 1.7.0
+
+### Minor Changes
+
+- [#351](https://github.com/seek-oss/vocab/pull/351) [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116) Thanks [@askoufis](https://github.com/askoufis)! - Export `compiledVocabFileFilter` regex
+
+  **EXAMPLE USAGE:**
+
+  ```ts
+  import { compiledVocabFileFilter } from '@vocab/core';
+
+  // true
+  const result = compiledVocabFileFilter.test(
+    './.vocab/index.ts'
+  );
+  ```
+
+### Patch Changes
+
+- [#351](https://github.com/seek-oss/vocab/pull/351) [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116) Thanks [@askoufis](https://github.com/askoufis)! - Modify compiled translation type output to enable type bundling
+
 ## 1.6.6
 
 ### Patch Changes
