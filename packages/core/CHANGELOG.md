@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.7.1
+
+### Patch Changes
+
+- [#353](https://github.com/seek-oss/vocab/pull/353) [`e9d389b`](https://github.com/seek-oss/vocab/commit/e9d389b99aa8c6a93ad7464d5e6ea65e42851825) Thanks [@williamlark](https://github.com/williamlark)! - Isolate rolldown runtime code
+
 ## 1.7.0
 
 ### Minor Changes
