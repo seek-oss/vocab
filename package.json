@@ -63,7 +63,7 @@
     "fast-glob": "^3.2.4",
     "prettier": "^3.5.3",
     "puppeteer": "^24.15.0",
-    "tsdown": "^0.16.0",
+    "tsdown": "^0.18.0",
     "tsx": "^4.10.5",
     "typescript": "^5.5.4",
     "vitest": "^3.2.4",
