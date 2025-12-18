@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.7.2
+
+### Patch Changes
+
+- [#355](https://github.com/seek-oss/vocab/pull/355) [`6be1c6b`](https://github.com/seek-oss/vocab/commit/6be1c6b027a8f9471c1c9858c18d2750c2f33427) Thanks [@samchungy](https://github.com/samchungy)! - Fix Node10 moduleResolution type compatibility
+
 ## 1.7.1
 
 ### Patch Changes
