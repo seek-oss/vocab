@@ -1,5 +1,5 @@
 {
   "main": "../dist/translation-file.cjs",
   "module": "../dist/translation-file.mjs",
-  "types": "../dist/translation-file.d.ts"
+  "types": "../dist/translation-file.d.cts"
 }
