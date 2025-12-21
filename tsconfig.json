@@ -6,7 +6,7 @@
     "noEmit": true,
     "outDir": "node_modules/.cache/typescript",
     "incremental": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strict": true,
     "customConditions": ["@vocab-private/monorepo"],
     "esModuleInterop": true,

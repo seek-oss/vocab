@@ -1,6 +1,6 @@
 import { VocabProvider, useTranslations } from '@vocab/react';
 import type { TranslationKeys } from '@vocab/core';
-import React, { type ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import commonTranslations from './.vocab';
