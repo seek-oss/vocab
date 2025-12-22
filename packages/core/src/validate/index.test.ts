@@ -6,7 +6,7 @@ interface TestCase {
   devLanguage: LanguageName;
   altLanguages: LanguageName[];
   valid: boolean;
-  missingKeys?: Record<LanguageName, string[]>;
+  missingKeys: Record<LanguageName, string[]>;
 }
 
 const testCases: TestCase[] = [
@@ -27,6 +27,7 @@ const testCases: TestCase[] = [
     devLanguage: 'en',
     altLanguages: ['th'],
     valid: true,
+    missingKeys: {},
   },
   {
     loadedTranslation: {
@@ -60,8 +61,6 @@ test.each(testCases)(
 
     expect(result[0]).toBe(valid);
 
-    if (missingKeys) {
-      expect(result[1]).toMatchObject(missingKeys);
-    }
+    expect(result[1]).toMatchObject(missingKeys);
   },
 );

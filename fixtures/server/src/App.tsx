@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslations, VocabProvider } from '@vocab/react';
 
 import translations from './App.vocab';
