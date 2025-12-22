@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it } from 'vitest';
 import { createFixture } from 'fs-fixture';
 import { compile } from './compile';
 import type { UserConfig } from './types';
@@ -37,9 +37,11 @@ async function createVocabFixture(structure: Record<string, string>) {
   };
 }
 
-describe('compile', () => {
+describe.concurrent('compile', () => {
   describe('initial compilation', () => {
-    it('should generate index.ts files with correct content', async () => {
+    it('should generate index.ts files with correct content', async ({
+      expect,
+    }) => {
       await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
       await compile({}, { ...baseConfig, projectRoot: fixture.path });
 
@@ -58,7 +60,9 @@ describe('compile', () => {
   });
 
   describe('watch mode', () => {
-    it('should update index.ts when main translation file is modified', async () => {
+    it('should update index.ts when main translation file is modified', async ({
+      expect,
+    }) => {
       await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
       const stopWatching = await compile(
         { watch: true },
@@ -83,7 +87,9 @@ describe('compile', () => {
       await stopWatching?.();
     });
 
-    it('should update index.ts when alt language file is modified', async () => {
+    it('should update index.ts when alt language file is modified', async ({
+      expect,
+    }) => {
       await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
       const stopWatching = await compile(
         { watch: true },
@@ -108,7 +114,9 @@ describe('compile', () => {
       await stopWatching?.();
     });
 
-    it('should not update index.ts if translations file is invalid', async () => {
+    it('should not update index.ts if translations file is invalid', async ({
+      expect,
+    }) => {
       await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
       const stopWatching = await compile(
         { watch: true },
@@ -131,7 +139,7 @@ describe('compile', () => {
       await stopWatching?.();
     });
 
-    it('should ignore non-translation files', async () => {
+    it('should ignore non-translation files', async ({ expect }) => {
       await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
       const stopWatching = await compile(
         { watch: true },
@@ -156,7 +164,7 @@ describe('compile', () => {
       await stopWatching?.();
     });
 
-    it('should respect custom ignore patterns', async () => {
+    it('should respect custom ignore patterns', async ({ expect }) => {
       await using fixture = await createVocabFixture({
         ...DEFAULT_FIXTURE,
         'src/.ignored/.vocab/translations.json': JSON.stringify({
@@ -177,7 +185,9 @@ describe('compile', () => {
   });
 
   describe('with custom translation directory suffix', () => {
-    it('should compile and watch translations with custom suffix', async () => {
+    it('should compile and watch translations with custom suffix', async ({
+      expect,
+    }) => {
       await using fixture = await createVocabFixture({
         'src/.translations/translations.json': JSON.stringify({
           hello: { message: 'Hello' },
