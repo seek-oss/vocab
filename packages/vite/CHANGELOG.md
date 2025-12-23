@@ -1,5 +1,12 @@
 # @vocab/vite
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7), [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7)]:
+  - @vocab/core@1.7.3
+
 ## 0.3.4
 
 ### Patch Changes

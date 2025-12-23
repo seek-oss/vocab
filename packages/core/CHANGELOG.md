@@ -1,5 +1,13 @@
 # @vocab/core
 
+## 1.7.3
+
+### Patch Changes
+
+- [#359](https://github.com/seek-oss/vocab/pull/359) [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7) Thanks [@askoufis](https://github.com/askoufis)! - Update `chokidar` dependency to `^5.0.0`
+
+- [#359](https://github.com/seek-oss/vocab/pull/359) [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7) Thanks [@askoufis](https://github.com/askoufis)! - Replace `fast-glob` dependency with `tinyglobby`
+
 ## 1.7.2
 
 ### Patch Changes
