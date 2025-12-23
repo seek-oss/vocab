@@ -18,7 +18,7 @@ export default defineConfig({
       !readmeCopyIgnoreList.includes(resolvedConfig.pkg.name);
 
     if (shouldCopyReadme) {
-      return [{ from: '../../README.md', to: '.' }];
+      return [{ from: '../../README.md', verbose: true }];
     }
 
     return [];
