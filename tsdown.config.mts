@@ -23,4 +23,5 @@ export default defineConfig({
 
     return [];
   },
+  failOnWarn: false,
 });
