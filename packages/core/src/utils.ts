@@ -38,18 +38,6 @@ export function isTranslationDirectory(
   return filePath.endsWith(translationsDirectorySuffix);
 }
 
-export function getTranslationFolderGlob({
-  translationsDirectorySuffix = defaultTranslationDirSuffix,
-}: {
-  translationsDirectorySuffix?: string;
-}) {
-  const result = `${globAnyPathWithOptionalPrefix}${translationsDirectorySuffix}`;
-
-  trace('getTranslationFolderGlob', result);
-
-  return result;
-}
-
 export function getDevTranslationFileGlob({
   translationsDirectorySuffix = defaultTranslationDirSuffix,
 }: {
@@ -68,7 +56,7 @@ export function getAltTranslationFileGlob(config: UserConfig) {
     altLanguages.length === 1 ? altLanguages[0] : `{${altLanguages.join(',')}}`;
 
   const { translationsDirectorySuffix = defaultTranslationDirSuffix } = config;
-  const result = `**/*${translationsDirectorySuffix}/${langMatch}.translations.json`;
+  const result = `**/?(*)${translationsDirectorySuffix}/${langMatch}.translations.json`;
 
   trace('getAltTranslationFileGlob', result);
 

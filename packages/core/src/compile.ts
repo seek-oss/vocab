@@ -1,5 +1,6 @@
 import { promises as fs, existsSync } from 'fs';
 import path from 'path';
+import pm from 'picomatch';
 
 import type { LoadedTranslation, UserConfig } from './types';
 import {
@@ -14,7 +15,6 @@ import {
   parse,
 } from '@formatjs/icu-messageformat-parser';
 import prettier from 'prettier';
-import chokidar from 'chokidar';
 
 import {
   getTranslationMessages,
@@ -24,7 +24,6 @@ import {
   getAltTranslationFileGlob,
   isDevLanguageFile,
   isAltLanguageFile,
-  getTranslationFolderGlob,
   devTranslationFileName,
   isTranslationDirectory,
 } from './utils';
@@ -247,25 +246,34 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   await writeIfChanged(outputFilePath, declaration);
 }
 
-export function watch(config: UserConfig) {
+export async function watch(config: UserConfig) {
   const cwd = config.projectRoot || process.cwd();
 
-  const watcher = chokidar.watch(
-    [
-      getDevTranslationFileGlob(config),
-      getAltTranslationFileGlob(config),
-      getTranslationFolderGlob(config),
-    ],
-    {
-      cwd,
-      ignored: config.ignore
-        ? [...config.ignore, '**/node_modules/**']
-        : ['**/node_modules/**'],
-      ignoreInitial: true,
-    },
-  );
+  const ignorePatterns = [
+    ...(config.ignore || []),
+    '**/node_modules/**',
+    '**/.git/**',
+  ];
+
+  const chokidar = await import('chokidar');
+  const watcher = chokidar.watch(cwd, {
+    ignored: ignorePatterns,
+    ignoreInitial: true,
+  });
+
+  const devFileGlob = getDevTranslationFileGlob(config);
+  const altFileGlob = getAltTranslationFileGlob(config);
 
   const onTranslationChange = async (relativePath: string) => {
+    const matchesTranslationFiles = pm.isMatch(relativePath, [
+      devFileGlob,
+      altFileGlob,
+    ]);
+
+    if (!matchesTranslationFiles) {
+      return;
+    }
+
     trace(`Detected change for file ${relativePath}`);
 
     let targetFile;
@@ -297,10 +305,12 @@ export function watch(config: UserConfig) {
 
   const onNewDirectory = async (relativePath: string) => {
     trace('Detected new directory', relativePath);
+
     if (!isTranslationDirectory(relativePath, config)) {
       trace('Ignoring non-translation directory:', relativePath);
       return;
     }
+
     const newFilePath = path.join(relativePath, devTranslationFileName);
     if (!existsSync(newFilePath)) {
       await fs.writeFile(newFilePath, JSON.stringify({}, null, 2));

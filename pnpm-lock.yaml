@@ -47,9 +47,6 @@ importers:
       expect-puppeteer:
         specifier: ^11.0.0
         version: 11.0.0
-      fast-glob:
-        specifier: ^3.2.4
-        version: 3.3.3
       prettier:
         specifier: ^3.5.3
         version: 3.6.2
@@ -321,9 +318,6 @@ importers:
       env-ci:
         specifier: ^7.3.0
         version: 7.3.0
-      fast-glob:
-        specifier: ^3.2.4
-        version: 3.3.3
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -341,14 +335,11 @@ importers:
         specifier: ^2.0.10
         version: 2.11.4
       chokidar:
-        specifier: ^3.4.3
-        version: 3.6.0
+        specifier: ^5.0.0
+        version: 5.0.0
       debug:
         specifier: ^4.3.1
         version: 4.4.3
-      fast-glob:
-        specifier: ^3.2.4
-        version: 3.3.3
       fastest-validator:
         specifier: ^1.9.0
         version: 1.19.1
@@ -361,13 +352,22 @@ importers:
       picocolors:
         specifier: ^1.0.0
         version: 1.1.1
+      picomatch:
+        specifier: ^4.0.3
+        version: 4.0.3
       prettier:
         specifier: ^3.5.3
         version: 3.6.2
+      tinyglobby:
+        specifier: ^0.2.15
+        version: 0.2.15
     devDependencies:
       '@types/debug':
         specifier: ^4.1.5
         version: 4.1.12
+      '@types/picomatch':
+        specifier: ^4.0.2
+        version: 4.0.2
       fs-fixture:
         specifier: ^2.11.0
         version: 2.11.0
@@ -1846,6 +1846,9 @@ packages:
   '@types/node@22.19.0':
     resolution: {integrity: sha512-xpr/lmLPQEj+TUnHmR+Ab91/glhJvsqcjB+yY0Ix9GO70H6Lb4FHH5GeqdOE5btAx7eIMwuHkp4H2MSkLcqWbA==}
 
+  '@types/picomatch@4.0.2':
+    resolution: {integrity: sha512-qHHxQ+P9PysNEGbALT8f8YOSHW0KJu6l2xU8DYY0fu/EmGxXdVnuTLvFUvBgPJMSqXq29SYHveejeAha+4AYgA==}
+
   '@types/qs@6.14.0':
     resolution: {integrity: sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==}
 
@@ -2477,6 +2480,10 @@ packages:
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
+
+  chokidar@5.0.0:
+    resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
+    engines: {node: '>= 20.19.0'}
 
   chrome-trace-event@1.0.4:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
@@ -4290,6 +4297,10 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
+
+  readdirp@5.0.0:
+    resolution: {integrity: sha512-9u/XQ1pvrQtYyMpZe7DXKv2p5CNvyVwzUB6uhLAnQwHMSgKMBR62lc7AHljaeteeHXn11XTAaLLUVZYVZyuRBQ==}
+    engines: {node: '>= 20.19.0'}
 
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
@@ -6695,6 +6706,8 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/picomatch@4.0.2': {}
+
   '@types/qs@6.14.0': {}
 
   '@types/range-parser@1.2.7': {}
@@ -7429,6 +7442,10 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  chokidar@5.0.0:
+    dependencies:
+      readdirp: 5.0.0
 
   chrome-trace-event@1.0.4: {}
 
@@ -9405,6 +9422,8 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  readdirp@5.0.0: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:
