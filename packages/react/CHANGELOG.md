@@ -1,5 +1,12 @@
 # @vocab/react
 
+## 1.1.19
+
+### Patch Changes
+
+- Updated dependencies [[`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7), [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7)]:
+  - @vocab/core@1.7.3
+
 ## 1.1.18
 
 ### Patch Changes
