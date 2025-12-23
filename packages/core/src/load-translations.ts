@@ -1,6 +1,6 @@
 import path from 'path';
 
-import glob from 'fast-glob';
+import { glob } from 'tinyglobby';
 import type {
   TranslationsByKey,
   UserConfig,
@@ -386,6 +386,7 @@ export async function loadAllTranslations(
     ignore: includeNodeModules ? ignore : [...ignore, '**/node_modules/**'],
     absolute: true,
     cwd: projectRoot,
+    expandDirectories: false,
   });
 
   trace(`Found ${translationFiles.length} translation files`);

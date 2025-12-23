@@ -22,7 +22,6 @@ const ignorePathDefinition = {
 
 let config: UserConfig | null = null;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargsCli(process.argv.slice(2))
   .scriptName('vocab')
   .option('config', {
@@ -86,4 +85,5 @@ yargsCli(process.argv.slice(2))
     },
   })
   .help()
-  .wrap(72).argv;
+  .wrap(72)
+  .parse();

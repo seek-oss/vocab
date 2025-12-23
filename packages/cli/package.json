@@ -28,7 +28,6 @@
     "@vocab/core": "workspace:^",
     "@vocab/phrase": "workspace:^",
     "env-ci": "^7.3.0",
-    "fast-glob": "^3.2.4",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
