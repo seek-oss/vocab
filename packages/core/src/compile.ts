@@ -249,9 +249,11 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
 export async function watch(config: UserConfig) {
   const cwd = config.projectRoot || process.cwd();
 
-  const ignorePatterns = config.ignore
-    ? [...config.ignore, '**/node_modules/**', '**/.git/**']
-    : ['**/node_modules/**', '**/.git/**'];
+  const ignorePatterns = [
+    ...(config.ignore || []),
+    '**/node_modules/**',
+    '**/.git/**',
+  ];
 
   const chokidar = await import('chokidar');
   const watcher = chokidar.watch(cwd, {
