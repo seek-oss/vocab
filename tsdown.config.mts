@@ -14,7 +14,10 @@ export default defineConfig({
   workspace: ['./packages/*'],
   copy: (resolvedConfig) => {
     const shouldCopyReadme =
+      // @ts-expect-error tsdown has a dev dep on pkg-types instead of a dep
+      // https://github.com/rolldown/tsdown/issues/667
       resolvedConfig.pkg?.name &&
+      // @ts-expect-error Same as above
       !readmeCopyIgnoreList.includes(resolvedConfig.pkg.name);
 
     if (shouldCopyReadme) {
