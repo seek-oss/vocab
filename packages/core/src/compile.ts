@@ -287,6 +287,7 @@ export async function watch(config: UserConfig) {
     }
 
     if (targetFile) {
+      watcher.add(targetFile);
       try {
         const loadedTranslation = loadTranslation(
           { filePath: targetFile, fallbacks: 'all' },

@@ -1,6 +1,8 @@
 import { describe, it } from 'vitest';
 import { createFixture } from 'fs-fixture';
 import { compile } from './compile';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { UserConfig } from './types';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -181,6 +183,49 @@ describe.concurrent('compile', () => {
       await expect(
         fixture.readFile('src/.ignored/.vocab/index.ts'),
       ).rejects.toThrow();
+    });
+
+    it('should discover new translation directories', async ({ expect }) => {
+      await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
+      const stopWatching = await compile(
+        { watch: true },
+        { ...baseConfig, projectRoot: fixture.path },
+      );
+      await wait(500);
+
+      // Manually create new translation directory and file because fs-fixture doesn't give us
+      // methods to do that
+      await mkdir(join(fixture.path, 'src/new.vocab/'), {
+        recursive: true,
+      });
+      await writeFile(
+        join(fixture.path, 'src/new.vocab/translations.json'),
+        JSON.stringify({
+          test: { message: 'New file' },
+        }),
+      );
+      await wait(500);
+
+      const newCompiledFile = await fixture.readFile(
+        'src/new.vocab/index.ts',
+        'utf-8',
+      );
+      expect(newCompiledFile).toMatchSnapshot();
+
+      await fixture.writeFile(
+        'src/new.vocab/translations.json',
+        JSON.stringify({
+          test: { message: 'Changed new file' },
+        }),
+      );
+      await wait(500);
+      const updatedNewCompiledFile = await fixture.readFile(
+        'src/new.vocab/index.ts',
+        'utf-8',
+      );
+      expect(updatedNewCompiledFile).toMatchSnapshot();
+
+      await stopWatching?.();
     });
   });
 
