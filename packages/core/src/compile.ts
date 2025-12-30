@@ -255,9 +255,12 @@ export async function watch(config: UserConfig) {
     '**/.git/**',
   ];
 
+  const ignoredFunction = (pathToCheck: string) =>
+    pm.isMatch(pathToCheck, ignorePatterns);
+
   const chokidar = await import('chokidar');
   const watcher = chokidar.watch(cwd, {
-    ignored: ignorePatterns,
+    ignored: ignoredFunction,
     ignoreInitial: true,
   });
 

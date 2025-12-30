@@ -56,7 +56,7 @@ export function getAltTranslationFileGlob(config: UserConfig) {
     altLanguages.length === 1 ? altLanguages[0] : `{${altLanguages.join(',')}}`;
 
   const { translationsDirectorySuffix = defaultTranslationDirSuffix } = config;
-  const result = `**/?(*)${translationsDirectorySuffix}/${langMatch}.translations.json`;
+  const result = `${globAnyPathWithOptionalPrefix}${translationsDirectorySuffix}/${langMatch}.${devTranslationFileName}`;
 
   trace('getAltTranslationFileGlob', result);
 
