@@ -6,9 +6,8 @@ describe('Translation types', () => {
     it('should generate types for translations', async () => {
       await compileFixtureTranslations('translation-types');
 
-      const compiledTranslations = require.resolve(
-        '@vocab-fixtures/translation-types/src/all-message-types/.vocab/index.ts',
-      );
+      const compiledTranslations =
+        require.resolve('@vocab-fixtures/translation-types/src/all-message-types/.vocab/index.ts');
 
       expect(await readFile(compiledTranslations, 'utf8')).toMatchSnapshot();
     });
@@ -18,9 +17,8 @@ describe('Translation types', () => {
     it('should generate types for translations with no type import from @vocab/core', async () => {
       await compileFixtureTranslations('translation-types');
 
-      const compiledTranslations = require.resolve(
-        '@vocab-fixtures/translation-types/src/no-vocab-types-import/.vocab/index.ts',
-      );
+      const compiledTranslations =
+        require.resolve('@vocab-fixtures/translation-types/src/no-vocab-types-import/.vocab/index.ts');
 
       expect(await readFile(compiledTranslations, 'utf8')).toMatchSnapshot();
     });
