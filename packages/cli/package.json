@@ -27,11 +27,10 @@
   "dependencies": {
     "@vocab/core": "workspace:^",
     "@vocab/phrase": "workspace:^",
-    "env-ci": "^7.3.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/env-ci": "^3.1.0",
+    "@types/node": "^22.0.0",
     "@types/yargs": "^17.0.32"
   },
   "publishConfig": {
