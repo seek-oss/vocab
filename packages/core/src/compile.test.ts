@@ -24,7 +24,6 @@ const DEFAULT_FIXTURE = {
 const baseConfig: UserConfig = {
   devLanguage: 'en',
   languages: [{ name: 'en' }, { name: 'fr' }],
-  projectRoot: '',
 };
 
 // Wrapper to make fixture compatible with `await using`
@@ -225,6 +224,37 @@ describe.concurrent('compile', () => {
       );
       expect(updatedNewCompiledFile).toMatchSnapshot();
 
+      await stopWatching?.();
+    });
+
+    it('should create and update index.ts when translation file path starts with "."', async ({
+      expect,
+    }) => {
+      await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
+      const stopWatching = await compile(
+        { watch: true },
+        { ...baseConfig, projectRoot: join(fixture.path, 'src') },
+      );
+      await wait(500);
+
+      await expect(
+        fixture.readFile('src/.vocab/index.ts', 'utf-8'),
+      ).resolves.toBeTruthy();
+
+      await fixture.writeFile(
+        'src/.vocab/translations.json',
+        JSON.stringify({
+          hello: { message: 'Howdy', description: 'A greeting' },
+          world: { message: 'World' },
+        }),
+      );
+      await wait(500);
+      const indexContent = await fixture.readFile(
+        'src/.vocab/index.ts',
+        'utf-8',
+      );
+
+      expect(indexContent).toMatchSnapshot();
       await stopWatching?.();
     });
   });
