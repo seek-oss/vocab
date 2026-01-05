@@ -2,10 +2,9 @@
 import { pull, push } from '@vocab/phrase';
 import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
 import yargsCli from 'yargs';
+import { getGitBranch } from './getGitBranch.js';
 
-import envCi from 'env-ci';
-
-const { branch } = envCi();
+const branch = getGitBranch();
 
 const branchDefinition = {
   type: 'string',
