@@ -1,6 +1,6 @@
 {
   "name": "@vocab/cli",
-  "version": "2.1.7",
+  "version": "2.1.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/seek-oss/vocab.git",

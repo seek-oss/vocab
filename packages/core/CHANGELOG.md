@@ -1,5 +1,17 @@
 # @vocab/core
 
+## 1.7.5
+
+### Patch Changes
+
+- [#368](https://github.com/seek-oss/vocab/pull/368) [`5f5bdb5`](https://github.com/seek-oss/vocab/commit/5f5bdb5e323c0121491d923dcaae961c5ac3fe81) Thanks [@askoufis](https://github.com/askoufis)! - Fixes a bug where translations inside `.vocab` directories in the `projectRoot` were not compiled
+
+## 1.7.4
+
+### Patch Changes
+
+- [#364](https://github.com/seek-oss/vocab/pull/364) [`710649f`](https://github.com/seek-oss/vocab/commit/710649fae726227701f51410d6050fd0c17d6e3f) Thanks [@askoufis](https://github.com/askoufis)! - Fixes a bug causing too many files to be watched when compiling translation files
+
 ## 1.7.3
 
 ### Patch Changes
