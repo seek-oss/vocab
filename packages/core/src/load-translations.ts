@@ -384,6 +384,7 @@ export async function loadAllTranslations(
 
   const translationFiles = await glob(getDevTranslationFileGlob(config), {
     ignore: includeNodeModules ? ignore : [...ignore, '**/node_modules/**'],
+    dot: true,
     absolute: true,
     cwd: projectRoot,
     expandDirectories: false,
