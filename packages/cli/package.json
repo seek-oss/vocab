@@ -1,6 +1,7 @@
 {
   "name": "@vocab/cli",
   "version": "2.1.10",
+  "description": "A CLI for generating typed Vocab translations and interacting with 3rd-party localization services",
   "repository": {
     "type": "git",
     "url": "https://github.com/seek-oss/vocab.git",
@@ -27,11 +28,10 @@
   "dependencies": {
     "@vocab/core": "workspace:^",
     "@vocab/phrase": "workspace:^",
-    "yargs": "^17.7.2"
+    "commander": "^14.0.2"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "@types/yargs": "^17.0.32"
+    "@types/node": "^22.0.0"
   },
   "publishConfig": {
     "exports": {
