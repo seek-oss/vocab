@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.7.6
+
+### Patch Changes
+
+- [#371](https://github.com/seek-oss/vocab/pull/371) [`f4ad654`](https://github.com/seek-oss/vocab/commit/f4ad654d926d3a7cdf6a477bc609a804ac4bb37c) Thanks [@askoufis](https://github.com/askoufis)! - Fix import order in generated translation files
+
 ## 1.7.5
 
 ### Patch Changes
