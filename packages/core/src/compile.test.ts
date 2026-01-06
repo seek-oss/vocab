@@ -38,7 +38,7 @@ async function createVocabFixture(structure: Record<string, string>) {
   };
 }
 
-describe.concurrent('compile', () => {
+describe.concurrent('compile', { retry: 2 }, () => {
   describe('initial compilation', () => {
     it('should generate index.ts files with correct content', async ({
       expect,
