@@ -1,5 +1,11 @@
 # @vocab/cli
 
+## 2.1.11
+
+### Patch Changes
+
+- [#372](https://github.com/seek-oss/vocab/pull/372) [`9fd2e34`](https://github.com/seek-oss/vocab/commit/9fd2e344b61c666ac186e2478765c4d4d6a27f2f) Thanks [@askoufis](https://github.com/askoufis)! - Replace `yargs` dependency with `commander`.
+
 ## 2.1.10
 
 ### Patch Changes
