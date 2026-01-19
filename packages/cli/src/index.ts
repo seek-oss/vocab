@@ -1,94 +1,135 @@
 /* eslint-disable no-console */
 import { pull, push } from '@vocab/phrase';
 import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
-import yargsCli from 'yargs';
+import { getGitBranch } from './getGitBranch.js';
+import { Command, Option } from 'commander';
+import {
+  description,
+  version,
+} from '@vocab/cli/package.json' with { type: 'json' };
 
-import envCi from 'env-ci';
+const branch = getGitBranch();
+const DEFAULT_BRANCH = branch || 'local-development';
 
-const { branch } = envCi();
+const program = new Command();
 
-const branchDefinition = {
-  type: 'string',
-  describe: 'The Phrase branch to target',
-  default: branch || 'local-development',
-} as const;
+program
+  .name('vocab')
+  .version(version)
+  .description(description)
+  .option('--config <path>', 'Path to config file')
+  .hook('preAction', async (thisCommand, actionCommand) => {
+    const options = thisCommand.optsWithGlobals<{ config?: string }>();
 
-const ignorePathDefinition = {
-  type: 'string',
-  array: true,
-  describe: 'Array of glob paths to ignore when searching for keys to push',
-  default: [] as string[],
-} as const;
+    console.log('Loading configuration from', options.config || process.cwd());
+    const userConfig = await resolveConfig(options.config);
 
-let config: UserConfig | null = null;
+    if (!userConfig) {
+      throw new Error('No configuration file found');
+    }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-yargsCli(process.argv.slice(2))
-  .scriptName('vocab')
-  .option('config', {
-    type: 'string',
-    describe: 'Path to config file',
-  })
-  .middleware(async ({ config: configPath }) => {
-    config = await resolveConfig(configPath);
-    console.log('Loaded config from', configPath || process.cwd());
-  })
-  .command({
-    command: 'push',
-    builder: (yargs) =>
-      yargs.options({
-        branch: branchDefinition,
-        'delete-unused-keys': {
-          type: 'boolean',
-          describe: 'Whether or not to delete unused keys after pushing',
-          default: false,
-        },
-        'auto-translate': {
-          type: 'boolean',
-          describe: 'Enable automatic translation for missing translations',
-          default: false,
-        },
-        ignore: ignorePathDefinition,
-      }),
-    handler: async (options) => {
-      await push(options, config!);
+    console.log('Successfully loaded configuration');
+    actionCommand.setOptionValue('userConfig', userConfig);
+  });
+
+const branchOption = new Option(
+  '--branch <name>',
+  'The Phrase branch to target',
+).default(DEFAULT_BRANCH);
+
+const autoTranslateOption = new Option(
+  '--auto-translate',
+  'Enable automatic translation for missing translations',
+).default(false);
+
+const pushAction = async (options: {
+  autoTranslate?: boolean;
+  branch: string;
+  deleteUnusedKeys?: boolean;
+  ignore?: string[];
+  userConfig: UserConfig;
+}) => {
+  await push(
+    {
+      branch: options.branch,
+      deleteUnusedKeys: options.deleteUnusedKeys,
+      ignore: options.ignore,
+      autoTranslate: options.autoTranslate,
     },
-  })
-  .command({
-    command: 'pull',
-    builder: (yargs) =>
-      yargs.options({
-        branch: branchDefinition,
-        'error-on-no-global-key-translation': {
-          type: 'boolean',
-          describe:
-            'Throw an error when there is no translation for a global key',
-          default: false,
-        },
-      }),
-    handler: async (options) => {
-      await pull(options, config!);
-    },
-  })
-  .command({
-    command: 'compile',
-    builder: (yargs) =>
-      yargs.options({
-        watch: { type: 'boolean', default: false },
-      }),
-    handler: async ({ watch }) => {
-      await compile({ watch }, config!);
-    },
-  })
-  .command({
-    command: 'validate',
-    handler: async () => {
-      const valid = await validate(config!);
+    options.userConfig,
+  );
+};
 
-      if (!valid) {
-        throw new Error('Project invalid');
-      }
+program
+  .command('push')
+  .description('Push translations to Phrase')
+  .addOption(branchOption)
+  .addOption(autoTranslateOption)
+  .option(
+    '--delete-unused-keys',
+    'Whether or not to delete unused keys after pushing',
+    false,
+  )
+  .option(
+    '--ignore <paths...>',
+    'Array of glob paths to ignore when searching for keys to push',
+    [],
+  )
+  .action(pushAction);
+
+const pullAction = async (options: {
+  branch: string;
+  errorOnNoGlobalKeyTranslation: boolean;
+  userConfig: UserConfig;
+}) => {
+  await pull(
+    {
+      branch: options.branch,
+      errorOnNoGlobalKeyTranslation:
+        options.errorOnNoGlobalKeyTranslation || false,
     },
-  })
-  .help()
-  .wrap(72).argv;
+    options.userConfig,
+  );
+};
+
+program
+  .command('pull')
+  .description('Pull translations from Phrase')
+  .addOption(branchOption)
+  .option(
+    '--error-on-no-global-key-translation',
+    'Throw an error when there is no translation for a global key',
+    false,
+  )
+  .action(pullAction);
+
+const compileAction = async (options: {
+  watch: boolean;
+  userConfig: UserConfig;
+}) => {
+  await compile({ watch: options.watch }, options.userConfig);
+};
+
+program
+  .command('compile')
+  .description('Compile translations')
+  .option('--watch', 'Watch for changes', false)
+  .action(compileAction);
+
+const validateAction = async (options: { userConfig: UserConfig }) => {
+  console.log('Validating project');
+  const valid = await validate(options.userConfig);
+
+  if (!valid) {
+    throw new Error('Project is invalid');
+  }
+
+  console.log('Project is valid');
+};
+
+program
+  .command('validate')
+  .description('Validate translations')
+  .action(validateAction);
+
+program.parseAsync();

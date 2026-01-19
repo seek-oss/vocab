@@ -1,5 +1,64 @@
 # @vocab/core
 
+## 1.7.6
+
+### Patch Changes
+
+- [#371](https://github.com/seek-oss/vocab/pull/371) [`f4ad654`](https://github.com/seek-oss/vocab/commit/f4ad654d926d3a7cdf6a477bc609a804ac4bb37c) Thanks [@askoufis](https://github.com/askoufis)! - Fix import order in generated translation files
+
+## 1.7.5
+
+### Patch Changes
+
+- [#368](https://github.com/seek-oss/vocab/pull/368) [`5f5bdb5`](https://github.com/seek-oss/vocab/commit/5f5bdb5e323c0121491d923dcaae961c5ac3fe81) Thanks [@askoufis](https://github.com/askoufis)! - Fixes a bug where translations inside `.vocab` directories in the `projectRoot` were not compiled
+
+## 1.7.4
+
+### Patch Changes
+
+- [#364](https://github.com/seek-oss/vocab/pull/364) [`710649f`](https://github.com/seek-oss/vocab/commit/710649fae726227701f51410d6050fd0c17d6e3f) Thanks [@askoufis](https://github.com/askoufis)! - Fixes a bug causing too many files to be watched when compiling translation files
+
+## 1.7.3
+
+### Patch Changes
+
+- [#359](https://github.com/seek-oss/vocab/pull/359) [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7) Thanks [@askoufis](https://github.com/askoufis)! - Update `chokidar` dependency to `^5.0.0`
+
+- [#359](https://github.com/seek-oss/vocab/pull/359) [`478c86e`](https://github.com/seek-oss/vocab/commit/478c86eedc99e461540f9b7fdfcabc6da27099c7) Thanks [@askoufis](https://github.com/askoufis)! - Replace `fast-glob` dependency with `tinyglobby`
+
+## 1.7.2
+
+### Patch Changes
+
+- [#355](https://github.com/seek-oss/vocab/pull/355) [`6be1c6b`](https://github.com/seek-oss/vocab/commit/6be1c6b027a8f9471c1c9858c18d2750c2f33427) Thanks [@samchungy](https://github.com/samchungy)! - Fix Node10 moduleResolution type compatibility
+
+## 1.7.1
+
+### Patch Changes
+
+- [#353](https://github.com/seek-oss/vocab/pull/353) [`e9d389b`](https://github.com/seek-oss/vocab/commit/e9d389b99aa8c6a93ad7464d5e6ea65e42851825) Thanks [@williamlark](https://github.com/williamlark)! - Isolate rolldown runtime code
+
+## 1.7.0
+
+### Minor Changes
+
+- [#351](https://github.com/seek-oss/vocab/pull/351) [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116) Thanks [@askoufis](https://github.com/askoufis)! - Export `compiledVocabFileFilter` regex
+
+  **EXAMPLE USAGE:**
+
+  ```ts
+  import { compiledVocabFileFilter } from '@vocab/core';
+
+  // true
+  const result = compiledVocabFileFilter.test(
+    './.vocab/index.ts'
+  );
+  ```
+
+### Patch Changes
+
+- [#351](https://github.com/seek-oss/vocab/pull/351) [`a5e9d25`](https://github.com/seek-oss/vocab/commit/a5e9d256be271a47457213cb4eee5499af629116) Thanks [@askoufis](https://github.com/askoufis)! - Modify compiled translation type output to enable type bundling
+
 ## 1.6.6
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@vocab/vite",
-  "version": "0.3.1",
+  "version": "0.3.9",
   "author": "SEEK",
   "license": "MIT",
   "repository": {
@@ -8,25 +8,29 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/vite"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "@vocab-private/monorepo": "./src/index.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./chunks": {
-      "import": "./dist/chunks.mjs",
-      "require": "./dist/chunks.js"
+      "@vocab-private/monorepo": "./src/chunks.ts",
+      "require": "./dist/chunks.cjs",
+      "import": "./dist/chunks.mjs"
     },
     "./get-chunk-name": {
-      "import": "./dist/get-chunk-name.mjs",
-      "require": "./dist/get-chunk-name.js"
+      "@vocab-private/monorepo": "./src/get-chunk-name.ts",
+      "require": "./dist/get-chunk-name.cjs",
+      "import": "./dist/get-chunk-name.mjs"
     },
     "./runtime": {
-      "import": "./dist/runtime.mjs",
-      "require": "./dist/runtime.js"
+      "@vocab-private/monorepo": "./src/runtime.ts",
+      "require": "./dist/runtime.cjs",
+      "import": "./dist/runtime.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -37,7 +41,7 @@
     "@vocab/core": "workspace:^",
     "cjs-module-lexer": "^2.0.0",
     "debug": "^4.3.1",
-    "es-module-lexer": "^1.0.0",
+    "es-module-lexer": "^2.0.0",
     "picocolors": "^1.0.0"
   },
   "devDependencies": {
@@ -46,5 +50,26 @@
   },
   "peerDependencies": {
     "vite": "^5.4.8 || ^6.0.0 || ^7.0.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.mjs"
+      },
+      "./chunks": {
+        "require": "./dist/chunks.cjs",
+        "import": "./dist/chunks.mjs"
+      },
+      "./get-chunk-name": {
+        "require": "./dist/get-chunk-name.cjs",
+        "import": "./dist/get-chunk-name.mjs"
+      },
+      "./runtime": {
+        "require": "./dist/runtime.cjs",
+        "import": "./dist/runtime.mjs"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

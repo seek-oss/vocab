@@ -1,18 +1,19 @@
 {
   "name": "@vocab/react",
-  "version": "1.1.15",
+  "version": "1.1.22",
   "repository": {
     "type": "git",
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/react"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "@vocab-private/monorepo": "./src/index.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -31,5 +32,14 @@
   "devDependencies": {
     "@types/react": "^19.1.8",
     "react": "^19.1.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.mjs"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

@@ -2,13 +2,14 @@
   "name": "virtual-resource-loader",
   "description": "Create new files inside a webpack compilation, without a file existing on disk",
   "version": "2.0.1",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "@vocab-private/monorepo": "./src/index.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -21,5 +22,14 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.mjs"
+      },
+      "./package.json": "./package.json"
+    }
+  }
 }

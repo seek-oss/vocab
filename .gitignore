@@ -5,6 +5,7 @@ node_modules*/
 /**/dist-*/
 /packages/**/README.md
 !/packages/virtual-resource-loader/README.md
+!/packages/rollup-plugin/README.md
 
 **/*.vocab/index.ts
 

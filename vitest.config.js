@@ -10,8 +10,6 @@ export default defineConfig({
     globals: true,
     restoreMocks: true,
     exclude: defaultExclude,
-    environment: 'puppeteer',
-    globalSetup: 'vitest-environment-puppeteer/global-init',
     projects: [
       {
         extends: true,

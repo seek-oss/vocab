@@ -2,6 +2,8 @@ import { defineConfig } from 'tsdown';
 
 export default defineConfig({
   format: ['cjs'],
-  exports: true,
+  exports: {
+    devExports: '@vocab-private/monorepo',
+  },
   sourcemap: true,
 });

@@ -12,14 +12,14 @@ jobs:
       CI: true
     steps:
       - name: Check out repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
           node-version-file: package.json
@@ -29,7 +29,7 @@ jobs:
 
       - name: Cache Puppeteer
         id: puppeteer-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /home/runner/.cache/puppeteer
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
@@ -57,14 +57,14 @@ jobs:
       CI: true
     steps:
       - name: Check out repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           cache: pnpm
           node-version-file: package.json
@@ -74,7 +74,7 @@ jobs:
 
       - name: Cache Puppeteer
         id: puppeteer-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: C:\Users\runneradmin\.cache\puppeteer
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}

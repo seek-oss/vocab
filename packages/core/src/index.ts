@@ -5,6 +5,7 @@ export {
   getAltLanguages,
   getAltLanguageFilePath,
   getDevLanguageFileFromTsFile,
+  compiledVocabFileFilter,
 } from './utils';
 export {
   getUniqueKey,

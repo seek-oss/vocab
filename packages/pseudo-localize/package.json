@@ -6,13 +6,14 @@
     "url": "https://github.com/seek-oss/vocab.git",
     "directory": "packages/pseudo-localize"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "@vocab-private/monorepo": "./src/index.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -20,5 +21,14 @@
   "license": "MIT",
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.mjs"
+      },
+      "./package.json": "./package.json"
+    }
+  }
 }
