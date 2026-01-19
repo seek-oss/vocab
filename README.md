@@ -732,6 +732,17 @@ This flag accepts an array of glob patterns to ignore.
 vocab push --branch my-branch --ignore "**/dist/**" "**/another_ignored_directory/**"
 ```
 
+#### Auto-Translation
+
+By default, Phrase may not apply the project's automatic translation behaviour for new keys uploaded via API.
+
+The `--auto-translate` flag instructs Phrase to automatically translate any missing keys using machine translation.. See [Phrase auto-translate API Documentation] for more information.
+
+```sh
+vocab push --branch my-branch --auto-translate
+```
+
+[Phrase auto-translate API Documentation]: https://developers.phrase.com/en/api/strings/uploads/upload-a-new-file#body-autotranslate
 [phrase]: https://developers.phrase.com/api/
 
 #### [Tags]

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vocab/cli": "workspace:*",
-    "dotenv-cli": "^11.0.0"
+    "@vocab/core": "workspace:*",
+    "dotenv-cli": "^10.0.0"
   }
 }

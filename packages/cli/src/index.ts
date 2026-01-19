@@ -38,6 +38,7 @@ const branchOption = new Option(
 ).default(DEFAULT_BRANCH);
 
 const pushAction = async (options: {
+  autoTranslate?: boolean;
   branch: string;
   deleteUnusedKeys?: boolean;
   ignore?: string[];
@@ -48,6 +49,7 @@ const pushAction = async (options: {
       branch: options.branch,
       deleteUnusedKeys: options.deleteUnusedKeys,
       ignore: options.ignore,
+      autoTranslate: options.autoTranslate,
     },
     options.userConfig,
   );
@@ -57,6 +59,11 @@ program
   .command('push')
   .description('Push translations to Phrase')
   .addOption(branchOption)
+  .option(
+    '--auto-translate',
+    'Enable automatic translation for missing translations',
+    false,
+  )
   .option(
     '--delete-unused-keys',
     'Whether or not to delete unused keys after pushing',

@@ -118,7 +118,11 @@ export async function pullAllTranslations(
 
 export async function pushTranslations(
   translationsByLanguage: TranslationsByLanguage,
-  { devLanguage, branch }: { devLanguage: string; branch: string },
+  {
+    autoTranslate,
+    branch,
+    devLanguage,
+  }: { autoTranslate?: boolean; branch: string; devLanguage: string },
 ) {
   const { csvFileStrings, keyIndex, commentIndex, tagColumn, messageIndex } =
     translationsToCsv(translationsByLanguage, devLanguage);
@@ -140,6 +144,10 @@ export async function pushTranslations(
     formData.append('branch', branch);
     formData.append('update_translations', 'true');
     formData.append('update_descriptions', 'true');
+
+    if (autoTranslate) {
+      formData.append('autotranslate', 'true');
+    }
 
     formData.append(`locale_mapping[${language}]`, messageIndex.toString());
 
