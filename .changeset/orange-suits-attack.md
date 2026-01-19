@@ -4,7 +4,7 @@
 
 Fix missing --branch option as string for push and pull commands.
 
-Since v2.1.11, CLI commands to push and pull translations did only accepted `--branch` as a boolean flag. `--branch` can now be used with a string.
+Since v2.1.11, CLI commands to push and pull translations only accepted `--branch` as a boolean flag due to a bug. `--branch` can now be used with a string as intended.
 
 **Example Usage**
 
