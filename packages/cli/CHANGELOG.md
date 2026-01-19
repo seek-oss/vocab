@@ -1,5 +1,22 @@
 # @vocab/cli
 
+## 2.1.12
+
+### Patch Changes
+
+- [#377](https://github.com/seek-oss/vocab/pull/377) [`12d07bc`](https://github.com/seek-oss/vocab/commit/12d07bca3de2e0ead5a2f066da00c4c4a981baae) Thanks [@jahredhope](https://github.com/jahredhope)! - Fix missing --branch option as string for push and pull commands.
+
+  Since v2.1.11, CLI commands to push and pull translations only accepted `--branch` as a boolean flag due to a bug. `--branch` can now be used with a string as intended.
+
+  **Example Usage**
+
+  ```sh
+  vocab push --branch my-branch
+  vocab pull --branch my-branch
+  ```
+
+  Fixes error "error: too many arguments for 'push'. Expected 0 arguments but got 1." and "error: too many arguments for 'pull'. Expected 0 arguments but got 1."
+
 ## 2.1.11
 
 ### Patch Changes
