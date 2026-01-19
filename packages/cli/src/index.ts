@@ -33,7 +33,7 @@ program
   });
 
 const branchOption = new Option(
-  '--branch',
+  '--branch <name>',
   'The Phrase branch to target',
 ).default(DEFAULT_BRANCH);
 
