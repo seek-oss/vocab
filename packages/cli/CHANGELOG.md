@@ -1,5 +1,18 @@
 # @vocab/cli
 
+## 2.2.0
+
+### Minor Changes
+
+- [#379](https://github.com/seek-oss/vocab/pull/379) [`f95fd2a`](https://github.com/seek-oss/vocab/commit/f95fd2ae44c7add493e86929c918acb9d8d81788) Thanks [@jahredhope](https://github.com/jahredhope)! - Add auto-translate feature for push command
+
+  Adds a new `--auto-translate` flag to the `vocab push` command that enables automatic translation for missing translations in the Phrase platform. When enabled, this flag instructs Phrase to automatically translate any missing keys using machine translation.
+
+### Patch Changes
+
+- Updated dependencies [[`f95fd2a`](https://github.com/seek-oss/vocab/commit/f95fd2ae44c7add493e86929c918acb9d8d81788)]:
+  - @vocab/phrase@2.2.0
+
 ## 2.1.12
 
 ### Patch Changes
