@@ -1,5 +1,15 @@
 # @vocab/vite
 
+## 1.0.0
+
+### Major Changes
+
+- [#384](https://github.com/seek-oss/vocab/pull/384) [`68fe779`](https://github.com/seek-oss/vocab/commit/68fe7799f7162d2af1b6edfecd9f451ac67a5c96) Thanks [@williamlark](https://github.com/williamlark)! - Dropped support for Vite v5 and updated peer dependencies.
+
+### Minor Changes
+
+- [#384](https://github.com/seek-oss/vocab/pull/384) [`68fe779`](https://github.com/seek-oss/vocab/commit/68fe7799f7162d2af1b6edfecd9f451ac67a5c96) Thanks [@williamlark](https://github.com/williamlark)! - Using Vite's environment API to isolate running in client environments
+
 ## 0.3.9
 
 ### Patch Changes
