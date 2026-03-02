@@ -15,8 +15,6 @@ export type VocabPluginOptions = {
 export const vitePluginVocab = ({
   vocabConfig,
 }: VocabPluginOptions): VitePlugin => {
-  let isSSR = false;
-
   trace(
     `Creating Vocab plugin${
       vocabConfig ? ` with config file ${vocabConfig}` : ''
@@ -27,33 +25,20 @@ export const vitePluginVocab = ({
     name: 'vite-plugin-vocab',
     apply: 'build',
     enforce: 'pre',
-    configResolved(config) {
-      // Check if the build is for SSR. This plugin should not run for SSR builds.
-      isSSR = Boolean(config.build.ssr);
+    applyToEnvironment(env) {
+      return env.name === 'client';
     },
     resolveId(id) {
-      if (isSSR) {
-        return null;
-      }
-
       if (id.includes(virtualModuleId)) {
         return `\0${id}`;
       }
     },
     load(id) {
-      if (isSSR) {
-        return null;
-      }
-
       if (id.includes(`\0${virtualModuleId}`)) {
         return virtualResourceLoader(id);
       }
     },
     async transform(code, id) {
-      if (isSSR) {
-        return null;
-      }
-
       if (compiledVocabFileFilter.test(id)) {
         const transformedCode = await transformVocabFile(code, id, vocabConfig);
 
