@@ -7,29 +7,54 @@ import {
 } from '@vocab/core';
 import {
   ensureBranch,
-  deleteUnusedKeys as phraseDeleteUnusedKeys,
-  pushTranslations,
+  pushTranslationsWithDiff,
+  pullAllTranslations,
 } from './phrase-api';
-import { trace } from './logger';
+import { trace, log } from './logger';
+import {
+  compareTranslations,
+  getDiffSummary,
+  filterPushDiff,
+} from './diff-utils';
+import {
+  formatDiffSummary,
+  formatDiffReport,
+  formatConfirmationPrompt,
+} from './diff-formatter';
+import { promptConfirmation } from './prompt-utils';
 
 interface PushOptions {
   autoTranslate?: boolean;
   branch: string;
   deleteUnusedKeys?: boolean;
   ignore?: string[];
+  dryRun?: boolean;
+  force?: boolean;
+  interactive?: boolean;
 }
 
 /**
  * Uploads translations to the Phrase API for each language.
  * A unique namespace is appended to each key using the file path the key came from.
+ * Now includes diff comparison and user confirmation.
  */
 export async function push(
-  { autoTranslate, branch, deleteUnusedKeys, ignore }: PushOptions,
+  {
+    autoTranslate: _autoTranslate,
+    branch,
+    deleteUnusedKeys,
+    ignore,
+    dryRun = false,
+    force = false,
+    interactive = true,
+  }: PushOptions,
   config: UserConfig,
 ) {
-  if (ignore) {
+  if (ignore && ignore.length > 0) {
     trace(`ignoring files on paths: ${ignore.join(', ')}`);
   }
+
+  // Load all local translations
   const allLanguageTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false, withTags: true },
     {
@@ -37,32 +62,31 @@ export async function push(
       ignore: [...(config.ignore || []), ...(ignore || [])],
     },
   );
-  trace(`Pushing translations to branch ${branch}`);
+
+  trace(`Preparing to push translations to branch ${branch}`);
   const allLanguages = config.languages.map((v) => v.name);
   await ensureBranch(branch);
 
-  trace(
-    `Pushing translations to phrase for languages ${allLanguages.join(', ')}`,
-  );
-
-  const phraseTranslations: TranslationsByLanguage = {};
+  // Build local translations structure
+  const localTranslations: TranslationsByLanguage = {};
 
   for (const loadedTranslation of allLanguageTranslations) {
     for (const language of allLanguages) {
-      const localTranslations = loadedTranslation.languages[language];
-      if (!localTranslations) {
+      const languageTranslations = loadedTranslation.languages[language];
+      if (!languageTranslations) {
         continue;
       }
-      if (!phraseTranslations[language]) {
-        phraseTranslations[language] = {};
+      if (!localTranslations[language]) {
+        localTranslations[language] = {};
       }
 
       const {
         metadata: { tags: sharedTags = [] },
       } = loadedTranslation;
 
-      for (const localKey of Object.keys(localTranslations)) {
-        const { tags = [], ...localTranslation } = localTranslations[localKey];
+      for (const localKey of Object.keys(languageTranslations)) {
+        const { tags = [], ...localTranslation } =
+          languageTranslations[localKey];
         if (language === config.devLanguage) {
           (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
         }
@@ -72,18 +96,70 @@ export async function push(
         const phraseKey =
           globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
 
-        phraseTranslations[language][phraseKey] = localTranslation;
+        localTranslations[language][phraseKey] = localTranslation;
       }
     }
   }
 
-  const { devLanguageUploadId } = await pushTranslations(phraseTranslations, {
-    autoTranslate,
-    branch,
-    devLanguage: config.devLanguage,
-  });
+  // Fetch current remote translations for comparison
+  log('Fetching current remote translations for comparison...');
+  const remoteTranslations = await pullAllTranslations(branch);
 
-  if (deleteUnusedKeys) {
-    await phraseDeleteUnusedKeys(devLanguageUploadId, branch);
+  // Compare local vs remote translations
+  const diff = compareTranslations(localTranslations, remoteTranslations);
+  const pushDiff = filterPushDiff(diff, deleteUnusedKeys);
+  const summary = getDiffSummary(pushDiff);
+
+  // Display diff summary
+  log(formatDiffSummary(summary, 'push'));
+
+  if (!summary.hasChanges) {
+    log('No changes to push. Remote translations are up to date.');
+    return;
   }
+
+  // Display detailed diff report
+  if (interactive || dryRun) {
+    log('\nDetailed changes:');
+    log(formatDiffReport(pushDiff, 'push'));
+  }
+
+  // Handle dry run mode
+  if (dryRun) {
+    log('\nDry run mode: No changes were made.');
+    return;
+  }
+
+  // Handle force mode or get user confirmation
+  let shouldProceed = force;
+
+  if (!force && interactive) {
+    const confirmationPrompt = formatConfirmationPrompt(summary, 'push');
+    shouldProceed = await promptConfirmation(confirmationPrompt, false);
+  }
+
+  if (!shouldProceed) {
+    log('Push cancelled by user.');
+    return;
+  }
+
+  // Proceed with the push using diff-based approach
+  trace(
+    `Pushing translations to phrase for languages ${allLanguages.join(', ')}`,
+  );
+
+  await pushTranslationsWithDiff(
+    localTranslations,
+    {
+      devLanguage: config.devLanguage,
+      branch,
+    },
+    pushDiff,
+  );
+
+  // Note: deleteUnusedKeys is now handled within the diff-based push
+  // since we can precisely delete only the keys that were marked as deleted in the diff
+  // Note: _autoTranslate is not yet supported in diff-based push (reserved for future use)
+
+  log('Push completed successfully!');
 }

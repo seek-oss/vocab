@@ -1,0 +1,14 @@
+{
+  "specialCharacters - '‘’“”\"!@#$%^&*()_+\\/`~\\\\": {
+    "en": {
+      "message": "'‘’“”\"!@#$%^&*()_+\\/`~\\\\"
+    },
+    "fr": {
+      "message": "blah"
+    }
+  },
+  "vocabPublishDate": {
+    "en": "<strong>Vocab</strong> was published on {publishDate, date, small}",
+    "fr": "<strong>Vocab</strong> a été publié le {publishDate, date, small}"
+  }
+}

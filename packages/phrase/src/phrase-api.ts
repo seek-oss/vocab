@@ -1,97 +1,8 @@
-/* eslint-disable no-console */
 import type { TranslationsByLanguage } from '@vocab/core';
+import type { DiffByLanguage } from './diff-utils';
 import { log, trace } from './logger';
 import { translationsToCsv } from './csv';
-
-function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
-  const phraseApiToken = process.env.PHRASE_API_TOKEN;
-
-  if (!phraseApiToken) {
-    throw new Error('Missing PHRASE_API_TOKEN');
-  }
-
-  return fetch(path, {
-    ...options,
-    headers: {
-      Authorization: `token ${phraseApiToken}`,
-      // Provide identification via User Agent as requested in https://developers.phrase.com/api/#overview--identification-via-user-agent
-      'User-Agent': 'Vocab Client (https://github.com/seek-oss/vocab)',
-      ...options.headers,
-    },
-  }).then(async (response) => {
-    console.log(`${path}: ${response.status} - ${response.statusText}`);
-
-    const secondsUntilLimitReset = Math.ceil(
-      Number.parseFloat(response.headers.get('X-Rate-Limit-Reset') || '0') -
-        Date.now() / 1000,
-    );
-    console.log(
-      `Rate Limit: ${response.headers.get(
-        'X-Rate-Limit-Remaining',
-      )} of ${response.headers.get(
-        'X-Rate-Limit-Limit',
-      )} remaining. (${secondsUntilLimitReset} seconds remaining)`,
-    );
-
-    trace('\nLink:', response.headers.get('Link'), '\n');
-    // Print All Headers:
-    // console.log(Array.from(r.headers.entries()));
-
-    try {
-      const result = await response.json();
-
-      trace(`Internal Result (Length: ${result.length})\n`);
-
-      if (
-        (!options.method || options.method === 'GET') &&
-        response.headers.get('Link')?.includes('rel=next')
-      ) {
-        const [, nextPageUrl] =
-          response.headers.get('Link')?.match(/<([^>]*)>; rel=next/) ?? [];
-
-        if (!nextPageUrl) {
-          throw new Error("Can't parse next page URL");
-        }
-
-        console.log('Results received with next page: ', nextPageUrl);
-
-        const nextPageResult = (await _callPhrase(nextPageUrl, options)) as any;
-
-        return [...result, ...nextPageResult];
-      }
-
-      return result;
-    } catch (e) {
-      console.error('Unable to parse response as JSON', e);
-      return response.text();
-    }
-  });
-}
-
-export async function callPhrase<T = any>(
-  relativePath: string,
-  options: Parameters<typeof fetch>[1] = {},
-): Promise<T> {
-  const projectId = process.env.PHRASE_PROJECT_ID;
-
-  if (!projectId) {
-    throw new Error('Missing PHRASE_PROJECT_ID');
-  }
-  return _callPhrase(
-    `https://api.phrase.com/v2/projects/${projectId}/${relativePath}`,
-    options,
-  )
-    .then((result) => {
-      if (Array.isArray(result)) {
-        console.log('Result length:', result.length);
-      }
-      return result;
-    })
-    .catch((error) => {
-      console.error(`Error calling phrase for ${relativePath}:`, error);
-      throw Error;
-    });
-}
+import { callPhrase } from './phrase-api/call-phrase';
 
 export async function pullAllTranslations(
   branch: string,
@@ -101,6 +12,7 @@ export async function pullAllTranslations(
       key: { name: string };
       locale: { name: string };
       content: string;
+      validated: boolean;
     }>
   >(`translations?branch=${branch}&per_page=100`);
 
@@ -110,12 +22,323 @@ export async function pullAllTranslations(
     if (!translations[r.locale.name]) {
       translations[r.locale.name] = {};
     }
-    translations[r.locale.name][r.key.name] = { message: r.content };
+    translations[r.locale.name][r.key.name] = {
+      message: r.content,
+      validated: r.validated,
+    };
   }
 
   return translations;
 }
 
+export async function addKey(
+  keyName: string,
+  keyData: { description?: string; tags?: string[] },
+  branch: string,
+): Promise<{ id: string; name: string }> {
+  const payload = {
+    name: keyName,
+    branch,
+    ...(keyData.description && { description: keyData.description }),
+    ...(keyData.tags &&
+      keyData.tags.length > 0 && { tags: keyData.tags.join(',') }),
+  };
+
+  // Try to create the key first
+  const result = await callPhrase<{ id: string; name: string }>(`keys`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  trace(`Created key: ${keyName}`);
+  return result;
+}
+
+/**
+ * Create or update a key in Phrase
+ * @param keyName The key name
+ * @param keyData Key data including description and tags
+ * @param branch Branch name
+ * @returns The key object from Phrase
+ */
+export async function createOrUpdateKey(
+  keyName: string,
+  keyData: { description?: string; tags?: string[] },
+  branch: string,
+): Promise<{ id: string; name: string }> {
+  const payload = {
+    name: keyName,
+    branch,
+    ...(keyData.description && { description: keyData.description }),
+    ...(keyData.tags &&
+      keyData.tags.length > 0 && { tags: keyData.tags.join(',') }),
+  };
+
+  try {
+    // Try to create the key first
+    const result = await callPhrase<{ id: string; name: string }>(`keys`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    trace(`Created key: ${keyName}`);
+    return result;
+  } catch {
+    // If key already exists, update it
+    trace(`Key ${keyName} already exists, updating...`);
+
+    // First, find the key to get its ID
+    const existingKeys = await callPhrase<Array<{ id: string; name: string }>>(
+      `keys?q=name:${encodeURIComponent(keyName)}&branch=${branch}`,
+    );
+
+    const existingKey = existingKeys.find((k) => k.name === keyName);
+    if (!existingKey) {
+      throw new Error(`Could not find or create key: ${keyName}`);
+    }
+
+    // Update the existing key
+    const updatedKey = await callPhrase<{ id: string; name: string }>(
+      `keys/${existingKey.id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+
+    trace(`Updated key: ${keyName}`);
+    return updatedKey;
+  }
+}
+
+/**
+ * Create or update a translation for a key
+ * @param keyId The key ID in Phrase
+ * @param languageCode The language code
+ * @param content The translation content
+ * @param branch Branch name
+ * @returns The translation object from Phrase
+ */
+export async function createOrUpdateTranslation(
+  keyId: string,
+  languageCode: string,
+  content: string,
+  branch: string,
+): Promise<{ id: string; content: string }> {
+  // First, get the locale ID for the language
+  const locales =
+    await callPhrase<Array<{ id: string; code: string }>>(`locales`);
+
+  const locale = locales.find((l) => l.code === languageCode);
+  if (!locale) {
+    throw new Error(`Locale not found for language: ${languageCode}`);
+  }
+
+  const payload = {
+    branch,
+    content,
+  };
+
+  try {
+    // Try to create the translation
+    const result = await callPhrase<{ id: string; content: string }>(
+      `keys/${keyId}/translations`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...payload,
+          locale_id: locale.id,
+        }),
+      },
+    );
+
+    trace(
+      `Created translation for key ${keyId} in ${languageCode}: ${content}`,
+    );
+    return result;
+  } catch {
+    // If translation already exists, update it
+    trace(
+      `Translation exists for key ${keyId} in ${languageCode}, updating...`,
+    );
+
+    // Find the existing translation
+    const translations = await callPhrase<
+      Array<{ id: string; content: string }>
+    >(`keys/${keyId}/translations?branch=${branch}`);
+
+    const existingTranslation = translations.find(
+      (t) => t.content !== undefined,
+    );
+    if (!existingTranslation) {
+      throw new Error(
+        `Could not find translation for key ${keyId} in ${languageCode}`,
+      );
+    }
+
+    // Update the existing translation
+    const updatedTranslation = await callPhrase<{
+      id: string;
+      content: string;
+    }>(`translations/${existingTranslation.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    trace(
+      `Updated translation for key ${keyId} in ${languageCode}: ${content}`,
+    );
+    return updatedTranslation;
+  }
+}
+
+/**
+ * Delete a key from Phrase
+ * @param keyId The key ID to delete
+ * @param branch Branch name
+ */
+export async function deleteKey(keyId: string, branch: string): Promise<void> {
+  await callPhrase(`keys/${keyId}?branch=${branch}`, {
+    method: 'DELETE',
+  });
+
+  trace(`Deleted key: ${keyId}`);
+}
+
+/**
+ * New diff-based push translations function
+ * @param translationsByLanguage All local translations
+ * @param options Push options including branch and dev language
+ * @param diff The diff object showing what needs to be changed
+ * @returns Success indicator
+ */
+export async function pushTranslationsWithDiff(
+  translationsByLanguage: TranslationsByLanguage,
+  { devLanguage, branch }: { devLanguage: string; branch: string },
+  diff: DiffByLanguage,
+): Promise<{ success: boolean }> {
+  const allLanguages = Object.keys(translationsByLanguage);
+
+  // Process each language
+  for (const language of allLanguages) {
+    const languageDiff = diff[language];
+    if (!languageDiff) {
+      continue;
+    }
+
+    log(`Processing ${language} translations...`);
+
+    // Handle added translations
+    for (const [keyName, translationData] of Object.entries(
+      languageDiff.added || {},
+    )) {
+      // Create or update the key (only for dev language to avoid duplicates)
+      let keyId: string;
+      if (language === devLanguage) {
+        const keyResult = await createOrUpdateKey(
+          keyName,
+          {
+            description: translationData.description,
+            tags: translationData.tags,
+          },
+          branch,
+        );
+        keyId = keyResult.id;
+      } else {
+        // For non-dev languages, we need to find the existing key
+        const existingKeys = await callPhrase<
+          Array<{ id: string; name: string }>
+        >(`keys?q=name:${encodeURIComponent(keyName)}&branch=${branch}`);
+        const existingKey = existingKeys.find((k) => k.name === keyName);
+        if (!existingKey) {
+          trace(
+            `Key ${keyName} not found for language ${language}, skipping...`,
+          );
+          continue;
+        }
+        keyId = existingKey.id;
+      }
+
+      // Create or update the translation
+      await createOrUpdateTranslation(
+        keyId,
+        language,
+        translationData.message,
+        branch,
+      );
+    }
+
+    // Handle modified translations
+    for (const [keyName, modification] of Object.entries(
+      languageDiff.modified || {},
+    )) {
+      const localTranslation = modification.local;
+
+      // Find the existing key
+      const existingKeys = await callPhrase<
+        Array<{ id: string; name: string }>
+      >(`keys?q=name:${encodeURIComponent(keyName)}&branch=${branch}`);
+      const existingKey = existingKeys.find((k) => k.name === keyName);
+      if (!existingKey) {
+        trace(
+          `Key ${keyName} not found for modification in ${language}, skipping...`,
+        );
+        continue;
+      }
+
+      // Update key metadata (only for dev language)
+      if (language === devLanguage) {
+        await createOrUpdateKey(
+          keyName,
+          {
+            description: localTranslation.description,
+            tags: localTranslation.tags,
+          },
+          branch,
+        );
+      }
+
+      // Update the translation
+      await createOrUpdateTranslation(
+        existingKey.id,
+        language,
+        localTranslation.message,
+        branch,
+      );
+    }
+
+    // Handle deleted translations (if requested)
+    for (const [keyName] of Object.entries(languageDiff.deleted || {})) {
+      // Find the existing key
+      const existingKeys = await callPhrase<
+        Array<{ id: string; name: string }>
+      >(`keys?q=name:${encodeURIComponent(keyName)}&branch=${branch}`);
+      const existingKey = existingKeys.find((k) => k.name === keyName);
+      if (existingKey) {
+        await deleteKey(existingKey.id, branch);
+      }
+    }
+  }
+
+  return { success: true };
+}
+
+// Keep the old function for backward compatibility
 export async function pushTranslations(
   translationsByLanguage: TranslationsByLanguage,
   {

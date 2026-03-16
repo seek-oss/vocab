@@ -7,6 +7,33 @@ import {
 import { printAST } from '@formatjs/icu-messageformat-parser/printer.js';
 import type { MessageGenerator, TranslationsByKey } from './types';
 
+export function generateTranslation({
+  message,
+  generator,
+}: {
+  message: string;
+  generator: MessageGenerator;
+}): string {
+  if (!generator.transformElement && !generator.transformMessage) {
+    return message;
+  }
+  let transformedMessage = message;
+
+  if (generator.transformElement) {
+    const messageAst = new IntlMessageFormat(message).getAst();
+    const transformedAst = messageAst.map(
+      transformMessageFormatElement(generator.transformElement),
+    );
+    transformedMessage = printAST(transformedAst);
+  }
+
+  if (generator.transformMessage) {
+    transformedMessage = generator.transformMessage(transformedMessage);
+  }
+
+  return transformedMessage;
+}
+
 export function generateLanguageFromTranslations({
   baseTranslations,
   generator,

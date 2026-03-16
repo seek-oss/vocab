@@ -4,6 +4,7 @@
   "author": "SEEK",
   "private": true,
   "scripts": {
+    "build": "vocab compile && webpack build",
     "compile": "vocab compile",
     "start": "vocab compile --watch & webpack serve"
   },
@@ -20,6 +21,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "webpack": "^5.37.0",
+    "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.0.2"
   }
 }

@@ -1,5 +1,9 @@
 export { compile, watch } from './compile';
-export { validate } from './validate';
+export {
+  validate,
+  validateTranslationStatus,
+  formatValidationResults,
+} from './validate';
 export { resolveConfig, resolveConfigSync, validateConfig } from './config';
 export {
   getAltLanguages,

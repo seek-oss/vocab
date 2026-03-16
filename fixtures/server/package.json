@@ -4,6 +4,7 @@
   "author": "SEEK",
   "private": true,
   "scripts": {
+    "build": "rm -rf dist-client && rm -rf dist-server && vocab compile && webpack build",
     "compile": "vocab compile",
     "start": "vocab compile --watch & webpack serve"
   },
@@ -31,6 +32,7 @@
     "html-webpack-plugin": "^5.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "webpack": "^5.37.0"
+    "webpack": "^5.37.0",
+    "webpack-cli": "^6.0.1"
   }
 }

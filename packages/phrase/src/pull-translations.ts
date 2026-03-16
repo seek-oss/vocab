@@ -4,31 +4,55 @@ import path from 'path';
 import {
   type TranslationFileContents,
   type UserConfig,
+  type TranslationsByLanguage,
   loadAllTranslations,
   getAltLanguageFilePath,
   getAltLanguages,
   getUniqueKey,
 } from '@vocab/core';
 
-import { pullAllTranslations, ensureBranch } from './phrase-api';
-import { trace } from './logger';
+import { ensureBranch, pullAllTranslations } from './phrase-api';
+import { trace, log } from './logger';
+import {
+  compareTranslations,
+  getDiffSummary,
+  filterPullDiff,
+} from './diff-utils';
+import {
+  formatDiffSummary,
+  formatDiffReport,
+  formatConfirmationPrompt,
+} from './diff-formatter';
+import { promptConfirmation } from './prompt-utils';
 
 interface PullOptions {
   branch?: string;
   deleteUnusedKeys?: boolean;
   errorOnNoGlobalKeyTranslation?: boolean;
+  dryRun?: boolean;
+  force?: boolean;
+  interactive?: boolean;
 }
 
 export async function pull(
-  { branch = 'local-development', errorOnNoGlobalKeyTranslation }: PullOptions,
+  {
+    branch = 'local-development',
+    errorOnNoGlobalKeyTranslation,
+    dryRun = false,
+    force = false,
+    interactive = true,
+  }: PullOptions,
   config: UserConfig,
 ) {
-  trace(`Pulling translations from branch ${branch}`);
+  trace(`Preparing to pull translations from branch ${branch}`);
   await ensureBranch(branch);
   const alternativeLanguages = getAltLanguages(config);
+
+  // Fetch remote translations
+  log('Fetching remote translations...');
   const allPhraseTranslations = await pullAllTranslations(branch);
   trace(
-    `Pulling translations from Phrase for languages ${
+    `Fetching translations from Phrase for languages ${
       config.devLanguage
     } and ${alternativeLanguages.join(', ')}`,
   );
@@ -44,10 +68,79 @@ export async function pull(
     );
   }
 
+  // Load current local translations
   const allVocabTranslations = await loadAllTranslations(
     { fallbacks: 'none', includeNodeModules: false, withTags: true },
     config,
   );
+
+  // Build current local translations structure for comparison
+  const localTranslations: TranslationsByLanguage = {};
+  const allLanguages = [config.devLanguage, ...alternativeLanguages];
+
+  for (const language of allLanguages) {
+    localTranslations[language] = {};
+  }
+
+  for (const loadedTranslation of allVocabTranslations) {
+    for (const language of allLanguages) {
+      const languageTranslations = loadedTranslation.languages[language];
+      if (!languageTranslations) {
+        continue;
+      }
+
+      for (const localKey of Object.keys(languageTranslations)) {
+        const globalKey =
+          loadedTranslation.languages[config.devLanguage]?.[localKey]
+            ?.globalKey;
+        const phraseKey =
+          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
+
+        localTranslations[language][phraseKey] = languageTranslations[localKey];
+      }
+    }
+  }
+
+  // Compare remote vs local translations (for pull, remote is "local" and local is "remote")
+  const diff = compareTranslations(allPhraseTranslations, localTranslations);
+  const pullDiff = filterPullDiff(diff);
+  const summary = getDiffSummary(pullDiff);
+
+  // Display diff summary
+  log(formatDiffSummary(summary, 'pull'));
+
+  if (!summary.hasChanges) {
+    log('No changes to pull. Local translations are up to date.');
+    return;
+  }
+
+  // Display detailed diff report
+  if (interactive || dryRun) {
+    log('\nDetailed changes:');
+    log(formatDiffReport(pullDiff, 'pull'));
+  }
+
+  // Handle dry run mode
+  if (dryRun) {
+    log('\nDry run mode: No changes were made.');
+    return;
+  }
+
+  // Handle force mode or get user confirmation
+  let shouldProceed = force;
+
+  if (!force && interactive) {
+    const confirmationPrompt = formatConfirmationPrompt(summary, 'pull');
+    shouldProceed = await promptConfirmation(confirmationPrompt, false);
+  }
+
+  if (!shouldProceed) {
+    log('Pull cancelled by user.');
+    return;
+  }
+
+  // Proceed with the actual pull - write the updated files
+  log('Applying changes...');
 
   for (const loadedTranslation of allVocabTranslations) {
     const devTranslations = loadedTranslation.languages[config.devLanguage];
@@ -60,13 +153,18 @@ export async function pull(
     const localKeys = Object.keys(defaultValues);
 
     for (const key of localKeys) {
-      defaultValues[key] = {
-        ...defaultValues[key],
-        ...allPhraseTranslations[config.devLanguage][
-          defaultValues[key].globalKey ??
-            getUniqueKey(key, loadedTranslation.namespace)
-        ],
-      };
+      const phraseKey =
+        defaultValues[key].globalKey ??
+        getUniqueKey(key, loadedTranslation.namespace);
+
+      const phraseTranslation =
+        allPhraseTranslations[config.devLanguage][phraseKey];
+      if (phraseTranslation) {
+        defaultValues[key] = {
+          ...defaultValues[key],
+          ...phraseTranslation,
+        };
+      }
     }
 
     // Only write a `_meta` field if necessary
@@ -91,10 +189,9 @@ export async function pull(
           const phraseKey =
             defaultValues[key].globalKey ??
             getUniqueKey(key, loadedTranslation.namespace);
-          const phraseTranslationMessage =
-            phraseAltTranslations[phraseKey]?.message;
+          const phraseTranslationData = phraseAltTranslations[phraseKey];
 
-          if (!phraseTranslationMessage) {
+          if (!phraseTranslationData?.message) {
             trace(
               `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
             );
@@ -106,10 +203,15 @@ export async function pull(
             continue;
           }
 
-          altTranslations[key] = {
+          const merged = {
             ...altTranslations[key],
-            message: phraseTranslationMessage,
+            ...phraseTranslationData,
           };
+          // Prefer string form when only message (no validated) for cleaner files
+          altTranslations[key] =
+            merged.validated === undefined
+              ? merged.message
+              : { message: merged.message, validated: merged.validated };
         }
 
         const altTranslationFilePath = getAltLanguageFilePath(
@@ -127,4 +229,6 @@ export async function pull(
       }
     }
   }
+
+  log('Pull completed successfully!');
 }

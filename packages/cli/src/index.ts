@@ -1,6 +1,13 @@
 /* eslint-disable no-console */
 import { pull, push } from '@vocab/phrase';
-import { type UserConfig, resolveConfig, compile, validate } from '@vocab/core';
+import {
+  type UserConfig,
+  resolveConfig,
+  compile,
+  validate,
+  validateTranslationStatus,
+  formatValidationResults,
+} from '@vocab/core';
 import { getGitBranch } from './getGitBranch.js';
 import { Command, Option } from 'commander';
 import {
@@ -41,7 +48,10 @@ const pushAction = async (options: {
   autoTranslate?: boolean;
   branch: string;
   deleteUnusedKeys?: boolean;
+  dryRun?: boolean;
+  force?: boolean;
   ignore?: string[];
+  nonInteractive?: boolean;
   userConfig: UserConfig;
 }) => {
   await push(
@@ -50,6 +60,9 @@ const pushAction = async (options: {
       deleteUnusedKeys: options.deleteUnusedKeys,
       ignore: options.ignore,
       autoTranslate: options.autoTranslate,
+      dryRun: options.dryRun,
+      force: options.force,
+      interactive: !options.nonInteractive,
     },
     options.userConfig,
   );
@@ -74,11 +87,29 @@ program
     'Array of glob paths to ignore when searching for keys to push',
     [],
   )
+  .option(
+    '--dry-run',
+    'Show what would be changed without actually pushing',
+    false,
+  )
+  .option(
+    '--force',
+    'Skip confirmation prompt and push changes automatically',
+    false,
+  )
+  .option(
+    '--non-interactive',
+    'Disable interactive prompts and detailed diff output',
+    false,
+  )
   .action(pushAction);
 
 const pullAction = async (options: {
   branch: string;
+  dryRun?: boolean;
   errorOnNoGlobalKeyTranslation: boolean;
+  force?: boolean;
+  nonInteractive?: boolean;
   userConfig: UserConfig;
 }) => {
   await pull(
@@ -86,6 +117,9 @@ const pullAction = async (options: {
       branch: options.branch,
       errorOnNoGlobalKeyTranslation:
         options.errorOnNoGlobalKeyTranslation || false,
+      dryRun: options.dryRun,
+      force: options.force,
+      interactive: !options.nonInteractive,
     },
     options.userConfig,
   );
@@ -98,6 +132,21 @@ program
   .option(
     '--error-on-no-global-key-translation',
     'Throw an error when there is no translation for a global key',
+    false,
+  )
+  .option(
+    '--dry-run',
+    'Show what would be changed without actually pulling',
+    false,
+  )
+  .option(
+    '--force',
+    'Skip confirmation prompt and pull changes automatically',
+    false,
+  )
+  .option(
+    '--non-interactive',
+    'Disable interactive prompts and detailed diff output',
     false,
   )
   .action(pullAction);
@@ -130,5 +179,20 @@ program
   .command('validate')
   .description('Validate translations')
   .action(validateAction);
+
+const validateStatusAction = async (options: { userConfig: UserConfig }) => {
+  const result = await validateTranslationStatus(options.userConfig);
+
+  console.log(formatValidationResults(result));
+
+  if (!result.success) {
+    throw new Error('Translation validation failed');
+  }
+};
+
+program
+  .command('validate-status')
+  .description('Check that all translations are validated')
+  .action(validateStatusAction);
 
 program.parseAsync();

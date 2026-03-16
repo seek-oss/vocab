@@ -1,0 +1,27 @@
+{
+  "name": "@vocab-fixtures/merged",
+  "version": "1.0.0",
+  "author": "SEEK",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf dist && vocab compile && webpack build",
+    "compile": "vocab compile",
+    "start": "vocab compile --watch & webpack serve"
+  },
+  "dependencies": {
+    "@babel/core": "^7.12.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vocab/cli": "workspace:*",
+    "@vocab/core": "workspace:*",
+    "@vocab/pseudo-localize": "workspace:*",
+    "@vocab/react": "workspace:*",
+    "@vocab/webpack": "workspace:*",
+    "babel-loader": "^10.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "webpack": "^5.37.0",
+    "webpack-dev-server": "^5.0.2"
+  }
+}

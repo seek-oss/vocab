@@ -4,6 +4,7 @@
   "author": "SEEK",
   "private": true,
   "scripts": {
+    "build": "rm -rf dist && vocab compile && webpack build",
     "compile": "vocab compile",
     "start": "vocab compile --watch & webpack serve"
   },

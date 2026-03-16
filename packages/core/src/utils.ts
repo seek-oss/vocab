@@ -63,6 +63,10 @@ export function getAltTranslationFileGlob(config: UserConfig) {
   return result;
 }
 
+export function getLanguages({ languages }: { languages: LanguageTarget[] }) {
+  return languages.map((v) => v.name);
+}
+
 export function getAltLanguages({
   devLanguage,
   languages,

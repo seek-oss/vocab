@@ -105,7 +105,9 @@ See [here][overriding the locale] for more information on how and when to use th
 ### Step 4: Create translations
 
 A translation file is a JSON file consisting of a flat structure of keys.
-Each key must contain a `message` property, and optionally a `description` property.
+Each key must supply the **dev language**: use the dev language code as a key (e.g. `en` when `devLanguage` is `en`).
+The reserved key `message` for the dev language is also supported (legacy).
+You may optionally add a `description`, and other languages via a `translations` object and/or top-level language keys (e.g. `fr`).
 
 Rather than creating one giant file for each language's translations, Vocab enables you to co-locate the translations alongside their consuming components.
 To facilitate this, Vocab lets you group translations inside folders ending in `.vocab`.
@@ -133,11 +135,46 @@ In the following examples, we're defining translations for our `devLanguage`, an
 
 ```jsonc
 // src/MyComponent/.vocab/fr.translations.json
+// Prefer a plain string when no validated flag is needed:
 
+{
+  "my key": "Bonjour de Vocab"
+}
+```
+
+Or with optional metadata (use the object form when you need `validated` or other fields):
+
+```jsonc
 {
   "my key": {
     "message": "Bonjour de Vocab",
     "description": "An optional description to help when translating"
+  }
+}
+```
+
+**Unified format (all languages in one file):**  
+You can put every language in a single `translations.json` by using the dev language key and/or `message`, plus top-level language keys for other languages. This avoids separate `fr.translations.json` files. Prefer a plain message string for each language (e.g. `"fr": "Bonjour de Vocab"`); use the object form `{ "message": "...", "validated": true }` only when you need the `validated` flag.
+
+```jsonc
+// src/MyComponent/.vocab/translations.json (devLanguage: "en")
+
+{
+  "my key": {
+    "message": "Hello from Vocab",
+    "fr": "Bonjour de Vocab",
+    "description": "An optional description"
+  }
+}
+```
+
+Alternatively, use the dev language code instead of `message` for the dev language:
+
+```jsonc
+{
+  "my key": {
+    "en": "Hello from Vocab",
+    "fr": "Bonjour de Vocab"
   }
 }
 ```
@@ -707,6 +744,74 @@ Vocab can be used to synchronize your translations with translations from a remo
 ```sh
 vocab push --branch my-branch
 vocab pull --branch my-branch
+```
+
+### Diff-Based Push and Pull
+
+By default, Vocab now compares local and remote translations before making changes, showing you exactly what will be modified and asking for confirmation. This prevents accidental overwrites and provides transparency into what changes will be made.
+
+#### Interactive Mode (Default)
+
+When pushing or pulling translations, Vocab will:
+
+1. **Compare translations**: Fetch remote translations and compare them with your local versions
+2. **Show a diff report**: Display added, modified, and deleted translations with a detailed breakdown
+3. **Ask for confirmation**: Prompt you to confirm before making any changes
+
+```sh
+# Interactive push with diff preview
+vocab push --branch my-branch
+
+# Interactive pull with diff preview
+vocab pull --branch my-branch
+```
+
+#### Dry Run Mode
+
+Preview changes without making any modifications:
+
+```sh
+# See what would be pushed without actually pushing
+vocab push --branch my-branch --dry-run
+
+# See what would be pulled without actually pulling
+vocab pull --branch my-branch --dry-run
+```
+
+#### Force Mode
+
+Skip confirmation prompts and apply changes automatically:
+
+```sh
+# Push changes without confirmation (use with caution)
+vocab push --branch my-branch --force
+
+# Pull changes without confirmation
+vocab pull --branch my-branch --force
+```
+
+#### Non-Interactive Mode
+
+Disable interactive prompts and detailed diff output (useful for CI/CD):
+
+```sh
+# Push in non-interactive mode
+vocab push --branch my-branch --non-interactive
+
+# Pull in non-interactive mode
+vocab pull --branch my-branch --non-interactive
+```
+
+#### Combining Flags
+
+You can combine flags for different workflows:
+
+```sh
+# CI/CD: Check for changes without making them
+vocab push --branch my-branch --dry-run --non-interactive
+
+# Automated deployment: Push changes without prompts
+vocab push --branch my-branch --force --non-interactive
 ```
 
 ### [Phrase] Platform Features

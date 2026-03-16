@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "tags": ["every", "key", "gets", "these", "tags"]
+  },
+  "hello": {
+    "message": "Hi there",
+    "tags": ["only for this key", "greeting"]
+  },
+  "profile": {
+    "message": "profil"
+  },
+  "thanks": {
+    "globalKey": "app.thanks.label",
+    "message": "Thanks"
+  },
+  "world": {
+    "message": "world"
+  }
+}

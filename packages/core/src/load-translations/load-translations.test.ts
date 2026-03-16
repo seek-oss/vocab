@@ -1,10 +1,12 @@
+import { loadTranslation } from './load-translations';
 import {
   getFallbackLanguageOrder,
   getLanguageHierarchy,
+} from './language-hierarchy';
+import {
   loadAltLanguageFile,
-  loadTranslation,
   mergeWithDevLanguageTranslation,
-} from './load-translations';
+} from './load-separated-translations';
 import path from 'path';
 
 describe('mergeWithDevLanguage', () => {
@@ -122,7 +124,9 @@ describe('loadAltLanguageFile', () => {
     it('should resolve translation message correctly according to the fallback hierarchy', () => {
       const filePath = path.join(
         __dirname,
-        'test-translations/translations.json',
+        '..',
+        'test-translations',
+        'translations.json',
       );
       const devTranslation = {
         Hello: { message: 'Hello in French' },
@@ -166,18 +170,21 @@ describe('loadAltLanguageFile', () => {
 });
 
 describe('loadTranslation', () => {
+  const testTranslationsPath = path.join(__dirname, '..', 'test-translations');
+  const testTranslationsFilePath = path.join(
+    testTranslationsPath,
+    'translations.json',
+  );
+
   describe('when a generated language config is provided', () => {
     it('should generate a language', () => {
       const generator = {
         transformElement: (element: string) => element.toUpperCase(),
         transformMessage: (message: string) => `[${message}]`,
       };
-      const filePath = path.join(
-        __dirname,
-        'test-translations/translations.json',
-      );
       const fallbacks = 'all';
       const userConfig = {
+        projectRoot: path.join(__dirname, '..', '..'),
         devLanguage: 'fr',
         languages: [
           { name: 'fr' },
@@ -192,7 +199,7 @@ describe('loadTranslation', () => {
 
       const translations = loadTranslation(
         {
-          filePath,
+          filePath: testTranslationsFilePath,
           fallbacks,
         },
         userConfig,
@@ -218,12 +225,8 @@ describe('loadTranslation', () => {
   });
 
   describe('tags', () => {
-    const filePath = path.join(
-      __dirname,
-      'test-translations/translations.json',
-    );
-
     const userConfig = {
+      projectRoot: path.join(__dirname, '..', '..'),
       devLanguage: 'fr',
       languages: [{ name: 'fr' }, { name: 'en' }],
     };
@@ -231,7 +234,11 @@ describe('loadTranslation', () => {
     describe('when withTags is true', () => {
       it('should load translations with tags, ignoring tags in languages that are not the dev language', () => {
         const translations = loadTranslation(
-          { filePath, fallbacks: 'all', withTags: true },
+          {
+            filePath: testTranslationsFilePath,
+            fallbacks: 'all',
+            withTags: true,
+          },
           userConfig,
         );
 
@@ -255,11 +262,9 @@ describe('loadTranslation', () => {
             },
             "Goodbye": {
               "message": "Goodbye in French",
-              "tags": undefined,
             },
             "Hello": {
               "message": "Hello in French",
-              "tags": undefined,
             },
             "Welcome": {
               "message": "Welcome in French",
@@ -273,6 +278,7 @@ describe('loadTranslation', () => {
         expect(translations.languages.en).toMatchInlineSnapshot(`
           {
             "Good morning": {
+              "description": undefined,
               "message": "Good morning in French",
             },
             "Goodbye": {
@@ -295,7 +301,11 @@ describe('loadTranslation', () => {
     describe('when withTags is false', () => {
       it('should load translations without tags', () => {
         const translations = loadTranslation(
-          { filePath, fallbacks: 'all', withTags: false },
+          {
+            filePath: testTranslationsFilePath,
+            fallbacks: 'all',
+            withTags: false,
+          },
           userConfig,
         );
 
@@ -309,27 +319,23 @@ describe('loadTranslation', () => {
           {
             "Good morning": {
               "message": "Good morning in French",
-              "tags": undefined,
             },
             "Goodbye": {
               "message": "Goodbye in French",
-              "tags": undefined,
             },
             "Hello": {
               "message": "Hello in French",
-              "tags": undefined,
             },
             "Welcome": {
               "message": "Welcome in French",
-              "tags": undefined,
             },
           }
         `);
         expect(translations.languages.en).toMatchInlineSnapshot(`
           {
             "Good morning": {
+              "description": undefined,
               "message": "Good morning in French",
-              "tags": undefined,
             },
             "Goodbye": {
               "description": undefined,

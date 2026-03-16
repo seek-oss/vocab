@@ -1,5 +1,8 @@
 {
   "hello": {
+    "en": {
+      "message": "assadsad"
+    },
     "message": "Bonjour"
   },
   "world": {

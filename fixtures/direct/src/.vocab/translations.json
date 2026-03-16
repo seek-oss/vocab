@@ -6,6 +6,7 @@
     "message": "world"
   },
   "vocabPublishDate": {
+    "hello": "Hello",
     "message": "<strong>Vocab</strong> was published on {publishDate, date, small}"
   }
 }

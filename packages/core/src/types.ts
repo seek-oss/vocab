@@ -170,6 +170,8 @@ export interface TranslationData {
   description?: string;
   tags?: Tags;
   globalKey?: string;
+  validated?: boolean;
+  skipValidation?: boolean;
 }
 
 export type TranslationsByKey<Key extends TranslationKey = string> = Record<
@@ -180,6 +182,59 @@ export type TranslationsByKey<Key extends TranslationKey = string> = Record<
 export type TranslationFileContents = TranslationsByKey & {
   _meta?: TranslationFileMetadata;
 };
+
+/**
+ * Value for a single language in a unified entry: message string or
+ * { message, validated? }. Prefer the string form (e.g. "fr": "Bonjour") when
+ * no validated flag is needed; use the object form only when required.
+ */
+export type UnifiedLanguageValue =
+  | TranslationMessage
+  | { message: TranslationMessage; validated?: boolean };
+
+/**
+ * Unified translation entry. Dev language is supplied via the reserved key
+ * `message` and/or the dev language code (e.g. `en`). Other languages may
+ * appear in `translations` and/or as top-level lang keys.
+ */
+export type UnifiedTranslationKeyData = {
+  allowUnvalidated?: boolean;
+  description?: string;
+  globalKey?: string;
+  /** Dev language when present. */
+  message?: UnifiedLanguageValue;
+  tags?: Tags;
+  /** Optional record of lang code → value. */
+  translations?: Record<LanguageName, UnifiedLanguageValue>;
+  [langCode: string]:
+    | UnifiedLanguageValue
+    | Record<LanguageName, UnifiedLanguageValue>
+    | Tags
+    | boolean
+    | string
+    | undefined;
+};
+
+export type UnifiedTranslationFileContents = Record<
+  TranslationKey,
+  UnifiedTranslationKeyData
+> & {
+  $namespace?: string;
+  _meta?: TranslationFileMetadata;
+};
+
+/**
+ * @deprecated Use UnifiedTranslationKeyData. Legacy merged format key type.
+ */
+export type MergedTranslationKeyData = UnifiedTranslationKeyData;
+
+/**
+ * @deprecated Use UnifiedTranslationFileContents. Legacy merged format file type.
+ */
+export type MergedTranslationFileContents = UnifiedTranslationFileContents;
+
+export type MergedTranslationsByKey<Key extends TranslationKey = string> =
+  Record<Key, MergedTranslationKeyData>;
 
 export type TranslationMessagesByKey<Key extends TranslationKey = string> =
   Record<Key, TranslationMessage>;
