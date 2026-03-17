@@ -163,8 +163,7 @@ describe('E2E', () => {
     });
   });
 
-  // eslint-disable-next-line vitest/no-focused-tests
-  describe.only('vite with plugin', () => {
+  describe('vite with plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
@@ -254,8 +253,7 @@ describe('E2E', () => {
     });
   });
 
-  // eslint-disable-next-line vitest/no-focused-tests
-  describe.only('vite without plugin', () => {
+  describe('vite without plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
