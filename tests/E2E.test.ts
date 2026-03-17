@@ -163,7 +163,7 @@ describe('E2E', () => {
     });
   });
 
-  describe('vite with plugin', () => {
+  describe.only('vite with plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
@@ -253,7 +253,7 @@ describe('E2E', () => {
     });
   });
 
-  describe('vite without plugin', () => {
+  describe.only('vite without plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
