@@ -163,6 +163,7 @@ describe('E2E', () => {
     });
   });
 
+  // eslint-disable-next-line vitest/no-focused-tests
   describe.only('vite with plugin', () => {
     let server: TestServer;
 
@@ -253,6 +254,7 @@ describe('E2E', () => {
     });
   });
 
+  // eslint-disable-next-line vitest/no-focused-tests
   describe.only('vite without plugin', () => {
     let server: TestServer;
 
