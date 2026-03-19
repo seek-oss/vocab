@@ -1,5 +1,11 @@
 # @vocab/vite
 
+## 1.0.1
+
+### Patch Changes
+
+- [#392](https://github.com/seek-oss/vocab/pull/392) [`55505ed`](https://github.com/seek-oss/vocab/commit/55505edbae33a5da77f48675c5337ccab673292b) Thanks [@williamlark](https://github.com/williamlark)! - Adding support for vite@8
+
 ## 1.0.0
 
 ### Major Changes

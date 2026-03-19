@@ -81,17 +81,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"specialCharacters - \\'‘’“”\
 }]);"
 `;
 
-exports[`E2E > vite with plugin > should return the expected en chunk 1`] = `
-"const o="Hello",t="world",l={hello:o,world:t},r=Object.freeze(Object.defineProperty({__proto__:null,default:l,hello:o,world:t},Symbol.toStringTag,{value:"Module"})),e="<strong>Vocab</strong> was published on {publishDate, date, small}",a={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:e},n=Object.freeze(Object.defineProperty({__proto__:null,default:a,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{r as _,n as a};
-"
-`;
+exports[`E2E > vite with plugin > should return the expected en chunk 1`] = `"import{n as e}from"./rolldown-runtime.js";var t=e({default:()=>i,hello:()=>n,world:()=>r}),n=\`Hello\`,r=\`world\`,i={hello:n,world:r},a=e({default:()=>s,vocabPublishDate:()=>o}),o=\`<strong>Vocab</strong> was published on {publishDate, date, small}\`,s={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":\`‘’“”'"!@#$%^&*()_+\\\\/\\\`~\\\\\\\\\`,vocabPublishDate:o};export{t as n,a as t};"`;
 
-exports[`E2E > vite with plugin > should return the expected fr chunk 1`] = `
-"const e="Bonjour",o="monde",a={hello:e,world:o},r=Object.freeze(Object.defineProperty({__proto__:null,default:a,hello:e,world:o},Symbol.toStringTag,{value:"Module"})),t="Vocab a été publié le {publishDate, date, medium}",l={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\",vocabPublishDate:t},c=Object.freeze(Object.defineProperty({__proto__:null,default:l,vocabPublishDate:t},Symbol.toStringTag,{value:"Module"}));export{r as _,c as a};
-"
-`;
+exports[`E2E > vite with plugin > should return the expected fr chunk 1`] = `"import{n as e}from"./rolldown-runtime.js";var t=e({default:()=>i,hello:()=>n,world:()=>r}),n=\`Bonjour\`,r=\`monde\`,i={hello:n,world:r},a=e({default:()=>s,vocabPublishDate:()=>o}),o=\`Vocab a été publié le {publishDate, date, medium}\`,s={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":\`‘’“”'"!@#$%^&*()_+\\\\/\\\`~\\\\\\\\\`,vocabPublishDate:o};export{t as n,a as t};"`;
 
-exports[`E2E > vite with plugin > should return the expected pseudo chunk 1`] = `
-"const t="[Ḩẽẽƚƚöö]",o="[ŵöööřƚƌ]",s={hello:t,world:o},a=Object.freeze(Object.defineProperty({__proto__:null,default:s,hello:t,world:o},Symbol.toStringTag,{value:"Module"})),e="[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]",b={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":"[‘’“”'\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\]",vocabPublishDate:e},l=Object.freeze(Object.defineProperty({__proto__:null,default:b,vocabPublishDate:e},Symbol.toStringTag,{value:"Module"}));export{l as G,a as _};
-"
-`;
+exports[`E2E > vite with plugin > should return the expected pseudo chunk 1`] = `"import{n as e}from"./rolldown-runtime.js";var t=e({default:()=>i,hello:()=>n,world:()=>r}),n=\`[Ḩẽẽƚƚöö]\`,r=\`[ŵöööřƚƌ]\`,i={hello:n,world:r},a=e({default:()=>s,vocabPublishDate:()=>o}),o=\`[<strong>Ṽööçăăß</strong> ŵăăăš ƥǚǚǚßƚìììšḩẽẽẽƌ öööกี้ {publishDate, date, small}]\`,s={"specialCharacters - '‘’“”\\"!@#$%^&*()_+\\\\/\`~\\\\\\\\":\`[‘’“”'"!@#$%^&*()_+\\\\/\\\`~\\\\\\\\]\`,vocabPublishDate:o};export{t as n,a as t};"`;

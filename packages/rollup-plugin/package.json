@@ -31,7 +31,7 @@
     "rollup": "^4.0.0"
   },
   "devDependencies": {
-    "rolldown": ">=1.0.0-beta.47",
+    "rolldown": "^1.0.0-rc.9",
     "rollup": "^4.0.0"
   },
   "peerDependenciesMeta": {

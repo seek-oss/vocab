@@ -1,6 +1,6 @@
 {
   "name": "@vocab/vite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "SEEK",
   "license": "MIT",
   "repository": {
@@ -46,10 +46,11 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
-    "vite": "^7.0.6"
+    "rolldown": "^1.0.0-rc.9",
+    "vite": "^8.0.0"
   },
   "peerDependencies": {
-    "vite": "^6.0.0 || ^7.0.0"
+    "vite": "^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "publishConfig": {
     "exports": {
@@ -71,5 +72,8 @@
       },
       "./package.json": "./package.json"
     }
+  },
+  "inlinedDependencies": {
+    "rolldown": "1.0.0-rc.9"
   }
 }

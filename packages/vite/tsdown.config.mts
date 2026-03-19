@@ -11,4 +11,7 @@ export default defineConfig({
   exports: { devExports: '@vocab-private/monorepo' },
   dts: true,
   sourcemap: true,
+  deps: {
+    onlyBundle: ['rolldown'],
+  },
 });
