@@ -14,23 +14,23 @@
   "exports": {
     ".": {
       "@vocab-private/monorepo": "./src/index.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./chunks": {
       "@vocab-private/monorepo": "./src/chunks.ts",
-      "require": "./dist/chunks.cjs",
-      "import": "./dist/chunks.mjs"
+      "import": "./dist/chunks.mjs",
+      "require": "./dist/chunks.cjs"
     },
     "./get-chunk-name": {
       "@vocab-private/monorepo": "./src/get-chunk-name.ts",
-      "require": "./dist/get-chunk-name.cjs",
-      "import": "./dist/get-chunk-name.mjs"
+      "import": "./dist/get-chunk-name.mjs",
+      "require": "./dist/get-chunk-name.cjs"
     },
     "./runtime": {
       "@vocab-private/monorepo": "./src/runtime.ts",
-      "require": "./dist/runtime.cjs",
-      "import": "./dist/runtime.mjs"
+      "import": "./dist/runtime.mjs",
+      "require": "./dist/runtime.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -55,22 +55,25 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "require": "./dist/index.cjs",
-        "import": "./dist/index.mjs"
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
       },
       "./chunks": {
-        "require": "./dist/chunks.cjs",
-        "import": "./dist/chunks.mjs"
+        "import": "./dist/chunks.mjs",
+        "require": "./dist/chunks.cjs"
       },
       "./get-chunk-name": {
-        "require": "./dist/get-chunk-name.cjs",
-        "import": "./dist/get-chunk-name.mjs"
+        "import": "./dist/get-chunk-name.mjs",
+        "require": "./dist/get-chunk-name.cjs"
       },
       "./runtime": {
-        "require": "./dist/runtime.cjs",
-        "import": "./dist/runtime.mjs"
+        "import": "./dist/runtime.mjs",
+        "require": "./dist/runtime.cjs"
       },
       "./package.json": "./package.json"
     }
+  },
+  "inlinedDependencies": {
+    "rolldown": "1.0.0-rc.9"
   }
 }
