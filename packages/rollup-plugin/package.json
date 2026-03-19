@@ -12,8 +12,8 @@
   "exports": {
     ".": {
       "@vocab-private/monorepo": "./src/index.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -31,7 +31,7 @@
     "rollup": "^4.0.0"
   },
   "devDependencies": {
-    "rolldown": ">=1.0.0-beta.47",
+    "rolldown": "^1.0.0-rc.9",
     "rollup": "^4.0.0"
   },
   "peerDependenciesMeta": {
@@ -45,8 +45,8 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "require": "./dist/index.cjs",
-        "import": "./dist/index.mjs"
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
       },
       "./package.json": "./package.json"
     }

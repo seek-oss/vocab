@@ -12,23 +12,23 @@
   "exports": {
     ".": {
       "@vocab-private/monorepo": "./src/index.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./icu-handler": {
       "@vocab-private/monorepo": "./src/icu-handler.ts",
-      "require": "./dist/icu-handler.cjs",
-      "import": "./dist/icu-handler.mjs"
+      "import": "./dist/icu-handler.mjs",
+      "require": "./dist/icu-handler.cjs"
     },
     "./runtime": {
       "@vocab-private/monorepo": "./src/runtime.ts",
-      "require": "./dist/runtime.cjs",
-      "import": "./dist/runtime.mjs"
+      "import": "./dist/runtime.mjs",
+      "require": "./dist/runtime.cjs"
     },
     "./translation-file": {
       "@vocab-private/monorepo": "./src/translation-file.ts",
-      "require": "./dist/translation-file.cjs",
-      "import": "./dist/translation-file.mjs"
+      "import": "./dist/translation-file.mjs",
+      "require": "./dist/translation-file.cjs"
     },
     "./package.json": "./package.json"
   },
@@ -60,20 +60,20 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "require": "./dist/index.cjs",
-        "import": "./dist/index.mjs"
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
       },
       "./icu-handler": {
-        "require": "./dist/icu-handler.cjs",
-        "import": "./dist/icu-handler.mjs"
+        "import": "./dist/icu-handler.mjs",
+        "require": "./dist/icu-handler.cjs"
       },
       "./runtime": {
-        "require": "./dist/runtime.cjs",
-        "import": "./dist/runtime.mjs"
+        "import": "./dist/runtime.mjs",
+        "require": "./dist/runtime.cjs"
       },
       "./translation-file": {
-        "require": "./dist/translation-file.cjs",
-        "import": "./dist/translation-file.mjs"
+        "import": "./dist/translation-file.mjs",
+        "require": "./dist/translation-file.cjs"
       },
       "./package.json": "./package.json"
     }

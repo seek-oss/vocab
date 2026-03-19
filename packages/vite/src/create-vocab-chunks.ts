@@ -1,4 +1,4 @@
-import type { Rollup } from 'vite';
+import type { ChunkingContext } from 'rolldown';
 import { trace as _trace } from './logger';
 import { getChunkName } from './get-chunk-name';
 
@@ -7,10 +7,7 @@ const trace = _trace.extend('create-vocab-chunks');
 /**
  * Gets vocab virtual module details and creates chunks for each language
  */
-export const createVocabChunks = (
-  id: string,
-  { getModuleInfo }: Rollup.ManualChunkMeta,
-) => {
+export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
   const match = /virtual:vocab-(\w+)/.exec(id);
   if (!match) {
     return;
@@ -19,7 +16,7 @@ export const createVocabChunks = (
   const language = match[1];
   const dependentEntryPoints: string[] = [];
 
-  const rootModuleInfo = getModuleInfo(id);
+  const rootModuleInfo = ctx.getModuleInfo(id);
 
   if (!rootModuleInfo) {
     trace(`No module info found for ${id}`);
@@ -29,7 +26,7 @@ export const createVocabChunks = (
   const idsToHandle = new Set<string>(rootModuleInfo.dynamicImporters);
 
   for (const moduleId of idsToHandle) {
-    const moduleInfo = getModuleInfo(moduleId);
+    const moduleInfo = ctx.getModuleInfo(moduleId);
     if (!moduleInfo) {
       trace(`No module info found for ${moduleId}`);
       continue;
