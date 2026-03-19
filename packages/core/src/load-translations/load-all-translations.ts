@@ -37,6 +37,7 @@ export async function loadAllTranslations(
 
     loadedTranslations.push(loadedTranslation);
 
+    const syncView = loadedTranslation.getSyncView();
     for (const key of loadedTranslation.keys) {
       const uniqueKey = getUniqueKey(key, loadedTranslation.namespace);
       if (keys.has(uniqueKey)) {
@@ -47,8 +48,7 @@ export async function loadAllTranslations(
       }
       keys.add(uniqueKey);
 
-      const globalKey =
-        loadedTranslation.languages[config.devLanguage][key].globalKey;
+      const globalKey = syncView.entries[key]?.globalKey;
       if (globalKey) {
         if (keys.has(globalKey)) {
           throw new Error(

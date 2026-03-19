@@ -45,14 +45,15 @@ export const transformVocabFile = async (
     config,
   );
 
+  const runtime = loadedTranslation.getRuntimeView();
   const renderLanguageLoader = renderLanguageLoaderAsync(loadedTranslation);
 
   const translations = /* ts */ `
     const translations = createTranslationFile({
-      ${Object.keys(loadedTranslation.languages)
+      ${Object.keys(runtime.messagesByLanguage)
         .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
         .join(',\n')}
-      });
+    });
   `;
 
   await esModuleLexer.init;
@@ -97,12 +98,13 @@ const createIdentifier = (
   lang: string,
   loadedTranslation: LoadedTranslation,
 ) => {
-  const languageTranslations = loadedTranslation.languages[lang] ?? {};
+  const runtime = loadedTranslation.getRuntimeView();
+  const messages = runtime.messagesByLanguage[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
 
-  for (const key of loadedTranslation.keys) {
-    langJson[key] = languageTranslations[key].message;
+  for (const key of runtime.keys) {
+    langJson[key] = messages[key];
   }
 
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(

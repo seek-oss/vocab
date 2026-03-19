@@ -67,34 +67,41 @@ export async function push(
   const allLanguages = config.languages.map((v) => v.name);
   await ensureBranch(branch);
 
-  // Build local translations structure
+  // Build local translations structure from sync view (metadata once per key)
   const localTranslations: TranslationsByLanguage = {};
 
   for (const loadedTranslation of allLanguageTranslations) {
+    const sync = loadedTranslation.getSyncView();
+    const { metadata: { tags: sharedTags = [] } = {} } = sync;
+
     for (const language of allLanguages) {
-      const languageTranslations = loadedTranslation.languages[language];
-      if (!languageTranslations) {
-        continue;
-      }
       if (!localTranslations[language]) {
         localTranslations[language] = {};
       }
 
-      const {
-        metadata: { tags: sharedTags = [] },
-      } = loadedTranslation;
-
-      for (const localKey of Object.keys(languageTranslations)) {
-        const { tags = [], ...localTranslation } =
-          languageTranslations[localKey];
-        if (language === config.devLanguage) {
-          (localTranslation as TranslationData).tags = [...tags, ...sharedTags];
+      for (const localKey of sync.keys) {
+        const entry = sync.entries[localKey];
+        const messageData = entry?.messages[language];
+        if (!messageData) {
+          continue;
         }
-        const globalKey =
-          loadedTranslation.languages[config.devLanguage][localKey].globalKey;
 
         const phraseKey =
-          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
+          entry.globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
+
+        const localTranslation: TranslationData = {
+          message: messageData.message,
+          ...(messageData.validated !== undefined && {
+            validated: messageData.validated,
+          }),
+          ...(language === config.devLanguage && {
+            ...(entry.description !== undefined && {
+              description: entry.description,
+            }),
+            ...(entry.globalKey !== undefined && { globalKey: entry.globalKey }),
+            tags: [...(entry.tags ?? []), ...sharedTags],
+          }),
+        };
 
         localTranslations[language][phraseKey] = localTranslation;
       }

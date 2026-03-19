@@ -65,12 +65,47 @@ describe('validateTranslationFile', () => {
     expect(result).toEqual(data);
   });
 
+  it('parses file with messages only (new syntax, multiple languages)', () => {
+    const data = {
+      hello: {
+        messages: { en: 'Hello', fr: 'Bonjour' },
+      },
+    };
+    const result = validateTranslationFile(data);
+    expect(result).toEqual(data);
+    expect(result.hello).toEqual({ messages: { en: 'Hello', fr: 'Bonjour' } });
+  });
+
+  it('parses file with messages and optional description/tags', () => {
+    const data = {
+      hello: {
+        messages: { en: 'Hello', fr: 'Bonjour' },
+        description: 'A greeting',
+        tags: ['greeting'],
+      },
+    };
+    const result = validateTranslationFile(data);
+    expect(result).toEqual(data);
+  });
+
+  it('parses file with messages using string form for language values', () => {
+    const data = {
+      hello: {
+        messages: { en: 'Hello', fr: 'Bonjour de Vocab' },
+      },
+    };
+    const result = validateTranslationFile(data);
+    expect(result.hello).toEqual({
+      messages: { en: 'Hello', fr: 'Bonjour de Vocab' },
+    });
+  });
+
   it('throws on non-object', () => {
     expect(() => validateTranslationFile(null)).toThrow(
-      'Invalid translation file: must be a unified format object',
+      'Invalid translation file: must be an object',
     );
     expect(() => validateTranslationFile('string')).toThrow(
-      'Invalid translation file: must be a unified format object',
+      'Invalid translation file: must be an object',
     );
   });
 });

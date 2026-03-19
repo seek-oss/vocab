@@ -26,12 +26,13 @@ function createIdentifier(
   loadedTranslation: LoadedTranslation,
 ) {
   trace('Creating identifier for language', lang);
-  const languageTranslations = loadedTranslation.languages[lang] ?? {};
+  const runtime = loadedTranslation.getRuntimeView();
+  const messages = runtime.messagesByLanguage[lang] ?? {};
 
   const langJson: TranslationMessagesByKey = {};
 
-  for (const key of loadedTranslation.keys) {
-    langJson[key] = languageTranslations[key].message;
+  for (const key of runtime.keys) {
+    langJson[key] = messages[key];
   }
 
   const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
@@ -119,12 +120,13 @@ export default async function vocabLoader(this: LoaderContext, source: string) {
     loadedTranslation,
   );
 
+  const runtime = loadedTranslation.getRuntimeView();
   const translations = /* ts */ `
     const translations = createTranslationFile({
-      ${Object.keys(loadedTranslation.languages)
+      ${Object.keys(runtime.messagesByLanguage)
         .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
         .join(',\n')}
-      });
+    });
   `;
   let result;
 

@@ -1,6 +1,9 @@
 {
   "hello": {
-    "message": "Hello"
+    "message": "Hellos",
+    "messages": {
+      "fr": "Bonjoury"
+    }
   },
   "world": {
     "message": "world"

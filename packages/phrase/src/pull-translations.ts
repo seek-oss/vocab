@@ -83,20 +83,30 @@ export async function pull(
   }
 
   for (const loadedTranslation of allVocabTranslations) {
+    const sync = loadedTranslation.getSyncView();
+
     for (const language of allLanguages) {
-      const languageTranslations = loadedTranslation.languages[language];
-      if (!languageTranslations) {
-        continue;
-      }
+      for (const localKey of loadedTranslation.keys) {
+        const entry = sync.entries[localKey];
+        const messageData = entry?.messages[language];
+        if (!messageData) {
+          continue;
+        }
 
-      for (const localKey of Object.keys(languageTranslations)) {
-        const globalKey =
-          loadedTranslation.languages[config.devLanguage]?.[localKey]
-            ?.globalKey;
         const phraseKey =
-          globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
+          entry.globalKey ?? getUniqueKey(localKey, loadedTranslation.namespace);
 
-        localTranslations[language][phraseKey] = languageTranslations[localKey];
+        localTranslations[language][phraseKey] = {
+          message: messageData.message,
+          ...(messageData.validated !== undefined && {
+            validated: messageData.validated,
+          }),
+          ...(language === config.devLanguage && {
+            description: entry.description,
+            globalKey: entry.globalKey,
+            tags: entry.tags,
+          }),
+        };
       }
     }
   }
@@ -143,23 +153,37 @@ export async function pull(
   log('Applying changes...');
 
   for (const loadedTranslation of allVocabTranslations) {
-    const devTranslations = loadedTranslation.languages[config.devLanguage];
+    const sync = loadedTranslation.getSyncView();
 
-    if (!devTranslations) {
-      throw new Error('No dev language translations loaded');
+    // Build dev file contents from sync view (metadata once per key)
+    const defaultValues: TranslationFileContents = {};
+    for (const key of loadedTranslation.keys) {
+      const entry = sync.entries[key];
+      const messageData = entry?.messages[config.devLanguage];
+      if (!messageData) {
+        continue;
+      }
+      defaultValues[key] = {
+        message: messageData.message,
+        ...(messageData.validated !== undefined && {
+          validated: messageData.validated,
+        }),
+        ...(entry.description !== undefined && { description: entry.description }),
+        ...(entry.globalKey !== undefined && { globalKey: entry.globalKey }),
+        ...(entry.tags !== undefined && { tags: entry.tags }),
+      };
     }
 
-    const defaultValues: TranslationFileContents = { ...devTranslations };
-    const localKeys = Object.keys(defaultValues);
+    const localKeys = loadedTranslation.keys;
 
     for (const key of localKeys) {
+      const entry = sync.entries[key];
       const phraseKey =
-        defaultValues[key].globalKey ??
-        getUniqueKey(key, loadedTranslation.namespace);
+        entry?.globalKey ?? getUniqueKey(key, loadedTranslation.namespace);
 
       const phraseTranslation =
         allPhraseTranslations[config.devLanguage][phraseKey];
-      if (phraseTranslation) {
+      if (phraseTranslation && defaultValues[key]) {
         defaultValues[key] = {
           ...defaultValues[key],
           ...phraseTranslation,
@@ -167,9 +191,8 @@ export async function pull(
       }
     }
 
-    // Only write a `_meta` field if necessary
-    if (Object.keys(loadedTranslation.metadata).length > 0) {
-      defaultValues._meta = loadedTranslation.metadata;
+    if (Object.keys(sync.metadata).length > 0) {
+      defaultValues._meta = sync.metadata;
     }
 
     await writeFile(
@@ -179,23 +202,22 @@ export async function pull(
 
     for (const alternativeLanguage of alternativeLanguages) {
       if (alternativeLanguage in allPhraseTranslations) {
-        const altTranslations = {
-          ...loadedTranslation.languages[alternativeLanguage],
-        };
+        const altTranslations: Record<string, string | { message: string; validated?: boolean }> =
+          {};
         const phraseAltTranslations =
           allPhraseTranslations[alternativeLanguage];
 
         for (const key of localKeys) {
+          const entry = sync.entries[key];
           const phraseKey =
-            defaultValues[key].globalKey ??
-            getUniqueKey(key, loadedTranslation.namespace);
+            entry?.globalKey ?? getUniqueKey(key, loadedTranslation.namespace);
           const phraseTranslationData = phraseAltTranslations[phraseKey];
 
           if (!phraseTranslationData?.message) {
             trace(
               `Missing translation. No translation for key ${key} in phrase as ${phraseKey} in language ${alternativeLanguage}.`,
             );
-            if (errorOnNoGlobalKeyTranslation && defaultValues[key].globalKey) {
+            if (errorOnNoGlobalKeyTranslation && entry?.globalKey) {
               throw new Error(
                 `Missing translation for global key ${key} in language ${alternativeLanguage}`,
               );
@@ -203,11 +225,12 @@ export async function pull(
             continue;
           }
 
+          const existingMessage = entry?.messages[alternativeLanguage];
           const merged = {
-            ...altTranslations[key],
-            ...phraseTranslationData,
+            message: phraseTranslationData.message,
+            validated:
+              phraseTranslationData.validated ?? existingMessage?.validated,
           };
-          // Prefer string form when only message (no validated) for cleaner files
           altTranslations[key] =
             merged.validated === undefined
               ? merged.message

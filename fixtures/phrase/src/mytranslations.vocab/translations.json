@@ -10,8 +10,7 @@
     "message": "world"
   },
   "thanks": {
-    "message": "Thanks",
-    "globalKey": "app.thanks.label"
+    "message": "Thanks"
   },
   "profile": {
     "message": "profil"

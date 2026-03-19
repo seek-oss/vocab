@@ -4,11 +4,21 @@ import { generateLanguageFromTranslations } from '../generate-language';
 import type { ValidatedTranslationFile } from '../translation-file-schema';
 import type {
   LanguageName,
+  LoadedTranslation,
+  RuntimeLoadedTranslation,
+  SyncLoadedTranslation,
+  SyncTranslationEntry,
   TranslationFileMetadata,
+  TranslationKey,
   TranslationsByKey,
   UserConfig,
 } from '../types';
-import { getAltLanguages, type Fallback, getLanguages } from '../utils';
+import {
+  getAltLanguages,
+  getTranslationMessages,
+  type Fallback,
+  getLanguages,
+} from '../utils';
 import { getNamespaceByFilePath } from './common';
 import {
   loadAltLanguageFile,
@@ -30,6 +40,21 @@ function normalizeLanguageValue(
     return { message: val };
   }
   return { message: val.message, validated: val.validated };
+}
+
+/** Returns entry.messages if it is a plain object (new syntax); otherwise null. */
+function getMessagesRecord(
+  entry: Record<string, unknown>,
+): Record<string, unknown> | null {
+  const messages = entry.messages;
+  if (
+    messages !== null &&
+    typeof messages === 'object' &&
+    !Array.isArray(messages)
+  ) {
+    return messages as Record<string, unknown>;
+  }
+  return null;
 }
 
 function toTranslationData(obj: {
@@ -63,6 +88,25 @@ function getDevLanguageValue(
   entry: Record<string, unknown>,
   devLanguage: LanguageName,
 ): { message: string; validated?: boolean } | null {
+  const messagesRecord = getMessagesRecord(entry);
+  if (messagesRecord !== null) {
+    const raw = messagesRecord[devLanguage];
+    if (raw === null || raw === undefined) {
+      return null;
+    }
+    if (typeof raw === 'string') {
+      return { message: raw };
+    }
+    if (typeof raw === 'object' && raw !== null && 'message' in raw) {
+      const obj = raw as { message: string; validated?: boolean };
+      return {
+        message:
+          typeof obj.message === 'string' ? obj.message : String(obj.message),
+        validated: obj.validated,
+      };
+    }
+    return null;
+  }
   const fromMessage = entry.message;
   const fromDevKey = entry[devLanguage];
   let raw: unknown = null;
@@ -116,7 +160,7 @@ function parseUnifiedFormat(
       // eslint-disable-next-line no-console
       console.error(
         pc.red('Error loading translation:'),
-        `Key "${key}" has no dev language value. Provide either "message" or "${devLanguage}".`,
+        `Key "${key}" has no dev language value. Provide "message", "${devLanguage}", or messages.${devLanguage}.`,
       );
       continue;
     }
@@ -136,39 +180,66 @@ function parseUnifiedFormat(
       skipValidation: allowUnvalidated,
     });
 
-    const translations = entry.translations;
-    const translationsRecord =
-      translations !== null &&
-      typeof translations === 'object' &&
-      !Array.isArray(translations)
-        ? (translations as Record<string, unknown>)
-        : {};
+    const messagesRecord = getMessagesRecord(entry);
 
-    for (const lang of allLanguages) {
-      if (lang === devLanguage) {
-        continue;
+    if (messagesRecord !== null) {
+      for (const lang of allLanguages) {
+        if (lang === devLanguage) {
+          continue;
+        }
+        const raw = messagesRecord[lang];
+        if (raw === null || raw === undefined) {
+          continue;
+        }
+        const normalized = normalizeLanguageValue(
+          raw as string | { message: string; validated?: boolean },
+        );
+        result[lang][key] = toTranslationData({
+          message: normalized.message,
+          validated: normalized.validated,
+          description: lang === devLanguage ? description : undefined,
+          globalKey: lang === devLanguage ? globalKey : undefined,
+          skipValidation: allowUnvalidated,
+        });
       }
-      const fromTopLevel = entry[lang];
-      const fromTranslations = translationsRecord[lang];
-      let raw: unknown = null;
-      if (fromTopLevel !== undefined && fromTopLevel !== null) {
-        raw = fromTopLevel;
-      } else if (fromTranslations !== undefined && fromTranslations !== null) {
-        raw = fromTranslations;
+    } else {
+      const translations = entry.translations;
+      const translationsRecord =
+        translations !== null &&
+        typeof translations === 'object' &&
+        !Array.isArray(translations)
+          ? (translations as Record<string, unknown>)
+          : {};
+
+      for (const lang of allLanguages) {
+        if (lang === devLanguage) {
+          continue;
+        }
+        const fromTopLevel = entry[lang];
+        const fromTranslations = translationsRecord[lang];
+        let raw: unknown = null;
+        if (fromTopLevel !== undefined && fromTopLevel !== null) {
+          raw = fromTopLevel;
+        } else if (
+          fromTranslations !== undefined &&
+          fromTranslations !== null
+        ) {
+          raw = fromTranslations;
+        }
+        if (raw === null || raw === undefined) {
+          continue;
+        }
+        const normalized = normalizeLanguageValue(
+          raw as string | { message: string; validated?: boolean },
+        );
+        result[lang][key] = toTranslationData({
+          message: normalized.message,
+          validated: normalized.validated,
+          description: lang === devLanguage ? description : undefined,
+          globalKey: lang === devLanguage ? globalKey : undefined,
+          skipValidation: allowUnvalidated,
+        });
       }
-      if (raw === null || raw === undefined) {
-        continue;
-      }
-      const normalized = normalizeLanguageValue(
-        raw as string | { message: string; validated?: boolean },
-      );
-      result[lang][key] = toTranslationData({
-        message: normalized.message,
-        validated: normalized.validated,
-        description: lang === devLanguage ? description : undefined,
-        globalKey: lang === devLanguage ? globalKey : undefined,
-        skipValidation: allowUnvalidated,
-      });
     }
   }
 
@@ -197,20 +268,25 @@ function getInlineAltLanguage(
       rawEntry !== null && typeof rawEntry === 'object'
         ? (rawEntry as Record<string, unknown>)
         : {};
-    const translations = entry.translations;
-    const translationsRecord =
-      translations !== null &&
-      typeof translations === 'object' &&
-      !Array.isArray(translations)
-        ? (translations as Record<string, unknown>)
-        : {};
-    const fromTopLevel = entry[langCode];
-    const fromTranslations = translationsRecord[langCode];
+    const messagesRecord = getMessagesRecord(entry);
     let raw: unknown = null;
-    if (fromTopLevel !== undefined && fromTopLevel !== null) {
-      raw = fromTopLevel;
-    } else if (fromTranslations !== undefined && fromTranslations !== null) {
-      raw = fromTranslations;
+    if (messagesRecord !== null) {
+      raw = messagesRecord[langCode];
+    } else {
+      const translations = entry.translations;
+      const translationsRecord =
+        translations !== null &&
+        typeof translations === 'object' &&
+        !Array.isArray(translations)
+          ? (translations as Record<string, unknown>)
+          : {};
+      const fromTopLevel = entry[langCode];
+      const fromTranslations = translationsRecord[langCode];
+      if (fromTopLevel !== undefined && fromTopLevel !== null) {
+        raw = fromTopLevel;
+      } else if (fromTranslations !== undefined && fromTranslations !== null) {
+        raw = fromTranslations;
+      }
     }
     if (raw === null || raw === undefined) {
       continue;
@@ -302,12 +378,78 @@ export function loadTranslationsFromUnifiedFormat({
     tags: withTags ? _meta?.tags : undefined,
   };
 
-  return {
+  const keys = Object.keys(devTranslation) as TranslationKey[];
+
+  function buildRuntimeView(): RuntimeLoadedTranslation {
+    const messagesByLanguage: Record<
+      LanguageName,
+      Record<string, string>
+    > = {};
+    for (const lang of Object.keys(languageSet)) {
+      messagesByLanguage[lang] = getTranslationMessages(languageSet[lang]);
+    }
+    return {
+      filePath,
+      keys,
+      namespace: resolvedNamespace,
+      relativePath,
+      messagesByLanguage,
+    };
+  }
+
+  function buildSyncView(): SyncLoadedTranslation {
+    const devLanguage = userConfig.devLanguage;
+    const devTranslationData = languageSet[devLanguage] ?? {};
+    const entries: Record<string, SyncTranslationEntry> = {};
+    for (const key of keys) {
+      const devData = devTranslationData[key];
+      const messages: Record<LanguageName, { message: string; validated?: boolean }> =
+        {};
+      for (const lang of Object.keys(languageSet)) {
+        const langData = languageSet[lang][key];
+        if (langData) {
+          const msg: { message: string; validated?: boolean } = {
+            message: langData.message,
+          };
+          if (langData.validated !== undefined) {
+            msg.validated = langData.validated;
+          }
+          messages[lang] = msg;
+        }
+      }
+      const entry: SyncTranslationEntry = { messages };
+      if (devData?.description !== undefined) {
+        entry.description = devData.description;
+      }
+      if (devData?.globalKey !== undefined) {
+        entry.globalKey = devData.globalKey;
+      }
+      if (devData?.tags !== undefined) {
+        entry.tags = devData.tags;
+      }
+      if (devData?.skipValidation !== undefined) {
+        entry.skipValidation = devData.skipValidation;
+      }
+      entries[key] = entry;
+    }
+    return {
+      filePath,
+      keys,
+      namespace: resolvedNamespace,
+      relativePath,
+      metadata,
+      entries,
+    };
+  }
+
+  const wrapper: LoadedTranslation = {
     filePath,
-    keys: Object.keys(devTranslation),
+    keys,
     namespace: resolvedNamespace,
     relativePath,
-    languages: languageSet,
-    metadata,
+    getRuntimeView: buildRuntimeView,
+    getSyncView: buildSyncView,
   };
+
+  return wrapper;
 }

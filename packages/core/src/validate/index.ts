@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
-import type { UserConfig, LoadedTranslation, LanguageName } from '../types';
+import type {
+  LoadedTranslation,
+  LanguageName,
+  UserConfig,
+} from '../types';
 import pc from 'picocolors';
 
 import { loadAllTranslations } from '../load-translations';
@@ -10,25 +14,19 @@ export function findMissingKeys(
   devLanguageName: LanguageName,
   altLanguages: LanguageName[],
 ) {
-  const devLanguage = loadedTranslation.languages[devLanguageName];
-
-  if (!devLanguage) {
-    throw new Error(
-      `Failed to load dev language: ${loadedTranslation.filePath}`,
-    );
-  }
+  const sync = loadedTranslation.getSyncView();
+  const requiredKeys = loadedTranslation.keys.filter(
+    (key) => sync.entries[key]?.messages[devLanguageName]?.message != null,
+  );
 
   const result: Record<LanguageName, string[]> = {};
   let valid = true;
 
-  const requiredKeys = Object.keys(devLanguage);
-
   if (requiredKeys.length > 0) {
     for (const altLanguageName of altLanguages) {
-      const altLanguage = loadedTranslation.languages[altLanguageName] ?? {};
-
       for (const key of requiredKeys) {
-        if (typeof altLanguage[key]?.message !== 'string') {
+        const messageData = sync.entries[key]?.messages[altLanguageName];
+        if (typeof messageData?.message !== 'string') {
           if (!result[altLanguageName]) {
             result[altLanguageName] = [];
           }
@@ -111,33 +109,27 @@ export async function validateTranslationStatus(
   let skippedKeys = 0;
 
   for (const loadedTranslation of allTranslations) {
-    const devLanguageTranslations =
-      loadedTranslation.languages[config.devLanguage];
+    const sync = loadedTranslation.getSyncView();
 
     for (const language of config.languages) {
-      const languageTranslations = loadedTranslation.languages[language.name];
+      for (const key of loadedTranslation.keys) {
+        const entry = sync.entries[key];
+        const messageData = entry?.messages[language.name];
 
-      if (!languageTranslations) {
-        continue;
-      }
+        if (!messageData) {
+          continue;
+        }
 
-      for (const [key, translationData] of Object.entries(
-        languageTranslations,
-      )) {
         totalKeys++;
 
-        // Check skipValidation in the dev language first, then in current language
-        const devTranslationData = devLanguageTranslations?.[key];
-        const shouldSkipValidation =
-          translationData.skipValidation || devTranslationData?.skipValidation;
+        const shouldSkipValidation = entry?.skipValidation === true;
 
         if (shouldSkipValidation) {
           skippedKeys++;
           continue;
         }
 
-        // Check if validated field exists
-        if (translationData.validated === undefined) {
+        if (messageData.validated === undefined) {
           errors.push({
             key,
             namespace: loadedTranslation.namespace,
@@ -147,8 +139,7 @@ export async function validateTranslationStatus(
           continue;
         }
 
-        // Check if translation is validated
-        if (!translationData.validated) {
+        if (!messageData.validated) {
           errors.push({
             key,
             namespace: loadedTranslation.namespace,

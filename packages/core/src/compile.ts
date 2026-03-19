@@ -2,7 +2,11 @@ import { promises as fs, existsSync } from 'fs';
 import path from 'path';
 import pm from 'picomatch';
 
-import type { LoadedTranslation, UserConfig } from './types';
+import type {
+  LoadedTranslation,
+  RuntimeLoadedTranslation,
+  UserConfig,
+} from './types';
 import {
   isArgumentElement,
   isDateElement,
@@ -17,7 +21,6 @@ import {
 import prettier from 'prettier';
 
 import {
-  getTranslationMessages,
   getDevTranslationFileGlob,
   getTSFileFromDevLanguageFile,
   getDevLanguageFileFromAltLanguageFile,
@@ -139,9 +142,9 @@ const serializeTypeImports = (imports: Set<string>, moduleName: string) => {
 function serialiseTranslationRuntime(
   value: Map<string, TranslationTypeInfo>,
   imports: Set<string>,
-  loadedTranslation: LoadedTranslation,
+  runtime: RuntimeLoadedTranslation,
 ) {
-  trace('Serialising translations:', loadedTranslation);
+  trace('Serialising translations:', runtime);
   const translationsType: any = {};
 
   for (const [key, { params, message, hasTags }] of value.entries()) {
@@ -161,14 +164,14 @@ function serialiseTranslationRuntime(
     translationsType[key] = translationFunctionString;
   }
 
-  const languagesUnionAsString = Object.keys(loadedTranslation.languages)
+  const languagesUnionAsString = Object.keys(runtime.messagesByLanguage)
     .map((l) => `'${l}'`)
     .join(' | ');
-  const languageEntries = Object.entries(loadedTranslation.languages)
+  const languageEntries = Object.entries(runtime.messagesByLanguage)
     .map(
-      ([languageName, translations]) =>
+      ([languageName, messages]) =>
         `${JSON.stringify(languageName)}: createLanguage(${JSON.stringify(
-          getTranslationMessages(translations),
+          messages,
         )})`,
     )
     .join(',');
@@ -196,21 +199,23 @@ function serialiseTranslationRuntime(
 }
 
 export async function generateRuntime(loadedTranslation: LoadedTranslation) {
-  const { languages: loadedLanguages, filePath } = loadedTranslation;
+  const runtime = loadedTranslation.getRuntimeView();
+  const { messagesByLanguage, filePath } = runtime;
 
   trace('Generating types for', filePath);
   const translationTypes = new Map<string, TranslationTypeInfo>();
 
   let imports = new Set<string>();
 
-  for (const key of loadedTranslation.keys) {
+  for (const key of runtime.keys) {
     let params: ICUParams = {};
     const messages = new Set();
     let hasTags = false;
 
-    for (const translatedLanguage of Object.values(loadedLanguages)) {
-      if (translatedLanguage[key]) {
-        const ast = parse(translatedLanguage[key].message);
+    for (const translatedLanguage of Object.values(messagesByLanguage)) {
+      const messageStr = translatedLanguage[key];
+      if (messageStr) {
+        const ast = parse(messageStr);
 
         hasTags = hasTags || extractHasTags(ast);
 
@@ -222,7 +227,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
         imports = new Set([...imports, ...vocabTypesImports]);
         params = parsedParams;
 
-        messages.add(JSON.stringify(translatedLanguage[key].message));
+        messages.add(JSON.stringify(messageStr));
       }
     }
 
@@ -237,7 +242,7 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   const serializedTranslationType = serialiseTranslationRuntime(
     translationTypes,
     imports,
-    loadedTranslation,
+    runtime,
   );
   const declaration = await prettier.format(serializedTranslationType, {
     ...prettierConfig,

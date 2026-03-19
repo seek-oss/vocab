@@ -1,15 +1,73 @@
 import * as z from 'zod';
-import { TranslationMessage, Validated } from './common-schemas';
 import type { TranslationFileMetadata, UserConfig } from '../types';
 import { getAltLanguageFilePath, getAltLanguages } from '../utils';
-import { UnifiedTranslationFileSchema } from './unified-translations-file-schema';
+import {
+  AllowUnvalidated,
+  GlobalKey,
+  KeyDescription,
+  KeyTags,
+  MetaDataSchema,
+  TranslationMessage,
+  Validated,
+} from './common-schemas';
 
-const TranslationEntry = z.object({
+// --- Schemas ---
+
+/**
+ * Value for a single language: either a plain message string or
+ * { message, validated? }. Prefer the string form when no validated flag is needed.
+ */
+export const LanguageValueSchema = z.union([
+  TranslationMessage,
+  z.object({
+    message: TranslationMessage,
+    validated: Validated,
+  }),
+]);
+
+/** Normalized { message, validated } shape used when parsing entries. */
+const TranslationEntrySchema = z.object({
   message: TranslationMessage,
   validated: Validated,
 });
 
-type TranslationEntry = z.infer<typeof TranslationEntry>;
+/**
+ * Translation entry. Dev language may be supplied via the reserved key `message`
+ * or the dev language code (e.g. `en`). Other languages via optional `translations`
+ * and/or top-level language keys. Preferred multi-language syntax is `messages`: lang → value.
+ */
+const EntrySchema = z
+  .object({
+    allowUnvalidated: AllowUnvalidated,
+    description: KeyDescription,
+    globalKey: GlobalKey,
+    /** All languages in one object. Preferred when multiple languages in one file. */
+    messages: z.record(z.string(), LanguageValueSchema).optional(),
+    /** Dev language when present. */
+    message: LanguageValueSchema.optional(),
+    tags: KeyTags,
+    /** Optional record of lang code → language value. */
+    translations: z.record(z.string(), LanguageValueSchema).optional(),
+  })
+  .catchall(LanguageValueSchema);
+
+/**
+ * Root translation file: optional _meta and $namespace, then key → entry.
+ */
+export const TranslationFileSchema = z
+  .object({
+    $namespace: z.string().optional(),
+    _meta: MetaDataSchema.optional(),
+  })
+  .catchall(EntrySchema);
+
+// --- Types ---
+
+export type LanguageValue = z.infer<typeof LanguageValueSchema>;
+type TranslationEntry = z.infer<typeof TranslationEntrySchema>;
+export type TranslationFileParsed = z.infer<typeof TranslationFileSchema>;
+
+// --- Helpers (for TranslationFile and validation) ---
 
 function normalizeLanguageValue(
   val: string | { message: string; validated?: boolean },
@@ -20,10 +78,34 @@ function normalizeLanguageValue(
   return { message: val.message, validated: val.validated };
 }
 
+function getMessagesRecord(
+  entry: Record<string, unknown>,
+): Record<string, unknown> | null {
+  const messages = entry.messages;
+  if (
+    messages !== null &&
+    typeof messages === 'object' &&
+    !Array.isArray(messages)
+  ) {
+    return messages as Record<string, unknown>;
+  }
+  return null;
+}
+
 function getDevLanguageValue(
   entry: Record<string, unknown>,
   devLanguage: string,
 ): TranslationEntry | null {
+  const messagesRecord = getMessagesRecord(entry);
+  if (messagesRecord !== null) {
+    const raw = messagesRecord[devLanguage];
+    if (raw === null || raw === undefined) {
+      return null;
+    }
+    return normalizeLanguageValue(
+      raw as string | { message: string; validated?: boolean },
+    );
+  }
   const fromMessage = entry.message;
   const fromDevKey = entry[devLanguage];
   let raw: unknown = null;
@@ -40,15 +122,14 @@ function getDevLanguageValue(
   );
 }
 
+// --- Alternative language file schema (per config) ---
+
 export function getTranslationEntrySchema(userConfig: UserConfig) {
   const altLanguages = getAltLanguages(userConfig);
   const LanguageName = z.enum(altLanguages as [string, ...string[]]);
   const AlternativeLanguageFile = z.record(
     z.string(),
-    z.union([
-      TranslationMessage,
-      z.object({ message: TranslationMessage, validated: Validated }),
-    ]),
+    z.union([TranslationMessage, TranslationEntrySchema]),
   );
   return { AlternativeLanguageFile, LanguageName };
 }
@@ -57,7 +138,8 @@ export type AlternativeLanguageFileSchema = ReturnType<
   typeof getTranslationEntrySchema
 >['AlternativeLanguageFile'];
 
-/** Normalized content shape used internally by TranslationFile (dev language resolved). */
+// --- TranslationFile (loads root + per-language files, normalizes to single content) ---
+
 type NormalizedEntry = {
   message: string;
   validated?: boolean;
@@ -138,7 +220,7 @@ export class TranslationFile {
   private loadRootLanguageFile(): NormalizedContent {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const raw = require(this.filePath);
-    const parsed = UnifiedTranslationFileSchema.parse(raw);
+    const parsed = TranslationFileSchema.parse(raw);
     const devLanguage = this.userConfig.devLanguage;
     const normalized: Record<string, unknown> = { ...parsed };
 
@@ -156,12 +238,30 @@ export class TranslationFile {
         delete normalized[key];
         continue;
       }
-      const translations = (obj.translations as Record<string, unknown>) || {};
+      const messagesRecord = getMessagesRecord(obj);
+      let translations: Record<string, TranslationEntry>;
+      if (messagesRecord !== null) {
+        translations = {};
+        for (const [lang, val] of Object.entries(messagesRecord)) {
+          translations[lang] = normalizeLanguageValue(
+            val as string | { message: string; validated?: boolean },
+          );
+        }
+      } else {
+        const legacyTranslations =
+          (obj.translations as Record<string, unknown>) || {};
+        translations = { [devLanguage]: devVal };
+        for (const [lang, val] of Object.entries(legacyTranslations)) {
+          translations[lang] = normalizeLanguageValue(
+            val as string | { message: string; validated?: boolean },
+          );
+        }
+      }
       normalized[key] = {
         ...obj,
         message: devVal.message,
         validated: devVal.validated,
-        translations: { [devLanguage]: devVal, ...translations },
+        translations,
       };
     }
     return normalized as NormalizedContent;
@@ -186,21 +286,6 @@ export class TranslationFile {
       this.addTranslationEntry(key, altLanguage, entry);
     }
   }
-
-  // private loadGeneratedLanguages() {
-  //   for (const { name, generator } of this.userConfig.generatedLanguages ||
-  //     []) {
-  //     for (const key of this.getKeyNames()) {
-  //       const translation = generateTranslation({
-  //         message: this.content[key].message,
-  //         generator,
-  //       });
-  //       this.addTranslationEntry(key, name, {
-  //         message: translation,
-  //       });
-  //     }
-  //   }
-  // }
 
   private addTranslationEntry(
     key: string,

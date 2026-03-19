@@ -104,21 +104,17 @@ See [here][overriding the locale] for more information on how and when to use th
 
 ### Step 4: Create translations
 
-A translation file is a JSON file consisting of a flat structure of keys.
-Each key must supply the **dev language**: use the dev language code as a key (e.g. `en` when `devLanguage` is `en`).
-The reserved key `message` for the dev language is also supported (legacy).
-You may optionally add a `description`, and other languages via a `translations` object and/or top-level language keys (e.g. `fr`).
+A translation file is a JSON file consisting of a record of keys with each key containing the messages for each language as well as metadata about the key.
 
 Rather than creating one giant file for each language's translations, Vocab enables you to co-locate the translations alongside their consuming components.
-To facilitate this, Vocab lets you group translations inside folders ending in `.vocab`.
+To facilitate this, Vocab lets you place translations inside folders ending in `.vocab`.
 You may have as many of these folders as you like in your project.
 
 > [!TIP]
 > Your folders can be named anything, as long as it ends in `.vocab`.
-> It's recommened to just name your folders `.vocab` so you have one less name to think of/rename in the future.
+> It's recommend to just name your folders `.vocab` so you have one less name to think of/rename in the future.
 
-Translation files must follow the naming pattern of `{languageName}.translations.json`.
-The exception to this is translations for your `devLanguage` which must be placed in a file named `translations.json`.
+Translation files must by named `translations.json`. Or `{languageName}.translations.json` for Alternative Language files.
 
 In the following examples, we're defining translations for our `devLanguage`, and a language named `fr`.
 
@@ -127,54 +123,34 @@ In the following examples, we're defining translations for our `devLanguage`, an
 
 {
   "my key": {
-    "message": "Hello from Vocab",
+    "messages": {
+      "en": "Hello from Vocab",
+      "fr": "Bonjour de Vocab"
+    },
     "description": "An optional description to help when translating"
   }
 }
 ```
 
-```jsonc
-// src/MyComponent/.vocab/fr.translations.json
-// Prefer a plain string when no validated flag is needed:
-
-{
-  "my key": "Bonjour de Vocab"
-}
-```
-
-Or with optional metadata (use the object form when you need `validated` or other fields):
+For **backwards compatibility**, the `message` key is also supported. This value will be assumed to be the message for the configured devLanguage.
 
 ```jsonc
 {
   "my key": {
-    "message": "Bonjour de Vocab",
-    "description": "An optional description to help when translating"
-  }
-}
-```
-
-**Unified format (all languages in one file):**  
-You can put every language in a single `translations.json` by using the dev language key and/or `message`, plus top-level language keys for other languages. This avoids separate `fr.translations.json` files. Prefer a plain message string for each language (e.g. `"fr": "Bonjour de Vocab"`); use the object form `{ "message": "...", "validated": true }` only when you need the `validated` flag.
-
-```jsonc
-// src/MyComponent/.vocab/translations.json (devLanguage: "en")
-
-{
-  "my key": {
-    "message": "Hello from Vocab",
-    "fr": "Bonjour de Vocab",
+    "message": "Hello from Vocab", // Similar to "messages": { "en": "Hello from Vocab"}
     "description": "An optional description"
   }
 }
 ```
 
-Alternatively, use the dev language code instead of `message` for the dev language:
+**Alternative language files** can be created with the naming convention `{languageName}.translations.json`. These translations will be merged into the translations for that folder. Duplicate messages for a given language will result in an error.
 
 ```jsonc
+// src/MyComponent/.vocab/fr.translations.json
+
 {
   "my key": {
-    "en": "Hello from Vocab",
-    "fr": "Bonjour de Vocab"
+    "message": "Bonjour de Vocab"
   }
 }
 ```

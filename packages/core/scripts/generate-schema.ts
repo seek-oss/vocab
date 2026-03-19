@@ -2,7 +2,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { UnifiedTranslationFileSchema } from '../src/translation-file-schema/unified-translations-file-schema.js';
+import { TranslationFileSchema } from '../src/translation-file-schema/schema.js';
 import * as z from 'zod';
 
 /**
@@ -27,10 +27,7 @@ async function generateSchema(fileName: string, definition: z.ZodType) {
 }
 
 async function generateSchemas() {
-  await generateSchema(
-    'vocab-translation-schema.json',
-    UnifiedTranslationFileSchema,
-  );
+  await generateSchema('vocab-translation-schema.json', TranslationFileSchema);
 }
 
 generateSchemas();

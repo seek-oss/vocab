@@ -205,20 +205,13 @@ describe('loadTranslation', () => {
         userConfig,
       );
 
-      expect(translations.languages['capital-english']).toMatchInlineSnapshot(`
+      const runtime = translations.getRuntimeView();
+      expect(runtime.messagesByLanguage['capital-english']).toMatchInlineSnapshot(`
         {
-          "Good morning": {
-            "message": "[GOOD MORNING IN FRENCH]",
-          },
-          "Goodbye": {
-            "message": "[GOODBYE]",
-          },
-          "Hello": {
-            "message": "[HELLO]",
-          },
-          "Welcome": {
-            "message": "[WELCOME]",
-          },
+          "Good morning": "[GOOD MORNING IN FRENCH]",
+          "Goodbye": "[GOODBYE]",
+          "Hello": "[HELLO]",
+          "Welcome": "[WELCOME]",
         }
       `);
     });
@@ -242,7 +235,8 @@ describe('loadTranslation', () => {
           userConfig,
         );
 
-        expect(translations.metadata).toMatchInlineSnapshot(`
+        const sync = translations.getSyncView();
+        expect(sync.metadata).toMatchInlineSnapshot(`
           {
             "tags": [
               "shared tag 1",
@@ -251,48 +245,41 @@ describe('loadTranslation', () => {
           }
         `);
 
-        expect(translations.languages.fr).toMatchInlineSnapshot(`
+        expect(sync.entries['Good morning']).toMatchInlineSnapshot(`
           {
-            "Good morning": {
-              "message": "Good morning in French",
-              "tags": [
-                "tag 2",
-                "tag 3",
-              ],
+            "messages": {
+              "en": {
+                "message": "Good morning in French",
+              },
+              "fr": {
+                "message": "Good morning in French",
+              },
             },
-            "Goodbye": {
-              "message": "Goodbye in French",
-            },
-            "Hello": {
-              "message": "Hello in French",
-            },
-            "Welcome": {
-              "message": "Welcome in French",
-              "tags": [
-                "tag 1",
-                "tag 2",
-              ],
-            },
+            "tags": [
+              "tag 2",
+              "tag 3",
+            ],
           }
         `);
-        expect(translations.languages.en).toMatchInlineSnapshot(`
+        expect(sync.entries['Welcome']).toMatchInlineSnapshot(`
           {
-            "Good morning": {
-              "description": undefined,
-              "message": "Good morning in French",
+            "messages": {
+              "en": {
+                "message": "Welcome",
+              },
+              "fr": {
+                "message": "Welcome in French",
+              },
             },
-            "Goodbye": {
-              "description": undefined,
-              "message": "Goodbye",
-            },
-            "Hello": {
-              "description": undefined,
-              "message": "Hello",
-            },
-            "Welcome": {
-              "description": undefined,
-              "message": "Welcome",
-            },
+            "tags": [
+              "tag 1",
+              "tag 2",
+            ],
+          }
+        `);
+        expect(sync.entries['Hello'].messages.en).toMatchInlineSnapshot(`
+          {
+            "message": "Hello",
           }
         `);
       });
@@ -309,46 +296,33 @@ describe('loadTranslation', () => {
           userConfig,
         );
 
-        expect(translations.metadata).toMatchInlineSnapshot(`
+        const sync = translations.getSyncView();
+        expect(sync.metadata).toMatchInlineSnapshot(`
           {
             "tags": undefined,
           }
         `);
 
-        expect(translations.languages.fr).toMatchInlineSnapshot(`
+        expect(sync.entries['Hello'].messages.fr).toMatchInlineSnapshot(`
           {
-            "Good morning": {
-              "message": "Good morning in French",
-            },
-            "Goodbye": {
-              "message": "Goodbye in French",
-            },
-            "Hello": {
-              "message": "Hello in French",
-            },
-            "Welcome": {
-              "message": "Welcome in French",
-            },
+            "message": "Hello in French",
           }
         `);
-        expect(translations.languages.en).toMatchInlineSnapshot(`
+        const runtime = translations.getRuntimeView();
+        expect(runtime.messagesByLanguage.fr).toMatchInlineSnapshot(`
           {
-            "Good morning": {
-              "description": undefined,
-              "message": "Good morning in French",
-            },
-            "Goodbye": {
-              "description": undefined,
-              "message": "Goodbye",
-            },
-            "Hello": {
-              "description": undefined,
-              "message": "Hello",
-            },
-            "Welcome": {
-              "description": undefined,
-              "message": "Welcome",
-            },
+            "Good morning": "Good morning in French",
+            "Goodbye": "Goodbye in French",
+            "Hello": "Hello in French",
+            "Welcome": "Welcome in French",
+          }
+        `);
+        expect(runtime.messagesByLanguage.en).toMatchInlineSnapshot(`
+          {
+            "Good morning": "Good morning in French",
+            "Goodbye": "Goodbye",
+            "Hello": "Hello",
+            "Welcome": "Welcome",
           }
         `);
       });

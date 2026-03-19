@@ -195,12 +195,16 @@ export type UnifiedLanguageValue =
 /**
  * Unified translation entry. Dev language is supplied via the reserved key
  * `message` and/or the dev language code (e.g. `en`). Other languages may
- * appear in `translations` and/or as top-level lang keys.
+ * appear in `translations` and/or as top-level lang keys. When putting
+ * multiple languages in one file, the preferred (new) syntax is the
+ * `messages` key.
  */
 export type UnifiedTranslationKeyData = {
   allowUnvalidated?: boolean;
   description?: string;
   globalKey?: string;
+  /** New syntax: all languages in one object. Preferred when multiple languages in one file. */
+  messages?: Record<LanguageName, UnifiedLanguageValue>;
   /** Dev language when present. */
   message?: UnifiedLanguageValue;
   tags?: Tags;
@@ -242,11 +246,54 @@ export type TranslationMessagesByKey<Key extends TranslationKey = string> =
 export type TranslationsByLanguage<Key extends TranslationKey = string> =
   Record<LanguageName, TranslationsByKey<Key>>;
 
-export type LoadedTranslation<Key extends TranslationKey = string> = {
+/**
+ * Runtime view of a loaded translation file: keys and message per language only.
+ * Used by compile, webpack, and vite for runtime translation loading.
+ */
+export type RuntimeLoadedTranslation<Key extends TranslationKey = string> = {
   namespace: string;
   keys: Key[];
   filePath: string;
   relativePath: string;
-  languages: TranslationsByLanguage<Key>;
-  metadata: TranslationFileMetadata;
+  messagesByLanguage: Record<LanguageName, TranslationMessagesByKey<Key>>;
 };
+
+/**
+ * Sync view: one metadata block per key, messages per language.
+ * Used by phrase push/pull and validate so metadata is not duplicated per language.
+ */
+export type SyncTranslationEntryMessage = {
+  message: string;
+  validated?: boolean;
+};
+
+export type SyncTranslationEntry = {
+  description?: string;
+  globalKey?: string;
+  tags?: Tags;
+  skipValidation?: boolean;
+  allowUnvalidated?: boolean;
+  messages: Record<LanguageName, SyncTranslationEntryMessage>;
+};
+
+export type SyncLoadedTranslation<Key extends TranslationKey = string> = {
+  namespace: string;
+  keys: Key[];
+  filePath: string;
+  relativePath: string;
+  metadata: TranslationFileMetadata;
+  entries: Record<Key, SyncTranslationEntry>;
+};
+
+/**
+ * Loaded translation wrapper. Use getRuntimeView() for compile/bundlers (key + message only),
+ * getSyncView() for phrase push/pull and validate (unified metadata per key + messages per language).
+ */
+export interface LoadedTranslation<Key extends TranslationKey = string> {
+  namespace: string;
+  keys: Key[];
+  filePath: string;
+  relativePath: string;
+  getRuntimeView(): RuntimeLoadedTranslation<Key>;
+  getSyncView(): SyncLoadedTranslation<Key>;
+}

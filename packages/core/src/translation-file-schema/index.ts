@@ -1,24 +1,22 @@
-import { TranslationFile as TranslationFileClass } from './separated-translations-file-schema';
 import {
-  type UnifiedTranslationFileParsed,
-  UnifiedTranslationFileSchema,
-} from './unified-translations-file-schema';
+  TranslationFile as TranslationFileClass,
+  type TranslationFileParsed,
+  TranslationFileSchema,
+} from './schema';
 
 export { TranslationFileClass };
-export type { UnifiedTranslationFileParsed } from './unified-translations-file-schema';
+export type { TranslationFileParsed } from './schema';
 
-/** Single parsed type for all translation files (unified format). */
-export type ValidatedTranslationFile = UnifiedTranslationFileParsed;
+/** Parsed shape of a translation file (single format for all layouts). */
+export type ValidatedTranslationFile = TranslationFileParsed;
 
 export function validateTranslationFile(
   data: unknown,
 ): ValidatedTranslationFile {
   if (data === null || typeof data !== 'object') {
-    throw new Error(
-      'Invalid translation file: must be a unified format object',
-    );
+    throw new Error('Invalid translation file: must be an object');
   }
-  return UnifiedTranslationFileSchema.parse(data) as ValidatedTranslationFile;
+  return TranslationFileSchema.parse(data) as ValidatedTranslationFile;
 }
 
 export function validateAlternativeTranslationFile(

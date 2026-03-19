@@ -9,9 +9,61 @@ interface TestCase {
   missingKeys: Record<LanguageName, string[]>;
 }
 
+function mockLoadedTranslation(overrides: {
+  filePath: string;
+  namespace: string;
+  keys: string[];
+  relativePath: string;
+  languages: Record<string, Record<string, { message: string; tags?: string[] }>>;
+  metadata: { tags?: string[] };
+}): LoadedTranslation {
+  return {
+    ...overrides,
+    getRuntimeView() {
+      const messagesByLanguage: Record<string, Record<string, string>> = {};
+      for (const [lang, keys] of Object.entries(overrides.languages)) {
+        messagesByLanguage[lang] = Object.fromEntries(
+          Object.entries(keys).map(([k, v]) => [k, v.message]),
+        );
+      }
+      return {
+        filePath: overrides.filePath,
+        keys: overrides.keys,
+        namespace: overrides.namespace,
+        relativePath: overrides.relativePath,
+        messagesByLanguage,
+      };
+    },
+    getSyncView() {
+      const devLang = 'en';
+      const devKeys = overrides.languages[devLang] ?? {};
+      const entries: Record<string, { messages: Record<string, { message: string }> }> =
+        {};
+      for (const key of overrides.keys) {
+        const messages: Record<string, { message: string }> = {};
+        for (const [lang, langKeys] of Object.entries(overrides.languages)) {
+          const data = langKeys[key];
+          if (data) {
+            messages[lang] = { message: data.message };
+          }
+        }
+        entries[key] = { messages };
+      }
+      return {
+        filePath: overrides.filePath,
+        keys: overrides.keys,
+        namespace: overrides.namespace,
+        relativePath: overrides.relativePath,
+        metadata: overrides.metadata,
+        entries,
+      };
+    },
+  };
+}
+
 const testCases: TestCase[] = [
   {
-    loadedTranslation: {
+    loadedTranslation: mockLoadedTranslation({
       filePath: 'some-file.json',
       namespace: 'some-file',
       keys: ['key1', 'key2'],
@@ -23,14 +75,14 @@ const testCases: TestCase[] = [
         th: { key1: { message: 'Bye' } },
       },
       metadata: { tags: ['foo', 'bar'] },
-    },
+    }),
     devLanguage: 'en',
     altLanguages: ['th'],
     valid: true,
     missingKeys: {},
   },
   {
-    loadedTranslation: {
+    loadedTranslation: mockLoadedTranslation({
       filePath: 'some-file.json',
       relativePath: 'some-file.json',
       namespace: 'some-file-2',
@@ -40,7 +92,7 @@ const testCases: TestCase[] = [
         th: {},
       },
       metadata: {},
-    },
+    }),
     devLanguage: 'en',
     altLanguages: ['th'],
     valid: false,
