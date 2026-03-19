@@ -1,5 +1,4 @@
 ---
-'@vocab/rollup-plugin': patch
 '@vocab/vite': patch
 ---
 
