@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.8.0
+
+### Minor Changes
+
+- [#394](https://github.com/seek-oss/vocab/pull/394) [`9aca117`](https://github.com/seek-oss/vocab/commit/9aca1177577eb638a6fa893d24de5929003ba24c) Thanks [@samchungy](https://github.com/samchungy)! - Remove `package.json` shims from the `icu-handler/`, `runtime/`, and `translation-file/` subdirectories.
+
 ## 1.7.6
 
 ### Patch Changes
