@@ -1,5 +1,0 @@
-{
-  "main": "../dist/icu-handler.cjs",
-  "module": "../dist/icu-handler.mjs",
-  "types": "../dist/icu-handler.d.cts"
-}
