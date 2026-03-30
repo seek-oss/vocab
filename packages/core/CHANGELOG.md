@@ -1,5 +1,15 @@
 # @vocab/core
 
+## 1.8.0
+
+### Minor Changes
+
+- [#394](https://github.com/seek-oss/vocab/pull/394) [`9aca117`](https://github.com/seek-oss/vocab/commit/9aca1177577eb638a6fa893d24de5929003ba24c) Thanks [@samchungy](https://github.com/samchungy)! - Remove `package.json` shims from the `icu-handler/`, `runtime/`, and `translation-file/` subdirectories.
+
+### Patch Changes
+
+- [#396](https://github.com/seek-oss/vocab/pull/396) [`73a37c3`](https://github.com/seek-oss/vocab/commit/73a37c3a0ebe72de160621fac6a6573531e8ac37) Thanks [@askoufis](https://github.com/askoufis)! - Update `picomatch` to `^4.0.4` to address CVE-2026-33671 and CVE-2026-33672
+
 ## 1.7.6
 
 ### Patch Changes
