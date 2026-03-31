@@ -35,10 +35,7 @@
   "author": "SEEK",
   "license": "MIT",
   "files": [
-    "dist",
-    "icu-handler",
-    "runtime",
-    "translation-file"
+    "dist"
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",
