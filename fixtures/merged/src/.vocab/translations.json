@@ -1,7 +1,13 @@
 {
+  "_meta": {
+    "tags": ["every", "key", "gets", "these", "tags"]
+  },
   "hello": {
-    "en": "Hello",
-    "fr": "Bonjour"
+    "message": "Hello",
+    "messages": {
+      "en": "Hello",
+      "fr": "Bonjour"
+    }
   },
   "world": {
     "en": "world",
