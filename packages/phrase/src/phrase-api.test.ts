@@ -98,59 +98,5 @@ describe('phrase-api', () => {
         ]
       `);
     });
-
-    it('should include autoTranslate parameter when enabled', async () => {
-      await pushTranslations(mockTranslations, {
-        branch: 'test-branch',
-        devLanguage: 'en',
-        autoTranslate: true,
-      });
-
-      const firstCall = mockFetch.mock.calls[0];
-      expect(getFormDataEntries(firstCall as any)).toMatchInlineSnapshot(`
-        [
-          [
-            "file_format",
-            "csv",
-          ],
-          [
-            "branch",
-            "test-branch",
-          ],
-          [
-            "update_translations",
-            "true",
-          ],
-          [
-            "update_descriptions",
-            "true",
-          ],
-          [
-            "autotranslate",
-            "true",
-          ],
-          [
-            "locale_mapping[en]",
-            "4",
-          ],
-          [
-            "format_options[key_index]",
-            "1",
-          ],
-          [
-            "format_options[comment_index]",
-            "2",
-          ],
-          [
-            "format_options[tag_column]",
-            "3",
-          ],
-          [
-            "format_options[enable_pluralization]",
-            "false",
-          ],
-        ]
-      `);
-    });
   });
 });

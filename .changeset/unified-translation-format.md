@@ -1,5 +1,5 @@
 ---
-"@vocab/core": patch
+'@vocab/core': patch
 ---
 
 Support for multiple languages in a single file
@@ -14,8 +14,10 @@ Replace the `message` value with a key-value pair of language to messages
 {
   "my key": {
 -    "message": "Hello from Vocab",
-+    "en": "Hello from Vocab",
-+    "fr": "Bonjour de Vocab",
++    "messages": {
++      "en": "Hello from Vocab",
++      "fr": "Bonjour de Vocab"
++    },
     "description": "Example hello message"
   }
 }

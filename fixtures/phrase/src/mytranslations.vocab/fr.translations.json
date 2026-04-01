@@ -2,13 +2,13 @@
   "hello": {
     "message": "Bonjour"
   },
-  "profile": {
-    "message": "profil"
+  "world": {
+    "message": "monde"
   },
   "thanks": {
     "message": "Merci"
   },
-  "world": {
-    "message": "monde"
+  "profile": {
+    "message": "profil"
   }
 }

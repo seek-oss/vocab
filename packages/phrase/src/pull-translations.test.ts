@@ -12,16 +12,7 @@ vi.mock('./file', () => ({
 
 vi.mock('./phrase-api', () => ({
   ensureBranch: vi.fn(() => Promise.resolve()),
-  pullAllTranslations: vi.fn(() =>
-    Promise.resolve({ en: {}, fr: {} } as Record<
-      string,
-      Record<string, { message: string }>
-    >),
-  ),
-}));
-
-vi.mock('./prompt-utils', () => ({
-  promptConfirmation: vi.fn(() => Promise.resolve(true)),
+  pullAllTranslations: vi.fn(() => Promise.resolve({ en: {}, fr: {} })),
 }));
 
 const devLanguage = 'en';
@@ -107,7 +98,9 @@ describe('pull translations', () => {
       expect(writtenTranslations).toMatchInlineSnapshot(`
         [
           {
-            "thanks": "Merci.",
+            "thanks": {
+              "message": "Merci.",
+            },
           },
           {
             "_meta": {
@@ -138,15 +131,35 @@ describe('pull translations', () => {
             },
           },
           {
-            "hello": "merci",
+            "hello": {
+              "message": "merci",
+            },
           },
           {
-            "_meta": {},
-            "excluded": {
-              "message": "this is excluded",
+            "_meta": {
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
             },
             "hello": {
               "message": "Hi there",
+              "tags": [
+                "only for this key",
+                "greeting",
+              ],
+            },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "message": "Thanks",
+            },
+            "world": {
+              "message": "world",
             },
           },
         ]
@@ -227,15 +240,35 @@ describe('pull translations', () => {
             },
           },
           {
-            "hello": "merci",
+            "hello": {
+              "message": "merci",
+            },
           },
           {
-            "_meta": {},
-            "excluded": {
-              "message": "this is excluded",
+            "_meta": {
+              "tags": [
+                "every",
+                "key",
+                "gets",
+                "these",
+                "tags",
+              ],
             },
             "hello": {
               "message": "Hi there",
+              "tags": [
+                "only for this key",
+                "greeting",
+              ],
+            },
+            "profile": {
+              "message": "profil",
+            },
+            "thanks": {
+              "message": "Thanks",
+            },
+            "world": {
+              "message": "world",
             },
           },
         ]
@@ -314,81 +347,6 @@ describe('pull translations', () => {
       await expect(runPhrase(options)).rejects.toThrow(
         new Error(`Missing translation for global key thanks in language fr`),
       );
-    });
-  });
-
-  describe('when pulling translations with validated field from Phrase', () => {
-    beforeEach(async () => {
-      vi.mocked(pullAllTranslations).mockClear();
-      vi.mocked(writeFile).mockClear();
-      vi.mocked(pullAllTranslations).mockResolvedValue({
-        en: {
-          'hello.mytranslations': {
-            message: 'Hi there',
-            validated: true,
-          },
-          'app.thanks.label': {
-            message: 'Thank you.',
-            validated: false,
-          },
-        },
-        fr: {
-          'hello.mytranslations': {
-            message: 'merci',
-            validated: true,
-          },
-          'app.thanks.label': {
-            message: 'Merci.',
-            validated: false,
-          },
-        },
-      });
-    });
-
-    const options = {
-      languages: [{ name: 'en' }, { name: 'fr' }],
-      generatedLanguages: [] as GeneratedLanguageTarget[],
-    };
-
-    it('should include validated field in translation files', async () => {
-      await expect(runPhrase(options)).resolves.toBeUndefined();
-
-      const writtenTranslations = serializeMockedFileWrites();
-
-      // Find the file that has hello (may be mytranslations namespace)
-      const fileWithHello = writtenTranslations.find(
-        (translation) =>
-          translation.hello && translation.hello.validated !== undefined,
-      );
-      expect(fileWithHello).toBeDefined();
-      expect(fileWithHello!.hello.validated).toBe(true);
-
-      // Find the file that has thanks (may be root namespace with globalKey)
-      const fileWithThanks = writtenTranslations.find(
-        (translation) => translation.thanks !== undefined,
-      );
-      expect(fileWithThanks).toBeDefined();
-      expect(fileWithThanks!.thanks.validated).toBe(false);
-
-      // Find the French file with hello
-      const frenchWithHello = writtenTranslations.find(
-        (translation) =>
-          translation.hello &&
-          translation.hello.message === 'merci' &&
-          translation.hello.validated !== undefined,
-      );
-      expect(frenchWithHello).toBeDefined();
-      expect(frenchWithHello!.hello.validated).toBe(true);
-
-      // Find the French file with thanks
-      const frenchWithThanks = writtenTranslations.find(
-        (translation) =>
-          translation.thanks &&
-          translation.thanks.message === 'Merci.' &&
-          translation.thanks.validated !== undefined,
-      );
-      expect(frenchWithThanks).toBeDefined();
-      expect(frenchWithThanks!.thanks.validated).toBe(false);
     });
   });
 });

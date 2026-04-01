@@ -1,11 +1,7 @@
 import path from 'path';
 import { vi } from 'vitest';
 import { push } from './push-translations';
-import {
-  pushTranslationsWithDiff,
-  pullAllTranslations,
-  deleteUnusedKeys,
-} from './phrase-api';
+import { pushTranslations, deleteUnusedKeys } from './phrase-api';
 import { writeFile } from './file';
 
 vi.mock('./file', () => ({
@@ -16,23 +12,14 @@ vi.mock('./file', () => ({
 vi.mock('./phrase-api', () => ({
   ensureBranch: vi.fn(() => Promise.resolve()),
   pushTranslations: vi.fn(() => Promise.resolve({ uploadId: '1234' })),
-  pushTranslationsWithDiff: vi.fn(() => Promise.resolve({ success: true })),
-  pullAllTranslations: vi.fn(() => Promise.resolve({})),
   deleteUnusedKeys: vi.fn(() => Promise.resolve()),
 }));
 
-vi.mock('./prompt-utils', () => ({
-  promptConfirmation: vi.fn(() => Promise.resolve(true)),
-}));
+const devLanguageUploadId = '1234';
 
-function runPhrase(config: {
-  autoTranslate?: boolean;
-  deleteUnusedKeys: boolean;
-  ignore?: string[];
-}) {
+function runPhrase(config: { deleteUnusedKeys: boolean; ignore?: string[] }) {
   return push(
     {
-      autoTranslate: config.autoTranslate,
       branch: 'tester',
       deleteUnusedKeys: config.deleteUnusedKeys,
       ignore: config.ignore || [],
@@ -59,23 +46,25 @@ describe('push', () => {
     const config = { deleteUnusedKeys: false };
 
     beforeEach(() => {
-      vi.mocked(pushTranslationsWithDiff).mockClear();
-      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(pushTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(deleteUnusedKeys).mockClear();
+
+      vi.mocked(pushTranslations).mockImplementation(() =>
+        Promise.resolve({ devLanguageUploadId }),
+      );
     });
 
     it('should resolve', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(vi.mocked(pullAllTranslations)).toHaveBeenCalledWith('tester');
-      expect(vi.mocked(pushTranslationsWithDiff)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(vi.mocked(pushTranslationsWithDiff).mock.calls[0][0])
+      expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
           {
             "en": {
@@ -90,10 +79,6 @@ describe('push', () => {
                   "tags",
                 ],
               },
-              "excluded.mytranslations": {
-                "message": "this is excluded",
-                "tags": [],
-              },
               "hello.": {
                 "message": "Hi there",
                 "tags": [
@@ -107,11 +92,39 @@ describe('push', () => {
                 ],
               },
               "hello.mytranslations": {
-                "message": "Hi there",
-                "tags": [],
+                "message": "Hello",
+                "tags": [
+                  "only for this key",
+                  "greeting",
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
               },
               "profile.": {
                 "message": "profil",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "profile.mytranslations": {
+                "message": "profil",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "thanks.mytranslations": {
+                "message": "Thanks",
                 "tags": [
                   "every",
                   "key",
@@ -130,8 +143,43 @@ describe('push', () => {
                   "tags",
                 ],
               },
+              "world.mytranslations": {
+                "message": "world",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
             },
-            "fr": {},
+            "fr": {
+              "app.thanks.label": {
+                "message": "Merci",
+              },
+              "hello.": {
+                "message": "Bonjour",
+              },
+              "hello.mytranslations": {
+                "message": "Bonjour",
+              },
+              "profile.": {
+                "message": "profil",
+              },
+              "profile.mytranslations": {
+                "message": "profil",
+              },
+              "thanks.mytranslations": {
+                "message": "Merci",
+              },
+              "world.": {
+                "message": "monde",
+              },
+              "world.mytranslations": {
+                "message": "monde",
+              },
+            },
           }
         `);
     });
@@ -145,23 +193,28 @@ describe('push', () => {
     const config = { deleteUnusedKeys: true };
 
     beforeEach(() => {
-      vi.mocked(pushTranslationsWithDiff).mockClear();
-      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(pushTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(deleteUnusedKeys).mockClear();
     });
 
     describe('and the upload succeeds', () => {
+      beforeEach(() => {
+        vi.mocked(pushTranslations).mockImplementation(() =>
+          Promise.resolve({ devLanguageUploadId }),
+        );
+      });
+
       it('should resolve', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(vi.mocked(pushTranslationsWithDiff)).toHaveBeenCalledTimes(1);
+        expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
       });
 
       it('should update keys', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        expect(vi.mocked(pushTranslationsWithDiff).mock.calls[0][0])
+        expect(vi.mocked(pushTranslations).mock.calls[0][0])
           .toMatchInlineSnapshot(`
             {
               "en": {
@@ -176,10 +229,6 @@ describe('push', () => {
                     "tags",
                   ],
                 },
-                "excluded.mytranslations": {
-                  "message": "this is excluded",
-                  "tags": [],
-                },
                 "hello.": {
                   "message": "Hi there",
                   "tags": [
@@ -193,11 +242,39 @@ describe('push', () => {
                   ],
                 },
                 "hello.mytranslations": {
-                  "message": "Hi there",
-                  "tags": [],
+                  "message": "Hello",
+                  "tags": [
+                    "only for this key",
+                    "greeting",
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
                 },
                 "profile.": {
                   "message": "profil",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+                "profile.mytranslations": {
+                  "message": "profil",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+                "thanks.mytranslations": {
+                  "message": "Thanks",
                   "tags": [
                     "every",
                     "key",
@@ -216,29 +293,66 @@ describe('push', () => {
                     "tags",
                   ],
                 },
+                "world.mytranslations": {
+                  "message": "world",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
               },
-              "fr": {},
+              "fr": {
+                "app.thanks.label": {
+                  "message": "Merci",
+                },
+                "hello.": {
+                  "message": "Bonjour",
+                },
+                "hello.mytranslations": {
+                  "message": "Bonjour",
+                },
+                "profile.": {
+                  "message": "profil",
+                },
+                "profile.mytranslations": {
+                  "message": "profil",
+                },
+                "thanks.mytranslations": {
+                  "message": "Merci",
+                },
+                "world.": {
+                  "message": "monde",
+                },
+                "world.mytranslations": {
+                  "message": "monde",
+                },
+              },
             }
           `);
       });
 
-      it('should push successfully (deleted keys are removed via diff-based push, not deleteUnusedKeys)', async () => {
+      it('should delete unused keys', async () => {
         await expect(runPhrase(config)).resolves.toBeUndefined();
 
-        // Diff-based push handles deleted keys via deleteKey per key; deleteUnusedKeys is not used
-        expect(deleteUnusedKeys).not.toHaveBeenCalled();
+        expect(deleteUnusedKeys).toHaveBeenCalledWith(
+          devLanguageUploadId,
+          'tester',
+        );
       });
     });
 
     describe('and the upload fails', () => {
       beforeEach(() => {
-        vi.mocked(pushTranslationsWithDiff).mockImplementation(() =>
-          Promise.reject(new Error('Upload failed')),
+        vi.mocked(pushTranslations).mockImplementation(() =>
+          Promise.reject('Upload failed'),
         );
       });
 
       it('should not delete unused keys', async () => {
-        await expect(runPhrase(config)).rejects.toThrow('Upload failed');
+        await expect(runPhrase(config)).rejects.toBe('Upload failed');
 
         expect(deleteUnusedKeys).not.toHaveBeenCalled();
       });
@@ -249,22 +363,25 @@ describe('push', () => {
     const config = { deleteUnusedKeys: false, ignore: ['**/ignore.vocab/**'] };
 
     beforeEach(() => {
-      vi.mocked(pushTranslationsWithDiff).mockClear();
-      vi.mocked(pullAllTranslations).mockClear();
+      vi.mocked(pushTranslations).mockClear();
       vi.mocked(writeFile).mockClear();
       vi.mocked(deleteUnusedKeys).mockClear();
+
+      vi.mocked(pushTranslations).mockImplementation(() =>
+        Promise.resolve({ devLanguageUploadId }),
+      );
     });
 
     it('should resolve', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(vi.mocked(pushTranslationsWithDiff)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
     });
 
     it('should update keys', async () => {
       await expect(runPhrase(config)).resolves.toBeUndefined();
 
-      expect(vi.mocked(pushTranslationsWithDiff).mock.calls[0][0])
+      expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
           {
             "en": {
@@ -279,10 +396,6 @@ describe('push', () => {
                   "tags",
                 ],
               },
-              "excluded.mytranslations": {
-                "message": "this is excluded",
-                "tags": [],
-              },
               "hello.": {
                 "message": "Hi there",
                 "tags": [
@@ -296,11 +409,39 @@ describe('push', () => {
                 ],
               },
               "hello.mytranslations": {
-                "message": "Hi there",
-                "tags": [],
+                "message": "Hello",
+                "tags": [
+                  "only for this key",
+                  "greeting",
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
               },
               "profile.": {
                 "message": "profil",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "profile.mytranslations": {
+                "message": "profil",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "thanks.mytranslations": {
+                "message": "Thanks",
                 "tags": [
                   "every",
                   "key",
@@ -319,32 +460,45 @@ describe('push', () => {
                   "tags",
                 ],
               },
+              "world.mytranslations": {
+                "message": "world",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
             },
-            "fr": {},
+            "fr": {
+              "app.thanks.label": {
+                "message": "Merci",
+              },
+              "hello.": {
+                "message": "Bonjour",
+              },
+              "hello.mytranslations": {
+                "message": "Bonjour",
+              },
+              "profile.": {
+                "message": "profil",
+              },
+              "profile.mytranslations": {
+                "message": "profil",
+              },
+              "thanks.mytranslations": {
+                "message": "Merci",
+              },
+              "world.": {
+                "message": "monde",
+              },
+              "world.mytranslations": {
+                "message": "monde",
+              },
+            },
           }
         `);
-    });
-  });
-
-  describe('when autoTranslate is enabled', () => {
-    const config = { autoTranslate: true, deleteUnusedKeys: false };
-
-    beforeEach(() => {
-      vi.mocked(pushTranslationsWithDiff).mockClear();
-      vi.mocked(pullAllTranslations).mockClear();
-    });
-
-    it('should call pushTranslationsWithDiff', async () => {
-      await expect(runPhrase(config)).resolves.toBeUndefined();
-
-      expect(vi.mocked(pushTranslationsWithDiff)).toHaveBeenCalledWith(
-        expect.any(Object),
-        expect.objectContaining({
-          devLanguage: 'en',
-          branch: 'tester',
-        }),
-        expect.any(Object),
-      );
     });
   });
 });

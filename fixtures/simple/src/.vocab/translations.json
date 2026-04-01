@@ -1,8 +1,8 @@
 {
   "hello": {
-    "message": "Hellos",
+    "message": "Hello",
     "messages": {
-      "fr": "Bonjoury"
+      "fr": "Bonjour"
     }
   },
   "world": {
