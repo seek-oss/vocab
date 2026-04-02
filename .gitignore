@@ -19,3 +19,7 @@ yarn.lock
 .eslintcache
 
 .env
+
+.pnpm-store/
+.cursor/
+.claude/
