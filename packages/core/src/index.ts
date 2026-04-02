@@ -13,3 +13,9 @@ export {
   loadTranslation,
 } from './load-translations';
 export type * from './types';
+export {
+  translationEntrySchema,
+  translationFileMetadataSchema,
+  vocabAltTranslationFileSchema,
+  vocabDevTranslationFileSchema,
+} from './translation-json-schema';

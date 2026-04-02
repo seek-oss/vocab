@@ -1,3 +1,19 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "**/.vocab/translations.json",
+        "**/*.vocab/translations.json"
+      ],
+      "url": "./packages/core/schemas/translations.schema.json"
+    },
+    {
+      "fileMatch": [
+        "**/.vocab/*.translations.json",
+        "**/*.vocab/*.translations.json"
+      ],
+      "url": "./packages/core/schemas/translations.alt.schema.json"
+    }
+  ]
 }

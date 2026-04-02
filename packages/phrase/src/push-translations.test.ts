@@ -71,106 +71,6 @@ describe('push', () => {
 
       expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
-        {
-          "en": {
-            "app.thanks.label": {
-              "globalKey": "app.thanks.label",
-              "message": "Thanks",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-            "excluded.ignore": {
-              "message": "this is excluded",
-              "tags": [],
-            },
-            "hello.mytranslations": {
-              "message": "Hello",
-              "tags": [
-                "only for this key",
-                "greeting",
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-            "profile.mytranslations": {
-              "message": "profil",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-            "world.mytranslations": {
-              "message": "world",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-          },
-          "fr": {
-            "hello.mytranslations": {
-              "description": undefined,
-              "message": "Bonjour",
-            },
-            "profile.mytranslations": {
-              "description": undefined,
-              "message": "profil",
-            },
-            "world.mytranslations": {
-              "description": undefined,
-              "message": "monde",
-            },
-          },
-        }
-      `);
-    });
-
-    it('should not delete unused keys', () => {
-      expect(deleteUnusedKeys).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('when deleteUnusedKeys is true', () => {
-    const config = { deleteUnusedKeys: true };
-
-    beforeEach(() => {
-      vi.mocked(pushTranslations).mockClear();
-      vi.mocked(writeFile).mockClear();
-      vi.mocked(deleteUnusedKeys).mockClear();
-    });
-
-    describe('and the upload succeeds', () => {
-      beforeEach(() => {
-        vi.mocked(pushTranslations).mockImplementation(() =>
-          Promise.resolve({ devLanguageUploadId }),
-        );
-      });
-
-      it('should resolve', async () => {
-        await expect(runPhrase(config)).resolves.toBeUndefined();
-
-        expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
-      });
-
-      it('should update keys', async () => {
-        await expect(runPhrase(config)).resolves.toBeUndefined();
-
-        expect(vi.mocked(pushTranslations).mock.calls[0][0])
-          .toMatchInlineSnapshot(`
           {
             "en": {
               "app.thanks.label": {
@@ -201,7 +101,7 @@ describe('push', () => {
                 ],
               },
               "profile.mytranslations": {
-                "message": "profil",
+                "message": "profile",
                 "tags": [
                   "every",
                   "key",
@@ -237,6 +137,106 @@ describe('push', () => {
             },
           }
         `);
+    });
+
+    it('should not delete unused keys', () => {
+      expect(deleteUnusedKeys).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when deleteUnusedKeys is true', () => {
+    const config = { deleteUnusedKeys: true };
+
+    beforeEach(() => {
+      vi.mocked(pushTranslations).mockClear();
+      vi.mocked(writeFile).mockClear();
+      vi.mocked(deleteUnusedKeys).mockClear();
+    });
+
+    describe('and the upload succeeds', () => {
+      beforeEach(() => {
+        vi.mocked(pushTranslations).mockImplementation(() =>
+          Promise.resolve({ devLanguageUploadId }),
+        );
+      });
+
+      it('should resolve', async () => {
+        await expect(runPhrase(config)).resolves.toBeUndefined();
+
+        expect(vi.mocked(pushTranslations)).toHaveBeenCalledTimes(1);
+      });
+
+      it('should update keys', async () => {
+        await expect(runPhrase(config)).resolves.toBeUndefined();
+
+        expect(vi.mocked(pushTranslations).mock.calls[0][0])
+          .toMatchInlineSnapshot(`
+            {
+              "en": {
+                "app.thanks.label": {
+                  "globalKey": "app.thanks.label",
+                  "message": "Thanks",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+                "excluded.ignore": {
+                  "message": "this is excluded",
+                  "tags": [],
+                },
+                "hello.mytranslations": {
+                  "message": "Hello",
+                  "tags": [
+                    "only for this key",
+                    "greeting",
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+                "profile.mytranslations": {
+                  "message": "profile",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+                "world.mytranslations": {
+                  "message": "world",
+                  "tags": [
+                    "every",
+                    "key",
+                    "gets",
+                    "these",
+                    "tags",
+                  ],
+                },
+              },
+              "fr": {
+                "hello.mytranslations": {
+                  "description": undefined,
+                  "message": "Bonjour",
+                },
+                "profile.mytranslations": {
+                  "description": undefined,
+                  "message": "profil",
+                },
+                "world.mytranslations": {
+                  "description": undefined,
+                  "message": "monde",
+                },
+              },
+            }
+          `);
       });
 
       it('should delete unused keys', async () => {
@@ -288,68 +288,68 @@ describe('push', () => {
 
       expect(vi.mocked(pushTranslations).mock.calls[0][0])
         .toMatchInlineSnapshot(`
-        {
-          "en": {
-            "app.thanks.label": {
-              "globalKey": "app.thanks.label",
-              "message": "Thanks",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
+          {
+            "en": {
+              "app.thanks.label": {
+                "globalKey": "app.thanks.label",
+                "message": "Thanks",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "hello.mytranslations": {
+                "message": "Hello",
+                "tags": [
+                  "only for this key",
+                  "greeting",
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "profile.mytranslations": {
+                "message": "profile",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
+              "world.mytranslations": {
+                "message": "world",
+                "tags": [
+                  "every",
+                  "key",
+                  "gets",
+                  "these",
+                  "tags",
+                ],
+              },
             },
-            "hello.mytranslations": {
-              "message": "Hello",
-              "tags": [
-                "only for this key",
-                "greeting",
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
+            "fr": {
+              "hello.mytranslations": {
+                "description": undefined,
+                "message": "Bonjour",
+              },
+              "profile.mytranslations": {
+                "description": undefined,
+                "message": "profil",
+              },
+              "world.mytranslations": {
+                "description": undefined,
+                "message": "monde",
+              },
             },
-            "profile.mytranslations": {
-              "message": "profil",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-            "world.mytranslations": {
-              "message": "world",
-              "tags": [
-                "every",
-                "key",
-                "gets",
-                "these",
-                "tags",
-              ],
-            },
-          },
-          "fr": {
-            "hello.mytranslations": {
-              "description": undefined,
-              "message": "Bonjour",
-            },
-            "profile.mytranslations": {
-              "description": undefined,
-              "message": "profil",
-            },
-            "world.mytranslations": {
-              "description": undefined,
-              "message": "monde",
-            },
-          },
-        }
-      `);
+          }
+        `);
     });
   });
 

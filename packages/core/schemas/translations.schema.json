@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "$namespace": {
+      "description": "Optional namespace override. If omitted, the namespace is derived from the `.vocab` directory path.",
+      "type": "string"
+    },
+    "_meta": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "description": "Tags applied to all keys in this file (e.g. for Phrase).",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "ICU MessageFormat string for this key in this file’s language."
+      },
+      "description": {
+        "description": "Developer-facing description of the message.",
+        "type": "string"
+      },
+      "globalKey": {
+        "description": "Stable key for external translation tools (e.g. Phrase).",
+        "type": "string"
+      },
+      "tags": {
+        "description": "Tags for this key (dev file only when loading with tags).",
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "required": ["message"],
+    "additionalProperties": false
+  },
+  "description": "Dev language file (`translations.json`). Top-level keys (other than `$namespace` and `_meta`) are translation IDs. Each value must include `message` (ICU MessageFormat). Optional per-key: `description`, `globalKey`, `tags`. File-level `_meta.tags` applies when using tooling that reads tags.",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vocab.dev/schema/translations.json",
+  "title": "Vocab dev translation file"
+}

@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "propertyNames": { "type": "string" },
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "ICU MessageFormat string for this key in this file’s language."
+      },
+      "description": {
+        "description": "Developer-facing description of the message.",
+        "type": "string"
+      },
+      "globalKey": {
+        "description": "Stable key for external translation tools (e.g. Phrase).",
+        "type": "string"
+      },
+      "tags": {
+        "description": "Tags for this key (dev file only when loading with tags).",
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "required": ["message"],
+    "additionalProperties": false
+  },
+  "description": "Per-language file (`{lang}.translations.json`). Same entry shape as the dev file: required `message`, optional `description`, `globalKey`, `tags`. Vocab ignores `$namespace` and `_meta.tags` on these files at runtime (with a console warning).",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vocab.dev/schema/translations.alt.json",
+  "title": "Vocab alternate-language translation file"
+}

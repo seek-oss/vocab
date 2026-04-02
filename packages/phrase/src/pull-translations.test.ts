@@ -136,7 +136,7 @@ describe('pull translations', () => {
               ],
             },
             "profile": {
-              "message": "profil",
+              "message": "profile",
             },
             "thanks": {
               "globalKey": "app.thanks.label",
@@ -230,7 +230,7 @@ describe('pull translations', () => {
               ],
             },
             "profile": {
-              "message": "profil",
+              "message": "profile",
             },
             "thanks": {
               "globalKey": "app.thanks.label",

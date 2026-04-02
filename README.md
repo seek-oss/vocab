@@ -20,6 +20,7 @@ Vocab helps you ship multiple languages without compromising the reliability of 
   - [Step 2: Configure Vocab](#step-2-configure-vocab)
   - [Step 3: Set the language using the React Provider](#step-3-set-the-language-using-the-react-provider)
   - [Step 4: Create translations](#step-4-create-translations)
+    - [Editor support (JSON Schema)](#editor-support-json-schema)
   - [Step 5: Compile and consume translations](#step-5-compile-and-consume-translations)
   - [Step 6: [Optional] Set up plugin](#step-6-optional-set-up-plugin)
   - [Step 7: [Optional] Optimize for fast page loading](#step-7-optional-optimize-for-fast-page-loading)
@@ -141,6 +142,48 @@ In the following examples, we're defining translations for our `devLanguage`, an
   }
 }
 ```
+
+#### Editor support (JSON Schema)
+
+`@vocab/core` ships [JSON Schema](https://json-schema.org/) files for editor validation and completions. Install `@vocab/core` (you likely already have it alongside `@vocab/react`), then associate them in **VS Code** or **Cursor** via workspace settings.
+
+Schemas live under the package root:
+
+- Dev language (`translations.json`): `schemas/translations.dev.schema.json`
+- Other languages (`{lang}.translations.json`): `schemas/translations.alt.schema.json`
+
+In **`.vscode/settings.json`** (or your user `settings.json`), set `json.schemas`. Each `url` must be a **file path** or **`https:` URL**; the editor does **not** resolve bare npm package names (there is no `npm:@vocab/core/...` form). After `npm install` / `pnpm install`, the usual approach is a path under **`node_modules/@vocab/core/`** as below. Alternatively, use a registry CDN URL so settings need not mention `node_modules`.
+
+Example for the usual `.vocab` directory layout:
+
+```jsonc
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "**/.vocab/translations.json",
+        "**/*.vocab/translations.json"
+      ],
+      "url": "./node_modules/@vocab/core/schemas/translations.dev.schema.json"
+    },
+    {
+      "fileMatch": [
+        "**/.vocab/*.translations.json",
+        "**/*.vocab/*.translations.json"
+      ],
+      "url": "./node_modules/@vocab/core/schemas/translations.alt.schema.json"
+    }
+  ]
+}
+```
+
+You can use `${workspaceFolder}/node_modules/@vocab/core/schemas/...` instead of `./node_modules/...` if you prefer.
+
+For a **registry URL** (same files as in the published tarball), pin a version, for example `https://unpkg.com/@vocab/core@<version>/schemas/translations.dev.schema.json` (replace `<version>` with the release you depend on). That avoids coupling settings to your local `node_modules` layout, at the cost of network access and manual version bumps.
+
+If `vocab.config.js` sets a custom [`translationsDirectorySuffix`][configuration], change `fileMatch` so it matches your folders (for example `**/__translations__/translations.json`).
+
+Do **not** add a top-level `"$schema"` property inside Vocab translation JSON: only `$namespace` and `_meta` are reserved at the file root; anything else is treated as a translation key.
 
 > [!NOTE]
 > You can create your translation files manually.

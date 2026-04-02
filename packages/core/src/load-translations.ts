@@ -1,6 +1,7 @@
 import path from 'path';
 
 import { glob } from 'tinyglobby';
+import * as z from 'zod';
 import type {
   TranslationsByKey,
   UserConfig,
@@ -21,6 +22,12 @@ import {
   getDevTranslationFileGlob,
 } from './utils';
 import { generateLanguageFromTranslations } from './generate-language';
+import {
+  translationEntrySchema,
+  translationFileMetadataSchema,
+  vocabAltTranslationFileSchema,
+  vocabDevTranslationFileSchema,
+} from './translation-json-schema';
 
 export function getUniqueKey(key: string, namespace: string) {
   return `${key}.${namespace}`;
@@ -138,82 +145,56 @@ function printValidationError(...params: unknown[]) {
   console.error(pc.red('Error loading translation:'), ...params);
 }
 
-function getTranslationsFromFile(
+function getTranslationsFromDevFile(
   translationFileContents: unknown,
-  {
-    isAltLanguage,
-    filePath,
-    withTags,
-  }: { isAltLanguage: boolean; filePath: string; withTags?: boolean },
+  { filePath, withTags }: { filePath: string; withTags?: boolean },
 ): {
   $namespace: unknown;
   keys: TranslationsByKey;
   metadata: TranslationFileMetadata;
 } {
-  if (!translationFileContents || typeof translationFileContents !== 'object') {
-    throw new Error(
-      `Unable to read translation file ${filePath}. Translations must be an object.`,
-    );
+  const { $namespace, _meta, ...keys } = vocabDevTranslationFileSchema.parse(
+    translationFileContents,
+  );
+
+  const validKeys: TranslationsByKey = {};
+
+  for (const [translationKey, rawValue] of Object.entries(keys)) {
+    const { tags, ...rest } = rawValue;
+    validKeys[translationKey] = {
+      ...rest,
+      tags: withTags ? tags : undefined,
+    };
   }
 
-  const { $namespace, _meta, ...keys } =
-    translationFileContents as TranslationFileContents;
+  const metadata = { tags: withTags ? _meta?.tags : undefined };
 
-  if (isAltLanguage && $namespace) {
+  return { $namespace, keys: validKeys, metadata };
+}
+
+function getTranslationsFromAltFile(
+  translationFileContents: unknown,
+  { filePath }: { filePath: string },
+): {
+  keys: TranslationsByKey;
+} {
+  const { $namespace, _meta, ...keys } = vocabDevTranslationFileSchema.parse(
+    translationFileContents,
+  );
+
+  if ($namespace) {
     printValidationError(
       `Found $namespace in alt language file in ${filePath}. $namespace is only used in the dev language and will be ignored.`,
     );
   }
 
-  if (!isAltLanguage && $namespace && typeof $namespace !== 'string') {
+  if (_meta) {
     printValidationError(
-      `Found non-string $namespace in language file in ${filePath}. $namespace must be a string.`,
+      `Found _meta in alt language file in ${filePath}. _meta is only used in the dev language and will be ignored.`,
     );
   }
 
-  if (isAltLanguage && _meta?.tags) {
-    printValidationError(
-      `Found _meta.tags in alt language file in ${filePath}. _meta.tags is only used in the dev language and will be ignored.`,
-    );
-  }
-
-  // Never return tags if we're fetching translations for an alt language
-  const includeTags = !isAltLanguage && withTags;
-  const validKeys: TranslationsByKey = {};
-
-  for (const [translationKey, { tags, ...translation }] of Object.entries(
-    keys,
-  )) {
-    if (typeof translation === 'string') {
-      printValidationError(
-        `Found string for a translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
-      );
-      continue;
-    }
-
-    if (!translation) {
-      printValidationError(
-        `Found empty translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
-      );
-      continue;
-    }
-
-    if (!translation.message || typeof translation.message !== 'string') {
-      printValidationError(
-        `No message found for translation "${translationKey}" in ${filePath}. Translation must be an object of the format {message: string}.`,
-      );
-      continue;
-    }
-
-    validKeys[translationKey] = {
-      ...translation,
-      tags: includeTags ? tags : undefined,
-    };
-  }
-
-  const metadata = { tags: includeTags ? _meta?.tags : undefined };
-
-  return { $namespace, keys: validKeys, metadata };
+  return { keys };
 }
 
 export function loadAltLanguageFile(
@@ -254,13 +235,10 @@ export function loadAltLanguageFile(
 
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const translationFile = require(altFilePath);
-        const { keys: fallbackLanguageTranslation } = getTranslationsFromFile(
-          translationFile,
-          {
+        const { keys: fallbackLanguageTranslation } =
+          getTranslationsFromAltFile(translationFile, {
             filePath: altFilePath,
-            isAltLanguage: true,
-          },
-        );
+          });
         Object.assign(
           altLanguageTranslation,
           mergeWithDevLanguageTranslation({
@@ -321,9 +299,8 @@ export function loadTranslation(
     $namespace,
     keys: devTranslation,
     metadata,
-  } = getTranslationsFromFile(translationContent, {
+  } = getTranslationsFromDevFile(translationContent, {
     filePath,
-    isAltLanguage: false,
     withTags,
   });
   const namespace: string =

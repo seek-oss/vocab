@@ -9,6 +9,9 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
+  "scripts": {
+    "generate:json-schema": "tsx scripts/translation-json-schema.ts"
+  },
   "exports": {
     ".": {
       "@vocab-private/monorepo": "./src/index.ts",
@@ -30,12 +33,23 @@
       "import": "./dist/translation-file.mjs",
       "require": "./dist/translation-file.cjs"
     },
+    "./translations.alt.schema": {
+      "@vocab-private/monorepo": "./schemas/translations.alt.schema.json",
+      "import": "./dist/translations.alt.schema.mjs",
+      "require": "./dist/translations.alt.schema.cjs"
+    },
+    "./translations.schema": {
+      "@vocab-private/monorepo": "./schemas/translations.schema.json",
+      "import": "./dist/translations.schema.mjs",
+      "require": "./dist/translations.schema.cjs"
+    },
     "./package.json": "./package.json"
   },
   "author": "SEEK",
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "schemas"
   ],
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "^2.0.10",
@@ -47,12 +61,14 @@
     "picocolors": "^1.0.0",
     "picomatch": "^4.0.4",
     "prettier": "^3.5.3",
-    "tinyglobby": "^0.2.15"
+    "tinyglobby": "^0.2.15",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/picomatch": "^4.0.2",
-    "fs-fixture": "^2.11.0"
+    "fs-fixture": "^2.11.0",
+    "tsx": "^4.21.0"
   },
   "publishConfig": {
     "exports": {
@@ -71,6 +87,14 @@
       "./translation-file": {
         "import": "./dist/translation-file.mjs",
         "require": "./dist/translation-file.cjs"
+      },
+      "./translations.alt.schema": {
+        "import": "./dist/translations.alt.schema.mjs",
+        "require": "./dist/translations.alt.schema.cjs"
+      },
+      "./translations.schema": {
+        "import": "./dist/translations.schema.mjs",
+        "require": "./dist/translations.schema.cjs"
       },
       "./package.json": "./package.json"
     }

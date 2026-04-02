@@ -1,3 +1,8 @@
+import type {
+  TranslationData,
+  TranslationFileMetadata,
+} from './translation-json-schema';
+
 export type { FormatXMLElementFn } from 'intl-messageformat';
 
 export type LanguageName = string;
@@ -161,25 +166,11 @@ export interface UserConfig {
 
 export type Tags = string[];
 
-export interface TranslationFileMetadata {
-  tags?: Tags;
-}
-
-export interface TranslationData {
-  message: TranslationMessage;
-  description?: string;
-  tags?: Tags;
-  globalKey?: string;
-}
-
-export type TranslationsByKey<Key extends TranslationKey = string> = Record<
-  Key,
-  TranslationData
->;
-
-export type TranslationFileContents = TranslationsByKey & {
-  _meta?: TranslationFileMetadata;
-};
+export type {
+  TranslationData,
+  TranslationFileContents,
+  TranslationFileMetadata,
+} from './translation-json-schema';
 
 export type TranslationMessagesByKey<Key extends TranslationKey = string> =
   Record<Key, TranslationMessage>;

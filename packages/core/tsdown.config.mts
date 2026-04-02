@@ -1,12 +1,14 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-  entry: [
-    'src/index.ts',
-    'src/icu-handler.ts',
-    'src/translation-file.ts',
-    'src/runtime.ts',
-  ],
+  entry: {
+    index: 'src/index.ts',
+    'icu-handler': 'src/icu-handler.ts',
+    'translation-file': 'src/translation-file.ts',
+    runtime: 'src/runtime.ts',
+    'translations.alt.schema': 'schemas/translations.alt.schema.json',
+    'translations.schema': 'schemas/translations.schema.json',
+  },
   format: ['esm', 'cjs'],
   exports: { devExports: '@vocab-private/monorepo' },
   dts: true,
