@@ -1,14 +1,18 @@
 {
   "specialCharacters - '‘’“”\"!@#$%^&*()_+\\/`~\\\\": {
-    "en": {
-      "message": "'‘’“”\"!@#$%^&*()_+\\/`~\\\\"
-    },
-    "fr": {
-      "message": "blah"
+    "messages": {
+      "en": {
+        "message": "'‘’“”\"!@#$%^&*()_+\\/`~\\\\"
+      },
+      "fr": {
+        "message": "blah"
+      }
     }
   },
   "vocabPublishDate": {
-    "en": "<strong>Vocab</strong> was published on {publishDate, date, small}",
-    "fr": "<strong>Vocab</strong> a été publié le {publishDate, date, small}"
+    "messages": {
+      "en": "<strong>Vocab</strong> was published on {publishDate, date, small}",
+      "fr": "<strong>Vocab</strong> a été publié le {publishDate, date, small}"
+    }
   }
 }

@@ -51,7 +51,6 @@ const pushAction = async (options: {
   dryRun?: boolean;
   force?: boolean;
   ignore?: string[];
-  nonInteractive?: boolean;
   userConfig: UserConfig;
 }) => {
   await push(
@@ -62,7 +61,6 @@ const pushAction = async (options: {
       autoTranslate: options.autoTranslate,
       dryRun: options.dryRun,
       force: options.force,
-      interactive: !options.nonInteractive,
     },
     options.userConfig,
   );

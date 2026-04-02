@@ -3,7 +3,6 @@
     "tags": ["every", "key", "gets", "these", "tags"]
   },
   "hello": {
-    "message": "Hello",
     "messages": {
       "en": "Hello",
       "fr": "Bonjour"
