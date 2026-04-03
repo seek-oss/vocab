@@ -14,8 +14,10 @@ export {
 } from './load-translations';
 export type * from './types';
 export {
+  altTranslationFileToKeysSchema,
   translationEntrySchema,
   translationFileMetadataSchema,
   vocabAltTranslationFileSchema,
-  vocabDevTranslationFileSchema,
+  vocabTranslationFileSchema,
+  vocabTranslationFileToLoadedSchema,
 } from './translation-json-schema';

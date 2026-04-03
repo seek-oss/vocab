@@ -228,10 +228,10 @@ describe('loadTranslation', () => {
       languages: [{ name: 'fr' }, { name: 'en' }],
     };
 
-    describe('when withTags is true', () => {
+    describe('when includeTranslationMetadata is true', () => {
       it('should load translations with tags, ignoring tags in languages that are not the dev language', () => {
         const translations = loadTranslation(
-          { filePath, fallbacks: 'all', withTags: true },
+          { filePath, fallbacks: 'all', includeTranslationMetadata: true },
           userConfig,
         );
 
@@ -255,11 +255,9 @@ describe('loadTranslation', () => {
             },
             "Goodbye": {
               "message": "Goodbye in French",
-              "tags": undefined,
             },
             "Hello": {
               "message": "Hello in French",
-              "tags": undefined,
             },
             "Welcome": {
               "message": "Welcome in French",
@@ -292,10 +290,10 @@ describe('loadTranslation', () => {
       });
     });
 
-    describe('when withTags is false', () => {
-      it('should load translations without tags', () => {
+    describe('when includeTranslationMetadata is false', () => {
+      it('should load minimal translation entries without tags or file metadata', () => {
         const translations = loadTranslation(
-          { filePath, fallbacks: 'all', withTags: false },
+          { filePath, fallbacks: 'all', includeTranslationMetadata: false },
           userConfig,
         );
 
@@ -309,19 +307,15 @@ describe('loadTranslation', () => {
           {
             "Good morning": {
               "message": "Good morning in French",
-              "tags": undefined,
             },
             "Goodbye": {
               "message": "Goodbye in French",
-              "tags": undefined,
             },
             "Hello": {
               "message": "Hello in French",
-              "tags": undefined,
             },
             "Welcome": {
               "message": "Welcome in French",
-              "tags": undefined,
             },
           }
         `);
@@ -329,7 +323,6 @@ describe('loadTranslation', () => {
           {
             "Good morning": {
               "message": "Good morning in French",
-              "tags": undefined,
             },
             "Goodbye": {
               "description": undefined,

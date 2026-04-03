@@ -31,7 +31,11 @@ export async function push(
     trace(`ignoring files on paths: ${ignore.join(', ')}`);
   }
   const allLanguageTranslations = await loadAllTranslations(
-    { fallbacks: 'none', includeNodeModules: false, withTags: true },
+    {
+      fallbacks: 'none',
+      includeNodeModules: false,
+      includeTranslationMetadata: true,
+    },
     {
       ...config,
       ignore: [...(config.ignore || []), ...(ignore || [])],

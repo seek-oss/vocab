@@ -24,4 +24,3 @@ yarn.lock
 .cursor/
 .claude/
 
-./packages/core/schemas

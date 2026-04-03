@@ -7,7 +7,7 @@ import * as z from 'zod';
 
 import {
   vocabAltTranslationFileSchema,
-  vocabDevTranslationFileSchema,
+  vocabTranslationFileSchema,
 } from '../src/translation-json-schema';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -35,31 +35,31 @@ async function formatDocument(doc: JsonSchemaDocument): Promise<string> {
 }
 
 async function main() {
-  const dev = z.toJSONSchema(vocabDevTranslationFileSchema, {
+  const main = z.toJSONSchema(vocabTranslationFileSchema, {
     target: 'draft-07',
   }) as JsonSchemaDocument;
   const alt = z.toJSONSchema(vocabAltTranslationFileSchema, {
     target: 'draft-07',
   }) as JsonSchemaDocument;
 
-  const devExpected = withMeta(dev, {
+  const mainExpected = withMeta(main, {
     $id: 'https://vocab.dev/schema/translations.json',
-    title: 'Vocab dev translation file',
+    title: 'Vocab main translation file',
     description:
-      'Dev language file (`translations.json`). Top-level keys (other than `$namespace` and `_meta`) are translation IDs. Each value must include `message` (ICU MessageFormat). Optional per-key: `description`, `globalKey`, `tags`. File-level `_meta.tags` applies when using tooling that reads tags.',
+      'Main translation file (`translations.json`). Top-level keys (other than `$namespace` and `_meta`) are translation IDs. Each value must include `message` (ICU MessageFormat). Optional per-key: `description`, `globalKey`, `tags`. File-level `_meta.tags` applies when using tooling that reads tags.',
   });
   const altExpected = withMeta(alt, {
     $id: 'https://vocab.dev/schema/translations.alt.json',
     title: 'Vocab alternate-language translation file',
     description:
-      'Per-language file (`{lang}.translations.json`). Same entry shape as the dev file: required `message`, optional `description`, `globalKey`, `tags`. Vocab ignores `$namespace` and `_meta.tags` on these files at runtime (with a console warning).',
+      'Per-language file (`{lang}.translations.json`). Same entry shape as the main file: required `message`, optional `description`, `globalKey`, `tags`. Vocab ignores `$namespace` and `_meta` on these files at runtime (with a console warning).',
   });
 
-  const devPath = path.join(schemasDir, 'translations.schema.json');
+  const mainPath = path.join(schemasDir, 'translations.schema.json');
   const altPath = path.join(schemasDir, 'translations.alt.schema.json');
 
   await fs.mkdir(schemasDir, { recursive: true });
-  await fs.writeFile(devPath, await formatDocument(devExpected), 'utf8');
+  await fs.writeFile(mainPath, await formatDocument(mainExpected), 'utf8');
   await fs.writeFile(altPath, await formatDocument(altExpected), 'utf8');
 }
 

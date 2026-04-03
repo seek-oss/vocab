@@ -1,7 +1,6 @@
 import path from 'path';
 
 import { glob } from 'tinyglobby';
-import * as z from 'zod';
 import type {
   TranslationsByKey,
   UserConfig,
@@ -9,7 +8,6 @@ import type {
   LanguageTarget,
   LanguageName,
   TranslationFileMetadata,
-  TranslationFileContents,
 } from './types';
 import pc from 'picocolors';
 
@@ -23,10 +21,8 @@ import {
 } from './utils';
 import { generateLanguageFromTranslations } from './generate-language';
 import {
-  translationEntrySchema,
-  translationFileMetadataSchema,
-  vocabAltTranslationFileSchema,
-  vocabDevTranslationFileSchema,
+  altTranslationFileToKeysSchema,
+  vocabTranslationFileToLoadedSchema,
 } from './translation-json-schema';
 
 export function getUniqueKey(key: string, namespace: string) {
@@ -147,29 +143,15 @@ function printValidationError(...params: unknown[]) {
 
 function getTranslationsFromDevFile(
   translationFileContents: unknown,
-  { filePath, withTags }: { filePath: string; withTags?: boolean },
+  options: { filePath: string; includeTranslationMetadata?: boolean },
 ): {
-  $namespace: unknown;
+  $namespace: string | undefined;
   keys: TranslationsByKey;
   metadata: TranslationFileMetadata;
 } {
-  const { $namespace, _meta, ...keys } = vocabDevTranslationFileSchema.parse(
-    translationFileContents,
-  );
-
-  const validKeys: TranslationsByKey = {};
-
-  for (const [translationKey, rawValue] of Object.entries(keys)) {
-    const { tags, ...rest } = rawValue;
-    validKeys[translationKey] = {
-      ...rest,
-      tags: withTags ? tags : undefined,
-    };
-  }
-
-  const metadata = { tags: withTags ? _meta?.tags : undefined };
-
-  return { $namespace, keys: validKeys, metadata };
+  return vocabTranslationFileToLoadedSchema(
+    options.includeTranslationMetadata,
+  ).parse(translationFileContents);
 }
 
 function getTranslationsFromAltFile(
@@ -178,21 +160,9 @@ function getTranslationsFromAltFile(
 ): {
   keys: TranslationsByKey;
 } {
-  const { $namespace, _meta, ...keys } = vocabDevTranslationFileSchema.parse(
-    translationFileContents,
-  );
-
-  if ($namespace) {
-    printValidationError(
-      `Found $namespace in alt language file in ${filePath}. $namespace is only used in the dev language and will be ignored.`,
-    );
-  }
-
-  if (_meta) {
-    printValidationError(
-      `Found _meta in alt language file in ${filePath}. _meta is only used in the dev language and will be ignored.`,
-    );
-  }
+  const keys = altTranslationFileToKeysSchema(filePath, (message) =>
+    printValidationError(message),
+  ).parse(translationFileContents);
 
   return { keys };
 }
@@ -261,21 +231,29 @@ export function loadAltLanguageFile(
   return altLanguageTranslation;
 }
 
-function stripTagsFromTranslations(translations: TranslationsByKey) {
+/** Dev-language snapshot without per-key `tags`, for merging alt files (tags are not propagated from dev into alt). */
+function stripTagsFromDevTranslationsForAltMerge(
+  translations: TranslationsByKey,
+) {
   return Object.fromEntries(
     Object.entries(translations).map(([key, { tags, ...rest }]) => [key, rest]),
   );
 }
 
+/**
+ * Load a single main `translations.json` and resolved alt (and generated) languages.
+ *
+ * @param options.includeTranslationMetadata - When `true`, each entry includes `description`, `tags`, `globalKey`, and `metadata.tags` from `_meta`. When `false` or omitted, entries are minimal (`message` and `globalKey` only) and file-level tag metadata is omitted.
+ */
 export function loadTranslation(
   {
     filePath,
     fallbacks,
-    withTags,
+    includeTranslationMetadata,
   }: {
     filePath: string;
     fallbacks: Fallback;
-    withTags?: boolean;
+    includeTranslationMetadata?: boolean;
   },
   userConfig: UserConfig,
 ): LoadedTranslation {
@@ -283,10 +261,7 @@ export function loadTranslation(
     `Loading translation file in "${fallbacks}" fallback mode: "${filePath}"`,
   );
 
-  const languageSet: Record<
-    string,
-    Record<string, { message: string; description?: string | undefined }>
-  > = {};
+  const languageSet: Record<string, TranslationsByKey> = {};
 
   delete require.cache[filePath];
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -301,7 +276,7 @@ export function loadTranslation(
     metadata,
   } = getTranslationsFromDevFile(translationContent, {
     filePath,
-    withTags,
+    includeTranslationMetadata,
   });
   const namespace: string =
     typeof $namespace === 'string'
@@ -312,8 +287,8 @@ export function loadTranslation(
 
   languageSet[userConfig.devLanguage] = devTranslation;
 
-  const devTranslationNoTags = withTags
-    ? stripTagsFromTranslations(devTranslation)
+  const devTranslationForAltMerge = includeTranslationMetadata
+    ? stripTagsFromDevTranslationsForAltMerge(devTranslation)
     : devTranslation;
   const altLanguages = getAltLanguages(userConfig);
   for (const languageName of altLanguages) {
@@ -321,7 +296,7 @@ export function loadTranslation(
       {
         filePath,
         languageName,
-        devTranslation: devTranslationNoTags,
+        devTranslation: devTranslationForAltMerge,
         fallbacks,
       },
       userConfig,
@@ -349,12 +324,21 @@ export function loadTranslation(
   };
 }
 
+/**
+ * Load every main `translations.json` in the project (per config).
+ *
+ * @param options.includeTranslationMetadata - See {@link loadTranslation}.
+ */
 export async function loadAllTranslations(
   {
     fallbacks,
     includeNodeModules,
-    withTags,
-  }: { fallbacks: Fallback; includeNodeModules: boolean; withTags?: boolean },
+    includeTranslationMetadata,
+  }: {
+    fallbacks: Fallback;
+    includeNodeModules: boolean;
+    includeTranslationMetadata?: boolean;
+  },
   config: UserConfig,
 ): Promise<LoadedTranslation[]> {
   const { projectRoot, ignore = [] } = config;
@@ -374,7 +358,7 @@ export async function loadAllTranslations(
 
   for (const translationFile of translationFiles) {
     const loadedTranslation = loadTranslation(
-      { filePath: translationFile, fallbacks, withTags },
+      { filePath: translationFile, fallbacks, includeTranslationMetadata },
       config,
     );
 
