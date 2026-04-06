@@ -1,5 +1,11 @@
 # @vocab/core
 
+## 1.8.1
+
+### Patch Changes
+
+- [#397](https://github.com/seek-oss/vocab/pull/397) [`e786061`](https://github.com/seek-oss/vocab/commit/e7860617b39bd395ae8be0daf7b2ca308f25f600) Thanks [@askoufis](https://github.com/askoufis)! - Fixes a bug causing the `@vocab/core/runtime` CJS entrypoint to be bundled incorrectly, resulting in a runtime error
+
 ## 1.8.0
 
 ### Minor Changes

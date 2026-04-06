@@ -1,5 +1,12 @@
 # @vocab/rollup-plugin
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`e786061`](https://github.com/seek-oss/vocab/commit/e7860617b39bd395ae8be0daf7b2ca308f25f600)]:
+  - @vocab/core@1.8.1
+
 ## 0.1.7
 
 ### Patch Changes
