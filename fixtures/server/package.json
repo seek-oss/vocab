@@ -17,7 +17,7 @@
     "@types/loadable__component": "^5.13.1",
     "@types/loadable__server": "^5.12.3",
     "@types/loadable__webpack-plugin": "^5.7.1",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@types/start-server-webpack-plugin": "^2.2.0",
