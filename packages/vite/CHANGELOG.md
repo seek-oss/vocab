@@ -1,5 +1,14 @@
 # @vocab/vite
 
+## 1.0.4
+
+### Patch Changes
+
+- [#410](https://github.com/seek-oss/vocab/pull/410) [`af686bd`](https://github.com/seek-oss/vocab/commit/af686bd0496cefb14fed5e92ebf46a9dc6e8db3f) Thanks [@jahredhope](https://github.com/jahredhope)! - Fix locale chunk splitting for hyphenated locale names
+
+  Previously translations for en-AU and en-NZ would be merged into a single en file when bundling.
+  Locale chunks should now be split by any valid BCP 47 Tag.
+
 ## 1.0.3
 
 ### Patch Changes
