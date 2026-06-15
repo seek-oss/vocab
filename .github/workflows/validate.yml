@@ -39,7 +39,7 @@ jobs:
         # if: steps.puppeteer-cache.outputs.cache-hit != 'true'
         run: |
           echo "Starting Install Puppeteer"
-          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          pnpm exec puppeteer browsers install chrome
           echo "Finished Install Puppeteer"
 
       - name: Build
@@ -54,7 +54,7 @@ jobs:
       - name: Test
         run: |
           echo "Starting Install Puppeteer"
-          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          pnpm exec puppeteer browsers install chrome
           echo "Finished Install Puppeteer"
           pnpm test
 
@@ -92,7 +92,7 @@ jobs:
         # if: steps.puppeteer-cache.outputs.cache-hit != 'true'
         run: |
           echo "Starting Install Puppeteer"
-          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          pnpm exec puppeteer browsers install chrome
           echo "Finished Install Puppeteer"
 
       - name: Build
