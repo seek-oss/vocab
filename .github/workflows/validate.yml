@@ -25,17 +25,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
-      - name: Cache Puppeteer
-        id: puppeteer-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: /home/runner/.cache/puppeteer
-          key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+      # - name: Cache Puppeteer
+      #   id: puppeteer-cache
+      #   uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      #   with:
+      #     path: /home/runner/.cache/puppeteer
+      #     key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
 
       - name: Install Puppeteer
-        if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: pnpm puppeteer browsers install chrome
+        # if: steps.puppeteer-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Starting Install Puppeteer"
+          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          echo "Finished Install Puppeteer"
 
       - name: Build
         run: pnpm build
@@ -47,11 +52,7 @@ jobs:
         run: pnpm lint
 
       - name: Test
-        run: |
-          echo "Installing puppeteer"
-          pnpm puppeteer browsers install chrome
-          echo "Finished installing puppeteer"
-          pnpm test
+        run: pnpm test
 
   validate-windows:
     name: Test on Windows
@@ -73,17 +74,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
-      - name: Cache Puppeteer
-        id: puppeteer-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: C:\Users\runneradmin\.cache\puppeteer
-          key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+      # - name: Cache Puppeteer
+      #   id: puppeteer-cache
+      #   uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      #   with:
+      #     path: C:\Users\runneradmin\.cache\puppeteer
+      #     key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
 
       - name: Install Puppeteer
-        if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: pnpm puppeteer browsers install chrome
+        # if: steps.puppeteer-cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Starting Install Puppeteer"
+          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          echo "Finished Install Puppeteer"
 
       - name: Build
         run: pnpm build
