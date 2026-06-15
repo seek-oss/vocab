@@ -52,7 +52,7 @@ describe('createVocabChunks', () => {
   });
 
   it.each(['invalid.js', 'virtual:en.json', 'virtual:vocab.js'])(
-    'should chunk non-entry $0',
+    'should chunk non-vocab virtual file $0',
     (moduleId) => {
       const ctx = {
         getModuleInfo: vi.fn((_id: string) => ({
