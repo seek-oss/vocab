@@ -52,7 +52,11 @@ jobs:
         run: pnpm lint
 
       - name: Test
-        run: pnpm test
+        run: |
+          echo "Starting Install Puppeteer"
+          node node_modules/puppeteer/lib/cjs/puppeteer/node/cli.js browsers install chrome
+          echo "Finished Install Puppeteer"
+          pnpm test
 
   validate-windows:
     name: Test on Windows
