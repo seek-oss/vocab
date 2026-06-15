@@ -9,6 +9,7 @@ const trace = _trace.extend('create-vocab-chunks');
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
   const match = /virtual:vocab-([\w-]+)\.json/.exec(id);
+
   if (!match) {
     return;
   }
