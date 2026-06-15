@@ -25,6 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Cache Puppeteer
         id: puppeteer-cache
@@ -69,6 +71,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Cache Puppeteer
         id: puppeteer-cache
