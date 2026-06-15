@@ -56,6 +56,7 @@ function App({ children }: { children: ReactNode }) {
       >
         <option value="en">en</option>
         <option value="fr">fr</option>
+        <option value="fr-FR">fr-FR</option>
         <option value="pseudo">pseudo</option>
       </select>
       {lang === 'en' ? (

@@ -60,7 +60,7 @@
     "eslint-config-seek": "^15.0.0",
     "expect-puppeteer": "^11.0.0",
     "prettier": "^3.5.3",
-    "puppeteer": "^24.15.0",
+    "puppeteer": "^25.1.0",
     "tsdown": "^0.21.0",
     "tsx": "^4.10.5",
     "typescript": "^5.5.4",
