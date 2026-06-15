@@ -2,97 +2,67 @@ import { describe, it, expect, vi } from 'vitest';
 import type { ChunkingContext } from 'rolldown';
 import { createVocabChunks } from './create-vocab-chunks';
 
-function createMockContext(
-  modules: Record<
-    string,
-    { isEntry: boolean; dynamicImporters: string[]; importers: string[] }
-  >,
-): ChunkingContext {
-  return {
-    getModuleInfo: vi.fn((id: string) => modules[id] ?? null),
-  } as unknown as ChunkingContext;
-}
-
 describe('createVocabChunks', () => {
-  it('should extract a simple locale', () => {
-    const ctx = createMockContext({
-      'virtual:vocab-en.json?source=abc': {
-        isEntry: false,
-        dynamicImporters: ['app.ts'],
-        importers: [],
-      },
-      'app.ts': {
-        isEntry: true,
-        dynamicImporters: [],
-        importers: [],
-      },
-    });
+  it.each(['app.js', 'chunk-a.js', 'virtual:vocab-en.json?source=abc'])(
+    'should not chunk entry into $0',
+    (moduleId) => {
+      const ctx = {
+        getModuleInfo: vi.fn((_id: string) => ({
+          isEntry: true,
+          dynamicImporters: [],
+          importers: [],
+        })),
+      } as unknown as ChunkingContext;
 
-    expect(createVocabChunks('virtual:vocab-en.json?source=abc', ctx)).toBe(
-      'en-translations',
-    );
+      expect(createVocabChunks(moduleId, ctx)).toBeUndefined();
+    },
+  );
+
+  it.each([
+    {
+      locale: 'en',
+      moduleId: 'virtual:vocab-en.json?source=abc',
+      expected: 'en-translations',
+    },
+    {
+      locale: 'en-AU',
+      moduleId: 'virtual:vocab-en-AU.json?source=abc',
+      expected: 'en-AU-translations',
+    },
+    {
+      locale: 'fr-FR',
+      moduleId: 'virtual:vocab-fr-FR.json?source=abc',
+      expected: 'fr-FR-translations',
+    },
+    {
+      locale: 'zh-Hans-CN',
+      moduleId: 'virtual:vocab-zh-Hans-CN.json?source=abc',
+      expected: 'zh-Hans-CN-translations',
+    },
+  ])('should chunk non-entry into $expected', ({ moduleId, expected }) => {
+    const ctx = {
+      getModuleInfo: vi.fn((_id: string) => ({
+        isEntry: false,
+        dynamicImporters: ['app.js'],
+        importers: [],
+      })),
+    } as unknown as ChunkingContext;
+
+    expect(createVocabChunks(moduleId, ctx)).toBe(expected);
   });
 
-  it('should extract a hyphenated locale', () => {
-    const ctx = createMockContext({
-      'virtual:vocab-en-AU.json?source=abc': {
-        isEntry: false,
-        dynamicImporters: ['app.ts'],
-        importers: [],
-      },
-      'app.ts': {
-        isEntry: true,
-        dynamicImporters: [],
-        importers: [],
-      },
-    });
+  it.each(['invalid.js', 'virtual:en.json', 'virtual:vocab.js'])(
+    'should chunk non-entry $0',
+    (moduleId) => {
+      const ctx = {
+        getModuleInfo: vi.fn((_id: string) => ({
+          isEntry: false,
+          dynamicImporters: ['app.js'],
+          importers: [],
+        })),
+      } as unknown as ChunkingContext;
 
-    expect(createVocabChunks('virtual:vocab-en-AU.json?source=abc', ctx)).toBe(
-      'en-AU-translations',
-    );
-  });
-
-  it('should extract a multi-segment locale', () => {
-    const ctx = createMockContext({
-      'virtual:vocab-fr-FR.json?source=abc': {
-        isEntry: false,
-        dynamicImporters: ['app.ts'],
-        importers: [],
-      },
-      'app.ts': {
-        isEntry: true,
-        dynamicImporters: [],
-        importers: [],
-      },
-    });
-
-    expect(createVocabChunks('virtual:vocab-fr-FR.json?source=abc', ctx)).toBe(
-      'fr-FR-translations',
-    );
-  });
-
-  it('should return undefined for non-vocab module IDs', () => {
-    const ctx = createMockContext({});
-
-    expect(createVocabChunks('some-other-module.ts', ctx)).toBeUndefined();
-  });
-
-  it('should return undefined when no dependent entry points exist', () => {
-    const ctx = createMockContext({
-      'virtual:vocab-fr.json?source=abc': {
-        isEntry: false,
-        dynamicImporters: ['intermediate.ts'],
-        importers: [],
-      },
-      'intermediate.ts': {
-        isEntry: false,
-        dynamicImporters: [],
-        importers: [],
-      },
-    });
-
-    expect(
-      createVocabChunks('virtual:vocab-fr.json?source=abc', ctx),
-    ).toBeUndefined();
-  });
+      expect(createVocabChunks(moduleId, ctx)).toBeUndefined();
+    },
+  );
 });
