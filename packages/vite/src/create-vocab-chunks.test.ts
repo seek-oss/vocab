@@ -4,7 +4,7 @@ import { createVocabChunks } from './create-vocab-chunks';
 
 describe('createVocabChunks', () => {
   it.each(['app.js', 'chunk-a.js', 'virtual:vocab-en.json?source=abc'])(
-    'should not chunk entry into $0',
+    'should not chunk entry $0',
     (moduleId) => {
       const ctx = {
         getModuleInfo: vi.fn((_id: string) => ({
