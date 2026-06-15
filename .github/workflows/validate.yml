@@ -34,10 +34,7 @@ jobs:
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
 
       - name: Install Puppeteer
-        if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: |
-          rm -rf /home/runner/.cache/puppeteer
-          pnpm puppeteer browsers install chrome
+        run: pnpm puppeteer browsers install chrome
 
       - name: Build
         run: pnpm build
@@ -80,10 +77,7 @@ jobs:
           key: puppeteer-${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
 
       - name: Install Puppeteer
-        if: steps.puppeteer-cache.outputs.cache-hit != 'true'
-        run: |
-          rm -rf C:\Users\runneradmin\.cache\puppeteer
-          pnpm puppeteer browsers install chrome
+        run: pnpm puppeteer browsers install chrome
 
       - name: Build
         run: pnpm build
