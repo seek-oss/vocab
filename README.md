@@ -698,6 +698,8 @@ vocab compile --watch
 
 ## External Translation Tooling
 
+> Note: Phrase integration is being phased out and will be replaced in a future release. Ongoing support for this integration will be limited.
+
 Vocab can be used to synchronize your translations with translations from a remote translation platform.
 
 | Platform | Environment Variables               |
