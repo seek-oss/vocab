@@ -4,5 +4,15 @@ packages:
   - tests
   - test-helpers
 
-onlyBuiltDependencies:
-  - puppeteer
+dedupePeers: true
+linkWorkspacePackages: deep
+preferWorkspacePackages: true
+
+allowBuilds:
+  esbuild: false
+  puppeteer: true
+  unrs-resolver: false
+
+minimumReleaseAgeExclude:
+  - 'eslint-config-seek'
+  - 'renovate-config-seek'
