@@ -15,4 +15,3 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - 'eslint-config-seek'
-  - 'renovate-config-seek'
