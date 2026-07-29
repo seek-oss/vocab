@@ -248,6 +248,13 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
   await writeIfChanged(outputFilePath, declaration);
 }
 
+export function isWatchPathIgnored(
+  pathToCheck: string,
+  ignorePatterns: string[],
+) {
+  return pm.isMatch(pathToCheck, ignorePatterns, { dot: true });
+}
+
 export async function watch(config: UserConfig) {
   const cwd = config.projectRoot || process.cwd();
 
@@ -258,7 +265,7 @@ export async function watch(config: UserConfig) {
   ];
 
   const ignoredFunction = (pathToCheck: string) =>
-    pm.isMatch(pathToCheck, ignorePatterns);
+    isWatchPathIgnored(pathToCheck, ignorePatterns);
 
   const chokidar = await import('chokidar');
   const watcher = chokidar.watch(cwd, {

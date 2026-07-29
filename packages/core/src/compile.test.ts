@@ -1,9 +1,11 @@
 import { describe, it } from 'vitest';
 import { createFixture } from 'fs-fixture';
-import { compile } from './compile';
+import { compile, isWatchPathIgnored } from './compile';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { UserConfig } from './types';
+
+const defaultWatchIgnorePatterns = ['**/node_modules/**', '**/.git/**'];
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -296,5 +298,45 @@ describe.concurrent('compile', { retry: 2 }, () => {
       expect(updatedContent).toMatchSnapshot();
       await stopWatching?.();
     });
+  });
+});
+
+describe('isWatchPathIgnored', () => {
+  it('ignores node_modules under a dotted path segment', ({ expect }) => {
+    expect(
+      isWatchPathIgnored(
+        '/tmp/.cursor/worktrees/app/node_modules/pkg/index.js',
+        defaultWatchIgnorePatterns,
+      ),
+    ).toBe(true);
+  });
+
+  it('ignores node_modules under a normal path', ({ expect }) => {
+    expect(
+      isWatchPathIgnored(
+        '/tmp/Code/app/node_modules/pkg/index.js',
+        defaultWatchIgnorePatterns,
+      ),
+    ).toBe(true);
+  });
+
+  it('ignores .git under a dotted path segment', ({ expect }) => {
+    expect(
+      isWatchPathIgnored(
+        '/tmp/.cursor/worktrees/app/.git/config',
+        defaultWatchIgnorePatterns,
+      ),
+    ).toBe(true);
+  });
+
+  it('does not ignore source .vocab translation files under a dotted path', ({
+    expect,
+  }) => {
+    expect(
+      isWatchPathIgnored(
+        '/tmp/.cursor/worktrees/app/src/feature/.vocab/translations.json',
+        defaultWatchIgnorePatterns,
+      ),
+    ).toBe(false);
   });
 });
