@@ -1,5 +1,14 @@
 # @vocab/core
 
+## 1.8.2
+
+### Patch Changes
+
+- [#419](https://github.com/seek-oss/vocab/pull/419) [`4bac576`](https://github.com/seek-oss/vocab/commit/4bac5767a8b270128f6c097b0e8db97c238cbd81) Thanks [@felixhabib](https://github.com/felixhabib)! - Fix watch mode failing to ignore `node_modules` and `.git` when the project path contains a directory segment that starts with `.`.
+
+  Previously, picomatch’s `**` did not traverse those segments in the watcher ignore matcher, so chokidar could watch the entire dependency tree and hit EMFILE.
+  Watch ignores now pass `{ dot: true }`, matching the existing translation discovery glob.
+
 ## 1.8.1
 
 ### Patch Changes
