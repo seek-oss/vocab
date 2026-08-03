@@ -18,8 +18,7 @@ export type ParsedFormatFnByKey = Record<string, ParsedFormatFn>;
  * const animal: AnyAnimal = "";
  */
 export type StringWithSuggestions<Suggestions extends string> =
-  | Suggestions
-  | Omit<string, Suggestions>;
+  Suggestions | Omit<string, Suggestions>;
 
 /**
  * ParsedICUMessage A strictly typed formatter from intl-messageformat
