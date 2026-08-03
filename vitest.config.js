@@ -10,6 +10,7 @@ export default defineConfig({
     globals: true,
     restoreMocks: true,
     exclude: defaultExclude,
+    snapshotSerializers: ['./tests/vite-asset-hash-serializer.ts'],
     projects: [
       {
         extends: true,

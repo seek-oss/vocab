@@ -24,14 +24,14 @@
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",
-    "memoize": "^10.1.0"
+    "memoize": "^11.0.0"
   },
   "peerDependencies": {
-    "rolldown": ">=1.0.0-beta.47",
+    "rolldown": "^1.0.0",
     "rollup": "^4.0.0"
   },
   "devDependencies": {
-    "rolldown": "^1.0.0-rc.9",
+    "rolldown": "^1.2.1",
     "rollup": "^4.0.0"
   },
   "peerDependenciesMeta": {
