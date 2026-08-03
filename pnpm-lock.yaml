@@ -416,8 +416,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       memoize:
-        specifier: ^10.1.0
-        version: 10.2.0
+        specifier: ^11.0.0
+        version: 11.0.0
     devDependencies:
       rolldown:
         specifier: ^1.2.1
@@ -4111,9 +4111,9 @@ packages:
     peerDependencies:
       tslib: '2'
 
-  memoize@10.2.0:
-    resolution: {integrity: sha512-DeC6b7QBrZsRs3Y02A6A7lQyzFbsQbqgjI6UW0GigGWV+u1s25TycMr0XHZE4cJce7rY/vyw2ctMQqfDkIhUEA==}
-    engines: {node: '>=18'}
+  memoize@11.0.0:
+    resolution: {integrity: sha512-cjsfZaC9b1clqPeIVMbb5dLHSXgdgGWGxdAU3oTUUkHiwWTKTBNnSmcqWJncNjYtBi3S8Rp0c5GIiyGztR8TRA==}
+    engines: {node: '>=22'}
 
   merge-descriptors@2.0.0:
     resolution: {integrity: sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g==}
@@ -9284,7 +9284,7 @@ snapshots:
       tree-dump: 1.1.0(tslib@2.8.1)
       tslib: 2.8.1
 
-  memoize@10.2.0:
+  memoize@11.0.0:
     dependencies:
       mimic-function: 5.0.1
 

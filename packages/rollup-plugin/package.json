@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",
-    "memoize": "^10.1.0"
+    "memoize": "^11.0.0"
   },
   "peerDependencies": {
     "rolldown": "^1.0.0",
