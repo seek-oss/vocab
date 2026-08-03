@@ -1,5 +1,11 @@
 # @vocab/rollup-plugin
 
+## 0.1.10
+
+### Patch Changes
+
+- [#422](https://github.com/seek-oss/vocab/pull/422) [`c9566b8`](https://github.com/seek-oss/vocab/commit/c9566b8f5d4b84d6c9c1d059ccb8954c6ffd077a) Thanks [@askoufis](https://github.com/askoufis)! - Update `memoize` dependency to `^11.0.0`
+
 ## 0.1.9
 
 ### Patch Changes
