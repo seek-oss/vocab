@@ -1,0 +1,41 @@
+import { defineConfig } from 'vite';
+import { vitePluginVocab } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/chunks';
+import vocabConfig from './vocab.config.cjs';
+
+export default defineConfig(({ isSsrBuild }) => ({
+  plugins: [
+    vitePluginVocab({
+      vocabConfig,
+    }),
+  ],
+  resolve: {
+    conditions: ['@vocab-private/monorepo'],
+  },
+  ssr: {
+    resolve: {
+      conditions: ['@vocab-private/monorepo'],
+    },
+  },
+  build: {
+    outDir: isSsrBuild ? 'dist/server' : 'dist/client',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: isSsrBuild ? 'src/server.tsx' : undefined,
+      output: isSsrBuild
+        ? {
+            format: 'cjs',
+            entryFileNames: 'server.cjs',
+          }
+        : {
+            chunkFileNames: '[name].js',
+            manualChunks: (id, ctx) => {
+              const vocabChunk = createVocabChunks(id, ctx);
+              if (vocabChunk) {
+                return vocabChunk;
+              }
+            },
+          },
+    },
+  },
+}));

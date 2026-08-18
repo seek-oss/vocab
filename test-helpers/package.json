@@ -13,6 +13,7 @@
     "@vocab-fixtures/simple": "workspace:*",
     "@vocab-fixtures/translation-types": "workspace:*",
     "@vocab-fixtures/vite": "workspace:*",
+    "@vocab-fixtures/vite-ssr": "workspace:*",
     "@vocab/core": "workspace:*",
     "vite": "^8.0.0",
     "wait-on": "^8.0.0",
