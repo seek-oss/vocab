@@ -291,6 +291,12 @@ export const collectAppSnapshot = async (url: string) => {
 
   const snapshotPage = await browser.newPage();
 
+  snapshotPage.on('pageerror', (msg) => {
+    if (msg instanceof Error) {
+      errors.push(msg.message);
+    }
+  });
+
   snapshotPage.on('console', (msg) => {
     if (msg.type() === 'warn') {
       warnings.push(msg.text());
