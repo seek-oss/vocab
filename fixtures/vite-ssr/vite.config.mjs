@@ -10,14 +10,25 @@ export default defineConfig(({ isSsrBuild }) => ({
     }),
   ],
   resolve: {
-    conditions: ['@vocab-private/monorepo'],
+    conditions: [
+      '@vocab-private/monorepo',
+      'module',
+      'browser',
+      'development|production',
+    ],
   },
   ssr: {
     resolve: {
-      conditions: ['@vocab-private/monorepo'],
+      conditions: [
+        '@vocab-private/monorepo',
+        'module',
+        'node',
+        'development|production',
+      ],
     },
   },
   build: {
+    modulePreload: { polyfill: false },
     outDir: isSsrBuild ? 'dist/server' : 'dist/client',
     emptyOutDir: true,
     rollupOptions: {
