@@ -30,7 +30,9 @@ const start = async () => {
     const html = template
       .replace(
         '<!--ssr-head-->',
-        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script>`,
+        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script>
+        <link rel="modulepreload" href="/${language}-translations.js" crossorigin>
+        <script type="module" src="/${language}-translations.js"></script>`,
       )
       .replace('<!--ssr-outlet-->', appHtml);
 

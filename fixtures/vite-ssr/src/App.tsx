@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslations, VocabProvider } from '@vocab/react';
 
 import translations from './App.vocab';
+import { Header } from './Header';
 
 function Content() {
   const { t } = useTranslations(translations);
@@ -15,6 +16,7 @@ export function App({ initialLanguage }: { initialLanguage: string }) {
 
   return (
     <VocabProvider language={lang}>
+      <Header />
       <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
         Toggle language
       </button>
