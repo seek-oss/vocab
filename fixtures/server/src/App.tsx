@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import { useTranslations, VocabProvider } from '@vocab/react';
 
 import translations from './App.vocab';
@@ -14,11 +14,19 @@ export function App({ initialLanguage }: { initialLanguage: string }) {
   const [lang, setLang] = useState(initialLanguage);
 
   return (
-    <VocabProvider language={lang}>
-      <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
+    <>
+      <button
+        onClick={() =>
+          startTransition(() => {
+            setLang((curr) => (curr === 'en' ? 'fr' : 'en'));
+          })
+        }
+      >
         Toggle language
       </button>
-      <Content />
-    </VocabProvider>
+      <VocabProvider language={lang}>
+        <Content />
+      </VocabProvider>
+    </>
   );
 }

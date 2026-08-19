@@ -23,6 +23,11 @@ export function createTranslationFile<
     return translationModule;
   }
 
+  const messagesPromiseCache = new Map<
+    string,
+    Promise<ParsedICUMessages<FormatFnByKey>>
+  >();
+
   return {
     getLoadedMessages(
       language: Language,
@@ -35,16 +40,33 @@ export function createTranslationFile<
       language: Language,
       locale?: string,
     ): Promise<ParsedICUMessages<FormatFnByKey>> {
+      const localeToUse = locale || language;
+      const cacheKey = `${language}::${localeToUse}`;
+      const cachedPromise = messagesPromiseCache.get(cacheKey);
+
+      if (cachedPromise) {
+        return cachedPromise;
+      }
+
       const translationModule = getByLanguage(language);
-      return translationModule.load().then(() => {
-        const result = translationModule.getValue(locale || language);
-        if (!result) {
-          throw new Error(
-            `Unable to find translations for ${language} after attempting to load. Module may have failed to load or an internal error may have occurred.`,
-          );
-        }
-        return result;
-      });
+      const promise = translationModule
+        .load()
+        .then(() => {
+          const result = translationModule.getValue(localeToUse);
+          if (!result) {
+            throw new Error(
+              `Unable to find translations for ${language} after attempting to load. Module may have failed to load or an internal error may have occurred.`,
+            );
+          }
+          return result;
+        })
+        .catch((error: unknown) => {
+          messagesPromiseCache.delete(cacheKey);
+          throw error;
+        });
+
+      messagesPromiseCache.set(cacheKey, promise);
+      return promise;
     },
     load(language: Language): Promise<void> {
       const translationModule = getByLanguage(language);

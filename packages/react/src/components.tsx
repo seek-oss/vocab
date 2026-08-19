@@ -7,9 +7,10 @@ import type {
 
 import React, {
   type ReactNode,
+  Suspense,
+  use,
   useContext,
   useMemo,
-  useReducer,
   isValidElement,
   cloneElement,
   useCallback,
@@ -58,6 +59,12 @@ interface VocabProviderProps {
    * <VocabProvider />
    */
   locale?: TranslationsContextValue['locale'];
+  /**
+   * Fallback shown by the `Suspense` boundary that wraps `children` while
+   * translations load. Defaults to `null`, which keeps server-rendered HTML
+   * visible during hydration.
+   */
+  fallback?: ReactNode;
   children: ReactNode;
 }
 
@@ -75,12 +82,13 @@ export const VocabProvider = ({
   children,
   language,
   locale,
+  fallback = null,
 }: VocabProviderProps) => {
   const value = useMemo(() => ({ language, locale }), [language, locale]);
 
   return (
     <TranslationsContext.Provider value={value}>
-      {children}
+      <Suspense fallback={fallback}>{children}</Suspense>
     </TranslationsContext.Provider>
   );
 };
@@ -104,14 +112,12 @@ export const useLanguage = (): TranslationsContextValue => {
   return context;
 };
 
-const SERVER_RENDERING = typeof window === 'undefined';
-
 type FormatXMLElementReactNodeFn = (parts: ReactNode[]) => ReactNode;
 
 type MapToReactNodeFunction<Params extends Record<string, any>> = {
   [key in keyof Params]: Params[key] extends ParsedFormatFn
-    ? FormatXMLElementReactNodeFn
-    : Params[key];
+  ? FormatXMLElementReactNodeFn
+  : Params[key];
 };
 
 type TranslateFn<FormatFnByKey extends ParsedFormatFnByKey> = {
@@ -139,39 +145,38 @@ export function useTranslations<
 >(
   translations: TranslationFile<Language, FormatFnByKey>,
 ): {
+  /**
+   * Always `true`. `useTranslations` suspends until messages are loaded, so
+   * this hook never returns while translations are unavailable.
+   *
+   * @deprecated Unnecessary; the hook suspends until ready.
+   */
   ready: boolean;
   t: TranslateFn<FormatFnByKey>;
 } {
   const { language, locale } = useLanguage();
-  const [, forceRender] = useReducer((s: number) => s + 1, 0);
+  const localeToUse = locale || language;
 
-  const translationsObject = translations.getLoadedMessages(
+  let translationsObject = translations.getLoadedMessages(
     language as any,
-    locale || language,
+    localeToUse,
   );
 
-  let ready = true;
-
   if (!translationsObject) {
-    if (SERVER_RENDERING) {
+    if (typeof window === 'undefined') {
       throw new Error(
         `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
       );
     }
 
-    translations.load(language as any).then(() => {
-      forceRender();
-    });
-    ready = false;
+    translationsObject = use(
+      translations.getMessages(language as any, localeToUse),
+    );
   }
 
   const t = useCallback(
     (key: string, params?: any) => {
-      if (!translationsObject) {
-        return ' ';
-      }
-
-      const message = translationsObject?.[key];
+      const message = translationsObject[key];
 
       if (!message) {
         // eslint-disable-next-line no-console
@@ -207,7 +212,7 @@ export function useTranslations<
   );
 
   return {
-    ready,
+    ready: true,
     t,
   };
 }

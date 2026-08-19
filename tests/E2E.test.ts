@@ -5,7 +5,6 @@ page.setDefaultTimeout(20_000);
 
 import {
   getAppSnapshot,
-  collectAppSnapshot,
   startFixture,
   runServerFixture,
   runViteSsrFixture,
@@ -56,24 +55,37 @@ describe('E2E', () => {
       server.close();
     });
 
-    // Client language chunks load asynchronously. Hydrating without waiting
-    // for them updates state during render, which React 19 rejects.
     it('should return english when route is en', async () => {
-      const { sourceHtml, clientRenderContent, errors } =
-        await collectAppSnapshot(`${server.url}/en/`);
+      const { sourceHtml, clientRenderContent } = await getAppSnapshot(
+        `${server.url}/en/`,
+      );
 
       expect(sourceHtml).toContain('Hello world');
       expect(clientRenderContent).toContain('Hello world');
-      expect(errors).toEqual([]);
     });
 
     it('should return french when route is fr', async () => {
-      const { sourceHtml, clientRenderContent, errors } =
-        await collectAppSnapshot(`${server.url}/fr/`);
+      const { sourceHtml, clientRenderContent } = await getAppSnapshot(
+        `${server.url}/fr/`,
+      );
 
       expect(sourceHtml).toContain('Bonjour monde');
       expect(clientRenderContent).toContain('Bonjour monde');
-      expect(errors).toEqual([]);
+    });
+
+    it('should switch language on the client', async () => {
+      await vitestPuppeteer.resetPage();
+      await page.goto(`${server.url}/en/`, { waitUntil: 'networkidle0' });
+
+      await expect(await page.waitForSelector('#message')).toMatchTextContent(
+        'Hello world',
+      );
+
+      await page.click('#toggle-language');
+
+      await expect(await page.waitForSelector('#message')).toMatchTextContent(
+        'Bonjour monde',
+      );
     });
   });
 

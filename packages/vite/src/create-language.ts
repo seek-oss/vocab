@@ -16,9 +16,9 @@ export const createLanguage = (
     },
     load: () => {
       if (!promiseValue) {
-        promiseValue = loadImport();
-        promiseValue.then((value) => {
-          resolvedValue = value.default;
+        promiseValue = loadImport().then((value) => {
+          resolvedValue = value.default ?? value;
+          return value;
         });
       }
       return promiseValue;

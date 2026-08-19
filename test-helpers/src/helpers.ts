@@ -332,6 +332,6 @@ export const getLanguageChunk = async ({
   serverUrl: string;
   language: string;
 }) => {
-  const response = await page.goto(`${serverUrl}/${language}-translations.js`);
-  return await response?.text();
+  const response = await fetch(`${serverUrl}/${language}-translations.js`);
+  return await response.text();
 };

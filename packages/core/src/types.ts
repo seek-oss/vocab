@@ -53,6 +53,7 @@ export type TranslationFile<
 > = {
   /**
    *  Retrieve messages. If not loaded, will attempt to load messages and resolve once complete.
+   *  The returned Promise is cached per language and locale so the same instance can be passed to React `use()`.
    */
   getMessages: (
     language: Language,
