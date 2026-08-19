@@ -22,8 +22,10 @@ describe('createLanguage', () => {
     expect(loadImport).not.toHaveBeenCalled();
   });
 
-  it('retains dynamic imports for languages that are not registered', async () => {
-    const loadImport = vi.fn().mockResolvedValue({ default: messages });
+  it('reads messages registered as a side effect of loading a language', async () => {
+    const loadImport = vi.fn(async () => {
+      getTranslationRegistry().set(moduleId, messages);
+    });
     const language = createLanguage(moduleId, loadImport);
 
     expect(language.getValue('en')).toBeUndefined();
@@ -33,6 +35,18 @@ describe('createLanguage', () => {
     expect(language.getValue('en')?.greeting.format({ name: 'world' })).toBe(
       'Hello world',
     );
+    expect(loadImport).toHaveBeenCalledOnce();
+  });
+
+  it('memoizes language loads', async () => {
+    const loadImport = vi.fn(() => Promise.resolve());
+    const language = createLanguage(moduleId, loadImport);
+
+    const firstLoad = language.load();
+    const secondLoad = language.load();
+
+    expect(firstLoad).toBe(secondLoad);
+    await firstLoad;
     expect(loadImport).toHaveBeenCalledOnce();
   });
 });

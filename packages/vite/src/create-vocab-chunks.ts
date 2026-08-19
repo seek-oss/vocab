@@ -1,20 +1,23 @@
 import type { ChunkingContext } from 'rolldown';
 import { trace as _trace } from './logger';
+import { getPreloadLanguage } from './consts';
 import { getChunkName } from './get-chunk-name';
 
 const trace = _trace.extend('create-vocab-chunks');
+
+const getLanguageFromVirtualId = (id: string) =>
+  getPreloadLanguage(id) ?? /virtual:vocab-(.+)-[^-]+\.js/.exec(id)?.[1];
 
 /**
  * Gets vocab virtual module details and creates chunks for each language
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
-  const match = /virtual:vocab-([\w-]+)\.js/.exec(id);
+  const language = getLanguageFromVirtualId(id);
 
-  if (!match) {
+  if (!language) {
     return;
   }
 
-  const language = match[1];
   const dependentEntryPoints: string[] = [];
 
   const rootModuleInfo = ctx.getModuleInfo(id);
@@ -24,7 +27,10 @@ export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
     return;
   }
 
-  const idsToHandle = new Set<string>(rootModuleInfo.dynamicImporters);
+  const idsToHandle = new Set<string>([
+    ...rootModuleInfo.dynamicImporters,
+    ...rootModuleInfo.importers,
+  ]);
 
   for (const moduleId of idsToHandle) {
     const moduleInfo = ctx.getModuleInfo(moduleId);

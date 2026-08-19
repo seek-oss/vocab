@@ -8,5 +8,12 @@ export const getTranslationRegistry = () => {
     [registrySymbol]?: Map<string, TranslationMessagesByKey>;
   };
 
-  return (globalObject[registrySymbol] ??= new Map());
+  let registry = globalObject[registrySymbol];
+
+  if (!registry) {
+    registry = new Map();
+    globalObject[registrySymbol] = registry;
+  }
+
+  return registry;
 };

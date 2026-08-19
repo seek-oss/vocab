@@ -255,6 +255,27 @@ describe('E2E', () => {
       await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
 
+    it('should expose loaded messages on the first tick when the language chunk is on the page', async () => {
+      const enCommon = await page.waitForSelector('#sync-en-common');
+      const enClient = await page.waitForSelector('#sync-en-client');
+
+      await expect(enCommon).toMatchTextContent('loaded');
+      await expect(enClient).toMatchTextContent('loaded');
+    });
+
+    it('should leave messages unloaded when their language chunk is not on the page', async () => {
+      const frInitial = await page.waitForSelector('#sync-fr-initial');
+
+      await expect(frInitial).toMatchTextContent('missing');
+    });
+
+    it('should load sibling translation files for the same language', async () => {
+      await page.click('#load-fr-sibling');
+
+      const frSibling = await page.waitForSelector('#sync-fr-sibling');
+      await expect(frSibling).toMatchTextContent('loaded');
+    });
+
     it('should return the expected en chunk', async () => {
       expect(
         await getLanguageChunk({
