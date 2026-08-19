@@ -1,4 +1,5 @@
 import { hydrateRoot } from 'react-dom/client';
+import { getChunkName } from '@vocab/vite/get-chunk-name';
 
 import { App } from './App';
 
@@ -8,7 +9,9 @@ declare global {
   }
 }
 
-// Hydrate immediately, without waiting for language chunks.
+const chunkName = getChunkName(window.INITIAL_LANGUAGE);
+await import(/* @vite-ignore */ `/${chunkName}.js`);
+
 hydrateRoot(
   document.getElementById('root')!,
   <App initialLanguage={window.INITIAL_LANGUAGE} />,

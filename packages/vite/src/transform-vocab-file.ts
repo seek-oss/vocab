@@ -90,7 +90,7 @@ const renderLanguageLoaderAsync =
       createIdentifier(lang, loadedTranslation),
     );
 
-    return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
+    return /* ts */ `createLanguage(${identifier}, () => import(${identifier}))`.trim();
   };
 
 const createIdentifier = (

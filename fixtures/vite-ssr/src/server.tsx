@@ -2,6 +2,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+import { getChunkName } from '@vocab/vite/get-chunk-name';
 import express, { type Request, type Response } from 'express';
 import { renderToString } from 'react-dom/server';
 
@@ -27,10 +28,11 @@ const start = async () => {
 
     const appHtml = renderToString(<App initialLanguage={language} />);
 
+    const chunkName = getChunkName(language);
     const html = template
       .replace(
         '<!--ssr-head-->',
-        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script>`,
+        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script><link rel="modulepreload" href="/${chunkName}.js" />`,
       )
       .replace('<!--ssr-outlet-->', appHtml);
 

@@ -1,24 +1,27 @@
 import type { TranslationModule } from '@vocab/core';
 import { getParsedICUMessages } from '@vocab/core/icu-handler';
 
+import { getLanguageRegistry } from './language-registry';
+
 export const createLanguage = (
+  moduleId: string,
   loadImport: () => Promise<any>,
 ): TranslationModule<any> => {
-  let promiseValue: Promise<any>;
-  let resolvedValue: any;
+  let promiseValue: Promise<void>;
 
   return {
     getValue: (locale) => {
-      if (!resolvedValue) {
+      const messages = getLanguageRegistry().get(moduleId);
+      if (!messages) {
         return undefined;
       }
-      return getParsedICUMessages(resolvedValue, locale);
+      return getParsedICUMessages(messages, locale);
     },
     load: () => {
       if (!promiseValue) {
-        promiseValue = loadImport();
-        promiseValue.then((value) => {
-          resolvedValue = value.default;
+        promiseValue = loadImport().then((value) => {
+          const messages = value.default ?? value;
+          getLanguageRegistry().set(moduleId, messages);
         });
       }
       return promiseValue;

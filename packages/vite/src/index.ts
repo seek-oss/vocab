@@ -30,14 +30,18 @@ export const vitePluginVocab = ({
     },
     resolveId(id) {
       if (id.includes(virtualModuleId)) {
-        return `\0${id}`;
+        return {
+          id: `\0${id}`,
+          moduleSideEffects: true,
+        };
       }
     },
     load(id) {
       if (id.includes(`\0${virtualModuleId}`)) {
         return {
           code: virtualResourceLoader(id),
-          moduleType: 'json',
+          moduleType: 'js',
+          moduleSideEffects: true,
         };
       }
     },

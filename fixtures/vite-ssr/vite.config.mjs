@@ -28,7 +28,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     },
   },
   build: {
-    modulePreload: { polyfill: false },
+    modulePreload: false,
     outDir: isSsrBuild ? 'dist/server' : 'dist/client',
     emptyOutDir: true,
     rollupOptions: {

@@ -210,12 +210,12 @@ default usage
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
+import { vitePluginVocab } from '@vocab/vite';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ]
@@ -230,13 +230,13 @@ Simply use the function in your `manualChunks` configuration.
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
-import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
+import { vitePluginVocab } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/chunks';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ],
@@ -294,6 +294,21 @@ const extractor = new ChunkExtractor();
 
 extractor.addChunk(chunkName);
 ```
+
+For Vite SSR, the plugin only rewrites the **client** build. The SSR bundle keeps the compiled synchronous runtime. Use `getChunkName` to preload the language chunk, then `await import` it before `hydrateRoot` so the first client render matches the server HTML. Import it from `@vocab/vite/get-chunk-name` rather than `@vocab/vite/chunks` to keep `createVocabChunks` and its build-time dependencies out of the client bundle.
+
+```tsx
+// src/entry-client.tsx
+
+import { getChunkName } from '@vocab/vite/get-chunk-name';
+
+const chunkName = getChunkName(language);
+await import(/* @vite-ignore */ `/${chunkName}.js`);
+
+hydrateRoot(root, <App initialLanguage={language} />);
+```
+
+The server can also emit a modulepreload hint for the same file. Run `vocab compile` before `vite build` and `vite build --ssr`. This example assumes stable `chunkFileNames` such as `[name].js` (as in the vite-ssr fixture). Hashed chunk names need a lookup from the Vite manifest.
 
 ## Dynamic Values in Translations
 
