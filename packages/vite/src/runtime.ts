@@ -1,2 +1,2 @@
 export { createTranslationFile } from '@vocab/core/translation-file';
-export { createLanguage } from './create-language';
+export { createLanguage, registerVocabMessages } from './create-language';

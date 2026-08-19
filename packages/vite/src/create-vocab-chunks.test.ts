@@ -39,6 +39,21 @@ describe('createVocabChunks', () => {
       moduleId: 'virtual:vocab-zh-Hans-CN.json?source=abc',
       expected: 'zh-Hans-CN-translations',
     },
+    {
+      locale: 'en',
+      moduleId: 'virtual:vocab-preload-en',
+      expected: 'en-translations',
+    },
+    {
+      locale: 'en-AU',
+      moduleId: 'virtual:vocab-preload-en-AU',
+      expected: 'en-AU-translations',
+    },
+    {
+      locale: 'zh-Hans-CN',
+      moduleId: 'virtual:vocab-preload-zh-Hans-CN',
+      expected: 'zh-Hans-CN-translations',
+    },
   ])('should chunk non-entry into $expected', ({ moduleId, expected }) => {
     const ctx = {
       getModuleInfo: vi.fn((_id: string) => ({
@@ -51,18 +66,20 @@ describe('createVocabChunks', () => {
     expect(createVocabChunks(moduleId, ctx)).toBe(expected);
   });
 
-  it.each(['invalid.js', 'virtual:en.json', 'virtual:vocab.js'])(
-    'should chunk non-vocab virtual file $0',
-    (moduleId) => {
-      const ctx = {
-        getModuleInfo: vi.fn((_id: string) => ({
-          isEntry: false,
-          dynamicImporters: ['app.js'],
-          importers: [],
-        })),
-      } as unknown as ChunkingContext;
+  it.each([
+    'invalid.js',
+    'virtual:en.json',
+    'virtual:vocab.js',
+    'virtual:vocab-preload',
+  ])('should chunk non-vocab virtual file $0', (moduleId) => {
+    const ctx = {
+      getModuleInfo: vi.fn((_id: string) => ({
+        isEntry: false,
+        dynamicImporters: ['app.js'],
+        importers: [],
+      })),
+    } as unknown as ChunkingContext;
 
-      expect(createVocabChunks(moduleId, ctx)).toBeUndefined();
-    },
-  );
+    expect(createVocabChunks(moduleId, ctx)).toBeUndefined();
+  });
 });

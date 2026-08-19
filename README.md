@@ -210,12 +210,12 @@ default usage
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
+import { vitePluginVocab } from '@vocab/vite';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ]
@@ -230,13 +230,13 @@ Simply use the function in your `manualChunks` configuration.
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
-import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
+import { vitePluginVocab } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/chunks';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ],
@@ -275,9 +275,11 @@ type VocabPluginOptions = {
 
 ### Step 7: [Optional] Optimize for fast page loading
 
-Using the above method without optimizing what chunks webpack uses you may find the page needing to do an extra round trip to load languages on a page.
+Using the above method without optimizing which language chunks are included on the page may mean an extra round trip to load translations.
 
-This is where `getChunkName` can be used to retrieve the Webpack chunk used for a specific language.
+`getChunkName` returns the `{lang}-translations` chunk for a language. Include that chunk on the page as an evaluating script (not only `modulepreload`) so `getLoadedMessages` can succeed on the first client tick without calling `.load()`. This is the same sync contract for Webpack and Vite.
+
+#### Webpack
 
 For example, here is a server render function that would add the current language chunk to [Loadable component's ChunkExtractor](https://loadable-components.com/docs/api-loadable-server/#chunkextractor).
 
@@ -294,6 +296,18 @@ const extractor = new ChunkExtractor();
 
 extractor.addChunk(chunkName);
 ```
+
+#### Vite
+
+Use `createVocabChunks` so all messages for a language land in `{lang}-translations`. Then look that name up in the Vite manifest and emit a `<script type="module">` before the client entry:
+
+```tsx
+import { getChunkName } from '@vocab/vite/get-chunk-name';
+
+const chunkName = getChunkName(language);
+```
+
+`modulepreload` downloads the file but does not execute it, so it is not enough for sync `getLoadedMessages`. Once the module script has run, every `TranslationFile` for that language is readable. Loading any one file with `.load(language)` also installs the rest.
 
 ## Dynamic Values in Translations
 

@@ -9,7 +9,12 @@ import {
 import * as esModuleLexer from 'es-module-lexer';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 
-import { sourceQueryKey, virtualModuleId } from './consts';
+import {
+  getPreloadModuleId,
+  registryIdQueryKey,
+  sourceQueryKey,
+  virtualModuleId,
+} from './consts';
 
 import { trace as _trace } from './logger';
 
@@ -33,6 +38,7 @@ export const transformVocabFile = async (
   code: string,
   id: string,
   config: UserConfig,
+  identifiersByLang: Map<string, Set<string>>,
 ) => {
   trace('Transforming vocab file', id);
 
@@ -45,7 +51,10 @@ export const transformVocabFile = async (
     config,
   );
 
-  const renderLanguageLoader = renderLanguageLoaderAsync(loadedTranslation);
+  const renderLanguageLoader = renderLanguageLoaderAsync(
+    loadedTranslation,
+    identifiersByLang,
+  );
 
   const translations = /* ts */ `
     const translations = createTranslationFile({
@@ -84,13 +93,32 @@ export const transformVocabFile = async (
   return result;
 };
 
-const renderLanguageLoaderAsync =
-  (loadedTranslation: LoadedTranslation) => (lang: string) => {
-    const identifier = JSON.stringify(
-      createIdentifier(lang, loadedTranslation),
-    );
+const addIdentifier = (
+  identifiersByLang: Map<string, Set<string>>,
+  lang: string,
+  identifier: string,
+) => {
+  let identifiers = identifiersByLang.get(lang);
+  if (!identifiers) {
+    identifiers = new Set();
+    identifiersByLang.set(lang, identifiers);
+  }
+  identifiers.add(identifier);
+};
 
-    return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
+const renderLanguageLoaderAsync =
+  (
+    loadedTranslation: LoadedTranslation,
+    identifiersByLang: Map<string, Set<string>>,
+  ) =>
+  (lang: string) => {
+    const identifier = createIdentifier(lang, loadedTranslation);
+    addIdentifier(identifiersByLang, lang, identifier.virtualUrl);
+
+    return /* ts */ `createLanguage(
+      ${JSON.stringify(identifier.registryId)},
+      () => import(${JSON.stringify(getPreloadModuleId(lang))})
+    )`.trim();
   };
 
 const createIdentifier = (
@@ -109,7 +137,10 @@ const createIdentifier = (
     'base64',
   );
 
-  const encodedResource = `${sourceQueryKey}${base64}`;
+  const registryId = `vocab:${lang}:${base64}`;
 
-  return `${virtualModuleId}-${lang}.json${encodedResource}`;
+  return {
+    registryId,
+    virtualUrl: `${virtualModuleId}-${lang}.json?${registryIdQueryKey}${encodeURIComponent(registryId)}&${sourceQueryKey}${base64}`,
+  };
 };

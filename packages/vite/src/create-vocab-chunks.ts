@@ -4,17 +4,25 @@ import { getChunkName } from './get-chunk-name';
 
 const trace = _trace.extend('create-vocab-chunks');
 
+const getLanguageFromVirtualId = (id: string) => {
+  const preloadMatch = /virtual:vocab-preload-([\w-]+)/.exec(id);
+  if (preloadMatch) {
+    return preloadMatch[1];
+  }
+
+  return /virtual:vocab-([\w-]+)\.json/.exec(id)?.[1];
+};
+
 /**
  * Gets vocab virtual module details and creates chunks for each language
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
-  const match = /virtual:vocab-([\w-]+)\.json/.exec(id);
+  const language = getLanguageFromVirtualId(id);
 
-  if (!match) {
+  if (!language) {
     return;
   }
 
-  const language = match[1];
   const dependentEntryPoints: string[] = [];
 
   const rootModuleInfo = ctx.getModuleInfo(id);
@@ -24,7 +32,10 @@ export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
     return;
   }
 
-  const idsToHandle = new Set<string>(rootModuleInfo.dynamicImporters);
+  const idsToHandle = new Set<string>([
+    ...rootModuleInfo.dynamicImporters,
+    ...rootModuleInfo.importers,
+  ]);
 
   for (const moduleId of idsToHandle) {
     const moduleInfo = ctx.getModuleInfo(moduleId);
