@@ -3,7 +3,7 @@ import type { ChunkingContext } from 'rolldown';
 import { createVocabChunks } from './create-vocab-chunks';
 
 describe('createVocabChunks', () => {
-  it.each(['app.js', 'chunk-a.js', 'virtual:vocab-en.json?source=abc'])(
+  it.each(['app.js', 'chunk-a.js', 'virtual:vocab-en.js?source=abc'])(
     'should not chunk entry $0',
     (moduleId) => {
       const ctx = {
@@ -21,22 +21,22 @@ describe('createVocabChunks', () => {
   it.each([
     {
       locale: 'en',
-      moduleId: 'virtual:vocab-en.json?source=abc',
+      moduleId: 'virtual:vocab-en.js?source=abc',
       expected: 'en-translations',
     },
     {
       locale: 'en-AU',
-      moduleId: 'virtual:vocab-en-AU.json?source=abc',
+      moduleId: 'virtual:vocab-en-AU.js?source=abc',
       expected: 'en-AU-translations',
     },
     {
       locale: 'fr-FR',
-      moduleId: 'virtual:vocab-fr-FR.json?source=abc',
+      moduleId: 'virtual:vocab-fr-FR.js?source=abc',
       expected: 'fr-FR-translations',
     },
     {
       locale: 'zh-Hans-CN',
-      moduleId: 'virtual:vocab-zh-Hans-CN.json?source=abc',
+      moduleId: 'virtual:vocab-zh-Hans-CN.js?source=abc',
       expected: 'zh-Hans-CN-translations',
     },
   ])('should chunk non-entry into $expected', ({ moduleId, expected }) => {

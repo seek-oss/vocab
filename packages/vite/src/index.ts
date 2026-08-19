@@ -1,12 +1,12 @@
 import type { Plugin as VitePlugin } from 'vite';
-import type { UserConfig } from '@vocab/core';
+import { type UserConfig, compiledVocabFileFilter } from '@vocab/core';
 
 import { transformVocabFile } from './transform-vocab-file';
 import { virtualResourceLoader } from './virtual-resource-loader';
 
 import { trace } from './logger';
 
-import { compiledVocabFileFilter, virtualModuleId } from './consts';
+import { virtualModuleId } from './consts';
 
 export type VocabPluginOptions = {
   vocabConfig: UserConfig;
@@ -37,7 +37,7 @@ export const vitePluginVocab = ({
       if (id.includes(`\0${virtualModuleId}`)) {
         return {
           code: virtualResourceLoader(id),
-          moduleType: 'json',
+          moduleType: 'js',
         };
       }
     },

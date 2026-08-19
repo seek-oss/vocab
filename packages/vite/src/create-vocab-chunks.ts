@@ -8,7 +8,7 @@ const trace = _trace.extend('create-vocab-chunks');
  * Gets vocab virtual module details and creates chunks for each language
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
-  const match = /virtual:vocab-([\w-]+)\.json/.exec(id);
+  const match = /virtual:vocab-([\w-]+)\.js/.exec(id);
 
   if (!match) {
     return;

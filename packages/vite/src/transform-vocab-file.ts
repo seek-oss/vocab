@@ -90,7 +90,7 @@ const renderLanguageLoaderAsync =
       createIdentifier(lang, loadedTranslation),
     );
 
-    return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
+    return /* ts */ `createLanguage(${identifier}, () => import(${identifier}))`.trim();
   };
 
 const createIdentifier = (
@@ -111,5 +111,5 @@ const createIdentifier = (
 
   const encodedResource = `${sourceQueryKey}${base64}`;
 
-  return `${virtualModuleId}-${lang}.json${encodedResource}`;
+  return `${virtualModuleId}-${lang}.js${encodedResource}`;
 };
