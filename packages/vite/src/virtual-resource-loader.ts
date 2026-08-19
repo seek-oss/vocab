@@ -1,6 +1,11 @@
 import { sourceQueryKey } from './consts';
 import { translationRegistryKey } from './translation-registry';
 
+export type VirtualModuleIdentifier = {
+  moduleId: string;
+  importId: string;
+};
+
 export const getVirtualModuleSource = (path: string) => {
   const [resolvedId, encodedMessages] = path.split(sourceQueryKey);
   if (!resolvedId || encodedMessages === undefined) {
@@ -12,32 +17,37 @@ export const getVirtualModuleSource = (path: string) => {
   return Buffer.from(encodedMessages, 'base64').toString('utf-8');
 };
 
-export const getVirtualModuleRegistryId = (path: string) => {
-  const [resolvedId] = path.split(sourceQueryKey);
-  if (!resolvedId) {
-    throw new Error(`Vocab virtual module has an invalid id: ${path}`);
-  }
-
-  // The registry key must match the `moduleId` embedded by the transform, which
-  // excludes the encoded messages query and the virtual module `\0` prefix.
-  return resolvedId.replace(/^\0/, '');
-};
-
 export const virtualResourceLoader = (path: string) => {
-  const moduleId = getVirtualModuleRegistryId(path);
   const messages = getVirtualModuleSource(path);
 
   return /* js */ `
     const messages = ${messages};
-    const registrySymbol = Symbol.for(${JSON.stringify(translationRegistryKey)});
-    const registry =
-      globalThis[registrySymbol] || (globalThis[registrySymbol] = new Map());
-    registry.set(${JSON.stringify(moduleId)}, messages);
+    export default messages;
   `;
 };
 
-export const renderPreloadModule = (identifiers: Iterable<string>) =>
-  [...identifiers]
-    .sort()
-    .map((identifier) => `import ${JSON.stringify(identifier)};`)
-    .join('\n');
+export const renderPreloadModule = (
+  identifiers: Iterable<VirtualModuleIdentifier>,
+) => {
+  const sortedIdentifiers = [...identifiers].sort((a, b) =>
+    a.moduleId.localeCompare(b.moduleId),
+  );
+  const imports = sortedIdentifiers.map(
+    ({ importId }, index) =>
+      `import messages${index} from ${JSON.stringify(importId)};`,
+  );
+  const registrations = sortedIdentifiers.map(
+    ({ moduleId }, index) =>
+      `registry.set(${JSON.stringify(moduleId)}, messages${index});`,
+  );
+
+  return [
+    ...imports,
+    `const registrySymbol = Symbol.for(${JSON.stringify(
+      translationRegistryKey,
+    )});`,
+    `const registry =
+  globalThis[registrySymbol] || (globalThis[registrySymbol] = new Map());`,
+    ...registrations,
+  ].join('\n');
+};

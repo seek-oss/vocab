@@ -13,6 +13,7 @@ import * as esModuleLexer from 'es-module-lexer';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 
 import { getPreloadModuleId, sourceQueryKey, virtualModuleId } from './consts';
+import type { VirtualModuleIdentifier } from './virtual-resource-loader';
 
 import { trace as _trace } from './logger';
 
@@ -37,7 +38,7 @@ export const transformVocabFile = async (
   id: string,
   config: UserConfig,
   projectRoot: string,
-  identifiersByLang: Map<string, Set<string>>,
+  identifiersByLang: Map<string, Map<string, VirtualModuleIdentifier>>,
 ) => {
   trace('Transforming vocab file', id);
 
@@ -99,7 +100,7 @@ const renderLanguageLoaderAsync =
     loadedTranslation: LoadedTranslation,
     filePath: string,
     projectRoot: string,
-    identifiersByLang: Map<string, Set<string>>,
+    identifiersByLang: Map<string, Map<string, VirtualModuleIdentifier>>,
   ) =>
   (lang: string) => {
     const { moduleId, importId } = createIdentifier(
@@ -111,10 +112,10 @@ const renderLanguageLoaderAsync =
 
     let identifiers = identifiersByLang.get(lang);
     if (!identifiers) {
-      identifiers = new Set();
+      identifiers = new Map();
       identifiersByLang.set(lang, identifiers);
     }
-    identifiers.add(importId);
+    identifiers.set(moduleId, { moduleId, importId });
 
     return /* ts */ `createLanguage(${JSON.stringify(
       moduleId,

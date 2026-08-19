@@ -11,7 +11,7 @@ describe('virtualResourceLoader', () => {
     getTranslationRegistry().clear();
   });
 
-  it('emits a module that registers its messages', async () => {
+  it('emits a module that exports its messages', async () => {
     const messages = { greeting: 'Hello' };
     const encodedMessages = Buffer.from(JSON.stringify(messages)).toString(
       'base64',
@@ -23,24 +23,32 @@ describe('virtualResourceLoader', () => {
       'base64',
     )}`;
 
-    await import(dataUrl);
+    const module = await import(dataUrl);
 
-    // The registry key excludes the `?source=` query so the encoded payload
-    // isn't duplicated in the production language chunk.
-    expect(getTranslationRegistry().get(moduleId)).toEqual(messages);
+    expect(module.default).toEqual(messages);
+    expect(getTranslationRegistry()).toEqual(new Map());
   });
 
   it('renders a stable module that installs every translation file', () => {
     expect(
       renderPreloadModule([
-        'virtual:vocab-en-bbbbbbbb.js?source=second',
-        'virtual:vocab-en-aaaaaaaa.js?source=first',
+        {
+          moduleId: 'virtual:vocab-en-bbbbbbbb.js',
+          importId: 'virtual:vocab-en-bbbbbbbb.js?source=second',
+        },
+        {
+          moduleId: 'virtual:vocab-en-aaaaaaaa.js',
+          importId: 'virtual:vocab-en-aaaaaaaa.js?source=first',
+        },
       ]),
-    ).toBe(
-      [
-        'import "virtual:vocab-en-aaaaaaaa.js?source=first";',
-        'import "virtual:vocab-en-bbbbbbbb.js?source=second";',
-      ].join('\n'),
-    );
+    ).toMatchInlineSnapshot(`
+      "import messages0 from "virtual:vocab-en-aaaaaaaa.js?source=first";
+      import messages1 from "virtual:vocab-en-bbbbbbbb.js?source=second";
+      const registrySymbol = Symbol.for("@vocab/vite/translation-registry");
+      const registry =
+        globalThis[registrySymbol] || (globalThis[registrySymbol] = new Map());
+      registry.set("virtual:vocab-en-aaaaaaaa.js", messages0);
+      registry.set("virtual:vocab-en-bbbbbbbb.js", messages1);"
+    `);
   });
 });

@@ -4,6 +4,7 @@ import { type UserConfig, compiledVocabFileFilter } from '@vocab/core';
 import { transformVocabFile } from './transform-vocab-file';
 import {
   renderPreloadModule,
+  type VirtualModuleIdentifier,
   virtualResourceLoader,
 } from './virtual-resource-loader';
 
@@ -39,7 +40,10 @@ export const vitePluginVocab = ({
   vocabConfig,
 }: VocabPluginOptions): VitePlugin => {
   let projectRoot = process.cwd();
-  const identifiersByLang = new Map<string, Set<string>>();
+  const identifiersByLang = new Map<
+    string,
+    Map<string, VirtualModuleIdentifier>
+  >();
 
   trace(
     `Creating Vocab plugin${
@@ -72,7 +76,7 @@ export const vitePluginVocab = ({
       if (preloadLanguage) {
         return {
           code: renderPreloadModule(
-            identifiersByLang.get(preloadLanguage) ?? [],
+            identifiersByLang.get(preloadLanguage)?.values() ?? [],
           ),
           moduleType: 'js',
           moduleSideEffects: true,
