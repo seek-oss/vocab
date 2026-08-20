@@ -1,3 +1,9 @@
+const translationsChunkSuffix = '-translations';
+
 export function getChunkName(lang: string) {
-  return `${lang}-translations`;
+  return `${lang}${translationsChunkSuffix}`;
+}
+
+export function isVocabChunkName(name?: string) {
+  return Boolean(name?.endsWith(translationsChunkSuffix));
 }

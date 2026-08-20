@@ -11,6 +11,8 @@ import {
 import { trace } from './logger';
 
 import { getPreloadLanguage, virtualModuleId } from './consts';
+import { isVocabChunkName } from './get-chunk-name';
+import { rewriteLanguageChunkImports } from './rewrite-language-chunk-imports';
 
 export type VocabPluginOptions = {
   vocabConfig: UserConfig;
@@ -89,26 +91,11 @@ export const vitePluginVocab = ({
       // Vite may place its generated ESM namespace helper in the client entry.
       // A language chunk injected as a module script must not import that entry,
       // because doing so would hydrate before this chunk registers its messages.
-      if (!chunk.name?.endsWith('-translations')) {
+      if (!isVocabChunkName(chunk.name)) {
         return;
       }
 
-      const rewritten = code.replace(
-        /import\s*\{([^}]+)\}\s*from\s*["'][^"']+["'];?/g,
-        (_match, bindings: string) =>
-          bindings
-            .split(',')
-            .map((binding) => {
-              const local = binding
-                .trim()
-                .split(/\s+as\s+/)
-                .pop()
-                ?.trim();
-              return local ? `const ${local}=(value)=>value;` : '';
-            })
-            .join(''),
-      );
-
+      const rewritten = rewriteLanguageChunkImports(code);
       if (rewritten !== code) {
         return { code: rewritten, map: null };
       }
