@@ -13,7 +13,6 @@ import React, {
   isValidElement,
   cloneElement,
   useCallback,
-  useEffect,
 } from 'react';
 
 type Locale = string;
@@ -151,28 +150,19 @@ export function useTranslations<
     locale || language,
   );
 
-  useEffect(() => {
-    if (translationsObject || SERVER_RENDERING) {
-      return;
+  let ready = true;
+
+  if (!translationsObject) {
+    if (SERVER_RENDERING) {
+      throw new Error(
+        `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
+      );
     }
 
-    let active = true;
-
     translations.load(language as any).then(() => {
-      if (active) {
-        forceRender();
-      }
+      forceRender();
     });
-
-    return () => {
-      active = false;
-    };
-  }, [language, translations, translationsObject]);
-
-  if (!translationsObject && SERVER_RENDERING) {
-    throw new Error(
-      `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
-    );
+    ready = false;
   }
 
   const t = useCallback(
@@ -217,7 +207,7 @@ export function useTranslations<
   );
 
   return {
-    ready: Boolean(translationsObject),
+    ready,
     t,
   };
 }
