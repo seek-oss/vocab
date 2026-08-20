@@ -1,4 +1,4 @@
-import type { Environment, Plugin as VitePlugin } from 'vite';
+import type { Plugin as VitePlugin } from 'vite';
 import { type UserConfig, compiledVocabFileFilter } from '@vocab/core';
 
 import { transformVocabFile } from './transform-vocab-file';
@@ -10,30 +10,10 @@ import {
 
 import { trace } from './logger';
 
-import {
-  getPreloadLanguage,
-  getPreloadModuleId,
-  virtualModuleId,
-} from './consts';
+import { getPreloadLanguage, virtualModuleId } from './consts';
 
 export type VocabPluginOptions = {
   vocabConfig: UserConfig;
-};
-
-const invalidatePreloadModule = (environment: Environment, lang: string) => {
-  // Only the dev environment exposes a module graph
-  if (environment.mode !== 'dev') {
-    return;
-  }
-
-  const { moduleGraph } = environment;
-  const preloadModule = moduleGraph.getModuleById(
-    `\0${getPreloadModuleId(lang)}`,
-  );
-
-  if (preloadModule) {
-    moduleGraph.invalidateModule(preloadModule);
-  }
 };
 
 export const vitePluginVocab = ({
@@ -98,10 +78,6 @@ export const vitePluginVocab = ({
           projectRoot,
           identifiersByLang,
         );
-
-        for (const lang of identifiersByLang.keys()) {
-          invalidatePreloadModule(this.environment, lang);
-        }
 
         return {
           code: transformedCode,
