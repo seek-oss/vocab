@@ -224,6 +224,11 @@ export default defineConfig({
 
 #### createVocabChunks
 
+> [!WARNING]
+> `createVocabChunks` is deprecated.
+> `vitePluginVocab` now emits one language chunk per language, so this helper is a no-op when used in `manualChunks` and can be removed.
+> Existing configs that still call it will keep working.
+
 If you want to combine all language files into a single chunk, you can use the `createVocabChunks` function.
 Simply use the function in your `manualChunks` configuration.
 

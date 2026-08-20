@@ -6,7 +6,8 @@ import { getChunkName } from './get-chunk-name';
 const trace = _trace.extend('create-vocab-chunks');
 
 /**
- * Gets vocab virtual module details and creates chunks for each language
+ * @deprecated Language chunks are emitted by `vitePluginVocab`.
+ * Existing `manualChunks` usage is a no-op and can be removed.
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
   const language = getPreloadLanguage(id);
