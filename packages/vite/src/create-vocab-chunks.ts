@@ -5,14 +5,11 @@ import { getChunkName } from './get-chunk-name';
 
 const trace = _trace.extend('create-vocab-chunks');
 
-const getLanguageFromVirtualId = (id: string) =>
-  getPreloadLanguage(id) ?? /virtual:vocab-(.+)-[^-]+\.js/.exec(id)?.[1];
-
 /**
  * Gets vocab virtual module details and creates chunks for each language
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
-  const language = getLanguageFromVirtualId(id);
+  const language = getPreloadLanguage(id);
 
   if (!language) {
     return;

@@ -64,6 +64,9 @@ describe('E2E', () => {
 
       expect(sourceHtml).toContain('Hello world');
       expect(clientRenderContent).toContain('Hello world');
+      // A second translation file for the same language must be installed by
+      // the same chunk, otherwise only part of the page can hydrate.
+      expect(clientRenderContent).toContain("I'm a header in english");
       expect(errors).toEqual([]);
     });
 
@@ -73,6 +76,7 @@ describe('E2E', () => {
 
       expect(sourceHtml).toContain('Bonjour monde');
       expect(clientRenderContent).toContain('Bonjour monde');
+      expect(clientRenderContent).toContain("I'm a header in french");
       expect(errors).toEqual([]);
     });
   });

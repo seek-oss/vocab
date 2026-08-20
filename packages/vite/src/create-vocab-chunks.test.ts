@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { ChunkingContext } from 'rolldown';
+import { getPreloadModuleId } from './consts';
 import { createVocabChunks } from './create-vocab-chunks';
 
 describe('createVocabChunks', () => {
-  it.each(['app.js', 'chunk-a.js', 'virtual:vocab-en-1a2b3c4d.js?source=abc'])(
+  it.each(['app.js', 'chunk-a.js', getPreloadModuleId('en')])(
     'should not chunk entry $0',
     (moduleId) => {
       const ctx = {
@@ -21,37 +22,22 @@ describe('createVocabChunks', () => {
   it.each([
     {
       locale: 'en',
-      moduleId: 'virtual:vocab-en-1a2b3c4d.js?source=abc',
+      moduleId: getPreloadModuleId('en'),
       expected: 'en-translations',
     },
     {
       locale: 'en-AU',
-      moduleId: 'virtual:vocab-en-AU-1a2b3c4d.js?source=abc',
+      moduleId: getPreloadModuleId('en-AU'),
       expected: 'en-AU-translations',
     },
     {
       locale: 'fr-FR',
-      moduleId: 'virtual:vocab-fr-FR-1a2b3c4d.js?source=abc',
+      moduleId: getPreloadModuleId('fr-FR'),
       expected: 'fr-FR-translations',
     },
     {
       locale: 'zh-Hans-CN',
-      moduleId: 'virtual:vocab-zh-Hans-CN-1a2b3c4d.js?source=abc',
-      expected: 'zh-Hans-CN-translations',
-    },
-    {
-      locale: 'en',
-      moduleId: 'virtual:vocab-preload-en',
-      expected: 'en-translations',
-    },
-    {
-      locale: 'en-AU',
-      moduleId: 'virtual:vocab-preload-en-AU',
-      expected: 'en-AU-translations',
-    },
-    {
-      locale: 'zh-Hans-CN',
-      moduleId: 'virtual:vocab-preload-zh-Hans-CN',
+      moduleId: getPreloadModuleId('zh-Hans-CN'),
       expected: 'zh-Hans-CN-translations',
     },
   ])('should chunk non-entry into $expected', ({ moduleId, expected }) => {
@@ -71,6 +57,9 @@ describe('createVocabChunks', () => {
     'virtual:en.json',
     'virtual:vocab.js',
     'virtual:vocab-preload',
+    // Messages are inlined into the preload module, so per-file virtual
+    // modules no longer exist
+    'virtual:vocab-en-1a2b3c4d.js',
   ])('should chunk non-vocab virtual file $0', (moduleId) => {
     const ctx = {
       getModuleInfo: vi.fn((_id: string) => ({

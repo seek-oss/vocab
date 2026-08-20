@@ -1,6 +1,3 @@
-import { createHash } from 'node:crypto';
-import { relative, sep } from 'node:path';
-
 import {
   getDevLanguageFileFromTsFile,
   type LoadedTranslation,
@@ -12,8 +9,8 @@ import {
 import * as esModuleLexer from 'es-module-lexer';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 
-import { getPreloadModuleId, sourceQueryKey, virtualModuleId } from './consts';
-import type { VirtualModuleIdentifier } from './virtual-resource-loader';
+import type { MessagesByModuleId } from './render-preload-module';
+import { getRegistryModuleId } from './registry-module-id';
 
 import { trace as _trace } from './logger';
 
@@ -38,7 +35,8 @@ export const transformVocabFile = async (
   id: string,
   config: UserConfig,
   projectRoot: string,
-  identifiersByLang: Map<string, Map<string, VirtualModuleIdentifier>>,
+  messagesByLang: Map<string, MessagesByModuleId>,
+  getPreloadReference: (lang: string) => string,
 ) => {
   trace('Transforming vocab file', id);
 
@@ -53,9 +51,10 @@ export const transformVocabFile = async (
 
   const renderLanguageLoader = renderLanguageLoaderAsync(
     loadedTranslation,
-    id,
+    devJsonFilePath,
     projectRoot,
-    identifiersByLang,
+    messagesByLang,
+    getPreloadReference,
   );
 
   const translations = /* ts */ `
@@ -98,69 +97,42 @@ export const transformVocabFile = async (
 const renderLanguageLoaderAsync =
   (
     loadedTranslation: LoadedTranslation,
-    filePath: string,
+    devTranslationFilePath: string,
     projectRoot: string,
-    identifiersByLang: Map<string, Map<string, VirtualModuleIdentifier>>,
+    messagesByLang: Map<string, MessagesByModuleId>,
+    getPreloadReference: (language: string) => string,
   ) =>
-  (lang: string) => {
-    const { moduleId, importId } = createIdentifier(
-      lang,
-      loadedTranslation,
-      filePath,
+  (language: string) => {
+    const moduleId = getRegistryModuleId(
+      language,
+      devTranslationFilePath,
       projectRoot,
     );
 
-    let identifiers = identifiersByLang.get(lang);
-    if (!identifiers) {
-      identifiers = new Map();
-      identifiersByLang.set(lang, identifiers);
+    let messagesByModuleId = messagesByLang.get(language);
+    if (!messagesByModuleId) {
+      messagesByModuleId = new Map();
+      messagesByLang.set(language, messagesByModuleId);
     }
-    identifiers.set(moduleId, { moduleId, importId });
+    messagesByModuleId.set(moduleId, getMessages(language, loadedTranslation));
 
-    return /* ts */ `createLanguage(${JSON.stringify(
-      moduleId,
-    )}, () => import(${JSON.stringify(getPreloadModuleId(lang))}))`.trim();
+    return /* ts */ `createLanguage(${JSON.stringify(moduleId)}, () => import(
+      /* @vite-ignore */
+      import.meta.ROLLUP_FILE_URL_${getPreloadReference(language)}
+    ))`.trim();
   };
 
-/**
- * Produces a short, stable id for a translation file so that language modules
- * sharing a language (but originating from different `.vocab` files) don't
- * collide in the runtime translation registry.
- */
-export const hashFilePath = (filePath: string, projectRoot: string) => {
-  const projectRelativePath = relative(projectRoot, filePath)
-    .split(sep)
-    .join('/');
-
-  return createHash('sha256')
-    .update(projectRelativePath)
-    .digest('hex')
-    .slice(0, 8);
-};
-
-const createIdentifier = (
+const getMessages = (
   lang: string,
   loadedTranslation: LoadedTranslation,
-  filePath: string,
-  projectRoot: string,
-) => {
+): TranslationMessagesByKey => {
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
-  const langJson: TranslationMessagesByKey = {};
+  const messages: TranslationMessagesByKey = {};
 
   for (const key of loadedTranslation.keys) {
-    langJson[key] = languageTranslations[key].message;
+    messages[key] = languageTranslations[key].message;
   }
 
-  const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
-    'base64',
-  );
-
-  const moduleId = `${virtualModuleId}-${lang}-${hashFilePath(
-    filePath,
-    projectRoot,
-  )}.js`;
-  const importId = `${moduleId}${sourceQueryKey}${base64}`;
-
-  return { moduleId, importId };
+  return messages;
 };

@@ -3,29 +3,28 @@ import { type UserConfig, compiledVocabFileFilter } from '@vocab/core';
 
 import { transformVocabFile } from './transform-vocab-file';
 import {
+  type MessagesByModuleId,
   renderPreloadModule,
-  type VirtualModuleIdentifier,
-  virtualResourceLoader,
-} from './virtual-resource-loader';
+} from './render-preload-module';
 
 import { trace } from './logger';
 
-import { getPreloadLanguage, virtualModuleId } from './consts';
-import { isVocabChunkName } from './get-chunk-name';
-import { rewriteLanguageChunkImports } from './rewrite-language-chunk-imports';
+import { getPreloadLanguage, getPreloadModuleId } from './consts';
+import { getChunkName } from './get-chunk-name';
 
 export type VocabPluginOptions = {
   vocabConfig: UserConfig;
 };
 
+const getLanguageNames = ({ languages, generatedLanguages = [] }: UserConfig) =>
+  [...languages, ...generatedLanguages].map(({ name }) => name);
+
 export const vitePluginVocab = ({
   vocabConfig,
 }: VocabPluginOptions): VitePlugin => {
   let projectRoot = process.cwd();
-  const identifiersByLang = new Map<
-    string,
-    Map<string, VirtualModuleIdentifier>
-  >();
+  const messagesByLang = new Map<string, MessagesByModuleId>();
+  const preloadReferencesByLang = new Map<string, string>();
 
   trace(
     `Creating Vocab plugin${
@@ -43,62 +42,86 @@ export const vitePluginVocab = ({
     applyToEnvironment(env) {
       return env.name === 'client';
     },
-    resolveId(id) {
-      if (!id.includes(virtualModuleId)) {
-        return;
+    buildStart() {
+      messagesByLang.clear();
+      preloadReferencesByLang.clear();
+
+      // Each language is emitted as its own entry so that its chunk can be
+      // loaded as a standalone module script, letting it install its messages
+      // before the client entry hydrates.
+      for (const lang of getLanguageNames(vocabConfig)) {
+        preloadReferencesByLang.set(
+          lang,
+          this.emitFile({
+            type: 'chunk',
+            id: getPreloadModuleId(lang),
+            name: getChunkName(lang),
+          }),
+        );
       }
-      return id.startsWith('\0') ? id : `\0${id}`;
+    },
+    resolveId(id) {
+      return getPreloadLanguage(id) ? id : undefined;
     },
     load(id) {
-      if (!id.includes(`\0${virtualModuleId}`)) {
+      const lang = getPreloadLanguage(id);
+      if (!lang) {
         return;
       }
 
-      const preloadLanguage = getPreloadLanguage(id);
-      if (preloadLanguage) {
-        return {
-          code: renderPreloadModule(
-            identifiersByLang.get(preloadLanguage)?.values() ?? [],
-          ),
-          moduleType: 'js',
-          moduleSideEffects: true,
-        };
-      }
-
+      // Messages are collected as `.vocab` files are transformed, which can
+      // happen after this module is loaded. `renderChunk` fills in the final
+      // set once every file has been seen.
       return {
-        code: virtualResourceLoader(id),
+        code: renderPreloadModule(new Map()),
         moduleType: 'js',
         moduleSideEffects: true,
       };
     },
     async transform(code, id) {
-      if (compiledVocabFileFilter.test(id)) {
-        const transformedCode = await transformVocabFile(
-          code,
-          id,
-          vocabConfig,
-          projectRoot,
-          identifiersByLang,
-        );
-
-        return {
-          code: transformedCode,
-          map: null, // provide source map if available
-        };
-      }
-    },
-    renderChunk(code, chunk) {
-      // Vite may place its generated ESM namespace helper in the client entry.
-      // A language chunk injected as a module script must not import that entry,
-      // because doing so would hydrate before this chunk registers its messages.
-      if (!isVocabChunkName(chunk.name)) {
+      if (!compiledVocabFileFilter.test(id)) {
         return;
       }
 
-      const rewritten = rewriteLanguageChunkImports(code);
-      if (rewritten !== code) {
-        return { code: rewritten, map: null };
+      const getPreloadReference = (language: string) => {
+        const reference = preloadReferencesByLang.get(language);
+
+        if (!reference) {
+          return this.error(
+            `Vocab file ${id} has translations for language "${language}", which is missing from your Vocab config.`,
+          );
+        }
+
+        return reference;
+      };
+
+      const transformedCode = await transformVocabFile(
+        code,
+        id,
+        vocabConfig,
+        projectRoot,
+        messagesByLang,
+        getPreloadReference,
+      );
+
+      return {
+        code: transformedCode,
+        map: null, // provide source map if available
+      };
+    },
+    renderChunk(_, chunk) {
+      const language = chunk.facadeModuleId
+        ? getPreloadLanguage(chunk.facadeModuleId)
+        : undefined;
+
+      if (!language) {
+        return;
       }
+
+      return {
+        code: renderPreloadModule(messagesByLang.get(language) ?? new Map()),
+        map: null,
+      };
     },
   };
 };

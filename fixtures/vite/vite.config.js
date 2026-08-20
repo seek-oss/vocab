@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { vitePluginVocab } from '@vocab/vite';
 import { createVocabChunks } from '@vocab/vite/chunks';
+import { getChunkName } from '@vocab/vite/get-chunk-name';
 import vocabConfig from './vocab.config.cjs';
 
 const injectEnTranslationsChunk = () => ({
@@ -12,8 +13,10 @@ const injectEnTranslationsChunk = () => ({
         return;
       }
 
+      // Matching on `name` rather than `fileName` so that the lookup keeps
+      // working if the chunk file name pattern includes a hash.
       const chunk = Object.values(ctx.bundle).find(
-        (item) => item.type === 'chunk' && item.name === 'en-translations',
+        (item) => item.type === 'chunk' && item.name === getChunkName('en'),
       );
 
       if (!chunk || chunk.type !== 'chunk') {
