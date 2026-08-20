@@ -254,6 +254,19 @@ describe('E2E', () => {
       await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
     });
 
+    it('should leave messages unloaded when their language chunk is not on the page', async () => {
+      const frInitial = await page.waitForSelector('#sync-fr-initial');
+
+      await expect(frInitial).toMatchTextContent('missing');
+    });
+
+    it('should load sibling translation files for the same language', async () => {
+      await page.click('#load-fr-sibling');
+
+      const frSibling = await page.waitForSelector('#sync-fr-sibling');
+      await expect(frSibling).toMatchTextContent('loaded');
+    });
+
     it('should return the expected en chunk', async () => {
       expect(
         await getLanguageChunk({

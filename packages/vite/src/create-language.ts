@@ -19,10 +19,10 @@ export const createLanguage = (
     },
     load: () => {
       if (!promiseValue) {
-        promiseValue = loadImport().then((value) => {
-          const messages = value.default ?? value;
-          getLanguageRegistry().set(moduleId, messages);
-        });
+        // Language modules register themselves as a side effect. loadImport()
+        // is the per-language preload aggregator, which statically imports
+        // every translation file for this language.
+        promiseValue = loadImport().then(() => undefined);
       }
       return promiseValue;
     },

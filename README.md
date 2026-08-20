@@ -308,7 +308,7 @@ await import(/* @vite-ignore */ `/${chunkName}.js`);
 hydrateRoot(root, <App initialLanguage={language} />);
 ```
 
-The server can also emit a modulepreload hint for the same file. Run `vocab compile` before `vite build` and `vite build --ssr`. This example assumes stable `chunkFileNames` such as `[name].js` (as in the vite-ssr fixture). Hashed chunk names need a lookup from the Vite manifest.
+`load(language)` on any translation file evaluates every `.vocab` file for that language, via a virtual preload module that statically imports them. The server can also emit a modulepreload hint for the same chunk file. Run `vocab compile` before `vite build` and `vite build --ssr`. This example assumes stable `chunkFileNames` such as `[name].js` (as in the vite-ssr fixture). Hashed chunk names need a lookup from the Vite manifest.
 
 ## Dynamic Values in Translations
 

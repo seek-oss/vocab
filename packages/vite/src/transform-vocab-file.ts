@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import { relative, sep } from 'node:path';
+
 import {
   getDevLanguageFileFromTsFile,
   type LoadedTranslation,
@@ -9,7 +12,7 @@ import {
 import * as esModuleLexer from 'es-module-lexer';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 
-import { sourceQueryKey, virtualModuleId } from './consts';
+import { getPreloadModuleId, sourceQueryKey, virtualModuleId } from './consts';
 
 import { trace as _trace } from './logger';
 
@@ -33,6 +36,8 @@ export const transformVocabFile = async (
   code: string,
   id: string,
   config: UserConfig,
+  projectRoot: string,
+  identifiersByLang: Map<string, Set<string>>,
 ) => {
   trace('Transforming vocab file', id);
 
@@ -45,7 +50,12 @@ export const transformVocabFile = async (
     config,
   );
 
-  const renderLanguageLoader = renderLanguageLoaderAsync(loadedTranslation);
+  const renderLanguageLoader = renderLanguageLoaderAsync(
+    loadedTranslation,
+    id,
+    projectRoot,
+    identifiersByLang,
+  );
 
   const translations = /* ts */ `
     const translations = createTranslationFile({
@@ -85,17 +95,57 @@ export const transformVocabFile = async (
 };
 
 const renderLanguageLoaderAsync =
-  (loadedTranslation: LoadedTranslation) => (lang: string) => {
-    const identifier = JSON.stringify(
-      createIdentifier(lang, loadedTranslation),
+  (
+    loadedTranslation: LoadedTranslation,
+    filePath: string,
+    projectRoot: string,
+    identifiersByLang: Map<string, Set<string>>,
+  ) =>
+  (lang: string) => {
+    const { moduleId, importId } = createIdentifier(
+      lang,
+      loadedTranslation,
+      filePath,
+      projectRoot,
     );
 
-    return /* ts */ `createLanguage(${identifier}, () => import(${identifier}))`.trim();
+    let identifiers = identifiersByLang.get(lang);
+    if (!identifiers) {
+      identifiers = new Set();
+      identifiersByLang.set(lang, identifiers);
+    }
+    identifiers.add(importId);
+
+    return /* ts */ `createLanguage(${JSON.stringify(
+      moduleId,
+    )}, () => import(${JSON.stringify(getPreloadModuleId(lang))}))`.trim();
   };
+
+/**
+ * Produces a short, stable id for a translation file so that language modules
+ * sharing a language (but originating from different `.vocab` files) don't
+ * collide in the runtime translation registry.
+ *
+ * The registry key must not include `?source=`. Vite treats that query as a
+ * module specifier and collapses `createLanguage(id, () => import(preload))`
+ * into a one-argument loader.
+ */
+export const hashFilePath = (filePath: string, projectRoot: string) => {
+  const projectRelativePath = relative(projectRoot, filePath)
+    .split(sep)
+    .join('/');
+
+  return createHash('sha256')
+    .update(projectRelativePath)
+    .digest('hex')
+    .slice(0, 8);
+};
 
 const createIdentifier = (
   lang: string,
   loadedTranslation: LoadedTranslation,
+  filePath: string,
+  projectRoot: string,
 ) => {
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
@@ -109,7 +159,13 @@ const createIdentifier = (
     'base64',
   );
 
-  const encodedResource = `${sourceQueryKey}${base64}`;
+  // `.js` not `.json`: static preload imports of `*.json` are claimed by Vite's
+  // JSON plugin and never evaluate our registry side effect.
+  const moduleId = `${virtualModuleId}-${lang}-${hashFilePath(
+    filePath,
+    projectRoot,
+  )}.js`;
+  const importId = `${moduleId}${sourceQueryKey}${base64}`;
 
-  return `${virtualModuleId}-${lang}.json${encodedResource}`;
+  return { moduleId, importId };
 };

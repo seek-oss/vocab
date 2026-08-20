@@ -13,6 +13,7 @@ import React, {
   isValidElement,
   cloneElement,
   useCallback,
+  useEffect,
 } from 'react';
 
 type Locale = string;
@@ -110,8 +111,8 @@ type FormatXMLElementReactNodeFn = (parts: ReactNode[]) => ReactNode;
 
 type MapToReactNodeFunction<Params extends Record<string, any>> = {
   [key in keyof Params]: Params[key] extends ParsedFormatFn
-    ? FormatXMLElementReactNodeFn
-    : Params[key];
+  ? FormatXMLElementReactNodeFn
+  : Params[key];
 };
 
 type TranslateFn<FormatFnByKey extends ParsedFormatFnByKey> = {
@@ -150,19 +151,28 @@ export function useTranslations<
     locale || language,
   );
 
-  let ready = true;
-
-  if (!translationsObject) {
-    if (SERVER_RENDERING) {
-      throw new Error(
-        `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
-      );
+  useEffect(() => {
+    if (translationsObject || SERVER_RENDERING) {
+      return;
     }
 
+    let active = true;
+
     translations.load(language as any).then(() => {
-      forceRender();
+      if (active) {
+        forceRender();
+      }
     });
-    ready = false;
+
+    return () => {
+      active = false;
+    };
+  }, [language, translations, translationsObject]);
+
+  if (!translationsObject && SERVER_RENDERING) {
+    throw new Error(
+      `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
+    );
   }
 
   const t = useCallback(
@@ -207,7 +217,7 @@ export function useTranslations<
   );
 
   return {
-    ready,
+    ready: Boolean(translationsObject),
     t,
   };
 }
