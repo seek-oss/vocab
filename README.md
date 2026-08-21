@@ -210,12 +210,12 @@ default usage
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
+import { vitePluginVocab } from '@vocab/vite';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ]
@@ -235,13 +235,13 @@ Simply use the function in your `manualChunks` configuration.
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vocabPluginVite } from '@vocab/vite';
-import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
+import { vitePluginVocab } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/chunks';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vocabPluginVite({
+    vitePluginVocab({
       vocabConfig
     })
   ],
