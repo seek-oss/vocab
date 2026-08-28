@@ -63,7 +63,7 @@ describe('createVocabChunks', () => {
     // Messages are inlined into the preload module, so per-file virtual
     // modules no longer exist
     'virtual:vocab-en-1a2b3c4d.js',
-  ])('should chunk non-vocab virtual file $0', (moduleId) => {
+  ])('should not chunk non-vocab virtual file $0', (moduleId) => {
     const ctx = {
       getModuleInfo: vi.fn((_id: string) => ({
         isEntry: false,
