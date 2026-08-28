@@ -10,6 +10,7 @@ import React, {
   useContext,
   useMemo,
   useReducer,
+  useRef,
   isValidElement,
   cloneElement,
   useCallback,
@@ -145,14 +146,22 @@ export function useTranslations<
   const { language, locale } = useLanguage();
   const [, forceRender] = useReducer((s: number) => s + 1, 0);
 
-  const translationsObject = translations.getLoadedMessages(
+  const loadedTranslations = translations.getLoadedMessages(
     language as any,
     locale || language,
   );
+  const lastLoadedTranslations = useRef(loadedTranslations);
+
+  if (loadedTranslations) {
+    lastLoadedTranslations.current = loadedTranslations;
+  }
+
+  const translationsObject =
+    loadedTranslations ?? lastLoadedTranslations.current;
 
   let ready = true;
 
-  if (!translationsObject) {
+  if (!loadedTranslations) {
     if (SERVER_RENDERING) {
       throw new Error(
         `Translations not synchronously available on server render. Applying translations dynamically server-side is not supported.`,
