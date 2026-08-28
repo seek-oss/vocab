@@ -18,7 +18,6 @@
     "start:simple": "pnpm --filter @vocab-fixtures/simple compile && pnpm start-fixture simple",
     "start:vite": "pnpm --filter @vocab-fixtures/vite compile && pnpm preview-vite-fixture vite",
     "start:vite-ssr": "pnpm --filter @vocab-fixtures/vite-ssr compile && pnpm run-vite-ssr-fixture vite-ssr",
-    "repro": "pnpm build && vitest run --project browser --testNamePattern \"Vite SSR with plugin\"",
     "build": "tsdown",
     "format": "eslint --fix --cache . && pnpm run --stream /^format:.*/",
     "format:manypkg": "manypkg fix",
