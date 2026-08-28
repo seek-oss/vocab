@@ -1,0 +1,8 @@
+{
+  "hello": {
+    "message": "Bonjour"
+  },
+  "world": {
+    "message": "monde"
+  }
+}

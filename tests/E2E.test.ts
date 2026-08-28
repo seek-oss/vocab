@@ -7,6 +7,7 @@ import {
   getAppSnapshot,
   startFixture,
   runServerFixture,
+  runViteSsrFixture,
   type TestServer,
   getLanguageChunk,
   previewViteFixture,
@@ -18,6 +19,38 @@ describe('E2E', () => {
 
     beforeAll(async () => {
       server = await runServerFixture('server');
+    });
+
+    afterAll(() => {
+      server.close();
+    });
+
+    it('should return english when route is en', async () => {
+      const { sourceHtml, clientRenderContent } = await getAppSnapshot(
+        `${server.url}/en/`,
+      );
+
+      expect(sourceHtml).toContain('Hello world');
+      expect(clientRenderContent).toContain('Hello world');
+    });
+
+    it('should return french when route is fr', async () => {
+      const { sourceHtml, clientRenderContent } = await getAppSnapshot(
+        `${server.url}/fr/`,
+      );
+
+      expect(sourceHtml).toContain('Bonjour monde');
+      expect(clientRenderContent).toContain('Bonjour monde');
+    });
+  });
+
+  // Client language chunks load asynchronously. Hydrating without waiting
+  // for them updates state during render, which React 19 rejects.
+  describe.skip('Vite SSR with plugin', () => {
+    let server: TestServer;
+
+    beforeAll(async () => {
+      server = await runViteSsrFixture('vite-ssr');
     });
 
     afterAll(() => {

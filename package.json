@@ -17,6 +17,7 @@
     "start:server": "pnpm --filter @vocab-fixtures/server compile && pnpm start-fixture server",
     "start:simple": "pnpm --filter @vocab-fixtures/simple compile && pnpm start-fixture simple",
     "start:vite": "pnpm --filter @vocab-fixtures/vite compile && pnpm preview-vite-fixture vite",
+    "start:vite-ssr": "pnpm --filter @vocab-fixtures/vite-ssr compile && pnpm run-vite-ssr-fixture vite-ssr",
     "build": "tsdown",
     "format": "eslint --fix --cache . && pnpm run --stream /^format:.*/",
     "format:manypkg": "manypkg fix",
@@ -33,6 +34,7 @@
     "preview-vite-fixture": "tsx test-helpers/src/preview-vite-fixture",
     "start-fixture": "tsx test-helpers/src/start-fixture",
     "run-server-fixture": "tsx test-helpers/src/run-server-fixture",
+    "run-vite-ssr-fixture": "tsx test-helpers/src/run-vite-ssr-fixture",
     "compile-fixtures": "pnpm --filter @vocab-fixtures/* compile",
     "fixture:phrase:push": "pnpm run --filter @vocab-fixtures/phrase push",
     "fixture:phrase:pull": "pnpm run --filter @vocab-fixtures/phrase pull"
