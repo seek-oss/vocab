@@ -311,6 +311,45 @@ importers:
         specifier: ^8.0.0
         version: 8.2.0(@types/node@24.13.3)(esbuild@0.28.1)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
 
+  fixtures/vite-ssr:
+    dependencies:
+      '@types/express':
+        specifier: ^5.0.0
+        version: 5.0.6
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.13.3
+      '@types/react':
+        specifier: ^19.1.8
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.2.4(@types/react@19.2.18)
+      '@vocab/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@vocab/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@vocab/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@vocab/vite':
+        specifier: workspace:*
+        version: link:../../packages/vite
+      express:
+        specifier: ^5.1.0
+        version: 5.2.1(supports-color@8.1.1)
+      react:
+        specifier: ^19.1.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.8(react@19.2.8)
+      vite:
+        specifier: ^8.0.0
+        version: 8.2.0(@types/node@24.13.3)(esbuild@0.28.1)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
+
   packages/cli:
     dependencies:
       '@vocab/core':
@@ -507,6 +546,9 @@ importers:
       '@vocab-fixtures/vite':
         specifier: workspace:*
         version: link:../fixtures/vite
+      '@vocab-fixtures/vite-ssr':
+        specifier: workspace:*
+        version: link:../fixtures/vite-ssr
       '@vocab/core':
         specifier: workspace:*
         version: link:../packages/core

@@ -5,4 +5,3 @@ import { compiledVocabFileFilter as _compiledVocabFileFilter } from '@vocab/core
  */
 export const compiledVocabFileFilter = _compiledVocabFileFilter;
 export const virtualModuleId = 'virtual:vocab';
-export const sourceQueryKey = '?source=';

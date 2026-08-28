@@ -32,6 +32,7 @@ const configExtensionByFixtureName = {
   server: 'js',
   simple: 'cjs',
   vite: 'cjs',
+  'vite-ssr': 'cjs',
   'translation-types': 'js',
 } as const satisfies Record<string, 'js' | 'cjs'>;
 
@@ -96,6 +97,46 @@ export const runServerFixture = (
       // Run webpack build
     });
   });
+
+export const runViteSsrFixture = async (
+  fixtureName: FixtureName,
+): Promise<TestServer> => {
+  await compileFixtureTranslations(fixtureName);
+
+  const root = path.dirname(
+    require.resolve(`@vocab-fixtures/${fixtureName}/package.json`),
+  );
+
+  const port = portCounter++;
+
+  await build({
+    root,
+    logLevel: 'warn',
+  });
+
+  await build({
+    root,
+    logLevel: 'warn',
+    build: {
+      ssr: true,
+    },
+  });
+
+  const childProcess = spawn('node', ['./dist/server/server.cjs'], {
+    env: { ...process.env, SERVER_PORT: port.toString() },
+    stdio: 'inherit',
+    cwd: root,
+  });
+
+  await waitOn({ resources: [`http://localhost:${port}`] });
+
+  return {
+    url: `http://localhost:${port}`,
+    close: () => {
+      childProcess.kill();
+    },
+  };
+};
 
 type StartFixtureFunction = (
   fixtureName: FixtureName,
@@ -244,18 +285,21 @@ export const startFixture = (
 ): Promise<TestServer> =>
   fixtureBundlerMap[options.bundler ?? 'webpack'](fixtureName, options);
 
-export const getAppSnapshot = async (
-  url: string,
-  warningFilter = () => true,
-) => {
+export const collectAppSnapshot = async (url: string) => {
   const warnings: unknown[] = [];
   const errors: unknown[] = [];
 
-  const page = await browser.newPage();
+  const snapshotPage = await browser.newPage();
 
-  page.on('console', (msg) => {
+  snapshotPage.on('pageerror', (msg) => {
+    if (msg instanceof Error) {
+      errors.push(msg.message);
+    }
+  });
+
+  snapshotPage.on('console', (msg) => {
     if (msg.type() === 'warn') {
-      warnings.filter(warningFilter).push(msg.text());
+      warnings.push(msg.text());
     }
 
     if (msg.type() === 'error') {
@@ -263,14 +307,22 @@ export const getAppSnapshot = async (
     }
   });
 
-  const response = await page.goto(url, { waitUntil: 'networkidle0' });
+  const response = await snapshotPage.goto(url, { waitUntil: 'networkidle0' });
   const sourceHtml = await response?.text();
-  const clientRenderContent = await page.content();
+  const clientRenderContent = await snapshotPage.content();
 
-  expect(warnings).toEqual([]);
-  expect(errors).toEqual([]);
+  await snapshotPage.close();
 
-  return { sourceHtml, clientRenderContent };
+  return { sourceHtml, clientRenderContent, warnings, errors };
+};
+
+export const getAppSnapshot = async (url: string) => {
+  const snapshot = await collectAppSnapshot(url);
+
+  expect(snapshot.warnings).toEqual([]);
+  expect(snapshot.errors).toEqual([]);
+
+  return snapshot;
 };
 
 export const getLanguageChunk = async ({
