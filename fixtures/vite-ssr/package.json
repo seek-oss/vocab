@@ -15,6 +15,7 @@
     "@types/react-dom": "^19.1.6",
     "@vocab/cli": "workspace:*",
     "@vocab/core": "workspace:*",
+    "@vocab/pseudo-localize": "workspace:*",
     "@vocab/react": "workspace:*",
     "@vocab/vite": "workspace:*",
     "express": "^5.1.0",

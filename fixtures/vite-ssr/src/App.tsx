@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useTranslations, VocabProvider } from '@vocab/react';
 
 import translations from './App.vocab';
+import headerTranslations from './Header.vocab';
+
+const languages = ['en', 'fr', 'en-PSEUDO'] as const;
 
 function Content() {
   const { t } = useTranslations(translations);
@@ -10,14 +13,39 @@ function Content() {
   return <div id="message">{message}</div>;
 }
 
+function LanguageToggle({
+  lang,
+  onToggle,
+}: {
+  lang: string;
+  onToggle: () => void;
+}) {
+  const { t } = useTranslations(headerTranslations);
+
+  return (
+    <button id="toggle-language" onClick={onToggle}>
+      {t('toggleLanguage')} ({lang})
+    </button>
+  );
+}
+
 export function App({ initialLanguage }: { initialLanguage: string }) {
   const [lang, setLang] = useState(initialLanguage);
 
   return (
     <VocabProvider language={lang}>
-      <button onClick={() => setLang((curr) => (curr === 'en' ? 'fr' : 'en'))}>
-        Toggle language
-      </button>
+      <LanguageToggle
+        lang={lang}
+        onToggle={() =>
+          setLang(
+            (curr) =>
+              languages[
+                (languages.indexOf(curr as (typeof languages)[number]) + 1) %
+                  languages.length
+              ],
+          )
+        }
+      />
       <Content />
     </VocabProvider>
   );

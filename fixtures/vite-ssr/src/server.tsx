@@ -20,9 +20,14 @@ const start = async () => {
 
   app.use(express.static(clientDir, { index: false }));
 
+  const languages = ['en-PSEUDO', 'fr', 'en'] as const;
+
   app.get('*splat', (req: Request, res: Response) => {
     console.log('Received request', req.url);
-    const language = req.path.startsWith('/en') ? 'en' : 'fr';
+    const language =
+      languages.find(
+        (lang) => req.path === `/${lang}` || req.path.startsWith(`/${lang}/`),
+      ) ?? 'en';
 
     console.log({ appPath: req.path, language });
 

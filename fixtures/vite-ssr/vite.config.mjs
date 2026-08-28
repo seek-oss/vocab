@@ -1,7 +1,10 @@
+import { createRequire } from 'node:module';
+
 import { defineConfig } from 'vite';
 import { vitePluginVocab } from '@vocab/vite';
 import { createVocabChunks } from '@vocab/vite/chunks';
-import vocabConfig from './vocab.config.cjs';
+
+const vocabConfig = createRequire(import.meta.url)('./vocab.config.cjs');
 
 export default defineConfig(({ isSsrBuild }) => ({
   plugins: [

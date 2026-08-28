@@ -61,7 +61,9 @@ describe('E2E', () => {
       );
 
       expect(sourceHtml).toContain('Hello world');
+      expect(sourceHtml).toContain('Toggle language');
       expect(clientRenderContent).toContain('Hello world');
+      expect(clientRenderContent).toContain('Toggle language');
     });
 
     it('should return french when route is fr', async () => {
@@ -70,7 +72,31 @@ describe('E2E', () => {
       );
 
       expect(sourceHtml).toContain('Bonjour monde');
+      expect(sourceHtml).toContain('Changer de langue');
       expect(clientRenderContent).toContain('Bonjour monde');
+      expect(clientRenderContent).toContain('Changer de langue');
+    });
+
+    it('should return pseudo-english when route is en-PSEUDO', async () => {
+      const { sourceHtml, clientRenderContent } = await getAppSnapshot(
+        `${server.url}/en-PSEUDO/`,
+      );
+
+      expect(sourceHtml).toContain('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
+      expect(sourceHtml).toContain('[Ṯööģģƚẽẽ ƚăăกี้ģǚǚăăģẽẽ]');
+      expect(clientRenderContent).toContain('[Ḩẽẽƚƚöö] [ŵöööřƚƌ]');
+      expect(clientRenderContent).toContain('[Ṯööģģƚẽẽ ƚăăกี้ģǚǚăăģẽẽ]');
+    });
+
+    it('should include both vocab files in the en-PSEUDO chunk', async () => {
+      const chunk = await getLanguageChunk({
+        serverUrl: server.url,
+        language: 'en-PSEUDO',
+      });
+
+      expect(chunk).toContain('[Ḩẽẽƚƚöö]');
+      expect(chunk).toContain('[ŵöööřƚƌ]');
+      expect(chunk).toContain('[Ṯööģģƚẽẽ ƚăăกี้ģǚǚăăģẽẽ]');
     });
   });
 
