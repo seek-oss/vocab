@@ -234,7 +234,7 @@ export default defineConfig({
 To get a reference to a translation message chunk for a specific language, call `getChunkName`:
 
 ```ts
-import { getChunkName } from '@vocab/vite/';
+import { getChunkName } from '@vocab/vite/chunks';
 import { type Manifest } from 'vite';
 
 const getTranslationsChunkHref = (
