@@ -1,6 +1,6 @@
 import { VocabProvider, useTranslations } from '@vocab/react';
 import type { TranslationKeys } from '@vocab/core';
-import { type ReactNode, startTransition, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import commonTranslations from './.vocab';
@@ -44,15 +44,14 @@ function App({ children }: { children: ReactNode }) {
   const theLocale = lang === 'en' ? locale : undefined;
 
   return (
-    <>
+    <VocabProvider language={lang} locale={theLocale}>
+      {children}
       <label htmlFor="languages">Language:</label>
       <select
         name="languages"
         id="language-select"
         onChange={(event) => {
-          startTransition(() => {
-            setLang(event.currentTarget.value);
-          });
+          setLang(event.currentTarget.value);
         }}
       >
         <option value="en">en</option>
@@ -69,10 +68,7 @@ function App({ children }: { children: ReactNode }) {
           Toggle locale: {locale}
         </button>
       ) : null}
-      <VocabProvider language={lang} locale={theLocale}>
-        {children}
-      </VocabProvider>
-    </>
+    </VocabProvider>
   );
 }
 

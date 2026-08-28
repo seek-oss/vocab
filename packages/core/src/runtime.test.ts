@@ -142,18 +142,6 @@ describe('createTranslationFile', () => {
     expect(result).toBe('Vocab was published on 11/20/2020');
   });
 
-  it('should return the same promise for the same language and locale', () => {
-    const translations = createDemoTranslationFile();
-
-    expect(translations.getMessages('en')).toBe(translations.getMessages('en'));
-    expect(translations.getMessages('en', 'en-AU')).toBe(
-      translations.getMessages('en', 'en-AU'),
-    );
-    expect(translations.getMessages('en')).not.toBe(
-      translations.getMessages('en', 'en-AU'),
-    );
-  });
-
   it('should require parameters to be passed in', () => {
     const translations = createDemoTranslationFile();
     const translationModule = translations.getLoadedMessages('en');

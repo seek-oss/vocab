@@ -67,7 +67,7 @@ To tell Vocab which language to use, wrap your app in a `VocabProvider` componen
 
 > [!NOTE]
 > Using methods discussed later we'll make sure the first language is loaded on page load.
-> Changing languages suspends the nearest `Suspense` boundary (`VocabProvider` provides one by default) until the new language has loaded. Wrap language updates in `startTransition` so the previous translations stay on screen while the new language loads.
+> However, after this, changing languages may lead to a period of no translations as Vocab downloads the new language's translations.
 
 ```tsx
 // src/App.tsx
@@ -155,7 +155,6 @@ Once you have created some translations, run `vocab compile`.
 This command creates an `index.ts` file inside each folder ending in `.vocab`.
 Importing this file provides type-safe translations for your React components.
 Accessing translation messages is done by passing these imported translations to the `useTranslations` hook and using the returned `t` function.
-`useTranslations` suspends until the active language is loaded, so wrap consuming components in `VocabProvider` (which includes a `Suspense` boundary) or your own `Suspense`.
 
 ```tsx
 // src/MyComponent.tsx
@@ -211,12 +210,12 @@ default usage
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vitePluginVocab } from '@vocab/vite';
+import { vocabPluginVite } from '@vocab/vite';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vitePluginVocab({
+    vocabPluginVite({
       vocabConfig
     })
   ]
@@ -231,13 +230,13 @@ Simply use the function in your `manualChunks` configuration.
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import { vitePluginVocab } from '@vocab/vite';
-import { createVocabChunks } from '@vocab/vite/chunks';
+import { vocabPluginVite } from '@vocab/vite';
+import { createVocabChunks } from '@vocab/vite/create-vocab-chunks';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig({
   plugins: [
-    vitePluginVocab({
+    vocabPluginVite({
       vocabConfig
     })
   ],
@@ -294,25 +293,6 @@ const chunkName = getChunkName(language);
 const extractor = new ChunkExtractor();
 
 extractor.addChunk(chunkName);
-```
-
-#### Vite SSR
-
-The Vite plugin runs on the **client** environment only. Server bundles keep the compiled `@vocab/core/runtime`, so `renderToString` can emit translated HTML synchronously.
-
-On the client, `useTranslations` suspends with React `use()` until the language chunk has loaded. Hydrate immediately — do not wait on language chunks in the client entry. `VocabProvider` wraps children in `Suspense` so the server HTML stays visible until hydration retries with loaded messages.
-
-Run `vocab compile` before `vite build` and `vite build --ssr`.
-
-```tsx
-// src/entry-client.tsx
-import { hydrateRoot } from 'react-dom/client';
-import { App } from './App';
-
-hydrateRoot(
-  document.getElementById('root')!,
-  <App initialLanguage={window.INITIAL_LANGUAGE} />,
-);
 ```
 
 ## Dynamic Values in Translations
