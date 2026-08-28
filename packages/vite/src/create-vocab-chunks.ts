@@ -1,16 +1,17 @@
 import type { ChunkingContext } from 'rolldown';
 import { trace as _trace } from './logger';
-import { getPreloadLanguage } from './consts';
-import { getChunkName } from './get-chunk-name';
+import { getChunkName, getLanguageFromChunkName } from './get-chunk-name';
 
 const trace = _trace.extend('create-vocab-chunks');
 
 /**
  * @deprecated Language chunks are emitted by `vitePluginVocab`.
- * Existing `manualChunks` usage is a no-op and can be removed.
+ * Existing `manualChunks` usage is can be removed.
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
-  const language = getPreloadLanguage(id);
+  const language = getLanguageFromChunkName(
+    /^\/@vocab\/preload\/([^/?]+)\.js$/.exec(id)?.[1],
+  );
 
   if (!language) {
     return;

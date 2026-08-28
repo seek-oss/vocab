@@ -9,12 +9,20 @@ import {
 
 import { trace } from './logger';
 
-import { getPreloadLanguage, getPreloadModuleId } from './consts';
-import { getChunkName } from './get-chunk-name';
+import { getChunkName, getLanguageFromChunkName } from './get-chunk-name';
 
 export type VocabPluginOptions = {
   vocabConfig: UserConfig;
 };
+
+const virtualModulePrefix = '\0';
+const preloadModuleIdPattern = /^\/@vocab\/preload\/([^/?]+)\.js$/;
+
+const getPreloadModuleId = (lang: string) =>
+  `/@vocab/preload/${getChunkName(lang)}.js`;
+
+const getPreloadLanguage = (id: string) =>
+  getLanguageFromChunkName(preloadModuleIdPattern.exec(id)?.[1]);
 
 const getLanguageNames = ({ languages, generatedLanguages = [] }: UserConfig) =>
   [...languages, ...generatedLanguages].map(({ name }) => name);
@@ -61,10 +69,10 @@ export const vitePluginVocab = ({
       }
     },
     resolveId(id) {
-      return getPreloadLanguage(id) ? id : undefined;
+      return getPreloadLanguage(id) ? `${virtualModulePrefix}${id}` : null;
     },
     load(id) {
-      const lang = getPreloadLanguage(id);
+      const lang = getPreloadLanguage(id.slice(virtualModulePrefix.length));
       if (!lang) {
         return;
       }
@@ -110,10 +118,12 @@ export const vitePluginVocab = ({
       };
     },
     renderChunk(_, chunk) {
-      const language = chunk.facadeModuleId
-        ? getPreloadLanguage(chunk.facadeModuleId)
-        : undefined;
+      const id = chunk.facadeModuleId;
+      if (!id?.startsWith(virtualModulePrefix)) {
+        return;
+      }
 
+      const language = getPreloadLanguage(id.slice(virtualModulePrefix.length));
       if (!language) {
         return;
       }
