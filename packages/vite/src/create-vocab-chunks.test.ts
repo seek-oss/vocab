@@ -1,7 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { ChunkingContext } from 'rolldown';
-import { getPreloadModuleId } from './consts';
+import { getChunkName } from './get-chunk-name';
 import { createVocabChunks } from './create-vocab-chunks';
+
+const getPreloadModuleId = (lang: string) =>
+  `/@vocab/preload/${getChunkName(lang)}.js`;
 
 describe('createVocabChunks', () => {
   it.each(['app.js', 'chunk-a.js', getPreloadModuleId('en')])(
