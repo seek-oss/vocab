@@ -44,8 +44,6 @@ describe('E2E', () => {
     });
   });
 
-  // Client language chunks load asynchronously. Hydrating without waiting
-  // for them updates state during render, which React 19 rejects.
   describe('Vite SSR with plugin', () => {
     let server: TestServer;
 

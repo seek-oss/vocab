@@ -6,7 +6,7 @@ const trace = _trace.extend('create-vocab-chunks');
 
 /**
  * @deprecated Language chunks are emitted by `vitePluginVocab`.
- * Existing `manualChunks` usage is can be removed.
+ * Existing `manualChunks` usage can be removed.
  */
 export const createVocabChunks = (id: string, ctx: ChunkingContext) => {
   const language = getLanguageFromChunkName(
