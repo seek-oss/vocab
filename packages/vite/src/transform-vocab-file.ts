@@ -9,7 +9,8 @@ import {
 import * as esModuleLexer from 'es-module-lexer';
 import * as cjsModuleLexer from 'cjs-module-lexer';
 
-import { sourceQueryKey, virtualModuleId } from './consts';
+import type { MessagesByModuleId } from './render-preload-module';
+import { getRegistryModuleId } from './registry-module-id';
 
 import { trace as _trace } from './logger';
 
@@ -33,6 +34,9 @@ export const transformVocabFile = async (
   code: string,
   id: string,
   config: UserConfig,
+  projectRoot: string,
+  messagesByLang: Map<string, MessagesByModuleId>,
+  getPreloadReference: (lang: string) => string,
 ) => {
   trace('Transforming vocab file', id);
 
@@ -45,7 +49,13 @@ export const transformVocabFile = async (
     config,
   );
 
-  const renderLanguageLoader = renderLanguageLoaderAsync(loadedTranslation);
+  const renderLanguageLoader = renderLanguageLoaderAsync(
+    loadedTranslation,
+    devJsonFilePath,
+    projectRoot,
+    messagesByLang,
+    getPreloadReference,
+  );
 
   const translations = /* ts */ `
     const translations = createTranslationFile({
@@ -85,31 +95,44 @@ export const transformVocabFile = async (
 };
 
 const renderLanguageLoaderAsync =
-  (loadedTranslation: LoadedTranslation) => (lang: string) => {
-    const identifier = JSON.stringify(
-      createIdentifier(lang, loadedTranslation),
+  (
+    loadedTranslation: LoadedTranslation,
+    devTranslationFilePath: string,
+    projectRoot: string,
+    messagesByLang: Map<string, MessagesByModuleId>,
+    getPreloadReference: (language: string) => string,
+  ) =>
+  (language: string) => {
+    const moduleId = getRegistryModuleId(
+      language,
+      devTranslationFilePath,
+      projectRoot,
     );
 
-    return /* ts */ `createLanguage(() => import(${identifier}))`.trim();
+    let messagesByModuleId = messagesByLang.get(language);
+    if (!messagesByModuleId) {
+      messagesByModuleId = new Map();
+      messagesByLang.set(language, messagesByModuleId);
+    }
+    messagesByModuleId.set(moduleId, getMessages(language, loadedTranslation));
+
+    return /* ts */ `createLanguage(${JSON.stringify(moduleId)}, () => import(
+      /* @vite-ignore */
+      import.meta.ROLLUP_FILE_URL_${getPreloadReference(language)}
+    ))`.trim();
   };
 
-const createIdentifier = (
+const getMessages = (
   lang: string,
   loadedTranslation: LoadedTranslation,
-) => {
+): TranslationMessagesByKey => {
   const languageTranslations = loadedTranslation.languages[lang] ?? {};
 
-  const langJson: TranslationMessagesByKey = {};
+  const messages: TranslationMessagesByKey = {};
 
   for (const key of loadedTranslation.keys) {
-    langJson[key] = languageTranslations[key].message;
+    messages[key] = languageTranslations[key].message;
   }
 
-  const base64 = Buffer.from(JSON.stringify(langJson), 'utf-8').toString(
-    'base64',
-  );
-
-  const encodedResource = `${sourceQueryKey}${base64}`;
-
-  return `${virtualModuleId}-${lang}.json${encodedResource}`;
+  return messages;
 };

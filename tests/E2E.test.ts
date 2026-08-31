@@ -44,9 +44,7 @@ describe('E2E', () => {
     });
   });
 
-  // Client language chunks load asynchronously. Hydrating without waiting
-  // for them updates state during render, which React 19 rejects.
-  describe.skip('Vite SSR with plugin', () => {
+  describe('Vite SSR with plugin', () => {
     let server: TestServer;
 
     beforeAll(async () => {
@@ -64,6 +62,9 @@ describe('E2E', () => {
 
       expect(sourceHtml).toContain('Hello world');
       expect(clientRenderContent).toContain('Hello world');
+      // A second translation file for the same language must be installed by
+      // the same chunk, otherwise only part of the page can hydrate.
+      expect(clientRenderContent).toContain("I'm a header in english");
     });
 
     it('should return french when route is fr', async () => {
@@ -73,6 +74,7 @@ describe('E2E', () => {
 
       expect(sourceHtml).toContain('Bonjour monde');
       expect(clientRenderContent).toContain('Bonjour monde');
+      expect(clientRenderContent).toContain("I'm a header in french");
     });
   });
 
@@ -252,6 +254,27 @@ describe('E2E', () => {
       const message = await page.waitForSelector('#special-characters');
 
       await expect(message).toMatchTextContent('‘’“”\'"!@#$%^&*()_+\\/`~\\\\');
+    });
+
+    it('should expose loaded messages on the first tick when the language chunk is on the page', async () => {
+      const enCommon = await page.waitForSelector('#sync-en-common');
+      const enClient = await page.waitForSelector('#sync-en-client');
+
+      await expect(enCommon).toMatchTextContent('loaded');
+      await expect(enClient).toMatchTextContent('loaded');
+    });
+
+    it('should leave messages unloaded when their language chunk is not on the page', async () => {
+      const frInitial = await page.waitForSelector('#sync-fr-initial');
+
+      await expect(frInitial).toMatchTextContent('missing');
+    });
+
+    it('should load sibling translation files for the same language', async () => {
+      await page.click('#load-fr-sibling');
+
+      const frSibling = await page.waitForSelector('#sync-fr-sibling');
+      await expect(frSibling).toMatchTextContent('loaded');
     });
 
     it('should return the expected en chunk', async () => {

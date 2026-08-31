@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { vitePluginVocab } from '@vocab/vite';
-import { createVocabChunks } from '@vocab/vite/chunks';
 import vocabConfig from './vocab.config.cjs';
 
 export default defineConfig(({ isSsrBuild }) => ({
@@ -31,6 +30,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     modulePreload: { polyfill: false },
     outDir: isSsrBuild ? 'dist/server' : 'dist/client',
     emptyOutDir: true,
+    manifest: !isSsrBuild,
     rollupOptions: {
       input: isSsrBuild ? 'src/server.tsx' : undefined,
       output: isSsrBuild
@@ -38,15 +38,7 @@ export default defineConfig(({ isSsrBuild }) => ({
             format: 'cjs',
             entryFileNames: 'server.cjs',
           }
-        : {
-            chunkFileNames: '[name].js',
-            manualChunks: (id, ctx) => {
-              const vocabChunk = createVocabChunks(id, ctx);
-              if (vocabChunk) {
-                return vocabChunk;
-              }
-            },
-          },
+        : undefined,
     },
   },
 }));

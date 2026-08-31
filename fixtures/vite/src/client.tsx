@@ -8,6 +8,16 @@ import clientTranslations from './client.vocab';
 
 type CommonTranslationKeys = TranslationKeys<typeof commonTranslations>;
 
+const firstTickEnCommon = commonTranslations.getLoadedMessages('en')
+  ? 'loaded'
+  : 'missing';
+const firstTickEnClient = clientTranslations.getLoadedMessages('en')
+  ? 'loaded'
+  : 'missing';
+const firstTickFrCommon = commonTranslations.getLoadedMessages('fr')
+  ? 'loaded'
+  : 'missing';
+
 const useCommonTranslation = (key: CommonTranslationKeys) => {
   const { t } = useTranslations(commonTranslations);
 
@@ -40,6 +50,7 @@ function Content() {
 function App({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState('en');
   const [locale, setLocale] = useState('en-AU');
+  const [frSibling, setFrSibling] = useState('pending');
 
   const theLocale = lang === 'en' ? locale : undefined;
 
@@ -69,6 +80,21 @@ function App({ children }: { children: ReactNode }) {
           Toggle locale: {locale}
         </button>
       ) : null}
+      <div id="sync-en-common">{firstTickEnCommon}</div>
+      <div id="sync-en-client">{firstTickEnClient}</div>
+      <div id="sync-fr-initial">{firstTickFrCommon}</div>
+      <button
+        id="load-fr-sibling"
+        onClick={async () => {
+          await clientTranslations.load('fr');
+          setFrSibling(
+            commonTranslations.getLoadedMessages('fr') ? 'loaded' : 'missing',
+          );
+        }}
+      >
+        Load FR sibling
+      </button>
+      <div id="sync-fr-sibling">{frSibling}</div>
     </VocabProvider>
   );
 }

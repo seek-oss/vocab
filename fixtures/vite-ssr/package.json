@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "vocab compile",
     "build": "vocab compile && vite build && vite build --ssr",
-    "start": "vocab compile && vite build && vite build --ssr && node dist/server/server.cjs"
+    "start": "pnpm build && node dist/server/server.cjs"
   },
   "dependencies": {
     "@types/express": "^5.0.0",

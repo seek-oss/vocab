@@ -4,15 +4,36 @@ import path from 'node:path';
 
 import express, { type Request, type Response } from 'express';
 import { renderToString } from 'react-dom/server';
+import { getChunkName } from '@vocab/vite/chunks';
+import type { Manifest } from 'vite';
 
 import { App } from './App';
 
 const clientDir = path.resolve(process.cwd(), 'dist/client');
 
+const getTranslationsChunkHref = (manifest: Manifest, language: string) => {
+  const chunkName = getChunkName(language);
+  const chunk = Object.values(manifest).find(
+    (entry) => entry.name === chunkName,
+  );
+
+  if (!chunk) {
+    throw new Error(
+      `No chunk named "${chunkName}" found in the client build manifest`,
+    );
+  }
+
+  return `/${chunk.file}`;
+};
+
 const start = async () => {
   const template = await fs.readFile(
     path.join(clientDir, 'index.html'),
     'utf-8',
+  );
+
+  const manifest: Manifest = JSON.parse(
+    await fs.readFile(path.join(clientDir, '.vite/manifest.json'), 'utf-8'),
   );
 
   const app = express();
@@ -26,11 +47,14 @@ const start = async () => {
     console.log({ appPath: req.path, language });
 
     const appHtml = renderToString(<App initialLanguage={language} />);
+    const translationsChunkHref = getTranslationsChunkHref(manifest, language);
 
     const html = template
       .replace(
         '<!--ssr-head-->',
-        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script>`,
+        `<script>window.INITIAL_LANGUAGE=${JSON.stringify(language)};</script>
+        <link rel="modulepreload" href="${translationsChunkHref}" crossorigin>
+        <script type="module" src="${translationsChunkHref}"></script>`,
       )
       .replace('<!--ssr-outlet-->', appHtml);
 
