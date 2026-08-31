@@ -1,5 +1,17 @@
 # @vocab/vite
 
+## 1.0.6
+
+### Patch Changes
+
+- [#428](https://github.com/seek-oss/vocab/pull/428) [`c4e24c9`](https://github.com/seek-oss/vocab/commit/c4e24c933cab376490a06fe63b26498b6eaaedbb) Thanks [@askoufis](https://github.com/askoufis)! - Deprecate `createVocabChunks`
+
+  The Vite plugin now emits a translation chunk per-language. To get a reference to an emitted chunk, use the `getChunkName` API from `@vocab/vite/chunks`.
+
+- [#428](https://github.com/seek-oss/vocab/pull/428) [`c4e24c9`](https://github.com/seek-oss/vocab/commit/c4e24c933cab376490a06fe63b26498b6eaaedbb) Thanks [@askoufis](https://github.com/askoufis)! - Emit standalone translation chunks
+
+  Translation chunks emitted by the Vite plugin are now isolated from your app's module graph, enabling preloading of translations before client-side hydration.
+
 ## 1.0.5
 
 ### Patch Changes
