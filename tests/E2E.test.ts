@@ -13,6 +13,8 @@ import {
   previewViteFixture,
 } from '@vocab-private/test-helpers';
 
+import { holdLanguageChunk } from './hold-language-chunk';
+
 describe('E2E', () => {
   describe('Server with initial render', () => {
     let server: TestServer;
@@ -236,6 +238,26 @@ describe('E2E', () => {
       await page.select('#language-select', 'fr');
 
       const message = await page.waitForSelector('#message');
+
+      await expect(message).toMatchTextContent('Bonjour monde');
+    });
+
+    it('should keep the previous language on screen while the next language chunk loads', async () => {
+      const frenchChunk = await holdLanguageChunk(page, 'fr');
+      const message = await page.waitForSelector('#message');
+
+      await page.select('#language-select', 'fr');
+      await frenchChunk.requested;
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) => {
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+          }),
+      );
+
+      await expect(message).toMatchTextContent('Hello world');
+
+      frenchChunk.release();
 
       await expect(message).toMatchTextContent('Bonjour monde');
     });
