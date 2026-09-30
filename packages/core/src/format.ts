@@ -31,7 +31,7 @@ async function formatWithOxfmt(source: string, filePath: string) {
 
     return stdout;
   } catch (error) {
-    const { code, stderr } = error as ExecFileException ?? {};
+    const { code, stderr } = (error as ExecFileException) ?? {};
 
     throw new Error(
       `Failed to format ${filePath} with oxfmt (exit code ${code}):\n${stderr ?? ''}`,
