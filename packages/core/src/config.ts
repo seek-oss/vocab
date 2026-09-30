@@ -50,6 +50,11 @@ const schema = {
     items: 'string',
     optional: true,
   },
+  formatter: {
+    type: 'enum',
+    values: ['prettier', 'oxfmt'],
+    optional: true,
+  },
 };
 const checkConfigFile = validator.compile(schema);
 

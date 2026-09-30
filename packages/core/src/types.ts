@@ -156,7 +156,14 @@ export interface UserConfig {
    * An array of glob paths to ignore from compilation and validation
    */
   ignore?: string[];
+  /**
+   * The formatter used to format generated translation files
+   * @default 'prettier'
+   */
+  formatter?: Formatter;
 }
+
+export type Formatter = 'prettier' | 'oxfmt';
 
 export type Tags = string[];
 

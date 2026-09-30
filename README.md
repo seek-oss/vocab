@@ -452,9 +452,16 @@ module.exports = {
   /**
    * An array of glob paths to ignore from compilation and validation
    */
-  ignore: ['**/ignored_directory/**']
+  ignore: ['**/ignored_directory/**'],
+  /**
+   * The formatter used to format generated translation files. Either 'prettier' or 'oxfmt'
+   * Default: 'prettier'
+   */
+  formatter: 'prettier'
 };
 ```
+
+When `formatter` is set to `'oxfmt'`, Vocab runs the oxfmt CLI on generated files, so your oxfmt configuration is resolved the same way as when running `oxfmt` yourself.
 
 ## Translation Key Types
 

@@ -299,6 +299,55 @@ describe.concurrent('compile', { retry: 2 }, () => {
       await stopWatching?.();
     });
   });
+
+  describe('with oxfmt formatter', () => {
+    it('should format generated files with oxfmt defaults', async ({
+      expect,
+    }) => {
+      await using fixture = await createVocabFixture(DEFAULT_FIXTURE);
+      await compile(
+        {},
+        { ...baseConfig, projectRoot: fixture.path, formatter: 'oxfmt' },
+      );
+
+      const indexContent = await fixture.readFile(
+        'src/.vocab/index.ts',
+        'utf-8',
+      );
+
+      expect(indexContent).toContain(
+        'import { createLanguage, createTranslationFile } from "@vocab/core/runtime";',
+      );
+      expect(indexContent).toMatchSnapshot();
+    });
+
+    it('should respect the nearest oxfmt config file', async ({ expect }) => {
+      await using fixture = await createVocabFixture({
+        ...DEFAULT_FIXTURE,
+        '.oxfmtrc.jsonc': `{
+          // Comments and trailing commas are allowed
+          "$schema": "./node_modules/oxfmt/configuration_schema.json",
+          "semi": false,
+          "singleQuote": true,
+          "ignorePatterns": ["dist"],
+        }`,
+      });
+      await compile(
+        {},
+        { ...baseConfig, projectRoot: fixture.path, formatter: 'oxfmt' },
+      );
+
+      const indexContent = await fixture.readFile(
+        'src/.vocab/index.ts',
+        'utf-8',
+      );
+
+      expect(indexContent).toContain(
+        "import { createLanguage, createTranslationFile } from '@vocab/core/runtime'\n",
+      );
+      expect(indexContent).toMatchSnapshot();
+    });
+  });
 });
 
 describe('isWatchPathIgnored', () => {

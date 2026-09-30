@@ -14,7 +14,6 @@ import {
   type MessageFormatElement,
   parse,
 } from '@formatjs/icu-messageformat-parser';
-import prettier from 'prettier';
 
 import {
   getTranslationMessages,
@@ -28,6 +27,7 @@ import {
   isTranslationDirectory,
 } from './utils';
 import { trace } from './logger';
+import { formatGeneratedSource } from './format';
 import { loadAllTranslations, loadTranslation } from './load-translations';
 
 type ICUParams = Record<string, string>;
@@ -195,7 +195,10 @@ function serialiseTranslationRuntime(
   `;
 }
 
-export async function generateRuntime(loadedTranslation: LoadedTranslation) {
+export async function generateRuntime(
+  loadedTranslation: LoadedTranslation,
+  config: UserConfig,
+) {
   const { languages: loadedLanguages, filePath } = loadedTranslation;
 
   trace('Generating types for', filePath);
@@ -233,17 +236,17 @@ export async function generateRuntime(loadedTranslation: LoadedTranslation) {
     });
   }
 
-  const prettierConfig = await prettier.resolveConfig(filePath);
   const serializedTranslationType = serialiseTranslationRuntime(
     translationTypes,
     imports,
     loadedTranslation,
   );
-  const declaration = await prettier.format(serializedTranslationType, {
-    ...prettierConfig,
-    parser: 'typescript',
-  });
   const outputFilePath = getTSFileFromDevLanguageFile(filePath);
+  const declaration = await formatGeneratedSource(
+    serializedTranslationType,
+    outputFilePath,
+    config.formatter,
+  );
   trace(`Writing translation types to ${outputFilePath}`);
   await writeIfChanged(outputFilePath, declaration);
 }
@@ -306,7 +309,7 @@ export async function watch(config: UserConfig) {
           config,
         );
 
-        await generateRuntime(loadedTranslation);
+        await generateRuntime(loadedTranslation, config);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('Failed to generate types for', relativePath);
@@ -351,7 +354,7 @@ export async function compile(
   );
 
   for (const loadedTranslation of translations) {
-    await generateRuntime(loadedTranslation);
+    await generateRuntime(loadedTranslation, config);
   }
 
   if (shouldWatch) {
