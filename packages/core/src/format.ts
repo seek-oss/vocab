@@ -49,9 +49,6 @@ async function formatWithPrettier(source: string, filePath: string) {
   });
 }
 
-/**
- * Formats generated TypeScript source. `filePath` should be the path the source will be written to.
- */
 export function formatGeneratedSource(
   source: string,
   filePath: string,
