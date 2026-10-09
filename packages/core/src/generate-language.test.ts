@@ -52,7 +52,7 @@ describe('generateLanguageFromTranslations', () => {
           "message": "[I CAN SEE IT IN YOUR {numberOfEyes,plural,one{EYE} other{EYES}}]",
         },
         "I can see it in your facialExpression": {
-          "message": "[I CAN SEE IT IN YOUR {facialExpression,select,smile{SMILE} frown{FROWN} other{SMILE}}]",
+          "message": "[I CAN SEE IT IN YOUR {facialExpression,select,frown{FROWN} other{SMILE} smile{SMILE}}]",
         },
         "I have numberOfCats cats": {
           "message": "[I HAVE {numberOfCats, number} CATS]",

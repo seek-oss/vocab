@@ -19,6 +19,9 @@
   },
   "author": "SEEK",
   "license": "MIT",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "peerDependencies": {
     "react": ">=16.3.0"
   },
@@ -27,7 +30,7 @@
   ],
   "dependencies": {
     "@vocab/core": "workspace:^",
-    "intl-messageformat": "^10.0.0"
+    "intl-messageformat": "^12.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.8",
