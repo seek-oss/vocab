@@ -6,7 +6,6 @@
   "license": "MIT",
   "main": "src/index.ts",
   "devDependencies": {
-    "@types/wait-on": "^5.3.1",
     "@vocab-fixtures/direct": "workspace:*",
     "@vocab-fixtures/phrase": "workspace:*",
     "@vocab-fixtures/server": "workspace:*",
@@ -16,7 +15,7 @@
     "@vocab-fixtures/vite-ssr": "workspace:*",
     "@vocab/core": "workspace:*",
     "vite": "^8.0.0",
-    "wait-on": "^8.0.0",
+    "wait-on": "^9.5.1",
     "webpack": "^5.37.0",
     "webpack-dev-server": "^6.0.0"
   }

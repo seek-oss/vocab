@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "author": "SEEK",
   "license": "MIT",
-  "main": "src/index.ts",
   "devDependencies": {
     "@vocab-fixtures/translation-types": "workspace:*",
     "@vocab-private/test-helpers": "workspace:*"

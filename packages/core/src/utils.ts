@@ -114,7 +114,7 @@ export function getAltLanguageFilePath(
   return path.normalize(result);
 }
 
-export function mapValues<Key extends string, OriginalValue, ReturnValue>(
+function mapValues<Key extends string, OriginalValue, ReturnValue>(
   obj: Record<Key, OriginalValue>,
   func: (val: OriginalValue) => ReturnValue,
 ): TranslationMessagesByKey<Key> {

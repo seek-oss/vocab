@@ -68,7 +68,7 @@ function _callPhrase(path: string, options: Parameters<typeof fetch>[1] = {}) {
   });
 }
 
-export async function callPhrase<T = any>(
+async function callPhrase<T = any>(
   relativePath: string,
   options: Parameters<typeof fetch>[1] = {},
 ): Promise<T> {

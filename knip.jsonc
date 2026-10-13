@@ -1,0 +1,46 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  "ignoreDependencies": [
+    // Used by compiled translations
+    "@vocab/core",
+  ],
+  "workspaces": {
+    "fixtures/package": {
+      "entry": ["vocab.config.js"],
+    },
+    "fixtures/phrase": {
+      "entry": ["vocab.config.js"],
+    },
+    "fixtures/server": {
+      "ignoreDependencies": [
+        // Referenced by name as a babel plugin in webpack.config.js
+        "@loadable/babel-plugin",
+      ],
+    },
+    "fixtures/translation-types": {
+      "entry": ["vocab.config.js"],
+    },
+    "fixtures/vite-ssr": {
+      "entry": ["src/server.tsx"],
+    },
+    "test-helpers": {
+      "ignoreDependencies": [
+        // Fixture files are dynamically imported via a template so
+        // knip thinks they're unused
+        "@vocab-fixtures/direct",
+        "@vocab-fixtures/phrase",
+        "@vocab-fixtures/server",
+        "@vocab-fixtures/simple",
+        "@vocab-fixtures/translation-types",
+        "@vocab-fixtures/vite",
+        "@vocab-fixtures/vite-ssr",
+      ],
+    },
+    "packages/rollup-plugin": {
+      "ignoreDependencies": [
+        // Declared as optional peer dep but otherwise unused
+        "rolldown",
+      ],
+    },
+  },
+}

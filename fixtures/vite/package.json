@@ -10,7 +10,6 @@
     "preview": "vocab compile && vite preview"
   },
   "dependencies": {
-    "@babel/core": "^7.12.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vocab/cli": "workspace:*",
