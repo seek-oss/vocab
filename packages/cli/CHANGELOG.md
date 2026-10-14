@@ -8,6 +8,8 @@
 
   This is not a breaking change. These packages already depended on recent Node.js versions in practice; `engines` now states that requirement.
 
+  Running Vocab on AWS Lambda is a corner case that this change doesn't specifically account for. If you run Vocab on AWS Lambda, you may need to re-enable the `--experimental-require-module` flag, as [it is disabled by default](https://aws.amazon.com/blogs/compute/node-js-24-runtime-now-available-in-aws-lambda/#:~:text=lambda%20allows%20you%20to%20re-enable%20these%20features%20by%20adding%20the%20--experimental-require-module%20flag) at the time of writing.
+
 - Updated dependencies [[`ea21eee`](https://github.com/seek-oss/vocab/commit/ea21eee09497e4ae413073044d600ff98e844b7d), [`ea21eee`](https://github.com/seek-oss/vocab/commit/ea21eee09497e4ae413073044d600ff98e844b7d)]:
   - @vocab/core@1.8.3
   - @vocab/phrase@2.2.4
