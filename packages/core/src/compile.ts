@@ -195,7 +195,7 @@ function serialiseTranslationRuntime(
   `;
 }
 
-export async function generateRuntime(loadedTranslation: LoadedTranslation) {
+async function generateRuntime(loadedTranslation: LoadedTranslation) {
   const { languages: loadedLanguages, filePath } = loadedTranslation;
 
   trace('Generating types for', filePath);

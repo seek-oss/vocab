@@ -29,8 +29,7 @@
     "dist"
   ],
   "dependencies": {
-    "@vocab/core": "workspace:^",
-    "intl-messageformat": "^12.0.0"
+    "@vocab/core": "workspace:^"
   },
   "devDependencies": {
     "@types/react": "^19.1.8",
