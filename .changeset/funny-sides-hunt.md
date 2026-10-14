@@ -3,4 +3,4 @@
 '@vocab/vite': patch
 ---
 
-Remove unused `picolors` dependency
+Remove unused `picocolors` dependency
