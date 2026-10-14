@@ -1,5 +1,18 @@
 # @vocab/react
 
+## 1.1.26
+
+### Patch Changes
+
+- [#433](https://github.com/seek-oss/vocab/pull/433) [`ea21eee`](https://github.com/seek-oss/vocab/commit/ea21eee09497e4ae413073044d600ff98e844b7d) Thanks [@SpiralLogic](https://github.com/SpiralLogic)! - Require Node.js `^20.19.0 || >=22.12.0` to load ESM-only FormatJS from CommonJS.
+
+  This is not a breaking change. These packages already depended on recent Node.js versions in practice; `engines` now states that requirement.
+
+- [#435](https://github.com/seek-oss/vocab/pull/435) [`412c225`](https://github.com/seek-oss/vocab/commit/412c225a776faf1ba9fb455addc44a34ba8bf53e) Thanks [@askoufis](https://github.com/askoufis)! - Remove unused `intl-messageformat` dependency
+
+- Updated dependencies [[`ea21eee`](https://github.com/seek-oss/vocab/commit/ea21eee09497e4ae413073044d600ff98e844b7d), [`ea21eee`](https://github.com/seek-oss/vocab/commit/ea21eee09497e4ae413073044d600ff98e844b7d)]:
+  - @vocab/core@1.8.3
+
 ## 1.1.25
 
 ### Patch Changes
