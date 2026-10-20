@@ -1,4 +1,5 @@
-import { validateConfig } from './config';
+import path from 'path';
+import { resolveConfig, resolveConfigSync, validateConfig } from './config';
 
 describe('validateConfig', () => {
   const generator = {
@@ -83,5 +84,38 @@ describe('validateConfig', () => {
         generatedLanguages: [{ name: 'pseudo', extends: 'en-US', generator }],
       }),
     ).toThrow(expect.objectContaining({ code: 'InvalidExtends' }));
+  });
+});
+
+describe('resolveConfig', () => {
+  const expected = { devLanguage: 'en', languages: [{ name: 'en' }] };
+
+  describe.each(['esm-mjs', 'esm-js', 'cjs'])('%s fixture', (fixture) => {
+    const originalCwd = process.cwd();
+
+    beforeEach(() => {
+      process.chdir(path.join(__dirname, '__fixtures__', fixture));
+    });
+
+    afterEach(() => {
+      process.chdir(originalCwd);
+    });
+
+    it('discovers and loads the config', async () => {
+      expect(await resolveConfig()).toMatchObject(expected);
+      expect(resolveConfigSync()).toMatchObject(expected);
+    });
+  });
+
+  it('loads an ESM config from an explicit path', async () => {
+    const file = path.join(
+      __dirname,
+      '__fixtures__',
+      'esm-mjs',
+      'vocab.config.mjs',
+    );
+
+    expect(await resolveConfig(file)).toMatchObject(expected);
+    expect(resolveConfigSync(file)).toMatchObject(expected);
   });
 });

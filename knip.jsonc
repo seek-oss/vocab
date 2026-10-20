@@ -36,6 +36,9 @@
         "@vocab-fixtures/vite-ssr",
       ],
     },
+    "packages/core": {
+      "entry": ["src/__fixtures__/*/vocab.config.*"],
+    },
     "packages/rollup-plugin": {
       "ignoreDependencies": [
         // Declared as optional peer dep but otherwise unused

@@ -371,12 +371,12 @@ importers:
       debug:
         specifier: ^4.3.1
         version: 4.4.3(supports-color@8.1.1)
+      empathic:
+        specifier: ^2.1.0
+        version: 2.1.0
       fastest-validator:
         specifier: ^1.9.0
         version: 1.19.1
-      find-up:
-        specifier: ^5.0.0
-        version: 5.0.0
       intl-messageformat:
         specifier: ^12.0.0
         version: 12.1.2
@@ -3404,6 +3404,10 @@ packages:
 
   empathic@2.0.1:
     resolution: {integrity: sha512-YGRs8knHhKHVShLkFET/rWAU8kmHbOV5LwN938RHI0pljAJ1Gf6SzXsSmRaEzcXTtOOmVqJ5+WtQPL5uigY50Q==}
+    engines: {node: '>=14'}
+
+  empathic@2.1.0:
+    resolution: {integrity: sha512-AnfC1ATldl49/cvZdLPDjBfrRNwbDO05aibiOtzQu3qtlbJtomNLhF30HEtn/7iBz50dlMECqATo3fG0LrdEgw==}
     engines: {node: '>=14'}
 
   encodeurl@2.0.0:
@@ -8717,6 +8721,8 @@ snapshots:
   emoji-regex@10.6.0: {}
 
   empathic@2.0.1: {}
+
+  empathic@2.1.0: {}
 
   encodeurl@2.0.0: {}
 
