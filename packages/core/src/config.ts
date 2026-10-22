@@ -2,7 +2,7 @@ import type { UserConfig } from './types';
 import path from 'path';
 
 import pc from 'picocolors';
-import findUp from 'find-up';
+import { any as findAny } from 'empathic/find';
 import Validator from 'fastest-validator';
 import { ValidationError } from './ValidationError';
 import { trace } from './logger';
@@ -161,29 +161,26 @@ export function validateConfig(c: UserConfig) {
   return true;
 }
 
+const CONFIG_FILE_NAMES = [
+  'vocab.config.js',
+  'vocab.config.cjs',
+  'vocab.config.mjs',
+];
+
+function loadUserConfig(configFilePath: string): UserConfig {
+  /* eslint-disable-next-line @typescript-eslint/no-require-imports */
+  const loaded = require(configFilePath);
+
+  return (loaded.default ?? loaded) as UserConfig;
+}
+
 function createConfig(configFilePath: string) {
   const cwd = path.dirname(configFilePath);
 
   return {
     projectRoot: cwd,
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    ...(require(configFilePath) as UserConfig),
+    ...loadUserConfig(configFilePath),
   };
-}
-
-export async function resolveConfig(
-  customConfigFilePath?: string,
-): Promise<UserConfig | null> {
-  const configFilePath = customConfigFilePath
-    ? path.resolve(customConfigFilePath)
-    : await findUp(['vocab.config.js', 'vocab.config.cjs']);
-
-  if (configFilePath) {
-    trace(`Resolved configuration file to ${configFilePath}`);
-    return createConfig(configFilePath);
-  }
-  trace('No configuration file found');
-  return null;
 }
 
 export function resolveConfigSync(
@@ -191,7 +188,7 @@ export function resolveConfigSync(
 ): UserConfig | null {
   const configFilePath = customConfigFilePath
     ? path.resolve(customConfigFilePath)
-    : findUp.sync(['vocab.config.js', 'vocab.config.cjs']);
+    : findAny(CONFIG_FILE_NAMES);
 
   if (configFilePath) {
     trace(`Resolved configuration file to ${configFilePath}`);
@@ -200,4 +197,15 @@ export function resolveConfigSync(
   trace('No configuration file found');
 
   return null;
+}
+
+/**
+ * Kept for backwards compatibility. Config resolution is synchronous, so this
+ * simply wraps the result in a promise. In the future `resolveConfigSync` will
+ * be removed and `resolveConfig` will become synchronous.
+ */
+export async function resolveConfig(
+  customConfigFilePath?: string,
+): Promise<UserConfig | null> {
+  return resolveConfigSync(customConfigFilePath);
 }

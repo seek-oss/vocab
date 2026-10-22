@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-  format: ['cjs'],
+  format: ['esm'],
   exports: {
     devExports: '@vocab-private/monorepo',
   },
