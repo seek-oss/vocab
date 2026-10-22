@@ -1,5 +1,15 @@
 # @vocab/core
 
+## 1.9.0
+
+### Minor Changes
+
+- [#441](https://github.com/seek-oss/vocab/pull/441) [`44f5f52`](https://github.com/seek-oss/vocab/commit/44f5f52339c39fbf6b92cf23d80e3209ca9ac0fe) Thanks [@askoufis](https://github.com/askoufis)! - Support ESM Vocab config files (`vocab.config.mjs`, or `vocab.config.js` in a `"type": "module"` package). ESM configs are loaded via Node's `require(esm)`, so top-level `await` is not supported.
+
+### Patch Changes
+
+- [#441](https://github.com/seek-oss/vocab/pull/441) [`44f5f52`](https://github.com/seek-oss/vocab/commit/44f5f52339c39fbf6b92cf23d80e3209ca9ac0fe) Thanks [@askoufis](https://github.com/askoufis)! - Replace `find-up` dependency with `empathic`
+
 ## 1.8.3
 
 ### Patch Changes
