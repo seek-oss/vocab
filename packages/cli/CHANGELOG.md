@@ -1,5 +1,17 @@
 # @vocab/cli
 
+## 2.3.0
+
+### Minor Changes
+
+- [#441](https://github.com/seek-oss/vocab/pull/441) [`44f5f52`](https://github.com/seek-oss/vocab/commit/44f5f52339c39fbf6b92cf23d80e3209ca9ac0fe) Thanks [@askoufis](https://github.com/askoufis)! - Publish the CLI as ESM instead of CommonJS. The CLI now supports ESM Vocab config files (`vocab.config.mjs`, or `vocab.config.js` in a `"type": "module"` package).
+
+### Patch Changes
+
+- Updated dependencies [[`44f5f52`](https://github.com/seek-oss/vocab/commit/44f5f52339c39fbf6b92cf23d80e3209ca9ac0fe), [`44f5f52`](https://github.com/seek-oss/vocab/commit/44f5f52339c39fbf6b92cf23d80e3209ca9ac0fe)]:
+  - @vocab/core@1.9.0
+  - @vocab/phrase@2.2.5
+
 ## 2.2.4
 
 ### Patch Changes
