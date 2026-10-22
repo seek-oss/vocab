@@ -38,7 +38,7 @@ npm install --save @vocab/core @vocab/react
 
 ### Step 2: Configure Vocab
 
-You can configure Vocab directly when calling the API, or via a `vocab.config.js` or `vocab.config.cjs` file.
+You can configure Vocab directly when calling the API, or via a `vocab.config.js/mjs/cjs` file.
 
 > [!TIP]  
 > It's a good idea to name your languages using [IETF language tags], however this is not a requirement.
