@@ -68,7 +68,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Publish
-        uses: seek-oss/changesets-snapshot@9063bfcb495100964ee0912c5bcb30c4c434c1b3 # v0.3.2
+        uses: seek-oss/changesets-snapshot@56b8b82b8e45fd725daa2890453dfa0fa28f9eb0 # v1.0.0
         with:
           pre-publish: pnpm build
         env:
