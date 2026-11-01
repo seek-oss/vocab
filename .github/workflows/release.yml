@@ -35,12 +35,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Create Release Pull Request or Publish to npm
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          version: pnpm run version
-          publish: pnpm run release
-        env:
-          GITHUB_TOKEN: ${{ secrets.SEEK_OSS_CI_GITHUB_TOKEN }}
+          version-script: pnpm run version
+          publish-script: pnpm run release
+          github-token: ${{ secrets.SEEK_OSS_CI_GITHUB_TOKEN }}
+
   snapshot:
     name: Publish snapshot version
     if: github.event_name == 'workflow_dispatch'
@@ -68,7 +68,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Publish
-        uses: seek-oss/changesets-snapshot@9063bfcb495100964ee0912c5bcb30c4c434c1b3 # v0.3.2
+        uses: seek-oss/changesets-snapshot@56b8b82b8e45fd725daa2890453dfa0fa28f9eb0 # v1.0.0
         with:
           pre-publish: pnpm build
         env:
