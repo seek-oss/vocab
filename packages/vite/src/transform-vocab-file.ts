@@ -58,7 +58,7 @@ export const transformVocabFile = async (
   );
 
   const translations = /* ts */ `
-    const translations = createTranslationFile({
+    const translations = /*#__PURE__*/ createTranslationFile({
       ${Object.keys(loadedTranslation.languages)
         .map((lang) => `${JSON.stringify(lang)}: ${renderLanguageLoader(lang)}`)
         .join(',\n')}
@@ -116,7 +116,7 @@ const renderLanguageLoaderAsync =
     }
     messagesByModuleId.set(moduleId, getMessages(language, loadedTranslation));
 
-    return /* ts */ `createLanguage(${JSON.stringify(moduleId)}, () => import(
+    return /* ts */ `/*#__PURE__*/ createLanguage(${JSON.stringify(moduleId)}, () => import(
       /* @vite-ignore */
       import.meta.ROLLUP_FILE_URL_${getPreloadReference(language)}
     ))`.trim();

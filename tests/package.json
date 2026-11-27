@@ -6,6 +6,7 @@
   "license": "MIT",
   "devDependencies": {
     "@vocab-fixtures/translation-types": "workspace:*",
-    "@vocab-private/test-helpers": "workspace:*"
+    "@vocab-private/test-helpers": "workspace:*",
+    "vite": "^8.0.0"
   }
 }

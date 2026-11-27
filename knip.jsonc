@@ -20,6 +20,10 @@
     "fixtures/translation-types": {
       "entry": ["vocab.config.js"],
     },
+    "fixtures/vite": {
+      // Built by `tests/vite-plugin.test.ts`
+      "entry": ["src/tree-shaking/entry.ts"],
+    },
     "fixtures/vite-ssr": {
       "entry": ["src/server.tsx"],
     },
