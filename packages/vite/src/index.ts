@@ -1,5 +1,9 @@
 import type { Plugin as VitePlugin } from 'vite';
-import { type UserConfig, compiledVocabFileFilter } from '@vocab/core';
+import {
+  type UserConfig,
+  compiledVocabFileFilter,
+  getDevLanguageFileFromTsFile,
+} from '@vocab/core';
 
 import { transformVocabFile } from './transform-vocab-file';
 import {
@@ -8,6 +12,7 @@ import {
 } from './render-preload-module';
 
 import { trace } from './logger';
+import { getRegistryModuleId } from './registry-module-id';
 
 import { getChunkName, getLanguageFromChunkName } from './get-chunk-name';
 
@@ -117,7 +122,7 @@ export const vitePluginVocab = ({
         map: null, // provide source map if available
       };
     },
-    renderChunk(_, chunk) {
+    renderChunk(_code, chunk, _options, meta) {
       const id = chunk.facadeModuleId;
       if (!id?.startsWith(virtualModulePrefix)) {
         return;
@@ -128,8 +133,34 @@ export const vitePluginVocab = ({
         return;
       }
 
+      // Only translation files that survived tree shaking (i.e. were actually
+      // rendered into some chunk) should be registered by this language chunk.
+      const usedModuleIds = new Set<string>();
+      for (const otherChunk of Object.values(meta.chunks)) {
+        for (const [moduleId, info] of Object.entries(otherChunk.modules)) {
+          if (
+            info.renderedLength > 0 &&
+            compiledVocabFileFilter.test(moduleId)
+          ) {
+            usedModuleIds.add(
+              getRegistryModuleId(
+                language,
+                getDevLanguageFileFromTsFile(moduleId),
+                projectRoot,
+              ),
+            );
+          }
+        }
+      }
+
+      const messages: MessagesByModuleId = new Map(
+        [...(messagesByLang.get(language) ?? [])].filter(([moduleId]) =>
+          usedModuleIds.has(moduleId),
+        ),
+      );
+
       return {
-        code: renderPreloadModule(messagesByLang.get(language) ?? new Map()),
+        code: renderPreloadModule(messages),
         map: null,
       };
     },
